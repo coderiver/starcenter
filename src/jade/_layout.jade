@@ -1,3 +1,7 @@
+mixin icon(name)
+  svg(class="icon icon-" + name)
+    use(xlink:href="#icon-" + name)
+
 doctype html
 html
   head
@@ -9,12 +13,21 @@ html
     link(rel="stylesheet" media="all" href="css/screen.css")
     <!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
   body
-
-
+    div(style="position: absolute; top: 0; left: 0;")
+      include ../../site/img/icons.svg
+  
+    //BEGIN out
     .out
+      block header
+        include _header
+
+      block navigation
+        include _nav
+
       block content
+    //END out
 
     block popup
 
-    <!-- load scripts -->
+    //LOAD SCRIPTS
     script(src="js/lib/head.js" data-headjs-load="js/init.js")

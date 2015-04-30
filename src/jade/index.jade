@@ -1,8 +1,75 @@
 extends _layout
 
 block title
-  title Index
+  title Home
 
 block content
-  h1
-    | Template
+
+  //BEGIN morph
+  .morph
+    include ../img/svg/optimized/morph.svg
+  //END morph
+
+  //BEGIN section 1
+  section.section.section-1
+
+    //BEGIN slider
+    #slider1.main-slider
+      .main-slider__paginator
+        button(type="button").is-active 01
+        button(type="button") 02
+        button(type="button") 03
+      
+      .main-slider__slides
+        .slide
+          img.slide__img(src="img/slider/slider1.png", alt="")
+          .slide__content
+            .slide__text
+              | Наиболее выгодное предложение на рынке
+              span.price
+                | 6 USD
+                small.price__small
+                  | /м<sup>2</sup>
+
+            button.details-btn(type="button")
+              span Узнать детали
+              +icon("arrow")
+
+        .slide
+          img.slide__img(src="img/slider/slider2.png", alt="")
+          .slide__content
+            .slide__text
+              | Наиболее выгодное предложение на рынке
+              span.price
+                | 10 USD
+                small.price__small
+                  | /м<sup>2</sup>
+
+            button.details-btn(type="button")
+              span Узнать детали
+              +icon("arrow")
+
+        .slide
+          img.slide__img(src="img/slider/slider3.png", alt="")
+          .slide__content
+            .slide__text
+              | Наиболее выгодное предложение на рынке
+              span.price
+                | 20 USD
+                small.price__small
+                  | /м<sup>2</sup>
+
+            button.details-btn(type="button")
+              span Узнать детали
+              +icon("arrow")
+    //END slider
+
+    //BEGIN main-btns
+    .main-btns
+      .main-btns__inner
+        button.btn.btn_main(type="button", data-hover="Арендовать") Арендовать
+        button.btn.btn_main(type="button", data-hover="Купить") Купить
+        button.btn.btn_main(type="button", data-hover="Инвестировать") Инвестировать
+    //END main-btns
+
+  //END section 1

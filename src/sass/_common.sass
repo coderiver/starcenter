@@ -1,0 +1,54 @@
+$gray   : #AAA
+$violet : #896BA4
+$red    : #C34B4B
+$green  : #4A9547
+$yellow : #D8B733
+$orange : #D88133
+$text   : #333
+
++font("Bebas", bebas)
++font("HelveticaNeueCyr-Bold", helveticaneuecyr-bold)
++font("HelveticaNeueCyr-Roman", helveticaneuecyr-roman)
++font("HelveticaNeueCyr-Ultralight", helveticaneuecyr-ultralight)
++font("HelveticaNeueCyr-Light", helveticaneuecyr-light)
++font("PFBeauSansPro-Regular", pfbeausanspro-reg)
++font("PFBeauSansPro-Light", pfbeausanspro-light)
+
+=f($name, $font-size: null, $letter-spacing: null)
+  $font-family: null
+  @if $name == "bebas"
+    $font-family: "Bebas"
+  @if $name == "hr"
+    $font-family: "HelveticaNeueCyr-Roman"
+  @if $name == "hb"
+    $font-family: "HelveticaNeueCyr-Bold"
+  @if $name == "hu"
+    $font-family: "HelveticaNeueCyr-Ultralight"
+  @if $name == "hl"
+    $font-family: "HelveticaNeueCyr-Light"
+  @if $name == "bsr"
+    $font-family: "PFBeauSansPro-Regular"
+  @if $name == "bsl"
+    $font-family: "PFBeauSansPro-Light"
+  font-family: $font-family, Helvetica, Arial, sans-serif
+  font-weight: normal
+  @if $font-size != null
+    font-size: $font-size + px
+  @if $letter-spacing != null
+    letter-spacing: $letter-spacing + em
+
+
+html
+  font-size: 62.5%
+
+body
+  min-width: 1200px
+  max-width: 1368px
+  margin: auto
+  min-height: 600px
+  font-size: 12px
+  line-height: 1.4
+  +f(bsr)
+  color: $text
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale

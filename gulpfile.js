@@ -130,6 +130,23 @@ gulp.task('svgsprite', function() {
         .pipe(gulp.dest(dest.img));
 });
 
+gulp.task('svgo', function() {
+    return gulp.src(src.svg + '/not-optimized/*.svg')
+        .pipe(svgmin({
+            js2svg: {
+                pretty: true
+            },
+            plugins: [{
+                removeDesc: true
+            },{
+                cleanupIDs: true
+            },{
+                mergePaths: false
+            }
+        ]}))
+        .pipe(gulp.dest(src.svg + "/optimized"));
+});
+
 // sprite
 gulp.task('sprite', function() {
     var spriteData = gulp.src(src.img + '/icons/*.png')
@@ -155,6 +172,7 @@ gulp.task('watch', function() {
     gulp.watch(src.jade + '/**/*.jade', ['jade']);
     gulp.watch([src.jade + '/_*.jade', src.jade + '/includes/*.jade'], ['jade-all']);
     gulp.watch(src.svg + '/icons/*.svg', ['svgsprite']);
+    gulp.watch(src.svg + '/optimize/*.svg', ['svgo']);
     gulp.watch(src.img + '/icons/*.png', ['sprite']);
 });
 
