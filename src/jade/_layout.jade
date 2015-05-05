@@ -15,43 +15,29 @@ html
   body
     div(style="position: absolute; top: 0; left: 0;")
       include ../../site/img/icons.svg
-  
-    
 
-    block navigation
-      //BEGIN nav
-      include _nav
-      //END nav
+    //BEGIN nav
+    include _nav
+    //END nav
 
-    block header
+    //BEGIN center-wrap
+    .center-wrap
       //BEGIN header
       include _header
       //END header
 
-    //BEGIN morph
-    #morph
-      .morph
-        include ../img/svg/optimized/morph.svg
-    //END morph
+      //- //BEGIN morph
+      //- #morph
+      //-   .morph
+      //-     include ../img/svg/optimized/morph.svg
+      //- //END morph
 
-    //BEGIN outer and inner
-    #outer
-      #inner
-        block content
-    //END outer and inner
-
-    #catalog.catalog
-      .catalog__head
-        .catalog__btns
-          button.btn(type="button")
-            span.btn__hover(data-hover="Арендовать")
-            span.btn__front Арендовать
-          button.btn(type="button")
-            span.btn__hover(data-hover="Купить")
-            span.btn__front Купить
-          button.btn(type="button") 
-            span.btn__hover(data-hover="Инвестировать")
-            span.btn__front Инвестировать
+      //BEGIN outer and inner
+      #outer
+        #inner
+          block content
+      //END outer and inner
+    //END center-wrap
 
     //LOAD SCRIPTS
     script(src="js/lib/head.js" data-headjs-load="js/init.js")

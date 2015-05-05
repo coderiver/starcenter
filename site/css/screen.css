@@ -51,24 +51,21 @@ table { border-spacing: 0; border-collapse: collapse; width: 100%; }
 @font-face { font-family: "HelveticaNeueCyr-Light"; src: url("../fonts/helveticaneuecyr-light.eot"); src: url("../fonts/helveticaneuecyr-light.eot?#iefix") format("embedded-opentype"), url("../fonts/helveticaneuecyr-light.woff") format("woff"), url("../fonts/helveticaneuecyr-light.ttf") format("truetype"); font-weight: normal; font-style: normal; }
 @font-face { font-family: "PFBeauSansPro-Regular"; src: url("../fonts/pfbeausanspro-reg.eot"); src: url("../fonts/pfbeausanspro-reg.eot?#iefix") format("embedded-opentype"), url("../fonts/pfbeausanspro-reg.woff") format("woff"), url("../fonts/pfbeausanspro-reg.ttf") format("truetype"); font-weight: normal; font-style: normal; }
 @font-face { font-family: "PFBeauSansPro-Light"; src: url("../fonts/pfbeausanspro-light.eot"); src: url("../fonts/pfbeausanspro-light.eot?#iefix") format("embedded-opentype"), url("../fonts/pfbeausanspro-light.woff") format("woff"), url("../fonts/pfbeausanspro-light.ttf") format("truetype"); font-weight: normal; font-style: normal; }
-html { font-size: 62.5%; }
+body { font-size: 12px; line-height: 1.4; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; color: #333; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
-body { min-width: 1200px; min-height: 600px; font-size: 12px; line-height: 1.4; height: 100%; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; color: #333; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow: hidden; }
+body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; }
 @media only screen and (max-width: 1200px) { body { overflow-x: auto; overflow-y: hidden; } }
+@media only screen and (max-height: 680px) { body { overflow-x: hidden; overflow-y: auto; } }
 
-#outer { min-width: 1200px; min-height: 650px; position: absolute; z-index: 1; top: 0; left: -16px; right: -16px; padding: 0 16px; bottom: 0; overflow-x: hidden; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+.center-wrap { max-width: 1368px; margin: 0 auto; position: relative; z-index: 0; overflow: hidden; height: 100%; }
 
-#morph { position: absolute; z-index: 0; top: 0; left: 0; right: 0; bottom: 0; min-width: 1200px; }
-
-#inner { max-width: 1368px; width: -webkit-calc(100% + 16px); width: calc(100% + 16px); margin: auto; }
+#outer { min-width: 1200px; min-height: 680px; position: absolute; z-index: 1; top: 0; left: -16px; right: -16px; padding: 0 16px; bottom: 0; overflow-x: hidden; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 
 #header { position: absolute; z-index: 99; top: 0; left: 0; right: 0; }
 
 #nav { position: absolute; z-index: 100; top: 0; right: 0; bottom: 0; }
 
-#catalog { position: absolute; z-index: 95; top: -9999px; left: -9999px; background: rgba(0, 0, 0, 0.2); -webkit-transition: all 1s linear; transition: all 1s linear; }
-#catalog .catalog__btns { position: relative; }
-#catalog.is-activ { -webkit-animation: full-screen 1s linear; animation: full-screen 1s linear; }
+#morph { position: absolute; z-index: 0; top: 0; left: 0; right: 0; bottom: 0; min-width: 1200px; }
 
 .icon { display: inline-block; height: 1em; width: 1em; fill: inherit; stroke: inherit; }
 
@@ -93,7 +90,7 @@ body { min-width: 1200px; min-height: 600px; font-size: 12px; line-height: 1.4; 
   to { top: 0; left: 0; bottom: 0; right: 0; } }
 @keyframes full-screen { from { top: 50%; left: 50%; right: 50%; bottom: 50%; }
   to { top: 0; left: 0; bottom: 0; right: 0; } }
-.header { padding: 17px 50px 0 30px; font-size: 12px; font-size: 1.2rem; line-height: 23px; *zoom: 1; }
+.header { padding: 17px 50px 0 30px; font-size: 12px; line-height: 23px; *zoom: 1; }
 .header:after { content: " "; display: table; clear: both; }
 
 .header__left { float: left; color: #AAA; }
@@ -109,9 +106,9 @@ body { min-width: 1200px; min-height: 600px; font-size: 12px; line-height: 1.4; 
 
 .logo { display: inline-block; vertical-align: middle; color: inherit; text-decoration: none; fill: #333; font: 0/0 a; text-shadow: none; color: transparent; }
 
-.nav { width: 33px; min-height: 650px; }
+.nav { width: 33px; min-height: 680px; }
 
-.nav__inner { position: relative; -webkit-transform: rotate(90deg); -ms-transform: rotate(90deg); transform: rotate(90deg); -webkit-transform-origin: bottom left; -ms-transform-origin: bottom left; transform-origin: bottom left; width: 100vh; min-width: 650px; height: 33px; margin-top: -33px; overflow: hidden; }
+.nav__inner { position: relative; -webkit-transform: rotate(90deg); -ms-transform: rotate(90deg); transform: rotate(90deg); -webkit-transform-origin: bottom left; -ms-transform-origin: bottom left; transform-origin: bottom left; width: 100vh; min-width: 680px; height: 33px; margin-top: -33px; overflow: hidden; }
 .nav__inner:before { content: ""; position: absolute; bottom: 0; left: 23px; width: 10px; height: 10px; background: #333; }
 
 .nav__list { position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; -webkit-flex-wrap: nowrap; -ms-flex-wrap: nowrap; flex-wrap: nowrap; -webkit-box-align: end; -webkit-align-items: flex-end; -ms-flex-align: end; align-items: flex-end; -webkit-align-content: center; -ms-flex-line-pack: center; align-content: center; height: 33px; width: 100%; padding: 6px 30px 0 50px; box-sizing: border-box; }
@@ -135,8 +132,8 @@ body { min-width: 1200px; min-height: 600px; font-size: 12px; line-height: 1.4; 
 .main-slider .morph { position: absolute; top: 100px; left: 50%; -webkit-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); }
 
 .main-slider__paginator { position: absolute; z-index: 3; top: 175px; left: 50%; width: 40px; margin-left: -20px; text-align: center; }
-.main-slider__paginator button { display: block; margin-bottom: 5px; width: 40px; height: 40px; text-align: center; color: #AAA; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.25em; line-height: 2; background: none; -webkit-transition: color 0.2s linear; transition: color 0.2s linear; }
-.main-slider__paginator button:hover, .main-slider__paginator button.is-active { color: #333; }
+.main-slider__paginator button { display: block; margin-bottom: 5px; width: 40px; height: 40px; text-align: center; color: #333; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.25em; line-height: 2; background: none; opacity: 0.3; -webkit-transition: opacity 0.2s linear; transition: opacity 0.2s linear; }
+.main-slider__paginator button:hover, .main-slider__paginator button.is-active { opacity: 1; }
 
 .slide { position: relative; z-index: 1; width: 100%; height: 656px; }
 .slide.slick-active .slide__img { -webkit-animation: img-slide-in 0.4s ease; animation: img-slide-in 0.4s ease; }
@@ -148,10 +145,6 @@ body { min-width: 1200px; min-height: 600px; font-size: 12px; line-height: 1.4; 
 .slide__content { position: absolute; z-index: 1; top: 180px; left: 54.09357%; width: 500px; font-size: 36px; line-height: 1.2; letter-spacing: 0.05em; }
 .slick-slide .slide__content { -webkit-animation: content-slide-out 0.4s ease; animation: content-slide-out 0.4s ease; }
 
-.section { position: relative; }
-
-.section-1 { height: 680px; }
-
 .price { display: inline-block; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 72px; letter-spacing: 0.05em; }
 
 .price__small { display: inline-block; font-size: 24px; letter-spacing: 0; }
@@ -162,15 +155,17 @@ body { min-width: 1200px; min-height: 600px; font-size: 12px; line-height: 1.4; 
 .details-btn .icon-arrow { vertical-align: middle; -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .details-btn:hover .icon-arrow { -webkit-transform: translateX(30px); -ms-transform: translateX(30px); transform: translateX(30px); }
 
-.catalog { position: relative; z-index: 2; }
-.catalog.is-active { position: fixed; z-index: 95; top: 0; left: 0; right: 0; bottom: 0; }
-.catalog.is-active .catalog__head { position: absolute; top: 0; left: 0; right: 0; height: 680px; }
-.catalog.is-active .catalog__btns { bottom: 50%; width: 80%; -webkit-transform: translate(-50%, 50%); -ms-transform: translate(-50%, 50%); transform: translate(-50%, 50%); box-shadow: none; }
-.catalog.is-active .catalog__btns .btn { height: 254px; width: 33.33%; border: none; box-sizing: border-box; }
-.catalog.is-active .catalog__btns .btn:first-child { text-align: left; }
-.catalog.is-active .catalog__btns .btn:last-child { text-align: right; }
+.section { position: relative; }
 
-.catalog__head { position: relative; }
+.catalog { height: 680px; position: relative; z-index: 0; }
+.catalog.is-active { position: absolute; top: 0; left: 0; right: 0; height: 100vh; z-index: 95; overflow-x: hidden; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+.catalog.is-active .catalog__head { position: absolute; top: 0; left: 0; right: 0; height: 680px; margin-top: 0; }
+.catalog.is-active .catalog__btns { bottom: auto; top: 606px; }
+.catalog.is-animate .catalog__morph { opacity: 1; }
+
+.catalog__head { position: relative; height: 60px; margin-top: -60px; overflow: hidden; }
+
+.catalog__morph { position: absolute; top: 100px; left: 50%; -webkit-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); opacity: 0; -webkit-transition: opacity 0.2s linear; transition: opacity 0.2s linear; }
 
 .catalog__btns { position: absolute; bottom: 0; left: 0; right: 0; width: 518px; margin: auto; box-sizing: border-box; background: #FFF; border: 3px solid #333; font-size: 0; box-shadow: 0 0 0 10px #FFF; -webkit-transition: all 0.3s linear; transition: all 0.3s linear; }
 .catalog__btns .btn { vertical-align: top; height: 44px; width: 170px; line-height: 44px; -webkit-transition: all 0.3s linear; transition: all 0.3s linear; box-sizing: content-box; }

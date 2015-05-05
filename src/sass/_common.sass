@@ -7,7 +7,7 @@ $orange : #D88133
 $text   : #333
 
 $content-width: 1200px
-$content-height: 650px
+$content-height: 680px
 
 +font("Bebas", bebas)
 +font("HelveticaNeueCyr-Bold", helveticaneuecyr-bold)
@@ -41,76 +41,11 @@ $content-height: 650px
     letter-spacing: $letter-spacing + em
 
 
-html
-  font-size: 62.5%
 
 body
-  min-width: $content-width
-  // max-width: 1368px
-  min-height: 600px
   font-size: 12px
   line-height: 1.4
-  height: 100%
   +f(bsr)
   color: $text
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  overflow: hidden
-  +r(1200)
-    overflow-x: auto
-    overflow-y: hidden
-
-
-#outer
-  min-width: $content-width
-  min-height: $content-height
-  position: absolute
-  z-index: 1
-  top: 0
-  left: -16px
-  right: -16px
-  padding: 0 16px
-  bottom: 0
-  overflow-x: hidden
-  overflow-y: scroll
-  -webkit-overflow-scrolling: touch
-
-#morph
-  position: absolute
-  z-index: 0
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  min-width: $content-width
-
-#inner
-  max-width: 1368px
-  width: calc(100% + 16px)
-  margin: auto
-
-#header
-  position: absolute
-  z-index: 99
-  top: 0
-  left: 0
-  right: 0
-
-#nav
-  position: absolute
-  z-index: 100
-  top: 0
-  right: 0
-  bottom: 0
-
-#catalog
-  position: absolute
-  z-index: 95
-  top: -9999px
-  left: -9999px
-  background: rgba(0,0,0,0.2)
-  transition: all 1s linear
-  .catalog__btns
-    position: relative
-  &.is-activ
-    animation: full-screen 1s linear

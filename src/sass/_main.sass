@@ -1,6 +1,6 @@
 .header
   padding: 17px 50px 0 30px
-  +fs(12)
+  font-size: 12px
   line-height: 23px
   +clr
 
@@ -163,14 +163,15 @@
     width: 40px
     height: 40px
     text-align: center
-    color: $gray
+    color: $text
     +f(hb, 12, 0.25)
     line-height: 2
     background: none
-    +trans(color)
+    opacity: 0.3
+    +trans(opacity)
     &:hover,
     &.is-active
-      color: $text
+      opacity: 1
 
 
 .slide
@@ -212,22 +213,6 @@
 
 
 
-
-//---------------------------------------------------------------------------
-//            ##### begin section #####
-//---------------------------------------------------------------------------
-
-.section
-  position: relative
-
-.section-1
-  height: 680px
-
-//---------------------------------------------------------------------------
-//            ^^^^^  end section  ^^^^^
-//---------------------------------------------------------------------------
-
-
 .price
   display: inline-block
   +f(hb, 72, 0.05)
@@ -260,6 +245,8 @@
       transform: translateX(30px)
 
 
+.section
+  position: relative
 
 
 //---------------------------------------------------------------------------
@@ -267,38 +254,47 @@
 //---------------------------------------------------------------------------
 
 .catalog
+  height: $content-height
   position: relative
-  z-index: 2
+  z-index: 0
   &.is-active
-    position: fixed
-    z-index: 95
+    position: absolute
     top: 0
     left: 0
     right: 0
-    bottom: 0
+    height: 100vh
+    z-index: 95
+    overflow-x: hidden
+    overflow-y: scroll
+    +wos
     .catalog__head
       position: absolute
       top: 0
       left: 0
       right: 0
       height: 680px
+      margin-top: 0
     .catalog__btns
-      bottom: 50%
-      width: 80%
-      transform: translate(-50%, 50%)
-      box-shadow: none
-      .btn
-        height: 254px
-        width: 33.33%
-        border: none
-        box-sizing: border-box
-        &:first-child
-          text-align: left
-        &:last-child
-          text-align: right
+      bottom: auto
+      top: 606px
+  &.is-animate
+    .catalog__morph
+      opacity: 1
+
 
 .catalog__head
   position: relative
+  height: 60px
+  margin-top: -60px
+  overflow: hidden
+
+.catalog__morph
+  position: absolute
+  top: 100px
+  left: 50%
+  transform: translate(-50%, 0)
+  opacity: 0
+  transition: opacity 0.2s linear
 
 .catalog__btns
   position: absolute
