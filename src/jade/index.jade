@@ -5,16 +5,13 @@ block title
 
 block content
 
-  //BEGIN morph
-  .morph
-    include ../img/svg/optimized/morph.svg
-  //END morph
-
   //BEGIN section 1
   section.section.section-1
 
     //BEGIN slider
     #slider1.main-slider
+      //- .morph
+        include ../img/svg/optimized/morph.svg
       .main-slider__paginator
         button(type="button").is-active 01
         button(type="button") 02
@@ -65,11 +62,74 @@ block content
     //END slider
 
     //BEGIN main-btns
-    .main-btns
-      .main-btns__inner
-        button.btn.btn_main(type="button", data-hover="Арендовать") Арендовать
-        button.btn.btn_main(type="button", data-hover="Купить") Купить
-        button.btn.btn_main(type="button", data-hover="Инвестировать") Инвестировать
+    .catalog
+      .catalog__head
+        .catalog__btns
+          button.btn(type="button")
+            span.btn__hover(data-hover="Арендовать")
+            span.btn__front Арендовать
+          button.btn(type="button")
+            span.btn__hover(data-hover="Купить")
+            span.btn__front Купить
+          button.btn(type="button") 
+            span.btn__hover(data-hover="Инвестировать")
+            span.btn__front Инвестировать
     //END main-btns
 
   //END section 1
+
+  //BEGIN section 2
+  section.section.section-1
+
+    //BEGIN slider
+    #slider2.main-slider
+      .main-slider__paginator
+        button(type="button").is-active 01
+        button(type="button") 02
+        button(type="button") 03
+      
+      .main-slider__slides
+        .slide
+          img.slide__img(src="img/slider/slider4.png", alt="")
+          .slide__content
+            .slide__text
+              | Наиболее выгодное предложение на рынке
+              span.price
+                | 6 USD
+                small.price__small
+                  | /м<sup>2</sup>
+
+            button.details-btn(type="button")
+              span Узнать детали
+              +icon("arrow")
+
+        .slide
+          img.slide__img(src="img/slider/slider5.png", alt="")
+          .slide__content
+            .slide__text
+              | Наиболее выгодное предложение на рынке
+              span.price
+                | 10 USD
+                small.price__small
+                  | /м<sup>2</sup>
+
+            button.details-btn(type="button")
+              span Узнать детали
+              +icon("arrow")
+
+        .slide
+          img.slide__img(src="img/slider/slider6.png", alt="")
+          .slide__content
+            .slide__text
+              | Наиболее выгодное предложение на рынке
+              span.price
+                | 20 USD
+                small.price__small
+                  | /м<sup>2</sup>
+
+            button.details-btn(type="button")
+              span Узнать детали
+              +icon("arrow")
+    //END slider
+
+  //END section 2

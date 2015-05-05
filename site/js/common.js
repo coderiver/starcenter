@@ -1,36 +1,64 @@
 head.ready(function() {
 
-    var mainSlider = $('.main-slider');
+    // fullpage
+    // $('#fullpage').fullpage({
+    //      //Navigation
+    //     menu: false,
+    //     anchors:[],
+    //     navigation: false,
+    //     navigationPosition: 'right',
+    //     navigationTooltips: ['firstSlide', 'secondSlide'],
+    //     showActiveTooltips: false,
+    //     slidesNavigation: true,
+    //     slidesNavPosition: 'bottom',
 
-    // mainSlider.each(function(index, el) {
-    //     var that      = $(this);
-    //     var slides    = that.find('.main-slider__slides'),
-    //         paginator = that.find('.main-slider__paginator');
+    //     //Scrolling
+    //     css3: true,
+    //     scrollingSpeed: 700,
+    //     autoScrolling: true,
+    //     fitToSection: false,
+    //     scrollBar: false,
+    //     easing: 'easeInOutCubic',
+    //     easingcss3: 'ease',
+    //     loopBottom: false,
+    //     loopTop: false,
+    //     loopHorizontal: true,
+    //     continuousVertical: false,
+    //     normalScrollElements: '#element1, .element2',
+    //     scrollOverflow: false,
+    //     touchSensitivity: 15,
+    //     normalScrollElementTouchThreshold: 5,
 
-    //         paginator.find('button').on('click', function(event) {
-    //             event.preventDefault();
-    //             var slideIndex = $(this).index();
-    //             console.log(slideIndex);
-    //             slides.slick('slickGoTo', slideIndex);
-    //         });
+    //     //Accessibility
+    //     keyboardScrolling: true,
+    //     animateAnchor: true,
+    //     recordHistory: true,
 
-    //     slides.slick({
-    //         accessibility: false,
-    //         autoplay: true,
-    //         autoplaySpeed: 5000,
-    //         arrows: false,
-    //         draggable: true,
-    //         slide: '.slide',
-    //         // fade: true,
-    //         speed: 0,
-    //         // useCSS: false,
-    //         swipe: false
-    //     });
+    //     //Design
+    //     controlArrows: true,
+    //     verticalCentered: true,
+    //     resize : false,
+    //     sectionsColor : 'none',
+    //     paddingTop: '3em',
+    //     paddingBottom: '10px',
+    //     fixedElements: '#header, .footer',
+    //     responsive: 0,
+
+    //     //Custom selectors
+    //     sectionSelector: '.section',
+    //     slideSelector: '.fp-slide',
+
+    //     //events
+    //     onLeave: function(index, nextIndex, direction){},
+    //     afterLoad: function(anchorLink, index){},
+    //     afterRender: function(){},
+    //     afterResize: function(){},
+    //     afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex){},
+    //     onSlideLeave: function(anchorLink, index, slideIndex, direction){}
     // });
 
 
-    console.log('Hello from the Hell');
-
+    // main slider
     // this constructor use slick => http://kenwheeler.github.io/slick/
     function MainSlider(wrapper, slider, paginator) {
 
@@ -43,12 +71,13 @@ head.ready(function() {
             autoplay: true,
             autoplaySpeed: 5000,
             arrows: false,
-            draggable: true,
+            draggable: false,
             slide: '.slide',
-            speed: 0,
+            speed: 300,
             swipe: false,
-            // fade: true,
-            useCSS: false,
+            fade: true,
+            useCSS: true,
+            pauseOnHover: true
         };
 
     }
@@ -59,32 +88,83 @@ head.ready(function() {
             console.log('slick is ready');
             that.pagination();
         });
+
+        that.slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+            that.currentSlide = nextSlide;
+            that.updatePagiBtns();
+        });
+
         that.slider.slick(that.slickOptions);
+        // that.slickSlider = that.slider.slick('getSlick');
     };
 
     MainSlider.prototype.toSlide = function(slideIndex) {
         var that = this;
         that.slider.slick('slickGoTo', slideIndex);
-        that.currentSlide = slideIndex;
-        console.log(that.currentSlide);
+        // that.currentSlide = slideIndex;
     };
 
     MainSlider.prototype.pagination = function() {
         var that = this;
-        // that.currentSlide = that.slider.slick('slickCurrentSlide');
         that.pagiBtns.on('click', function(event) {
             event.preventDefault();
             var index = $(this).index();
-            $(that.pagiBtns[that.currentSlide]).removeClass('is-active');
-            $(this).addClass('is-active');
             that.toSlide(index);
+            // that.updatePagiBtns(index);
         });
     };
 
-    var sliderOne = new MainSlider('#slider1', '.main-slider__slides', '.main-slider__paginator');
+    MainSlider.prototype.autoplay = function() {
+        var that  = this;
+        that.autoplayInterval = setInterval(function() {
+            that.slider.slick('slickNext');
+            // that.currentSlide = that.slider.slick('slickCurrentSlide');
+            // that.updatePagiBtns(that.currentSlide);
+            console.log(that.currentSlide);
+        }, 5000);
+    };
 
-    sliderOne.init();
+    MainSlider.prototype.updatePagiBtns = function(slideIndex) {
+        var that = this;
+        var index = slideIndex || that.currentSlide;
+        $(that.pagiBtns).removeClass('is-active');
+        $(that.pagiBtns[index]).addClass('is-active');
+    };
 
-    console.log(sliderOne);
+    MainSlider.prototype.stopAutoplay = function() {
+        var that = this;
+        clearInterval(that.autoplayInterval);
+    };
+
+    var slider1 = new MainSlider('#slider1', '.main-slider__slides', '.main-slider__paginator');
+    var slider2 = new MainSlider('#slider2', '.main-slider__slides', '.main-slider__paginator');
+
+    slider1.init();
+    slider2.init();
+
+    console.log(slider1, slider2);
+
+
+    $('.catalog__btns .btn').on('click', function(event) {
+        event.preventDefault();
+        // $(this).parents('.catalog').toggleClass('is-active');
+        var XY = $(this).parents('.catalog__btns').offset();
+        console.log(XY);
+        $('#catalog')
+            .css({
+                top: XY.top,
+                left: XY.left
+            });
+        setTimeout(function() {
+            $('#catalog').css({
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
+            }, 1000);
+        });
+    });
+
+
 
 });

@@ -8,7 +8,7 @@ html
     meta(charset="utf-8")
     block title
       title Template
-    meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no")
+    meta(name="viewport" content="width=1200")
     meta(name="format-detection" content="telephone=no")
     link(rel="stylesheet" media="all" href="css/screen.css")
     <!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
@@ -16,18 +16,42 @@ html
     div(style="position: absolute; top: 0; left: 0;")
       include ../../site/img/icons.svg
   
-    //BEGIN out
-    .out
-      block header
-        include _header
+    
 
-      block navigation
-        include _nav
+    block navigation
+      //BEGIN nav
+      include _nav
+      //END nav
 
-      block content
-    //END out
+    block header
+      //BEGIN header
+      include _header
+      //END header
 
-    block popup
+    //BEGIN morph
+    #morph
+      .morph
+        include ../img/svg/optimized/morph.svg
+    //END morph
+
+    //BEGIN outer and inner
+    #outer
+      #inner
+        block content
+    //END outer and inner
+
+    #catalog.catalog
+      .catalog__head
+        .catalog__btns
+          button.btn(type="button")
+            span.btn__hover(data-hover="Арендовать")
+            span.btn__front Арендовать
+          button.btn(type="button")
+            span.btn__hover(data-hover="Купить")
+            span.btn__front Купить
+          button.btn(type="button") 
+            span.btn__hover(data-hover="Инвестировать")
+            span.btn__front Инвестировать
 
     //LOAD SCRIPTS
     script(src="js/lib/head.js" data-headjs-load="js/init.js")

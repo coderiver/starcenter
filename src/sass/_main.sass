@@ -45,19 +45,15 @@
 
 
 .nav
-  position: fixed
-  z-index: 100
-  top: 0
-  right: 0
-  bottom: 0
   width: 33px
+  min-height: $content-height
 
 .nav__inner
   position: relative
   transform: rotate(90deg)
   transform-origin: bottom left
   width: 100vh
-  min-width: 560px
+  min-width: $content-height
   height: 33px
   margin-top: -33px
   overflow: hidden
@@ -79,7 +75,7 @@
   align-items: flex-end
   align-content: center
   height: 33px
-  width: 100vh
+  width: 100%
   padding: 6px 30px 0 50px
   box-sizing: border-box
   > li
@@ -132,9 +128,10 @@
 
 .morph
   position: absolute
-  top: 50%
+  z-index: 0
+  top: 100px
   left: 50%
-  transform: translate(-50%,-50%)
+  transform: translate(-50%, 0)
 
 
 
@@ -146,10 +143,15 @@
   position: relative
   z-index: 0
   overflow: hidden
+  .morph
+    position: absolute
+    top: 100px
+    left: 50%
+    transform: translate(-50%, 0)
 
 .main-slider__paginator
   position: absolute
-  z-index: 2
+  z-index: 3
   top: 175px
   left: 50%
   width: 40px
@@ -166,6 +168,7 @@
     line-height: 2
     background: none
     +trans(color)
+    &:hover,
     &.is-active
       color: $text
 
@@ -175,6 +178,11 @@
   z-index: 1
   width: 100%
   height: 656px
+  &.slick-active
+    .slide__img
+      animation: img-slide-in 0.4s ease
+    .slide__content
+      animation: content-slide-in 0.4s ease
 
 .slide__img
   position: absolute
@@ -182,6 +190,9 @@
   bottom: 0
   left: 0
   max-width: 100%
+  transform-origin: bottom center
+  .slick-slide &
+    animation: img-slide-out 0.4s ease
 
 .slide__content
   position: absolute
@@ -192,6 +203,8 @@
   font-size: 36px
   line-height: 1.2
   letter-spacing: 0.05em
+  .slick-slide &
+    animation: content-slide-out 0.4s ease
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end main slider  ^^^^^
@@ -249,27 +262,82 @@
 
 
 
-.main-btns
-  height: 24px
-  background: #FFF
+//---------------------------------------------------------------------------
+//            ##### begin catalog #####
+//---------------------------------------------------------------------------
+
+.catalog
+  position: relative
+  z-index: 2
+  &.is-active
+    position: fixed
+    z-index: 95
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    .catalog__head
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      height: 680px
+    .catalog__btns
+      bottom: 50%
+      width: 80%
+      transform: translate(-50%, 50%)
+      box-shadow: none
+      .btn
+        height: 254px
+        width: 33.33%
+        border: none
+        box-sizing: border-box
+        &:first-child
+          text-align: left
+        &:last-child
+          text-align: right
+
+.catalog__head
   position: relative
 
-.main-btns__inner
-  position: relative
-  top: -50px
-  width: 520px
-  height: 50px
+.catalog__btns
+  position: absolute
+  bottom: 0
+  left: 0
+  right: 0
+  width: 518px
   margin: auto
   box-sizing: border-box
   background: #FFF
   border: 3px solid $text
   font-size: 0
   box-shadow: 0 0 0 10px #FFF
+  transition: all 0.3s linear
+  .btn
+    vertical-align: top
+    height: 44px
+    width: 170px
+    line-height: 44px
+    transition: all 0.3s linear
+    box-sizing: content-box
+    .btn__hover
+      background: $text
+      color: #FFF
+      &:before
+        width: 170px
+  .btn + .btn
+    border-left: 1px solid $text
+
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end catalog  ^^^^^
+//---------------------------------------------------------------------------
 
 
 
 .btn
   position: relative
+  z-index: 0
   display: inline-block
   text-decoration: none
   color: inherit
@@ -278,17 +346,39 @@
   background: none
   +f(hb, 10, 0.20)
   text-transform: uppercase
+  &:hover
+    .btn__hover
+      width: 100%
+
+.btn__hover
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  width: 0
+  height: 100%
+  overflow: hidden
+  +trans(width)
   &:before
     content: attr(data-hover)
     position: absolute
+    z-index: -1
     top: 0
     left: 0
     bottom: 0
-    width: 0
+    width: 100%
     box-sizing: border-box
     overflow: hidden
 
 .btn_main
   height: 44px
-  width: 33.33%
+  width: 170px
   line-height: 44px
+  box-sizing: content-box
+  .btn__hover
+    background: $text
+    color: #FFF
+    &:before
+      width: 170px
+  & + &
+    border-left: 1px solid $text

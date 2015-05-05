@@ -1,0 +1,39 @@
+@keyframes img-slide-out
+  to
+    transform: scale(0.6)
+    opacity: 0
+
+@keyframes img-slide-in
+  0%, 50%
+    transform: translate(0, 100%) scale(0.8)
+    opacity: 0
+  100%
+    transform: none
+    opacity: 1
+
+
+@keyframes content-slide-out
+  to
+    transform: translate(0, -100%) scale(0.6)
+    opacity: 0
+
+@keyframes content-slide-in
+  from
+    transform: translate(0, 100%)
+    opacity: 0
+  to
+    transform: none
+    opacity: 1
+
+
+@keyframes full-screen
+  from
+    top: 50%
+    left: 50%
+    right: 50%
+    bottom: 50%
+  to
+    top: 0
+    left: 0
+    bottom: 0
+    right: 0

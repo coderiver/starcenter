@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=1200">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" media="all" href="css/screen.css"><!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
   </head>
@@ -19,46 +19,45 @@
 </symbol>
 </svg>
     </div>
-    <!--BEGIN out-->
-    <div class="out">
-      <!--BEGIN header-->
-      <div class="header">
-        <div class="header__left"><a href="#" class="logo">
-            <svg class="icon icon-star-centre">
-              <use xlink:href="#icon-star-centre"></use>
-            </svg>Star Centre</a><span>development group</span></div>
-        <div class="header__right"><a href="tel:+380442204555" class="header__phone"><em>+380 (44)</em> 220-45-55</a>
-          <button type="button" class="header__lang">eng</button>
+    <!--BEGIN nav-->
+    <nav id="nav" class="nav">
+      <div class="nav__inner">
+        <div class="nav__back">
+          <ul class="nav__list">
+            <li><a href="#" class="nav__link">Главная</a></li>
+            <li><a href="#" class="nav__link">Факты</a></li>
+            <li><a href="#" class="nav__link">Преимущества</a></li>
+            <li><a href="#" class="nav__link">Возможности</a></li>
+            <li><a href="#" class="nav__link">Партнерство</a></li>
+            <li><a href="#" class="nav__link">Контакты</a></li>
+          </ul>
+        </div>
+        <div class="nav__front">
+          <ul class="nav__list">
+            <li><a href="#" class="nav__link">Главная</a></li>
+            <li><a href="#" class="nav__link">Факты</a></li>
+            <li><a href="#" class="nav__link">Преимущества</a></li>
+            <li><a href="#" class="nav__link">Возможности</a></li>
+            <li><a href="#" class="nav__link">Партнерство</a></li>
+            <li><a href="#" class="nav__link">Контакты</a></li>
+          </ul>
         </div>
       </div>
-      <!--END header-->
-      <!--BEGIN navigation-->
-      <nav class="nav">
-        <div class="nav__inner">
-          <div class="nav__back">
-            <ul class="nav__list">
-              <li><a href="#" class="nav__link">Главная</a></li>
-              <li><a href="#" class="nav__link">Факты</a></li>
-              <li><a href="#" class="nav__link">Преимущества</a></li>
-              <li><a href="#" class="nav__link">Возможности</a></li>
-              <li><a href="#" class="nav__link">Партнерство</a></li>
-              <li><a href="#" class="nav__link">Контакты</a></li>
-            </ul>
-          </div>
-          <div class="nav__front">
-            <ul class="nav__list">
-              <li><a href="#" class="nav__link">Главная</a></li>
-              <li><a href="#" class="nav__link">Факты</a></li>
-              <li><a href="#" class="nav__link">Преимущества</a></li>
-              <li><a href="#" class="nav__link">Возможности</a></li>
-              <li><a href="#" class="nav__link">Партнерство</a></li>
-              <li><a href="#" class="nav__link">Контакты</a></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <!--END navigation-->
-      <!--BEGIN morph-->
+    </nav>
+    <!--END nav-->
+    <!--BEGIN header-->
+    <header id="header" class="header">
+      <div class="header__left"><a href="#" class="logo">
+          <svg class="icon icon-star-centre">
+            <use xlink:href="#icon-star-centre"></use>
+          </svg>Star Centre</a><span>development group</span></div>
+      <div class="header__right"><a href="tel:+380442204555" class="header__phone"><em>+380 (44)</em> 220-45-55</a>
+        <button type="button" class="header__lang">eng</button>
+      </div>
+    </header>
+    <!--END header-->
+    <!--BEGIN morph-->
+    <div id="morph">
       <div class="morph"><svg width="511" height="510" viewBox="0 0 511 510" xmlns="http://www.w3.org/2000/svg">
     <title>
         circle
@@ -73,63 +72,124 @@
 </svg>
 
       </div>
-      <!--END morph-->
-      <!--BEGIN section 1-->
-      <section class="section section-1">
-        <!--BEGIN slider-->
-        <div id="slider1" class="main-slider">
-          <div class="main-slider__paginator">
-            <button type="button" class="is-active">01</button>
-            <button type="button">02</button>
-            <button type="button">03</button>
-          </div>
-          <div class="main-slider__slides">
-            <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
-              <div class="slide__content">
-                <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                <button type="button" class="details-btn"><span>Узнать детали</span>
-                  <svg class="icon icon-arrow">
-                    <use xlink:href="#icon-arrow"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
-              <div class="slide__content">
-                <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                <button type="button" class="details-btn"><span>Узнать детали</span>
-                  <svg class="icon icon-arrow">
-                    <use xlink:href="#icon-arrow"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
-              <div class="slide__content">
-                <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                <button type="button" class="details-btn"><span>Узнать детали</span>
-                  <svg class="icon icon-arrow">
-                    <use xlink:href="#icon-arrow"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--END slider-->
-        <!--BEGIN main-btns-->
-        <div class="main-btns">
-          <div class="main-btns__inner">
-            <button type="button" data-hover="Арендовать" class="btn btn_main">Арендовать</button>
-            <button type="button" data-hover="Купить" class="btn btn_main">Купить</button>
-            <button type="button" data-hover="Инвестировать" class="btn btn_main">Инвестировать</button>
-          </div>
-        </div>
-        <!--END main-btns-->
-      </section>
-      <!--END section 1-->
     </div>
-    <!--END out-->
+    <!--END morph-->
+    <!--BEGIN outer and inner-->
+    <div id="outer">
+      <div id="inner">
+        <!--BEGIN section 1-->
+        <section class="section section-1">
+          <!--BEGIN slider-->
+          <div id="slider1" class="main-slider">
+            <div class="main-slider__paginator">
+              <button type="button" class="is-active">01</button>
+              <button type="button">02</button>
+              <button type="button">03</button>
+            </div>
+            <div class="main-slider__slides">
+              <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
+                <div class="slide__content">
+                  <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                  <button type="button" class="details-btn"><span>Узнать детали</span>
+                    <svg class="icon icon-arrow">
+                      <use xlink:href="#icon-arrow"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
+                <div class="slide__content">
+                  <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                  <button type="button" class="details-btn"><span>Узнать детали</span>
+                    <svg class="icon icon-arrow">
+                      <use xlink:href="#icon-arrow"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
+                <div class="slide__content">
+                  <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                  <button type="button" class="details-btn"><span>Узнать детали</span>
+                    <svg class="icon icon-arrow">
+                      <use xlink:href="#icon-arrow"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--END slider-->
+          <!--BEGIN main-btns-->
+          <div class="catalog">
+            <div class="catalog__head">
+              <div class="catalog__btns">
+                <button type="button" class="btn"><span data-hover="Арендовать" class="btn__hover"></span><span class="btn__front">Арендовать</span></button>
+                <button type="button" class="btn"><span data-hover="Купить" class="btn__hover"></span><span class="btn__front">Купить</span></button>
+                <button type="button" class="btn"> <span data-hover="Инвестировать" class="btn__hover"></span><span class="btn__front">Инвестировать</span></button>
+              </div>
+            </div>
+          </div>
+          <!--END main-btns-->
+        </section>
+        <!--END section 1-->
+        <!--BEGIN section 2-->
+        <section class="section section-1">
+          <!--BEGIN slider-->
+          <div id="slider2" class="main-slider">
+            <div class="main-slider__paginator">
+              <button type="button" class="is-active">01</button>
+              <button type="button">02</button>
+              <button type="button">03</button>
+            </div>
+            <div class="main-slider__slides">
+              <div class="slide"><img src="img/slider/slider4.png" alt="" class="slide__img">
+                <div class="slide__content">
+                  <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                  <button type="button" class="details-btn"><span>Узнать детали</span>
+                    <svg class="icon icon-arrow">
+                      <use xlink:href="#icon-arrow"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="slide"><img src="img/slider/slider5.png" alt="" class="slide__img">
+                <div class="slide__content">
+                  <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                  <button type="button" class="details-btn"><span>Узнать детали</span>
+                    <svg class="icon icon-arrow">
+                      <use xlink:href="#icon-arrow"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="slide"><img src="img/slider/slider6.png" alt="" class="slide__img">
+                <div class="slide__content">
+                  <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                  <button type="button" class="details-btn"><span>Узнать детали</span>
+                    <svg class="icon icon-arrow">
+                      <use xlink:href="#icon-arrow"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--END slider-->
+        </section>
+        <!--END section 2-->
+      </div>
+    </div>
+    <!--END outer and inner-->
+    <div id="catalog" class="catalog">
+      <div class="catalog__head">
+        <div class="catalog__btns">
+          <button type="button" class="btn"><span data-hover="Арендовать" class="btn__hover"></span><span class="btn__front">Арендовать</span></button>
+          <button type="button" class="btn"><span data-hover="Купить" class="btn__hover"></span><span class="btn__front">Купить</span></button>
+          <button type="button" class="btn"> <span data-hover="Инвестировать" class="btn__hover"></span><span class="btn__front">Инвестировать</span></button>
+        </div>
+      </div>
+    </div>
     <!--LOAD SCRIPTS-->
     <script src="js/lib/head.js" data-headjs-load="js/init.js"></script>
   </body>
