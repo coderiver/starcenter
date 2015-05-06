@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="510px" height="510px" viewBox="0 0 510 510" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
+    <title>morph</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="100%" x2="0%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#CDF0E9" offset="0%"></stop>
+            <stop stop-color="#54B7C6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <rect class="morphFigure" x="50%" y="50%" transform="translate(-255,-255)" width="510" height="510" rx="255" fill="url(#linearGradient-1)">
+        <animate
+            attributeName="rx"
+            to="0"
+            dur="0.4s"
+            begin="indefinite"
+            fill="freeze"
+        />
+        <animate
+            attributeName="width"
+            to="450"
+            dur="0.4s"
+            begin="indefinite"
+            fill="freeze"
+        />
+        <animate
+            attributeName="height"
+            to="450"
+            dur="0.4s"
+            begin="indefinite"
+            fill="freeze"
+        />
+        <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="-255 -255"
+            to="-225 -225"
+            dur="0.4s"
+            begin="indefinite"
+            fill="freeze"
+        />
+
+        <animate
+            attributeName="rx"
+            from="0"
+            to="255"
+            dur="0.4s"
+            begin="indefin"
+            fill="freeze"
+        />
+        <animate
+            attributeName="width"
+            from="450"
+            to="510"
+            dur="0.4s"
+            begin="indefin"
+            fill="freeze"
+        />
+        <animate
+            attributeName="height"
+            from="450"
+            to="510"
+            dur="0.4s"
+            begin="indefin"
+            fill="freeze"
+        />
+        <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="-225 -225"
+            to="-255 -255"
+            dur="0.4s"
+            begin="indefin"
+            fill="freeze"
+        />
+    </rect>
+</svg>

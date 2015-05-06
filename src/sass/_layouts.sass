@@ -4,6 +4,7 @@ body
   min-height: 600px
   height: 100%
   overflow: hidden
+  position: relative
   +r(1200)
     overflow-x: auto
     overflow-y: hidden
@@ -19,24 +20,28 @@ body
   overflow: hidden
   height: 100%
 
-#outer
+.outer
   min-width: $content-width
   min-height: $content-height
+  max-width: 1368px
+  margin: auto
   position: absolute
   z-index: 1
   top: 0
-  left: -16px
-  right: -16px
-  padding: 0 16px
-  bottom: 0
-  overflow-x: hidden
-  overflow-y: scroll
+  left: 0
+  right: 0
+  height: 100%
+  overflow: hidden
   +wos
 
-#inner
-  // max-width: 1368px
-  // width: calc(100% + 16px)
-  // margin: auto
+.inner
+  position: absolute
+  top: 0
+  left: 0
+  right: -16px
+  bottom: 0
+  overflow: scroll
+  overflow-x: hidden
 
 #header
   position: absolute
@@ -44,6 +49,8 @@ body
   top: 0
   left: 0
   right: 0
+  max-width: 1368px
+  margin: auto
 
 #nav
   position: absolute

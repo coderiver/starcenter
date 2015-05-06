@@ -20,24 +20,21 @@ html
     include _nav
     //END nav
 
-    //BEGIN center-wrap
-    .center-wrap
-      //BEGIN header
-      include _header
-      //END header
+    //BEGIN header
+    include _header
+    //END header
 
-      //- //BEGIN morph
-      //- #morph
-      //-   .morph
-      //-     include ../img/svg/optimized/morph.svg
-      //- //END morph
+    //- //BEGIN morph
+    //- #morph
+    //-   .morph
+    //-     include ../img/svg/optimized/morph.svg
+    //- //END morph
 
-      //BEGIN outer and inner
-      #outer
-        #inner
-          block content
-      //END outer and inner
-    //END center-wrap
+    //BEGIN outer and inner
+    .outer
+      .inner
+        block content
+    //END outer and inner
 
     //LOAD SCRIPTS
     script(src="js/lib/head.js" data-headjs-load="js/init.js")

@@ -128,10 +128,18 @@
 
 .morph
   position: absolute
+  // width: 510px
+  // height: 510px
+  text-align: center
+  // line-height: 510px
   z-index: 0
   top: 100px
   left: 50%
-  transform: translate(-50%, 0)
+  // margin-left: -255px
+  transform: translate3d(-50%, 0, 0)
+  > svg
+    display: inline-block
+    transform: translate3d(0,0,0)
 
 
 
@@ -142,12 +150,41 @@
 .main-slider
   position: relative
   z-index: 0
+  height: 656px
   overflow: hidden
-  .morph
+  &:after
+    content: ""
     position: absolute
-    top: 100px
-    left: 50%
-    transform: translate(-50%, 0)
+    z-index: 5
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    transition: transform 0.5s linear
+    transform: translate3d(0, 100%, 0)
+    background: #FFF
+  &.is-animate
+    &:after
+      transform: translate3d(0, 0, 0)
+    .main-slider__slides
+      transform: scale(0.5)
+      transition: transform 0.5s linear
+
+.main-slider__slides
+  transform-origin: bottom center
+  position: relative
+  z-index: 2
+
+.main-slider__morph
+  position: absolute
+  top: 100px
+  left: 50%
+  width: 510px
+  height: 510px
+  margin-left: -255px
+  > svg
+    display: inline-block
+    vertical-align: middle
 
 .main-slider__paginator
   position: absolute
@@ -255,60 +292,116 @@
 
 .catalog
   height: $content-height
-  position: relative
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
   z-index: 0
-  &.is-active
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
+  overflow: hidden
+  +wos
+  &.is-init
     height: 100vh
     z-index: 95
-    overflow-x: hidden
-    overflow-y: scroll
-    +wos
+    .catalog__inner
+      overflow: scroll
+      overflow-x: hidden
+      right: -16px
+      .mac-os &
+        right: -15px
     .catalog__head
-      position: absolute
+      z-index: 2
       top: 0
-      left: 0
-      right: 0
       height: 680px
-      margin-top: 0
+      padding: 0
+      &:before
+        top: 606px
+        transform: translate(-50%, 0)
     .catalog__btns
-      bottom: auto
-      top: 606px
+      position: absolute
+      z-index: 2
+      top: 609px
+      left: 50%
+      transform: translate(-50%, 0)
   &.is-animate
+    .catalog__head
+      &:before
+        transition: all 0.5s linear
+    .catalog__btns
+      transition: all 0.5s linear
     .catalog__morph
       opacity: 1
+  &.is-done
+    .catalog__head
+      &:before
+        top: 260px
+        width: 790px
+        height: 260px
+        box-shadow: none
+    .catalog__btns
+      top: 365px
+      width: 1200px
+      background: none
+      .btn + .btn
+        border: none
 
+.catalog__inner
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  overflow: hidden
 
 .catalog__head
-  position: relative
-  height: 60px
-  margin-top: -60px
+  position: absolute
+  z-index: 1
+  top: 596px
+  left: 16px
+  right: 16px
+  height: 44px
+  padding: 13px 0
   overflow: hidden
+  &:before
+    content: ""
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 518px
+    height: 50px
+    box-sizing: border-box
+    background: #FFF
+    bottom: 0
+    border: 3px solid $text
+    box-shadow: 0 0 0 10px #FFF
+    transform: translate(-50%, -50%)
 
 .catalog__morph
   position: absolute
+  z-index: 1
   top: 100px
   left: 50%
-  transform: translate(-50%, 0)
+  // transform: translate3d(-50%, 0, 0)
+  width: 510px
+  margin-left: -255px
+  height: 510px
+  line-height: 510px
+  font-size: 0
   opacity: 0
   transition: opacity 0.2s linear
+  text-align: center
+  > svg
+    display: inline-block
+    vertical-align: middle
 
 .catalog__btns
-  position: absolute
-  bottom: 0
-  left: 0
-  right: 0
-  width: 518px
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 512px
   margin: auto
   box-sizing: border-box
-  background: #FFF
-  border: 3px solid $text
   font-size: 0
-  box-shadow: 0 0 0 10px #FFF
-  transition: all 0.3s linear
+  white-space: nowrap
   .btn
     vertical-align: top
     height: 44px
@@ -319,7 +412,11 @@
     .btn__hover
       background: $text
       color: #FFF
+      box-shadow: -2px 0 0 0 $text
       &:before
+        width: 170px
+    &:hover
+      .btn__hover
         width: 170px
   .btn + .btn
     border-left: 1px solid $text
