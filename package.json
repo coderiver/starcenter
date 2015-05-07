@@ -1,17 +1,33 @@
 {
-  "name": "template",
-  "version": "0.0.1",
+  "name": "Starcentre",
+  "version": "0.2.0",
   "description": "template",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "coderiver",
+  "author": "coderiver || buschidos",
   "license": "ISC",
+  "browser": {
+    "jquery": "./bower_components/jquery/dist/jquery.js",
+    "modernizr": "./bower_components/modernizr/modernizr.js"
+  },
+  "browserify-shim": {
+    "jquery": "$",
+    "modernizr": "Modernizr"
+  },
+  "browserify": {
+    "transform": [
+      "debowerify",
+      "browserify-shim"
+    ]
+  },
   "devDependencies": {
     "autoprefixer-core": "^5.1.11",
-    "browser-sync": "^2.6.9",
+    "browser-sync": "^2.7.1",
+    "browserify": "^10.1.1",
+    "browserify-shim": "^3.8.6",
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
     "gulp-cheerio": "^0.6.2",
@@ -24,6 +40,12 @@
     "gulp-sourcemaps": "^1.5.2",
     "gulp-svg-sprites": "^2.0.1",
     "gulp-svgmin": "^1.1.2",
-    "gulp.spritesmith": "^3.5.4"
+    "gulp-uglify": "^1.2.0",
+    "gulp.spritesmith": "^3.6.0",
+    "postcss-assets": "^2.1.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "browserify": "^10.0.0",
+    "debowerify": "^1.2.1"
   }
 }

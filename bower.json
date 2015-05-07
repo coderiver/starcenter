@@ -1,0 +1,21 @@
+{
+  "name": "Starcentre",
+  "version": "0.0.1",
+  "homepage": "https://github.com/coderiver/starcenter",
+  "authors": [
+    "coderiver"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "modernizr": "~2.8.3",
+    "slick-carousel": "~1.5.2",
+    "jquery": "~1.11.2"
+  }
+}

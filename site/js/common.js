@@ -167,6 +167,8 @@ head.ready(function() {
     slider1.init();
     slider2.init();
 
+    console.log(slider1);
+
 
     $('.catalog__btns .btn').on('click', function(event) {
         event.preventDefault();
