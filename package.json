@@ -19,15 +19,16 @@
   },
   "browserify": {
     "transform": [
-      "debowerify",
-      "browserify-shim"
+      "browserify-shim",
+      "debowerify"
     ]
   },
   "devDependencies": {
     "autoprefixer-core": "^5.1.11",
     "browser-sync": "^2.7.1",
-    "browserify": "^10.1.1",
+    "browserify": "^10.0.0",
     "browserify-shim": "^3.8.6",
+    "debowerify": "^1.2.1",
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
     "gulp-cheerio": "^0.6.2",
@@ -45,7 +46,6 @@
     "postcss-assets": "^2.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "browserify": "^10.0.0",
-    "debowerify": "^1.2.1"
+    "watchify": "^3.2.1"
   }
 }

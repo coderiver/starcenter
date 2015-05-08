@@ -1,3 +1,5 @@
+var notify  = require('gulp-notify');
+
 module.exports = {
 
     //** src paths **
@@ -17,6 +19,15 @@ module.exports = {
         css  : './site/css',
         js   : './site/js',
         img  : './site/img'
+    },
+
+    errorHandler: function() {
+        var args = Array.prototype.slice.call(arguments);
+        notify.onError({
+            title: "Compile Error",
+            message: "<%= error.message %>"
+        }).apply(this, args);
+        this.emit('end');
     }
 
 };

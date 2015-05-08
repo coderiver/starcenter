@@ -82,11 +82,11 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
   100% { -webkit-transform: none; transform: none; opacity: 1; } }
 @keyframes img-slide-in { 0%, 50% { -webkit-transform: translate(0, 100%) scale(0.8); transform: translate(0, 100%) scale(0.8); opacity: 0; }
   100% { -webkit-transform: none; transform: none; opacity: 1; } }
-@-webkit-keyframes content-slide-out { to { -webkit-transform: translate(0, -100%) scale(0.6); transform: translate(0, -100%) scale(0.6); opacity: 0; } }
-@keyframes content-slide-out { to { -webkit-transform: translate(0, -100%) scale(0.6); transform: translate(0, -100%) scale(0.6); opacity: 0; } }
-@-webkit-keyframes content-slide-in { from { -webkit-transform: translate(0, 100%); transform: translate(0, 100%); opacity: 0; }
+@-webkit-keyframes content-slide-out { to { -webkit-transform: translate(0, -50px) scale(0.95); transform: translate(0, -50px) scale(0.95); opacity: 0; } }
+@keyframes content-slide-out { to { -webkit-transform: translate(0, -50px) scale(0.95); transform: translate(0, -50px) scale(0.95); opacity: 0; } }
+@-webkit-keyframes content-slide-in { from { -webkit-transform: translate(0, 50px); transform: translate(0, 50px); opacity: 0; }
   to { -webkit-transform: none; transform: none; opacity: 1; } }
-@keyframes content-slide-in { from { -webkit-transform: translate(0, 100%); transform: translate(0, 100%); opacity: 0; }
+@keyframes content-slide-in { from { -webkit-transform: translate(0, 50px); transform: translate(0, 50px); opacity: 0; }
   to { -webkit-transform: none; transform: none; opacity: 1; } }
 @-webkit-keyframes full-screen { from { top: 50%; left: 50%; right: 50%; bottom: 50%; }
   to { top: 0; left: 0; bottom: 0; right: 0; } }

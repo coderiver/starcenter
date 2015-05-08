@@ -11,7 +11,7 @@ module.exports = function() {
         gulp.watch(config.src.svg + '/icons/*.svg', ['svg-sprite']);
         gulp.watch(config.src.img + '/icons/*.png', ['sprite']);
         gulp.watch(config.src.js + '/**/[^vendor]*.js', ['browserify']);
-        gulp.watch(config.src.js + '/vendor.js', ['browserify-vendor']);
+        // gulp.watch(config.src.js + '/vendor.js', ['browserify-vendor']);
 
     // });
 
