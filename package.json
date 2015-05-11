@@ -11,16 +11,18 @@
   "license": "ISC",
   "browser": {
     "jquery": "./bower_components/jquery/dist/jquery.js",
-    "modernizr": "./bower_components/modernizr/modernizr.js"
+    "modernizr": "./bower_components/modernizr/modernizr.js",
+    "tween.js": "./bower_components/tweenjs/src/Tween.js"
   },
   "browserify-shim": {
     "jquery": "$",
-    "modernizr": "Modernizr"
+    "modernizr": "Modernizr",
+    "tween.js": "tween.js"
   },
   "browserify": {
     "transform": [
-      "browserify-shim",
-      "debowerify"
+      "debowerify",
+      "browserify-shim"
     ]
   },
   "devDependencies": {

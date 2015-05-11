@@ -10,8 +10,6 @@ var morph = {
             that.elements.push(el);
         });
 
-        console.log(that.elements);
-
         $(that.elements).each(function(index, el) {
             $(el).bind('morphSquare', function(event) {
                 console.log('Event fired: ' + event.type);

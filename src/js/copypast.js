@@ -15483,10 +15483,19 @@ Loader = function() {
         return $(this).trigger(t.LOADED), this.resize()
     }, t.prototype._morph = function() {
         var t, e, n, i, r, s, o, a, u, h;
-        for (h = [], t = a = 0, u = this.paths.morph.length; u >= 0 ? u > a : a > u; t = u >= 0 ? ++a : --a) r = this.paths.morph[t].item.segments, n = this.paths.morph[t].prefix, h.push(function() {
-            var t, a, u;
-            for (u = [], e = t = 0, a = r.length; a >= 0 ? a > t : t > a; e = a >= 0 ? ++t : --t) i = r[e], s = this.sources[n + "circle"].segments[e], o = this.sources[n + "triangle"].segments[e], e === r.length - 1 && (o = this.sources[n + "triangle"].segments[r.length - 2]), i.handleIn.x = s.handleIn.x * this.pos.handles.current, i.handleIn.y = s.handleIn.y * this.pos.handles.current, i.handleOut.x = s.handleOut.x * this.pos.handles.current, i.handleOut.y = s.handleOut.y * this.pos.handles.current, i.point.x = o.point.x * (1 - this.pos.fourthPoint.current) + s.point.x * this.pos.fourthPoint.current, u.push(i.point.y = o.point.y * (1 - this.pos.fourthPoint.current) + s.point.y * this.pos.fourthPoint.current);
-            return u
+        for (h = [], t = a = 0, u = this.paths.morph.length; u >= 0 ? u > a : a > u; t = u >= 0 ? ++a : --a)
+            r = this.paths.morph[t].item.segments, n = this.paths.morph[t].prefix, h.push(function() {
+                var t, a, u;
+                for (u = [], e = t = 0, a = r.length; a >= 0 ? a > t : t > a; e = a >= 0 ? ++t : --t) i = r[e],
+                    s = this.sources[n + "circle"].segments[e], o = this.sources[n + "triangle"].segments[e],
+                e === r.length - 1 && (o = this.sources[n + "triangle"].segments[r.length - 2]),
+                i.handleIn.x = s.handleIn.x * this.pos.handles.current,
+                i.handleIn.y = s.handleIn.y * this.pos.handles.current,
+                i.handleOut.x = s.handleOut.x * this.pos.handles.current,
+                i.handleOut.y = s.handleOut.y * this.pos.handles.current,
+                i.point.x = o.point.x * (1 - this.pos.fourthPoint.current) + s.point.x * this.pos.fourthPoint.current,
+                u.push(i.point.y = o.point.y * (1 - this.pos.fourthPoint.current) + s.point.y * this.pos.fourthPoint.current);
+                return u
         }.call(this));
         return h
     }, t.prototype._translatePictures = function() {
