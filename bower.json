@@ -17,7 +17,6 @@
     "modernizr": "~2.8.3",
     "slick-carousel": "~1.5.2",
     "jquery": "~1.11.2",
-    "paper": "~0.9.22",
-    "tweenjs": "*"
+    "paper": "~0.9.22"
   }
 }

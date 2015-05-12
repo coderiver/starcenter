@@ -11,13 +11,11 @@
   "license": "ISC",
   "browser": {
     "jquery": "./bower_components/jquery/dist/jquery.js",
-    "modernizr": "./bower_components/modernizr/modernizr.js",
-    "tween.js": "./bower_components/tweenjs/src/Tween.js"
+    "modernizr": "./bower_components/modernizr/modernizr.js"
   },
   "browserify-shim": {
     "jquery": "$",
-    "modernizr": "Modernizr",
-    "tween.js": "tween.js"
+    "modernizr": "Modernizr"
   },
   "browserify": {
     "transform": [
@@ -49,5 +47,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.1"
+  },
+  "dependencies": {
+    "tween.js": "^0.14.0"
   }
 }

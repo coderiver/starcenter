@@ -19,6 +19,7 @@ var Morph = function(canvasObj) {
 Morph.prototype._initContent = function() {
     var front = [],
         back  = [];
+        state = this.state;
 
     paper.setup(this.canvas);
 
@@ -53,7 +54,13 @@ Morph.prototype._initContent = function() {
                 pic: new paper.Raster({
                     source: '/img/canvas1.png',
                     position: paper.view.center,
-                    visible: false,
+                    visible: true,
+                }),
+                altPic: new paper.Raster({
+                    source: '/img/canvas1.png',
+                    position: paper.view.center,
+                    visible: true,
+                    opacity: 0
                 })
             },
             square: {
@@ -61,7 +68,13 @@ Morph.prototype._initContent = function() {
                 pic: new paper.Raster({
                     source: '/img/canvas2.png',
                     position: paper.view.center,
-                    visible: false,
+                    visible: true,
+                }),
+                altPic: new paper.Raster({
+                    source: '/img/canvas2.png',
+                    position: paper.view.center,
+                    visible: true,
+                    opacity: 0
                 })
             },
             triangle: {
@@ -75,6 +88,7 @@ Morph.prototype._initContent = function() {
                     source: '/img/canvas3-1.png',
                     position: paper.view.center,
                     visible: true,
+                    opacity: 0
                 })
             }
         },
@@ -97,23 +111,33 @@ Morph.prototype._initContent = function() {
         back.push(path);
     });
 
+    // set positioning for raster objects after their load
     $.each(this.objects.raster, function(index, raster) {
+        // set positioning for raster for current state
+        // if ( index == state ) {
+        //     raster.pic.onLoad = function() {
+        //         raster.pic.position.x += raster.shift.x;
+        //         raster.pic.position.y += raster.shift.y;
+        //     };
+        //     raster.altPic.onLoad = function() {
+        //         raster.altPic.position.x += raster.shift.x;
+        //         raster.altPic.position.y += raster.shift.y;
+        //         raster.altPic.opacity = 1;
+        //     };
+        //     front.push(raster.pic);
+        //     back.push(raster.altPic);
+        //     return;
+        // }
         raster.pic.onLoad = function() {
-            raster.pic.position.x += raster.shift.x;
+            raster.pic.position.x += raster.pic.width;
             raster.pic.position.y += raster.shift.y;
         };
+        raster.altPic.onLoad = function() {
+            raster.altPic.position.x += (raster.altPic.width / 2);
+            raster.altPic.position.y += raster.shift.y;
+        };
         front.push(raster.pic);
-        if ( typeof raster.altPic == 'object' ) {
-            raster.altPic.onLoad = function() {
-                raster.altPic.position.x += raster.shift.x;
-                raster.altPic.position.y += raster.shift.y;
-            };
-            back.push(raster.altPic);
-        } else {
-            var altPic = raster.pic.clone(false);
-            console.log(altPic);
-            back.push(altPic);
-        }
+        back.push(raster.altPic);
     });
 
     this.backGroup.set({
@@ -130,6 +154,10 @@ Morph.prototype._initContent = function() {
 Morph.prototype._initEvents = function() {
     var that = this;
     var clickCount = 0;
+
+    paper.view.onFrame = function(event) {
+        TWEEN.update();
+    };
 
     this.frontGroup.onClick = function() {
         if ( clickCount === 0 ) {
@@ -162,8 +190,8 @@ Morph.prototype.init = function() {
 
 Morph.prototype._calcPoints = function() {
     var c = this.sizes.circle,
-        s = this.sizes.circle,
-        t = this.sizes.circle,
+        s = this.sizes.square,
+        t = this.sizes.triangle,
         point;
 
     // coordinates of vertexes for each morph state relative to view.center
@@ -212,8 +240,68 @@ Morph.prototype._changePicture = function(state) {
 
     if (state == prevState) return;
 
+    var easing = TWEEN.Easing.Cubic.In,
+        dur    = 0.7 * this.dur,
+        altDur = this.dur,
+        delay  = altDur - dur,
+        raster;
 
+    raster = {
+        prev : {
+            pic         : this.objects.raster[prevState].pic,
+            altPic      : this.objects.raster[prevState].altPic,
+            initPosX    : paper.view.center.x + this.objects.raster[prevState].shift.x,
+            initAltPosX : paper.view.center.x + this.objects.raster[prevState].shift.x,
+            posX        : paper.view.center.x - this.objects.raster[prevState].pic.width,
+            altPosX     : paper.view.center.x - this.objects.raster[prevState].altPic.width / 2,
+            opacity     : 0,
+            delay       : 0
+        },
+        next : {
+            pic         : this.objects.raster[state].pic,
+            altPic      : this.objects.raster[state].altPic,
+            initPosX    : paper.view.center.x + this.objects.raster[state].pic.width,
+            initAltPosX : paper.view.center.x + this.objects.raster[state].altPic.width / 2,
+            posX        : paper.view.center.x + this.objects.raster[state].shift.x,
+            altPosX     : paper.view.center.x + this.objects.raster[state].shift.x,
+            opacity     : 1,
+            delay       : 100
+        }
+    };
 
+    console.log(raster);
+
+    raster.next.pic.position.x    = raster.next.initPosX;
+    raster.next.altPic.position.x = raster.next.initAltPosX;
+
+    $.each(raster, function(index, item) {
+        new TWEEN.Tween(item.pic.position)
+            .to({x: item.posX}, dur)
+            .easing(easing)
+            .onUpdate(function() {
+                item.pic.position.x = this.x;
+            })
+            .delay(item.delay)
+            .start();
+
+        new TWEEN.Tween(item.altPic.position)
+            .to({x: item.posX}, altDur)
+            .easing(easing)
+            .onUpdate(function() {
+                item.altPic.position.x = this.x;
+            })
+            .delay(item.delay)
+            .start();
+
+        new TWEEN.Tween(item.altPic)
+            .to({opacity: item.opacity }, dur)
+            .easing(easing)
+            .onUpdate(function() {
+                item.altPic.opacity = this.opacity;
+            })
+            .delay(item.delay)
+            .start();
+    });
 
 };
 
@@ -265,12 +353,7 @@ Morph.prototype._morph = function(state) {
         }
     });
 
-    morphPath.onFrame = function(event) {
-
-        TWEEN.update();
-
-        if ( event.count == callCount ) morphPath.onFrame = undefined;
-    };
+    this._changePicture(state);
 
     this._updateState(state);
 
