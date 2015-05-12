@@ -25,17 +25,21 @@ $(document).ready(function() {
     $('.catalog__btns .btn').on('click', function(event) {
         event.preventDefault();
         if ( $(this).index() === 0 ) {
-            slider.makeHidden();
-            catalog.open();
-            setTimeout(function() {
-                morph.toSquare();
-            }, 200);
+            // slider.makeHidden();
+            // catalog.open();
+            // setTimeout(function() {
+            //     morph.toSquare();
+            // }, 200);
+            Morph.activate('circle');
+        } else if ( $(this).index() === 1 ) {
+            Morph.activate('square');
         } else {
-            catalog.close();
-            slider.makeVisible();
-            setTimeout(function() {
-                morph.toCircle();
-            }, 200);
+            Morph.activate('triangle');
+            // catalog.close();
+            // slider.makeVisible();
+            // setTimeout(function() {
+            //     morph.toCircle();
+            // }, 200);
         }
     });
 
@@ -25648,8 +25652,12 @@ var Morph = function(canvasObj) {
     this.state  = 'circle'; // can be circle, square or triangle
     this.sizes  = {
         circle  : 510,
-        square  : 480,
-        triangle: 580,
+        square  : 450,
+        triangle: 580
+    };
+    this.morphSize = {
+        x: 580,
+        y: 580
     };
 
 };
@@ -25658,6 +25666,7 @@ Morph.prototype._initContent = function() {
     var front = [],
         back  = [];
         state = this.state;
+        morphSize = this.morphSize;
 
     paper.setup(this.canvas);
 
@@ -25668,15 +25677,11 @@ Morph.prototype._initContent = function() {
         paths: {
             morph: new paper.Path.Circle({
                 center: [paper.view.center.x, paper.view.center.y],
-                radius: this.sizes.circle / 2,
-                // fillColor: '#ccc',
-                // stroke: 1,
-                // strokeColor: 'red'
+                radius: this.sizes.circle / 2
             }),
             fill: new paper.Path.Rectangle({
                 center: paper.view.center,
                 size: [paper.view.viewSize.width, paper.view.viewSize.height],
-                // visible: false,
                 fillColor: {
                     gradient: {
                         stops: ['#54B7C6', '#CDF0E9']
@@ -25688,35 +25693,39 @@ Morph.prototype._initContent = function() {
         },
         raster: {
             circle: {
-                shift: {x: 111, y: 92},
+                // shift: {x: 111, y: 92},
                 pic: new paper.Raster({
                     source: '/img/canvas1.png',
-                    position: paper.view.center,
-                    visible: true,
+                    position: paper.view.center
                 }),
                 altPic: new paper.Raster({
                     source: '/img/canvas1.png',
                     position: paper.view.center,
-                    visible: true,
                     opacity: 0
-                })
+                }),
+                position: {
+                    x: paper.view.center.x + 111,
+                    y: paper.view.center.y + 92
+                }
             },
             square: {
-                shift: {x: 0, y: 131},
+                // shift: {x: 50, y: 131},
                 pic: new paper.Raster({
                     source: '/img/canvas2.png',
-                    position: paper.view.center,
-                    visible: true,
+                    position: paper.view.center
                 }),
                 altPic: new paper.Raster({
                     source: '/img/canvas2.png',
                     position: paper.view.center,
-                    visible: true,
                     opacity: 0
-                })
+                }),
+                position: {
+                    x: paper.view.center.x + 29,
+                    y: paper.view.center.y + 102
+                }
             },
             triangle: {
-                shift: {x: 45, y: 90},
+                // shift: {x: 45, y: 90},
                 pic: new paper.Raster({
                     source: '/img/canvas3.png',
                     position: paper.view.center,
@@ -25725,9 +25734,12 @@ Morph.prototype._initContent = function() {
                 altPic: new paper.Raster({
                     source: '/img/canvas3-1.png',
                     position: paper.view.center,
-                    visible: true,
                     opacity: 0
-                })
+                }),
+                position: {
+                    x: paper.view.center.x + 45,
+                    y: paper.view.center.y + 90
+                }
             }
         },
         other: {
@@ -25751,28 +25763,13 @@ Morph.prototype._initContent = function() {
 
     // set positioning for raster objects after their load
     $.each(this.objects.raster, function(index, raster) {
-        // set positioning for raster for current state
-        // if ( index == state ) {
-        //     raster.pic.onLoad = function() {
-        //         raster.pic.position.x += raster.shift.x;
-        //         raster.pic.position.y += raster.shift.y;
-        //     };
-        //     raster.altPic.onLoad = function() {
-        //         raster.altPic.position.x += raster.shift.x;
-        //         raster.altPic.position.y += raster.shift.y;
-        //         raster.altPic.opacity = 1;
-        //     };
-        //     front.push(raster.pic);
-        //     back.push(raster.altPic);
-        //     return;
-        // }
         raster.pic.onLoad = function() {
-            raster.pic.position.x += raster.pic.width;
-            raster.pic.position.y += raster.shift.y;
+            raster.pic.position.x = raster.position.x + morphSize.x;
+            raster.pic.position.y = raster.position.y;
         };
         raster.altPic.onLoad = function() {
-            raster.altPic.position.x += (raster.altPic.width / 2);
-            raster.altPic.position.y += raster.shift.y;
+            raster.altPic.position.x = raster.position.x + morphSize.x / 2;
+            raster.altPic.position.y = raster.position.y;
         };
         front.push(raster.pic);
         back.push(raster.altPic);
@@ -25800,6 +25797,7 @@ Morph.prototype._initEvents = function() {
     this.frontGroup.onClick = function() {
         if ( clickCount === 0 ) {
             that.square();
+            // that.activate('square');
         }
         if ( clickCount === 1 ) {
             that.triangle();
@@ -25879,63 +25877,85 @@ Morph.prototype._changePicture = function(state) {
     if (state == prevState) return;
 
     var easing = TWEEN.Easing.Cubic.In,
-        dur    = 0.7 * this.dur,
+        dur    = 0.8 * this.dur,
         altDur = this.dur,
         delay  = altDur - dur,
         raster;
 
-    raster = {
-        prev : {
-            pic         : this.objects.raster[prevState].pic,
-            altPic      : this.objects.raster[prevState].altPic,
-            initPosX    : paper.view.center.x + this.objects.raster[prevState].shift.x,
-            initAltPosX : paper.view.center.x + this.objects.raster[prevState].shift.x,
-            posX        : paper.view.center.x - this.objects.raster[prevState].pic.width,
-            altPosX     : paper.view.center.x - this.objects.raster[prevState].altPic.width / 2,
-            opacity     : 0,
-            delay       : 0
+    /*### pics item
+    # inner/outer          - inside/outside morph path;
+    # pic                  - paper raster object;
+    # initPos              - position of pic before animation, relative to canvas center;
+    # pos                  - position of pic/altPic after animation end, relative to canvas center;
+    # opacity              - opacity for pic after animation end;
+    # delay                - delay between start animation for inner in outer;
+    ###*/
+    pics = {
+        prev: {
+            inner: {
+                pic: this.objects.raster[prevState].pic,
+                initPos: this.objects.raster[prevState].position,
+                pos: {
+                    x: paper.view.center.x - this.morphSize.x,
+                    y: this.objects.raster[prevState].position.y
+                }
+            },
+            outer: {
+                pic: this.objects.raster[prevState].altPic,
+                initPos: this.objects.raster[prevState].position,
+                pos: {
+                    x: paper.view.center.x - this.morphSize.x,
+                    y: this.objects.raster[prevState].position.y
+                },
+                opacity: 0
+            },
+            delay   : 0
         },
-        next : {
-            pic         : this.objects.raster[state].pic,
-            altPic      : this.objects.raster[state].altPic,
-            initPosX    : paper.view.center.x + this.objects.raster[state].pic.width,
-            initAltPosX : paper.view.center.x + this.objects.raster[state].altPic.width / 2,
-            posX        : paper.view.center.x + this.objects.raster[state].shift.x,
-            altPosX     : paper.view.center.x + this.objects.raster[state].shift.x,
-            opacity     : 1,
-            delay       : 100
+        next: {
+            inner: {
+                pic     : this.objects.raster[state].pic,
+                initPos : { x: paper.view.center.x + this.morphSize.x,
+                            y: this.objects.raster[state].position.y },
+                pos     : this.objects.raster[state].position
+            },
+            outer: {
+                pic     : this.objects.raster[state].altPic,
+                initPos : { x: paper.view.center.x + this.morphSize.x / 2,
+                            y: this.objects.raster[state].position.y },
+                pos     : this.objects.raster[state].position,
+                opacity : 1
+            },
+            delay: 100,
         }
     };
 
-    console.log(raster);
+    pics.next.inner.pic.position.x = pics.next.inner.initPos.x;
+    pics.next.outer.pic.position.x = pics.next.outer.initPos.x;
 
-    raster.next.pic.position.x    = raster.next.initPosX;
-    raster.next.altPic.position.x = raster.next.initAltPosX;
-
-    $.each(raster, function(index, item) {
-        new TWEEN.Tween(item.pic.position)
-            .to({x: item.posX}, dur)
+    $.each(pics, function(index, item) {
+        new TWEEN.Tween(item.inner.pic.position)
+            .to({x: item.inner.pos.x}, dur)
             .easing(easing)
             .onUpdate(function() {
-                item.pic.position.x = this.x;
+                item.inner.pic.position.x = this.x;
             })
             .delay(item.delay)
             .start();
 
-        new TWEEN.Tween(item.altPic.position)
-            .to({x: item.posX}, altDur)
+        new TWEEN.Tween(item.outer.pic.position)
+            .to({x: item.outer.pos.x}, altDur)
             .easing(easing)
             .onUpdate(function() {
-                item.altPic.position.x = this.x;
+                item.outer.pic.position.x = this.x;
             })
             .delay(item.delay)
             .start();
 
-        new TWEEN.Tween(item.altPic)
-            .to({opacity: item.opacity }, dur)
+        new TWEEN.Tween(item.outer.pic)
+            .to({opacity: item.outer.opacity}, dur)
             .easing(easing)
             .onUpdate(function() {
-                item.altPic.opacity = this.opacity;
+                item.outer.pic.opacity = this.opacity;
             })
             .delay(item.delay)
             .start();
@@ -25943,8 +25963,98 @@ Morph.prototype._changePicture = function(state) {
 
 };
 
-Morph.prototype.update = function() {
-    this._render();
+Morph.prototype._showPicture = function(state) {
+    // var prevState = this._getState();
+
+    // if (state == prevState) return;
+
+    var easing = TWEEN.Easing.Cubic.In,
+        dur    = this.dur,
+        pics;
+
+    pics = {
+        inner: {
+            pic: this.objects.raster[state].pic,
+            initPos: {
+                x: this.objects.raster[state].position.x,
+                y: paper.view.center.y + this.morphSize.y / 2,
+            },
+            pos: this.objects.raster[state].position
+        },
+        outer: {
+            pic: this.objects.raster[state].altPic,
+            initPos: {
+                x: paper.view.center.x,
+                y: paper.view.center.y - 100
+            },
+            pos: this.objects.raster[state].position,
+            initOpacity: 0,
+            initScaling: [0.2, 0.2],
+            opacity: 1,
+            scaling: {x: 1, y: 1},
+            delay: 100
+        }
+    };
+
+    // set pictures initial state
+    pics.inner.pic.position.x = pics.inner.initPos.x;
+    pics.inner.pic.position.y = pics.inner.initPos.y;
+    pics.outer.pic.position.x = pics.outer.initPos.x;
+    pics.outer.pic.position.y = pics.outer.initPos.y;
+    pics.outer.pic.set({
+        scaling: pics.outer.initScaling,
+        opacity: pics.outer.initOpacity,
+    });
+
+    // translate picture inside morph object
+    new TWEEN.Tween(pics.inner.pic.position)
+        .to(pics.inner.pos, dur)
+        .easing(easing)
+        .onUpdate(function() {
+            pics.inner.pic.position.x = this.x;
+            pics.inner.pic.position.y = this.y;
+        })
+        .start();
+
+    // scale picture outside morph object
+    new TWEEN.Tween(pics.outer.pic.scaling)
+        .to(pics.outer.scaling, dur)
+        .easing(easing)
+        .onUpdate(function() {
+            pics.outer.pic.scaling.x = this.x;
+            pics.outer.pic.scaling.y = this.y;
+        })
+        .delay(pics.outer.delay)
+        .start();
+
+    // fade in picture outside morph object
+    new TWEEN.Tween(pics.outer.pic)
+        .to({opacity: pics.outer.opacity}, dur)
+        .easing(easing)
+        .onUpdate(function() {
+            pics.outer.pic.opacity = this.opacity;
+        })
+        .delay(pics.outer.delay)
+        .start();
+
+    // translate picture outside morph object
+    new TWEEN.Tween(pics.outer.pic.position)
+        .to(pics.outer.pos, dur)
+        .easing(easing)
+        .onUpdate(function() {
+            pics.outer.pic.position.x = this.x;
+            pics.outer.pic.position.y = this.y;
+        })
+        .start();
+
+    console.log('%c' + 'Picture showed:' + ' => ' + state, 'background:lightblue');
+
+};
+
+
+Morph.prototype.activate = function(state) {
+    this._showPicture(state);
+    this._morph(state);
 };
 
 Morph.prototype._morph = function(state) {
@@ -25953,9 +26063,6 @@ Morph.prototype._morph = function(state) {
 
     if ( state == prevState ) return;
 
-    console.log('%c' + prevState + ' => ' + state, 'background:yellow');
-
-
     var duration   = this.dur,
         callCount  = duration * 60 / 1000, // morph anim duration * frame per second
         easing     = TWEEN.Easing.Cubic.Out,
@@ -25963,9 +26070,6 @@ Morph.prototype._morph = function(state) {
         segments   = morphPath.segments,
         prevPoints = this.point[prevState],
         points     = this.point[state];
-
-    // console.log(segments);
-    // console.log(points);
 
     $.each(segments, function(index, segment) {
         new TWEEN.Tween(segment.point)
@@ -25991,22 +26095,23 @@ Morph.prototype._morph = function(state) {
         }
     });
 
-    this._changePicture(state);
-
     this._updateState(state);
 
-    // console.log(points);
+    console.log('%c' + 'State change: ' + prevState + ' => ' + state, 'background:yellow');
 };
 
 Morph.prototype.square = function() {
+    this._changePicture('square');
     this._morph('square');
 };
 
 Morph.prototype.triangle = function() {
+    this._changePicture('triangle');
     this._morph('triangle');
 };
 
 Morph.prototype.circle = function() {
+    this._changePicture('circle');
     this._morph('circle');
 };
 

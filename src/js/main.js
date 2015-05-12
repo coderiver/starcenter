@@ -24,17 +24,21 @@ $(document).ready(function() {
     $('.catalog__btns .btn').on('click', function(event) {
         event.preventDefault();
         if ( $(this).index() === 0 ) {
-            slider.makeHidden();
-            catalog.open();
-            setTimeout(function() {
-                morph.toSquare();
-            }, 200);
+            // slider.makeHidden();
+            // catalog.open();
+            // setTimeout(function() {
+            //     morph.toSquare();
+            // }, 200);
+            Morph.activate('circle');
+        } else if ( $(this).index() === 1 ) {
+            Morph.activate('square');
         } else {
-            catalog.close();
-            slider.makeVisible();
-            setTimeout(function() {
-                morph.toCircle();
-            }, 200);
+            Morph.activate('triangle');
+            // catalog.close();
+            // slider.makeVisible();
+            // setTimeout(function() {
+            //     morph.toCircle();
+            // }, 200);
         }
     });
 
