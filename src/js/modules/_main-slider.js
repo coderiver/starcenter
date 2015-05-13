@@ -83,10 +83,12 @@ MainSlider.prototype.pause = function() {
 MainSlider.prototype.makeHidden = function() {
     var that = this;
     that.pause();
-    that.wrapper.addClass('is-animate');
+    setTimeout(function() {
+        that.wrapper.addClass('is-animate');
+    }, 300);
     setTimeout(function() {
         that.wrapper.css('display', 'none');
-    }, 500);
+    }, 800);
 };
 
 MainSlider.prototype.makeVisible = function() {

@@ -67,7 +67,7 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 
 #nav { position: absolute; z-index: 100; top: 0; right: 0; bottom: 0; }
 
-#morph { z-index: 0; width: 1368px; height: 680px; }
+#morph { position: absolute; z-index: 0; top: 15px; left: 50%; margin-left: -684px; width: 1368px; height: 680px; pointer-events: none; }
 
 .icon { display: inline-block; height: 1em; width: 1em; fill: inherit; stroke: inherit; }
 
@@ -131,7 +131,9 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 .morph { position: absolute; text-align: center; z-index: 0; top: 100px; left: 50%; -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
 .morph > svg { display: inline-block; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 
-.main-slider { position: relative; z-index: 0; height: 656px; overflow: hidden; }
+.blue-circle { width: 510px; height: 510px; border-radius: 50%; background-color: #75BDC4; background-image: -webkit-linear-gradient(bottom, #CDF0E9 27%, #2B92A5 100%); background-image: linear-gradient(to top, #CDF0E9 27%, #2B92A5 100%); }
+
+.main-slider { position: relative; z-index: 1; height: 656px; overflow: hidden; }
 .main-slider:after { content: ""; position: absolute; z-index: 5; top: 0; left: 0; width: 100%; height: 100%; -webkit-transition: -webkit-transform 0.5s linear; transition: transform 0.5s linear; -webkit-transform: translate3d(0, 100%, 0); transform: translate3d(0, 100%, 0); background: #FFF; }
 .main-slider.is-animate:after { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 .main-slider.is-animate .main-slider__slides { -webkit-transform: scale(0.5); -ms-transform: scale(0.5); transform: scale(0.5); -webkit-transition: -webkit-transform 0.5s linear; transition: transform 0.5s linear; }
@@ -168,14 +170,17 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 .section { position: relative; }
 
 .catalog { height: 680px; position: absolute; top: 0; left: 0; right: 0; z-index: 0; overflow: hidden; -webkit-overflow-scrolling: touch; }
+.catalog #morph { opacity: 0; -webkit-transition: opacity 0.3s linear; transition: opacity 0.3s linear; }
 .catalog.is-init { height: 100vh; z-index: 95; }
+.catalog.is-init #morph { z-index: 1; opacity: 1; }
+.catalog.is-init .main-slider { z-index: 0; }
 .catalog.is-init .catalog__inner { overflow: scroll; overflow-x: hidden; right: -16px; }
 .mac-os .catalog.is-init .catalog__inner { right: -15px; }
 .catalog.is-init .catalog__head { z-index: 2; top: 0; height: 680px; padding: 0; }
 .catalog.is-init .catalog__head:before { top: 606px; -webkit-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); }
-.catalog.is-init .catalog__btns { position: absolute; z-index: 2; top: 609px; left: 50%; -webkit-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); }
 .catalog.is-animate .catalog__head:before { -webkit-transition: all 0.5s linear; transition: all 0.5s linear; }
-.catalog.is-animate .catalog__btns { -webkit-transition: all 0.5s linear; transition: all 0.5s linear; }
+.catalog.is-animate .catalog__btns { -webkit-transition: all 0.5s linear; transition: all 0.5s linear; box-shadow: none; }
+.catalog.is-animate .btn_catalog { box-shadow: none; }
 .catalog.is-animate .catalog__morph { opacity: 1; }
 .catalog.is-done .catalog__head:before { top: 260px; width: 790px; height: 260px; box-shadow: none; }
 .catalog.is-done .catalog__btns { top: 365px; width: 1200px; background: none; }
@@ -189,12 +194,13 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 .catalog__morph { position: absolute; z-index: 1; top: 100px; left: 50%; width: 510px; margin-left: -255px; height: 510px; line-height: 510px; font-size: 0; opacity: 0; -webkit-transition: opacity 0.2s linear; transition: opacity 0.2s linear; text-align: center; }
 .catalog__morph > svg { display: inline-block; vertical-align: middle; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 
-.catalog__btns { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; width: 512px; margin: auto; box-sizing: border-box; font-size: 0; white-space: nowrap; }
-.catalog__btns .btn { vertical-align: top; height: 44px; width: 170px; line-height: 44px; -webkit-transition: all 0.3s linear; transition: all 0.3s linear; box-sizing: content-box; }
-.catalog__btns .btn .btn__hover { background: #333; color: #FFF; box-shadow: -2px 0 0 0 #333; }
-.catalog__btns .btn .btn__hover:before { width: 170px; }
-.catalog__btns .btn:hover .btn__hover { width: 170px; }
-.catalog__btns .btn + .btn { border-left: 1px solid #333; }
+.catalog__btns { position: absolute; z-index: 2; top: 609px; left: 0; right: 0; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; width: 510px; margin: auto; box-sizing: border-box; font-size: 0; white-space: nowrap; background: #FFF; box-shadow: 0 0 0 3px #333, 0 0 0 13px #FFF; }
+
+.btn_catalog { vertical-align: top; height: 44px; width: 170px; line-height: 44px; -webkit-transition: all 0.3s linear; transition: all 0.3s linear; }
+.btn_catalog .btn__hover { background: #333; color: #FFF; box-shadow: -2px 0 0 0 #333; }
+.btn_catalog .btn__hover:before { width: 170px; }
+.btn_catalog:hover .btn__hover { width: 170px; }
+.btn_catalog + .btn_catalog { box-shadow: inset 1px 0 0 0 #333; }
 
 .btn { position: relative; z-index: 0; display: inline-block; text-decoration: none; color: inherit; box-sizing: border-box; text-align: center; background: none; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
 .btn:hover .btn__hover { width: 100%; }

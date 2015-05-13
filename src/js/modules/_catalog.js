@@ -1,36 +1,38 @@
-require('jquery');
+var $ = require('jquery');
 
-var catalog = {
-    el: $('.catalog'),
-    initClass: 'is-init',
-    animClass: 'is-animate',
-    doneClass: 'is-done',
+function Catalog(selector) {
+    this.el        = $(selector);
+    this.initClass = 'is-init';
+    this.animClass = 'is-animate';
+    this.doneClass = 'is-done';
+}
 
-    open: function() {
-        var that = this;
-        that.el.addClass(that.initClass);
-        setTimeout(function() {
-            that.el.addClass(that.animClass);
-        }, 20);
-        setTimeout(function() {
-            that.el.addClass(that.doneClass);
-        }, 200);
-        that.setHeight();
-    },
-    close: function() {
-        var that = this;
-        that.el.removeClass(that.doneClass);
-        setTimeout(function() {
-            that.el.removeClass(that.animClass);
-        }, 500);
-        setTimeout(function() {
-            that.el.removeClass(that.initClass);
-            that.el.css('height', '');
-        }, 700);
-    },
-    setHeight: function() {
-        this.el.height($(window).height());
-    }
+Catalog.prototype.open = function() {
+    var that = this;
+    that.el.addClass(that.initClass);
+    setTimeout(function() {
+        that.el.addClass(that.animClass);
+    }, 20);
+    setTimeout(function() {
+        that.el.addClass(that.doneClass);
+    }, 200);
+    that.setHeight();
 };
 
-module.exports = catalog;
+Catalog.prototype.close = function() {
+    var that = this;
+    that.el.removeClass(that.doneClass);
+    setTimeout(function() {
+        that.el.removeClass(that.animClass);
+    }, 500);
+    setTimeout(function() {
+        that.el.removeClass(that.initClass);
+        that.el.css('height', '');
+    }, 700);
+};
+
+Catalog.prototype.setHeight = function() {
+    this.el.height($(window).height());
+};
+
+module.exports = Catalog;

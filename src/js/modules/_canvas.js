@@ -3,11 +3,15 @@ var $     = require('jquery');
 var TWEEN = require('tween.js');
 
 
-var Morph = function(canvasObj) {
+var Morph = function(selector) {
 
-    this.canvas = canvasObj[0];
+    this.canvas = $(selector)[0];
     this.dur    = 500;
-    this.state  = 'circle'; // can be circle, square or triangle
+    this.state  = {
+        active: false,
+        morph: 'circle', // circle, square or triangle
+        rectangle: 'small' // small, big or wide
+    };
     this.sizes  = {
         circle  : 510,
         square  : 450,
@@ -42,10 +46,10 @@ Morph.prototype._initContent = function() {
                 size: [paper.view.viewSize.width, paper.view.viewSize.height],
                 fillColor: {
                     gradient: {
-                        stops: ['#54B7C6', '#CDF0E9']
+                        stops: ['#2B92A5', '#CDF0E9']
                     },
-                    origin: [paper.view.center.x, paper.view.center.y - this.sizes.triangle / 2],
-                    destination: [paper.view.center.x, paper.view.center.y + this.sizes.triangle / 2]
+                    origin: [paper.view.center.x, paper.view.center.y - this.sizes.circle / 2],
+                    destination: [paper.view.center.x, paper.view.center.y + this.sizes.circle / 2]
                 }
             })
         },
@@ -102,14 +106,17 @@ Morph.prototype._initContent = function() {
         },
         other: {
             rectangle: new paper.Path.Rectangle({
-                center: paper.view.center,
-                size: [1224, 160],
+                point: [0, 0],
+                size: [513, 47],
                 strokeWidth: 3,
                 // strokeScaling: false,
                 strokeColor: '#333',
             })
         }
     };
+
+    //setup rectange
+    this.objects.other.rectangle.bounds.center = new paper.Point(paper.view.center.x, paper.view.size.height - 64);
 
     $.each(this.objects.paths, function(index, path) {
         front.push(path);
@@ -141,7 +148,6 @@ Morph.prototype._initContent = function() {
         children: front,
         clipped: true
     });
-
 };
 
 Morph.prototype._initEvents = function() {
@@ -173,16 +179,43 @@ Morph.prototype._render = function() {
     paper.view.draw();
 };
 
-Morph.prototype.init = function() {
-    this._initContent();
-    this._initEvents();
-    this._render();
-    this._calcPoints();
-    // this._morph();
-    console.log(paper.view);
+Morph.prototype._morphRectangle = function(state) {
+    var prevState = this._getState('rectangle');
+
+    if ( state == prevState ) return;
+
+    var rect    = this.objects.other.rectangle,
+        prevPos = this.pathPosition.rectangle[prevState],
+        pos     = this.pathPosition.rectangle[state],
+        easing  = TWEEN.Easing.Cubic.Out;
+        dur     = this.dur;
+
+
+    // change rectange size
+    new TWEEN.Tween(rect.bounds.size)
+        .to(pos.size, dur)
+        .easing(easing)
+        .onUpdate(function() {
+            rect.bounds.size.width = this.width;
+            rect.bounds.size.height = this.height;
+        })
+        .start();
+
+    // change rectange position
+    new TWEEN.Tween(rect.position)
+        .to(pos.center, dur)
+        .easing(easing)
+        .onUpdate(function() {
+            rect.position.x = this.x;
+            rect.position.y = this.y;
+        })
+        .start();
+
+    this._updateState('rectangle', state);
+
 };
 
-Morph.prototype._calcPoints = function() {
+Morph.prototype._calcPosition = function() {
     var c = this.sizes.circle,
         s = this.sizes.square,
         t = this.sizes.triangle,
@@ -222,15 +255,31 @@ Morph.prototype._calcPoints = function() {
         ]
     };
 
-    this.point = {
-        circle:   this._translateCoordinates(point.circle),
-        square:   this._translateCoordinates(point.square),
-        triangle: this._translateCoordinates(point.triangle)
+    this.pathPosition = {
+        morph: {
+            circle:   this._translateCoordinates(point.circle),
+            square:   this._translateCoordinates(point.square),
+            triangle: this._translateCoordinates(point.triangle),
+        },
+        rectangle: {
+            small: {
+                center: new paper.Point(paper.view.center.x, paper.view.size.height - 64),
+                size: new paper.Size(513, 47)
+            },
+            big: {
+                center: paper.view.center,
+                size: new paper.Size(790, 260)
+            },
+            wide: {
+                center: paper.view.center,
+                size: new paper.Size(1220, 160)
+            }
+        }
     };
 };
 
 Morph.prototype._changePicture = function(state) {
-    var prevState = this._getState();
+    var prevState = this._getState('morph');
 
     if (state == prevState) return;
 
@@ -262,7 +311,7 @@ Morph.prototype._changePicture = function(state) {
                 pic: this.objects.raster[prevState].altPic,
                 initPos: this.objects.raster[prevState].position,
                 pos: {
-                    x: paper.view.center.x - this.morphSize.x,
+                    x: paper.view.center.x - this.morphSize.x / 2,
                     y: this.objects.raster[prevState].position.y
                 },
                 opacity: 0
@@ -287,8 +336,13 @@ Morph.prototype._changePicture = function(state) {
         }
     };
 
+    // reset properties after previous transformation in other methods
     pics.next.inner.pic.position.x = pics.next.inner.initPos.x;
+    pics.next.inner.pic.position.y = pics.next.inner.initPos.y;
     pics.next.outer.pic.position.x = pics.next.outer.initPos.x;
+    pics.next.outer.pic.position.y = pics.next.outer.initPos.y;
+    pics.next.outer.pic.scaling.x = 1;
+    pics.next.outer.pic.scaling.y = 1;
 
     $.each(pics, function(index, item) {
         new TWEEN.Tween(item.inner.pic.position)
@@ -302,7 +356,7 @@ Morph.prototype._changePicture = function(state) {
 
         new TWEEN.Tween(item.outer.pic.position)
             .to({x: item.outer.pos.x}, altDur)
-            .easing(easing)
+            // .easing(easing)
             .onUpdate(function() {
                 item.outer.pic.position.x = this.x;
             })
@@ -311,7 +365,7 @@ Morph.prototype._changePicture = function(state) {
 
         new TWEEN.Tween(item.outer.pic)
             .to({opacity: item.outer.opacity}, dur)
-            .easing(easing)
+            // .easing(easing)
             .onUpdate(function() {
                 item.outer.pic.opacity = this.opacity;
             })
@@ -321,53 +375,79 @@ Morph.prototype._changePicture = function(state) {
 
 };
 
-Morph.prototype._showPicture = function(state) {
-    // var prevState = this._getState();
-
-    // if (state == prevState) return;
-
+Morph.prototype._togglePicture = function(state) {
+    // if state was not passed, then this method hiddes picture for active morph state,
+    // otherwise he show picture for passed state
     var easing = TWEEN.Easing.Cubic.In,
         dur    = this.dur,
-        pics;
+        pics,
+        log;
 
-    pics = {
-        inner: {
-            pic: this.objects.raster[state].pic,
-            initPos: {
-                x: this.objects.raster[state].position.x,
-                y: paper.view.center.y + this.morphSize.y / 2,
-            },
-            pos: this.objects.raster[state].position
-        },
-        outer: {
-            pic: this.objects.raster[state].altPic,
-            initPos: {
-                x: paper.view.center.x,
-                y: paper.view.center.y - 100
-            },
-            pos: this.objects.raster[state].position,
-            initOpacity: 0,
-            initScaling: [0.2, 0.2],
-            opacity: 1,
-            scaling: {x: 1, y: 1},
-            delay: 100
-        }
-    };
+    if ( typeof state == 'undefined' ) {
 
-    // set pictures initial state
+        state = this._getState('morph');
+        pics = {
+            inner: {
+                pic: this.objects.raster[state].pic,
+                pos: {
+                    x: this.objects.raster[state].position.x,
+                    y: paper.view.center.y + this.morphSize.y / 3 * 2,
+                },
+                initPos: this.objects.raster[state].position
+            },
+            outer: {
+                pic: this.objects.raster[state].altPic,
+                pos: this.objects.raster[state].position,
+                initPos: this.objects.raster[state].position,
+                initOpacity: 1,
+                initScaling: {x: 1, y: 1},
+                opacity: 0,
+                scaling: {x: 0.2, y: 0.2},
+                delay: 100
+            }
+        };
+
+        console.log('%c' + 'Hide picture:' + ' => ' + state, 'background:lightblue');
+
+    } else {
+
+        pics = {
+            inner: {
+                pic: this.objects.raster[state].pic,
+                initPos: {
+                    x: this.objects.raster[state].position.x,
+                    y: paper.view.center.y + this.morphSize.y / 3 * 2,
+                },
+                pos: this.objects.raster[state].position
+            },
+            outer: {
+                pic: this.objects.raster[state].altPic,
+                initPos: this.objects.raster[state].position,
+                pos: this.objects.raster[state].position,
+                initOpacity: 0,
+                initScaling: {x: 0.2, y: 0.2},
+                opacity: 1,
+                scaling: {x: 1, y: 1},
+                delay: 100
+            }
+        };
+
+        console.log('%c' + 'Show picture:' + ' => ' + state, 'background:lightblue');
+
+    }
+
+    // setup pictures initial state
     pics.inner.pic.position.x = pics.inner.initPos.x;
     pics.inner.pic.position.y = pics.inner.initPos.y;
     pics.outer.pic.position.x = pics.outer.initPos.x;
     pics.outer.pic.position.y = pics.outer.initPos.y;
-    pics.outer.pic.set({
-        scaling: pics.outer.initScaling,
-        opacity: pics.outer.initOpacity,
-    });
+    pics.outer.pic.opacity    = pics.outer.initOpacity;
+    pics.outer.pic.scale(pics.outer.initScaling.x, this.objects.paths.morph.bounds.topCenter);
 
     // translate picture inside morph object
     new TWEEN.Tween(pics.inner.pic.position)
         .to(pics.inner.pos, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             pics.inner.pic.position.x = this.x;
             pics.inner.pic.position.y = this.y;
@@ -377,18 +457,17 @@ Morph.prototype._showPicture = function(state) {
     // scale picture outside morph object
     new TWEEN.Tween(pics.outer.pic.scaling)
         .to(pics.outer.scaling, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
-            pics.outer.pic.scaling.x = this.x;
-            pics.outer.pic.scaling.y = this.y;
+            pics.outer.pic.scale(this.x, this.y);
         })
-        .delay(pics.outer.delay)
+        // .delay(pics.outer.delay)
         .start();
 
     // fade in picture outside morph object
     new TWEEN.Tween(pics.outer.pic)
         .to({opacity: pics.outer.opacity}, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             pics.outer.pic.opacity = this.opacity;
         })
@@ -398,26 +477,19 @@ Morph.prototype._showPicture = function(state) {
     // translate picture outside morph object
     new TWEEN.Tween(pics.outer.pic.position)
         .to(pics.outer.pos, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             pics.outer.pic.position.x = this.x;
             pics.outer.pic.position.y = this.y;
         })
+        // .delay(pics.outer.delay)
         .start();
 
-    console.log('%c' + 'Picture showed:' + ' => ' + state, 'background:lightblue');
-
-};
-
-
-Morph.prototype.activate = function(state) {
-    this._showPicture(state);
-    this._morph(state);
 };
 
 Morph.prototype._morph = function(state) {
 
-    var prevState  = this._getState();
+    var prevState  = this._getState('morph');
 
     if ( state == prevState ) return;
 
@@ -426,8 +498,8 @@ Morph.prototype._morph = function(state) {
         easing     = TWEEN.Easing.Cubic.Out,
         morphPath  = this.objects.paths.morph,
         segments   = morphPath.segments,
-        prevPoints = this.point[prevState],
-        points     = this.point[state];
+        prevPoints = this.pathPosition.morph[prevState],
+        points     = this.pathPosition.morph[state];
 
     $.each(segments, function(index, segment) {
         new TWEEN.Tween(segment.point)
@@ -453,9 +525,39 @@ Morph.prototype._morph = function(state) {
         }
     });
 
-    this._updateState(state);
+    this._updateState('morph', state);
 
     console.log('%c' + 'State change: ' + prevState + ' => ' + state, 'background:yellow');
+};
+
+Morph.prototype._updateState = function(name, state) {
+    this.state[name] = state;
+};
+
+Morph.prototype._getState = function(name) {
+    if ( name && this.state.hasOwnProperty(name) ) {
+        return this.state[name];
+    } else {
+        return this.state;
+    }
+};
+
+Morph.prototype._translateCoordinates = function(pointsArray) {
+    var arr = pointsArray;
+    $.each(arr, function(index, value) {
+        value.x += paper.view.center.x;
+        value.y += paper.view.center.y;
+    });
+    return arr;
+};
+
+Morph.prototype.init = function() {
+    this._initContent();
+    this._initEvents();
+    this._render();
+    this._calcPosition();
+    // this._morph();
+    console.log(paper.view);
 };
 
 Morph.prototype.square = function() {
@@ -473,21 +575,33 @@ Morph.prototype.circle = function() {
     this._morph('circle');
 };
 
-Morph.prototype._updateState = function(state) {
-    this.state = state;
+Morph.prototype.changeState = function(state) {
+    this._changePicture(state);
+    this._morph(state);
 };
 
-Morph.prototype._getState = function() {
-    return this.state;
+Morph.prototype.activate = function(state) {
+    var active = this._getState('active');
+
+    if ( active ) return;
+
+    this._togglePicture(state);
+    this._morph(state);
+    this._morphRectangle('big');
+
+    this._updateState('active', true);
 };
 
-Morph.prototype._translateCoordinates = function(pointsArray) {
-    var arr = pointsArray;
-    $.each(arr, function(index, value) {
-        value.x += paper.view.center.x;
-        value.y += paper.view.center.y;
-    });
-    return arr;
+Morph.prototype.deactivate = function() {
+    var active = this._getState('active');
+
+    if ( !active ) return;
+
+    this._togglePicture();
+    this._morph('circle');
+    this._morphRectangle('small');
+
+    this._updateState('active', false);
 };
 
 module.exports = Morph;

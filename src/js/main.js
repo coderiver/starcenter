@@ -1,45 +1,54 @@
+var app, Slider, Catalog, Morph, catalog, morph, slider;
+
 require('jquery');
 require('modernizr');
 
+Slider  = require('./modules/_main-slider.js');
+Morph   = require('./modules/_canvas.js');
+Catalog = require('./modules/_catalog.js');
+
 $(document).ready(function() {
 
-    var MainSlider = require('./modules/_main-slider.js'),
-        catalog    = require('./modules/_catalog.js'),
-        morph      = require('./modules/_morph.js'),
-        Canvas     = require('./modules/_canvas.js'),
-        win        = $(window);
-        slider     = new MainSlider('#slider1', '.main-slider__slides', '.main-slider__paginator');
+    app = {
+        slider  : new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator'),
+        morph   : new Morph('#morph'),
+        catalog : new Catalog('.catalog'),
+    };
 
-    slider.init();
-    morph.init();
-    // canvas.init($('#morph'));
+    app.openCatalog = function(state) {
+        app.catalog.open();
+        app.slider.makeHidden();
+        setTimeout(function() {
+            app.morph.activate(state);
+        }, 300);
+    };
 
-    var Morph = new Canvas($('#morph'));
-    Morph.init();
-    console.log(Morph);
+    app.closeCatalog = function() {
+        app.catalog.close();
+        app.slider.makeVisible();
+        app.morph.deactivate();
+    };
 
-    // console.log(slider, morph);
+    app.slider.init();
+    app.morph.init();
 
+    console.log(app.morph, app.catalog);
 
     $('.catalog__btns .btn').on('click', function(event) {
         event.preventDefault();
-        if ( $(this).index() === 0 ) {
-            // slider.makeHidden();
-            // catalog.open();
-            // setTimeout(function() {
-            //     morph.toSquare();
-            // }, 200);
-            Morph.activate('circle');
-        } else if ( $(this).index() === 1 ) {
-            Morph.activate('square');
+        var state = $(this).data('morph-state');
+        console.log(state);
+        if ( !app.morph.state.active ) {
+            app.openCatalog(state);
         } else {
-            Morph.activate('triangle');
-            // catalog.close();
-            // slider.makeVisible();
-            // setTimeout(function() {
-            //     morph.toCircle();
-            // }, 200);
+            app.morph.changeState(state);
         }
+    });
+
+    $('#header .logo').on('click', function(event) {
+        event.preventDefault();
+        console.log(event);
+        app.closeCatalog();
     });
 
     (function() {

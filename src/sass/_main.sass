@@ -141,6 +141,14 @@
     display: inline-block
     transform: translate3d(0,0,0)
 
+.blue-circle
+  width: 510px
+  height: 510px
+  border-radius: 50%
+  background-color: #75BDC4
+  background-image: linear-gradient(to top, #CDF0E9 27%, #2B92A5 100%)
+
+
 
 
 //---------------------------------------------------------------------------
@@ -149,7 +157,7 @@
 
 .main-slider
   position: relative
-  z-index: 0
+  z-index: 1
   height: 656px
   overflow: hidden
   &:after
@@ -299,9 +307,17 @@
   z-index: 0
   overflow: hidden
   +wos
+  #morph
+    opacity: 0
+    transition: opacity 0.3s linear
   &.is-init
     height: 100vh
     z-index: 95
+    #morph
+      z-index: 1
+      opacity: 1
+    .main-slider
+      z-index: 0
     .catalog__inner
       overflow: scroll
       overflow-x: hidden
@@ -316,18 +332,21 @@
       &:before
         top: 606px
         transform: translate(-50%, 0)
-    .catalog__btns
-      position: absolute
-      z-index: 2
-      top: 609px
-      left: 50%
-      transform: translate(-50%, 0)
+    // .catalog__btns
+    //   position: absolute
+    //   z-index: 2
+    //   top: 609px
+    //   left: 50%
+    //   transform: translate(-50%, 0)
   &.is-animate
     .catalog__head
       &:before
         transition: all 0.5s linear
     .catalog__btns
       transition: all 0.5s linear
+      box-shadow: none
+    .btn_catalog
+      box-shadow: none
     .catalog__morph
       opacity: 1
   &.is-done
@@ -395,32 +414,39 @@
     transform: translate3d(0,0,0)
 
 .catalog__btns
+  position: absolute
+  z-index: 2
+  top: 609px
+  left: 0
+  right: 0
   display: flex
   align-items: center
   justify-content: space-between
-  width: 512px
+  width: 510px
   margin: auto
   box-sizing: border-box
   font-size: 0
   white-space: nowrap
-  .btn
-    vertical-align: top
-    height: 44px
-    width: 170px
-    line-height: 44px
-    transition: all 0.3s linear
-    box-sizing: content-box
+  background: #FFF
+  box-shadow: 0 0 0 3px $text, 0 0 0 13px #FFF
+
+.btn_catalog
+  vertical-align: top
+  height: 44px
+  width: 170px
+  line-height: 44px
+  transition: all 0.3s linear
+  .btn__hover
+    background: $text
+    color: #FFF
+    box-shadow: -2px 0 0 0 $text
+    &:before
+      width: 170px
+  &:hover
     .btn__hover
-      background: $text
-      color: #FFF
-      box-shadow: -2px 0 0 0 $text
-      &:before
-        width: 170px
-    &:hover
-      .btn__hover
-        width: 170px
-  .btn + .btn
-    border-left: 1px solid $text
+      width: 170px
+  & + &
+    box-shadow: inset 1px 0 0 0 $text
 
 
 //---------------------------------------------------------------------------

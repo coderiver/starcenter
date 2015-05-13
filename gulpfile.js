@@ -2,7 +2,6 @@ var gulp = require('./gulp')([
     // connect your tasks here
     'server',
     'browserify',
-    'browserify-vendor',
     'jade',
     'jade-all',
     'sass',
@@ -16,11 +15,11 @@ gulp.task('build', [
     'sprite',
     'sass',
     'jade-all',
-    'browserify',
-    'browserify-vendor'
+    'browserify'
     ]);
 
 gulp.task('default', [
     'server',
-    'watch'
+    'watch',
+    'browserify'
     ]);
