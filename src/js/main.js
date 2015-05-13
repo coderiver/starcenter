@@ -37,7 +37,6 @@ $(document).ready(function() {
     $('.catalog__btns .btn').on('click', function(event) {
         event.preventDefault();
         var state = $(this).data('morph-state');
-        console.log(state);
         if ( !app.morph.state.active ) {
             app.openCatalog(state);
         } else {
@@ -50,6 +49,8 @@ $(document).ready(function() {
         console.log(event);
         app.closeCatalog();
     });
+
+
 
     (function() {
         var setBodyClass = function(className) {

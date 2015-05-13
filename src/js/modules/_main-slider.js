@@ -20,6 +20,8 @@ function MainSlider(wrapper, slider, paginator) {
             useCSS: true,
             pauseOnHover: true
         };
+        this.animDur = 500;
+        this.animDelay = 300;
 
     }
 
@@ -57,26 +59,16 @@ MainSlider.prototype.pagination = function() {
 };
 
 MainSlider.prototype.play = function() {
-    // var that  = this;
-    // that.autoplayInterval = setInterval(function() {
-    //     that.slider.slick('slickNext');
-    //     // that.currentSlide = that.slider.slick('slickCurrentSlide');
-    //     // that.updatePagiBtns(that.currentSlide);
-    //     console.log(that.currentSlide);
-    // }, 5000);
     this.slider.slick('slickPlay');
 };
 
 MainSlider.prototype.updatePagiBtns = function(slideIndex) {
-    var that = this;
-    var index = slideIndex || that.currentSlide;
-    $(that.pagiBtns).removeClass('is-active');
-    $(that.pagiBtns[index]).addClass('is-active');
+    var index = slideIndex || this.currentSlide;
+    $(this.pagiBtns).removeClass('is-active');
+    $(this.pagiBtns[index]).addClass('is-active');
 };
 
 MainSlider.prototype.pause = function() {
-    // var that = this;
-    // clearInterval(that.autoplayInterval);
     this.slider.slick('slickPause');
 };
 
@@ -84,22 +76,23 @@ MainSlider.prototype.makeHidden = function() {
     var that = this;
     that.pause();
     setTimeout(function() {
-        that.wrapper.addClass('is-animate');
-    }, 300);
-    setTimeout(function() {
-        that.wrapper.css('display', 'none');
-    }, 800);
+        that.wrapper.addClass('is-hidden');
+    }, that.animDelay);
+    // setTimeout(function() {
+    //     that.wrapper.css('display', 'none');
+    // }, 800);
 };
 
 MainSlider.prototype.makeVisible = function() {
     var that = this;
-    that.wrapper.css('display', '');
-    setTimeout(function() {
-        that.wrapper.removeClass('is-animate');
-    }, 20);
+    // that.wrapper.css('display', '');
+    that.wrapper.removeClass('is-hidden');
+    // setTimeout(function() {
+        // that.wrapper.removeClass('is-init');
+    // }, that.animDelay);
     setTimeout(function() {
         that.play();
-    }, 700);
+    }, that.animDur);
 };
 
 module.exports = MainSlider;

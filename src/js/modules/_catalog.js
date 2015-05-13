@@ -1,34 +1,38 @@
 var $ = require('jquery');
 
 function Catalog(selector) {
-    this.el        = $(selector);
-    this.initClass = 'is-init';
-    this.animClass = 'is-animate';
-    this.doneClass = 'is-done';
+    this.el      = $(selector);
+    this.classes = {
+        init: 'is-init',
+        anim: 'is-animate',
+        done: 'is-done'
+    };
+    this.animDur = 500;
+    this.animDelay = 300;
 }
 
 Catalog.prototype.open = function() {
     var that = this;
-    that.el.addClass(that.initClass);
+    that.el.addClass(that.classes.init);
     setTimeout(function() {
-        that.el.addClass(that.animClass);
-    }, 20);
+        that.el.addClass(that.classes.anim);
+    }, 1);
     setTimeout(function() {
-        that.el.addClass(that.doneClass);
-    }, 200);
+        that.el.addClass(that.classes.done);
+    }, that.animDur);
     that.setHeight();
 };
 
 Catalog.prototype.close = function() {
     var that = this;
-    that.el.removeClass(that.doneClass);
+    that.el.removeClass(that.classes.done);
     setTimeout(function() {
-        that.el.removeClass(that.animClass);
-    }, 500);
+        that.el.removeClass(that.classes.anim);
+    }, that.animDur);
     setTimeout(function() {
-        that.el.removeClass(that.initClass);
+        that.el.removeClass(that.classes.init);
         that.el.css('height', '');
-    }, 700);
+    }, that.animDur + that.animDelay);
 };
 
 Catalog.prototype.setHeight = function() {

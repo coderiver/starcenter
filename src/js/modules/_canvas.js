@@ -194,7 +194,7 @@ Morph.prototype._morphRectangle = function(state) {
     // change rectange size
     new TWEEN.Tween(rect.bounds.size)
         .to(pos.size, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             rect.bounds.size.width = this.width;
             rect.bounds.size.height = this.height;
@@ -204,7 +204,7 @@ Morph.prototype._morphRectangle = function(state) {
     // change rectange position
     new TWEEN.Tween(rect.position)
         .to(pos.center, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             rect.position.x = this.x;
             rect.position.y = this.y;
@@ -332,7 +332,7 @@ Morph.prototype._changePicture = function(state) {
                 pos     : this.objects.raster[state].position,
                 opacity : 1
             },
-            delay: 100,
+            delay: 80,
         }
     };
 

@@ -38,7 +38,6 @@ $(document).ready(function() {
     $('.catalog__btns .btn').on('click', function(event) {
         event.preventDefault();
         var state = $(this).data('morph-state');
-        console.log(state);
         if ( !app.morph.state.active ) {
             app.openCatalog(state);
         } else {
@@ -51,6 +50,8 @@ $(document).ready(function() {
         console.log(event);
         app.closeCatalog();
     });
+
+
 
     (function() {
         var setBodyClass = function(className) {
@@ -25845,7 +25846,7 @@ Morph.prototype._morphRectangle = function(state) {
     // change rectange size
     new TWEEN.Tween(rect.bounds.size)
         .to(pos.size, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             rect.bounds.size.width = this.width;
             rect.bounds.size.height = this.height;
@@ -25855,7 +25856,7 @@ Morph.prototype._morphRectangle = function(state) {
     // change rectange position
     new TWEEN.Tween(rect.position)
         .to(pos.center, dur)
-        .easing(easing)
+        // .easing(easing)
         .onUpdate(function() {
             rect.position.x = this.x;
             rect.position.y = this.y;
@@ -25983,7 +25984,7 @@ Morph.prototype._changePicture = function(state) {
                 pos     : this.objects.raster[state].position,
                 opacity : 1
             },
-            delay: 100,
+            delay: 80,
         }
     };
 
@@ -26260,34 +26261,38 @@ module.exports = Morph;
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Catalog(selector) {
-    this.el        = $(selector);
-    this.initClass = 'is-init';
-    this.animClass = 'is-animate';
-    this.doneClass = 'is-done';
+    this.el      = $(selector);
+    this.classes = {
+        init: 'is-init',
+        anim: 'is-animate',
+        done: 'is-done'
+    };
+    this.animDur = 500;
+    this.animDelay = 300;
 }
 
 Catalog.prototype.open = function() {
     var that = this;
-    that.el.addClass(that.initClass);
+    that.el.addClass(that.classes.init);
     setTimeout(function() {
-        that.el.addClass(that.animClass);
-    }, 20);
+        that.el.addClass(that.classes.anim);
+    }, 1);
     setTimeout(function() {
-        that.el.addClass(that.doneClass);
-    }, 200);
+        that.el.addClass(that.classes.done);
+    }, that.animDur);
     that.setHeight();
 };
 
 Catalog.prototype.close = function() {
     var that = this;
-    that.el.removeClass(that.doneClass);
+    that.el.removeClass(that.classes.done);
     setTimeout(function() {
-        that.el.removeClass(that.animClass);
-    }, 500);
+        that.el.removeClass(that.classes.anim);
+    }, that.animDur);
     setTimeout(function() {
-        that.el.removeClass(that.initClass);
+        that.el.removeClass(that.classes.init);
         that.el.css('height', '');
-    }, 700);
+    }, that.animDur + that.animDelay);
 };
 
 Catalog.prototype.setHeight = function() {
@@ -26318,6 +26323,8 @@ function MainSlider(wrapper, slider, paginator) {
             useCSS: true,
             pauseOnHover: true
         };
+        this.animDur = 500;
+        this.animDelay = 300;
 
     }
 
@@ -26355,26 +26362,16 @@ MainSlider.prototype.pagination = function() {
 };
 
 MainSlider.prototype.play = function() {
-    // var that  = this;
-    // that.autoplayInterval = setInterval(function() {
-    //     that.slider.slick('slickNext');
-    //     // that.currentSlide = that.slider.slick('slickCurrentSlide');
-    //     // that.updatePagiBtns(that.currentSlide);
-    //     console.log(that.currentSlide);
-    // }, 5000);
     this.slider.slick('slickPlay');
 };
 
 MainSlider.prototype.updatePagiBtns = function(slideIndex) {
-    var that = this;
-    var index = slideIndex || that.currentSlide;
-    $(that.pagiBtns).removeClass('is-active');
-    $(that.pagiBtns[index]).addClass('is-active');
+    var index = slideIndex || this.currentSlide;
+    $(this.pagiBtns).removeClass('is-active');
+    $(this.pagiBtns[index]).addClass('is-active');
 };
 
 MainSlider.prototype.pause = function() {
-    // var that = this;
-    // clearInterval(that.autoplayInterval);
     this.slider.slick('slickPause');
 };
 
@@ -26382,22 +26379,23 @@ MainSlider.prototype.makeHidden = function() {
     var that = this;
     that.pause();
     setTimeout(function() {
-        that.wrapper.addClass('is-animate');
-    }, 300);
-    setTimeout(function() {
-        that.wrapper.css('display', 'none');
-    }, 800);
+        that.wrapper.addClass('is-hidden');
+    }, that.animDelay);
+    // setTimeout(function() {
+    //     that.wrapper.css('display', 'none');
+    // }, 800);
 };
 
 MainSlider.prototype.makeVisible = function() {
     var that = this;
-    that.wrapper.css('display', '');
-    setTimeout(function() {
-        that.wrapper.removeClass('is-animate');
-    }, 20);
+    // that.wrapper.css('display', '');
+    that.wrapper.removeClass('is-hidden');
+    // setTimeout(function() {
+        // that.wrapper.removeClass('is-init');
+    // }, that.animDelay);
     setTimeout(function() {
         that.play();
-    }, 700);
+    }, that.animDur);
 };
 
 module.exports = MainSlider;
