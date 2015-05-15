@@ -28,7 +28,6 @@ function MainSlider(wrapper, slider, paginator) {
 MainSlider.prototype.init = function() {
     var that = this;
     that.slider.on('init', function() {
-        console.log('slick is ready');
         that.pagination();
     });
 

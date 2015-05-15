@@ -23,28 +23,25 @@ body
 .outer
   min-width: $content-width
   min-height: $content-height
-  max-width: 1368px
-  margin: auto
+  width: 1368px
   position: absolute
-  z-index: 1
   top: 0
   left: 0
   right: 0
   height: 100%
+  margin: auto
+  z-index: 1
   overflow: hidden
   +wos
 
 .inner
   position: absolute
-  padding-top: $content-height
+  // padding-top: $content-height
   top: 0
   left: 0
   right: -16px
   bottom: 0
-  overflow-y: scroll
-  overflow-x: hidden
-  .mac-os &
-    right: -15px
+  +scroll
 
 #header
   position: absolute

@@ -126,20 +126,9 @@
   +trans(color)
 
 
-.morph
-  position: absolute
-  // width: 510px
-  // height: 510px
-  text-align: center
-  // line-height: 510px
-  z-index: 0
-  top: 100px
-  left: 50%
-  // margin-left: -255px
-  transform: translate3d(-50%, 0, 0)
-  > svg
-    display: inline-block
-    transform: translate3d(0,0,0)
+//---------------------------------------------------------------------------
+//            ##### begin common blocks #####
+//---------------------------------------------------------------------------
 
 .blue-circle
   width: 510px
@@ -147,6 +136,86 @@
   border-radius: 50%
   background-color: #75BDC4
   background-image: linear-gradient(to top, #CDF0E9 27%, #2B92A5 100%)
+
+
+.price
+  display: inline-block
+  +f(hb, 72, 0.05)
+
+.price__small
+  display: inline-block
+  font-size: 24px
+  letter-spacing: 0
+  sup
+    vertical-align: super
+    font-size: 12px
+
+
+.details-btn
+  display: inline-block
+  background: none
+  +f(hb, 10, 0.5)
+  text-transform: uppercase
+  text-decoration: none
+  color: inherit
+  line-height: 40px
+  > span
+    display: inline-block
+    vertical-align: middle
+  .icon-arrow
+    vertical-align: middle
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  &:hover
+    .icon-arrow
+      transform: translateX(30px)
+
+
+.section
+  position: relative
+
+
+.btn
+  position: relative
+  z-index: 0
+  display: inline-block
+  text-decoration: none
+  color: inherit
+  box-sizing: border-box
+  text-align: center
+  background: none
+  +f(hb, 10, 0.20)
+  text-transform: uppercase
+  &:hover
+    .btn__hover
+      width: 100%
+
+.btn__hover
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  width: 0
+  height: 100%
+  overflow: hidden
+  +trans(width)
+  &:before
+    content: attr(data-hover)
+    position: absolute
+    z-index: -1
+    top: 0
+    left: 0
+    bottom: 0
+    width: 100%
+    box-sizing: border-box
+    overflow: hidden
+
+.deco
+  display: inline-block
+  +f(hr, 12, 0.25)
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end common blocks  ^^^^^
+//---------------------------------------------------------------------------
 
 
 
@@ -160,6 +229,8 @@
   z-index: 1
   height: 656px
   overflow: hidden
+  transition: background-color 0.5s linear
+  background-color: none
   &:after
     content: ""
     position: absolute
@@ -172,6 +243,7 @@
     transform: translate3d(0, 100%, 0)
     background: #FFF
   &.is-hidden
+    // background-color: #ccc
     &:after
       transform: translate3d(0, 0, 0)
     .main-slider__slides
@@ -260,78 +332,6 @@
 
 
 
-.price
-  display: inline-block
-  +f(hb, 72, 0.05)
-
-.price__small
-  display: inline-block
-  font-size: 24px
-  letter-spacing: 0
-  sup
-    vertical-align: super
-    font-size: 12px
-
-
-.details-btn
-  display: inline-block
-  background: none
-  +f(hb, 10, 0.5)
-  text-transform: uppercase
-  text-decoration: none
-  color: inherit
-  line-height: 40px
-  > span
-    display: inline-block
-    vertical-align: middle
-  .icon-arrow
-    vertical-align: middle
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-  &:hover
-    .icon-arrow
-      transform: translateX(30px)
-
-
-.section
-  position: relative
-
-
-.btn
-  position: relative
-  z-index: 0
-  display: inline-block
-  text-decoration: none
-  color: inherit
-  box-sizing: border-box
-  text-align: center
-  background: none
-  +f(hb, 10, 0.20)
-  text-transform: uppercase
-  &:hover
-    .btn__hover
-      width: 100%
-
-.btn__hover
-  position: absolute
-  z-index: 1
-  top: 0
-  left: 0
-  width: 0
-  height: 100%
-  overflow: hidden
-  +trans(width)
-  &:before
-    content: attr(data-hover)
-    position: absolute
-    z-index: -1
-    top: 0
-    left: 0
-    bottom: 0
-    width: 100%
-    box-sizing: border-box
-    overflow: hidden
-
-
 //---------------------------------------------------------------------------
 //            ##### begin catalog #####
 //---------------------------------------------------------------------------
@@ -348,6 +348,15 @@
   #morph
     opacity: 0
     transition: opacity 0.3s linear
+  .deco
+    position: absolute
+    top: 145px
+    right: 125px
+    opacity: 0
+    visibility: hidden
+    transform: translateY(30px)
+    transition: all 0.2s linear
+
   &.is-init
     height: 100vh
     z-index: 95
@@ -355,25 +364,56 @@
       z-index: 1
     .main-slider
       z-index: 0
+
   &.is-animate
     #morph
       opacity: 1
-    .catalog__btns
+    .catalog-category
+      &:before
+        opacity: 0
+        transition-delay: 0.2s
+        visibility: hidden
+    .catalog-category__item
       &:before
         opacity: 0
         visibility: hidden
-    .catalog__btn
-      box-shadow: none
+    .catalog-btn
+      &:before
+        opacity: 0
+        visibility: hidden
+
   &.is-done
-    .catalog__btns
+    .catalog-category
       top: 335px
-    .catalog__btn
-      &:first-child
-        right: auto
+      width: 1600px
+      margin-left: -800px
+    .catalog-btn
+      color: #AAA
+      letter-spacing: 0.5em
+      width: auto
+      &.is-active
+        color: $text
+        .catalog-btn__hover
+          width: 100%
+    .catalog-btn__hover
+      background: none
+      color: $text
+    .catalog-btn__hover-in
+      width: auto
+    .catalog-btn__hover-text
+      &:before
+        content: ""
+        position: absolute
+        top: 100%
         left: 0
-      &:last-child
-        left: auto
-        right: 0
+        right: em(4,12)
+        height: 3px
+        background: $text
+    .deco
+      opacity: 1
+      visibility: visible
+      transform: none
+      transition-delay: 0.3s
 
 .catalog__inner
   position: absolute
@@ -381,66 +421,133 @@
   left: 0
   right: 0
   bottom: 0
-  overflow-y: scroll
-  overflow-x: hidden
-  right: -16px
-  .mac-os &
-    right: -15px
+  +scroll
 
-.catalog__btns
+.catalog-category
   position: absolute
   z-index: 2
   top: 609px
-  left: 0
-  right: 0
+  left: 50%
   height: 44px
+  width: 510px
+  margin-left: -255px
   box-sizing: border-box
   transition: all 0.5s linear
+  font-size: 0
   &:before
     content: ""
-    position: relative
-    display: block
+    position: absolute
     z-index: 0
+    top: 0
+    left: 0
+    right: 0
     width: 510px
     height: 100%
     margin: auto
     background: #FFF
     box-shadow: 0 0 0 3px $text, 0 0 0 13px #FFF
-    transition: opacity 0.3s linear
+    transition: all 0.2s linear
+    visibility: visible
+    opacity: 1
+
+.catalog-category__item
+  position: relative
+  z-index: 1
+  display: inline-block
+  vertical-align: middle
+  width: 33.3333%
+  height: 100%
+  text-align: center
+  overflow: hidden
+  pointer-events: none
+  &:before
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    bottom: 0
+    width: 1px
+    background: $text
+    transition: all 0.3s linear
     opacity: 1
     visibility: visible
+  &:first-child
+    &:before
+      display: none
+  &.clone
+    display: none
+    &.slick-slide
+      display: block
 
-.catalog__btn
-  position: absolute
+  &.is-active
+    .catalog-btn
+      transform: scale(1.3)
+  &.slick-center
+    .catalog-btn__hover
+      width: 100%
+
+  &.slick-slide
+    .catalog-btn__hover-text,
+    .catalog-btn__front,
+    .catalog-btm__hover
+      transition-duration: 0.3s
+  &.slick-center
+    .catalog-btn__hover-text,
+    .catalog-btn__front,
+    .catalog-btm__hover
+      transition-delay: 0.3s
+
+.catalog-btn
+  display: inline-block
+  position: relative
   z-index: 1
-  top: 50%
-  left: auto
-  right: auto
-  margin-top: -22px
   height: 44px
   width: 170px
   line-height: 44px
-  transition: all 0.5s linear
-  .btn__hover
-    background: $text
-    color: #FFF
-    box-shadow: -2px 0 0 0 $text
-    &:before
-      width: 170px
+  +f(hb, 10, 0.20)
+  color: $text
+  text-transform: uppercase
+  text-decoration: none
+  text-align: center
+  transition: all 0.3s linear
+  overflow: hidden
+  white-space: nowrap
+  pointer-events: all
   &:hover
-    .btn__hover
-      width: 170px
-  & + &
-    box-shadow: inset 1px 0 0 0 $text
-  &:first-child
-    right: 50%
-    margin-right: 85px
-  &:nth-child(2)
-    left: 50%
-    margin-left: -85px
-  &:last-child
-    left: 50%
-    margin-left: 85px
+    .catalog-btn__hover
+      width: 100%
+
+.catalog-btn__front
+  transition: all 0.3s linear
+
+.catalog-btn__hover
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  width: 0
+  height: 100%
+  overflow: hidden
+  transition: width 0.2s linear
+  background: $text
+  color: #FFF
+  box-shadow: -2px 0 0 0 $text
+
+.catalog-btn__hover-in
+  position: absolute
+  z-index: -1
+  top: 0
+  left: 0
+  bottom: 0
+  width: 170px
+  box-sizing: border-box
+  overflow: hidden
+
+.catalog-btn__hover-text
+  display: inline-block
+  position: relative
+  line-height: 1.5
+  transition: font-size 0.5s linear
 
 
 //---------------------------------------------------------------------------

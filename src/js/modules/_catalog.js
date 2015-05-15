@@ -16,10 +16,10 @@ Catalog.prototype.open = function() {
     that.el.addClass(that.classes.init);
     setTimeout(function() {
         that.el.addClass(that.classes.anim);
-    }, 1);
+    }, 10);
     setTimeout(function() {
         that.el.addClass(that.classes.done);
-    }, that.animDur);
+    }, that.animDelay);
     that.setHeight();
 };
 
