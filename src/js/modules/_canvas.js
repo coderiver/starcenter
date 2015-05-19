@@ -57,11 +57,11 @@ Morph.prototype._initContent = function() {
             circle: {
                 // shift: {x: 111, y: 92},
                 pic: new paper.Raster({
-                    source: '/img/canvas1.png',
+                    source: 'img/canvas1.png',
                     position: paper.view.center
                 }),
                 altPic: new paper.Raster({
-                    source: '/img/canvas1.png',
+                    source: 'img/canvas1.png',
                     position: paper.view.center,
                     opacity: 0
                 }),
@@ -73,11 +73,11 @@ Morph.prototype._initContent = function() {
             square: {
                 // shift: {x: 50, y: 131},
                 pic: new paper.Raster({
-                    source: '/img/canvas2.png',
+                    source: 'img/canvas2.png',
                     position: paper.view.center
                 }),
                 altPic: new paper.Raster({
-                    source: '/img/canvas2.png',
+                    source: 'img/canvas2.png',
                     position: paper.view.center,
                     opacity: 0
                 }),
@@ -89,12 +89,12 @@ Morph.prototype._initContent = function() {
             triangle: {
                 // shift: {x: 45, y: 90},
                 pic: new paper.Raster({
-                    source: '/img/canvas3.png',
+                    source: 'img/canvas3.png',
                     position: paper.view.center,
                     visible: true,
                 }),
                 altPic: new paper.Raster({
-                    source: '/img/canvas3-1.png',
+                    source: 'img/canvas3-1.png',
                     position: paper.view.center,
                     opacity: 0
                 }),
