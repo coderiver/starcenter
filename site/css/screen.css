@@ -268,7 +268,9 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 .curve { position: absolute; z-index: 0; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
 .curve > svg { display: block; }
 
-.skyline > svg { display: block; }
+.skyline { stroke-dasharray: 4000px; stroke-dashoffset: -4000px; }
+.skyline > svg { display: block; -webkit-transition: stroke-dashoffset 2s ease; transition: stroke-dashoffset 2s ease; }
+.skyline.is-animate { stroke-dashoffset: 0; }
 
 .fact { position: absolute; width: 312px; padding: 0 0 0 40px; box-sizing: border-box; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 16px; }
 
@@ -314,22 +316,36 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 .timeline__year:nth-child(30) { left: 89897px; }
 .timeline__year:nth-child(31) { left: 120418px; }
 
-.men { position: relative; width: 720px; background: #FFF; }
+.table { position: relative; background: #FFF; }
+.table > table { table-layout: fixed; position: relative; z-index: 1; text-align: left; }
+.table td, .table th { box-sizing: border-box; }
+
+.table__border { position: absolute; z-index: 0; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
 
 .men__border { position: absolute; top: 0; left: 0; right: 0; bottom: 0; stroke-dasharray: 910px; stroke-dashoffset: 910px; }
 .men__border svg { display: block; -webkit-transition: stroke-dashoffset 1.5s ease; transition: stroke-dashoffset 1.5s ease; }
 .men__border.is-animate { stroke-dashoffset: 0; }
 
-.men__table { position: relative; z-index: 1; table-layout: fixed; }
+.men__table { width: 723px; }
 
 .men__cell { text-align: left; padding: 0 10px 0 45px; vertical-align: middle; box-sizing: border-box; }
-.men__cell:first-child { width: 195px; }
+.men__cell:first-child { width: 196px; }
 .men__cell:nth-child(2) { width: 235px; }
 .men__cell:last-child { width: 290px; }
 
 .men__row1 .men__cell { height: 90px; }
 
-.men__row2 .men__cell { height: 100px; }
+.men__row2 .men__cell { height: 99px; }
+
+.partners__table { width: 723px; }
+
+.partners__row1 .partners__cell { height: 126px; }
+.partners__row1 .partners__cell:first-child { vertical-align: top; padding: 35px 0 0 50px; }
+
+.partners__row2 .partners__cell { height: 66px; }
+
+.partners__cell { vertical-align: middle; padding-left: 70px; box-sizing: border-box; }
+.partners__cell:first-child { width: 202px; }
 
 
 

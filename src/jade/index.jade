@@ -168,14 +168,9 @@ block content
 
     .box
       .box__inner
-        .men
-          .men__border
-            include ../img/svg/men-table.svg
-            //- div
-            //- div
-            //- div
-            //- div
-            //- div
+        .table.men
+          .table__border
+            include ../img/svg/optimized/men-table.svg
           table.men__table
             tr.men__row1
               td.men__cell
@@ -199,5 +194,22 @@ block content
                   span.amount__sign &gt;
                   strong.amount__value 700
                   span.amount__text людей
+
+        .table.partners
+          .table__border
+            //- include ../img/svg/optimized/partners-table.svg
+          table.partners__table
+            tr.partners__row1
+              td.partners__cell(rowspan="2")
+                strong.heading.heading_small
+                  | Мы нашли 
+              td.partners__cell
+                .amount
+                  span.amount__sign &gt;
+                  strong.amount__value 100
+                  span.amount__text партнеров
+            tr.partners__row2
+              td.partners__cell
+                p с некоторыми мы работаем уже больше 8 лет
 
   //END timeline

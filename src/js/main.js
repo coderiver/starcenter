@@ -92,5 +92,8 @@ $(document).ready(function() {
     $('.men').on('click', function() {
         $(this).find('.men__border').toggleClass('is-animate');
     });
+    $('.skyline').on('click', function() {
+        $(this).toggleClass('is-animate');
+    });
 
 });

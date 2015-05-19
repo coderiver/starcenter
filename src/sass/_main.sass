@@ -691,8 +691,13 @@
     display: block
 
 .skyline
+  stroke-dasharray: 4000px
+  stroke-dashoffset: -4000px
   > svg
     display: block
+    transition: stroke-dashoffset 2s ease
+  &.is-animate
+    stroke-dashoffset: 0
 
 
 .fact
@@ -756,10 +761,31 @@
       left: (45 * $i + $delta) + px
 
 
-.men
+.table
   position: relative
-  width: 720px
   background: #FFF
+  > table
+    table-layout: fixed
+    position: relative
+    z-index: 1
+    text-align: left
+  td, th
+    box-sizing: border-box
+
+.table__border
+  position: absolute
+  z-index: 0
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  pointer-events: none
+
+
+// .men
+//   position: relative
+//   width: 723px
+//   background: #FFF
 
 .men__border
   position: absolute
@@ -776,9 +802,7 @@
     stroke-dashoffset: 0
 
 .men__table
-  position: relative
-  z-index: 1
-  table-layout: fixed
+  width: 723px
 
 .men__cell
   text-align: left
@@ -786,7 +810,7 @@
   vertical-align: middle
   box-sizing: border-box
   &:first-child
-    width: 195px
+    width: 196px
   &:nth-child(2)
     width: 235px
   &:last-child
@@ -798,7 +822,30 @@
 
 .men__row2
   .men__cell
-    height: 100px
+    height: 99px
+
+
+.partners__table
+  width: 723px
+
+.partners__row1
+  .partners__cell
+    height: 126px
+    &:first-child
+      vertical-align: top
+      padding: 35px 0 0 50px
+
+.partners__row2
+  .partners__cell
+    height: 66px
+
+.partners__cell
+  vertical-align: middle
+  padding-left: 70px
+  box-sizing: border-box
+  &:first-child
+    width: 202px
+
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end facts  ^^^^^

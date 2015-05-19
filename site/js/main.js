@@ -93,6 +93,9 @@ $(document).ready(function() {
     $('.men').on('click', function() {
         $(this).find('.men__border').toggleClass('is-animate');
     });
+    $('.skyline').on('click', function() {
+        $(this).toggleClass('is-animate');
+    });
 
 });
 },{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_canvas.js":9,"./modules/_catalog.js":10,"./modules/_category.js":11,"./modules/_main-slider.js":12,"./modules/_routing.js":13}],2:[function(require,module,exports){

@@ -5,11 +5,11 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="men-table" sketch:type="MSLayerGroup" transform="translate(1.500000, 1.500000)" stroke="#000000" stroke-linecap="square">
+        <g id="men-table" sketch:type="MSLayerGroup" transform="translate(1.500000, 1.500000)" stroke="#333333" stroke-linecap="square">
             <path d="M0,0 L195,0 L195,88" id="men-table-line-5" sketch:type="MSShapeGroup"></path>
-            <path d="M720,88 L0,88 L0,0" id="men-table-line-4" sketch:type="MSShapeGroup"></path>
+            <path d="M0,0 L0,88 L720,88" id="men-table-line-4" sketch:type="MSShapeGroup"></path>
             <path d="M0,0 L430,0 L430,186" id="men-table-line-3" stroke-width="3" sketch:type="MSShapeGroup"></path>
-            <path d="M720,186 L0,186 L0,0" id="men-table-line-2" stroke-width="3" sketch:type="MSShapeGroup"></path>
+            <path d="M-4.63481452e-14,-5.55111512e-17 L-4.63481452e-14,186 L720,186" id="men-table-line-2" stroke-width="3" sketch:type="MSShapeGroup"></path>
             <path d="M0,0 L720,0 L720,186" id="men-table-line-1" stroke-width="3" sketch:type="MSShapeGroup"></path>
         </g>
     </g>

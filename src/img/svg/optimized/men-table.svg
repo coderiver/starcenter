@@ -2,11 +2,11 @@
     <title>
         men-table
     </title>
-    <g stroke="#000" stroke-linecap="square" fill="none" fill-rule="evenodd">
+    <g stroke="#333" stroke-linecap="square" fill="none" fill-rule="evenodd">
         <path d="M1.5 1.5h195v88"/>
-        <path d="M721.5 89.5H1.5v-88"/>
+        <path d="M1.5 1.5v88h720"/>
         <path d="M1.5 1.5h430v186" stroke-width="3"/>
-        <path d="M721.5 187.5H1.5V1.5" stroke-width="3"/>
+        <path d="M1.5 1.5v186h720" stroke-width="3"/>
         <path d="M1.5 1.5h720v186" stroke-width="3"/>
     </g>
 </svg>
