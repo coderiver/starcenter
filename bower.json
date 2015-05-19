@@ -17,6 +17,8 @@
     "modernizr": "~2.8.3",
     "slick-carousel": "~1.5.2",
     "jquery": "~1.11.2",
-    "paper": "~0.9.22"
+    "paper": "~0.9.22",
+    "routie": "~0.3.2",
+    "sammy": "~0.7.6"
   }
 }

@@ -1,15 +1,20 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var app, Slider, Catalog, Morph, Category, catalog, morph, slider;
-
 require("./../../bower_components/jquery/dist/jquery.js");
 require("./../../bower_components/modernizr/modernizr.js");
+var Slider  = require('./modules/_main-slider.js');
+var Morph   = require('./modules/_canvas.js');
+var Catalog = require('./modules/_catalog.js');
+var Category = require('./modules/_category.js');
+var router = require('./modules/_routing.js');
 
-Slider  = require('./modules/_main-slider.js');
-Morph   = require('./modules/_canvas.js');
-Catalog = require('./modules/_catalog.js');
-Category = require('./modules/_category.js');
+
+var app, catalog, morph, slider;
+
+var content = $('#content');
 
 $(document).ready(function() {
+
+    router.run();
 
     app = {
         slider  : new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator'),
@@ -36,10 +41,10 @@ $(document).ready(function() {
     app.morph.init();
 
 
-    console.log(app.morph, app.category);
+    // console.log(app.morph, app.category);
 
     $('.catalog-btn').on('click', function(event) {
-        event.preventDefault();
+        // event.preventDefault();
         var state = $(this).data('morph-state');
         if ( !app.morph.state.active ) {
             app.openCatalog(state);
@@ -49,7 +54,7 @@ $(document).ready(function() {
     });
 
     $('#header .logo').on('click', function(event) {
-        event.preventDefault();
+        // event.preventDefault();
         app.closeCatalog();
     });
 
@@ -80,13 +85,17 @@ $(document).ready(function() {
             widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
         $outer.remove();
         return 100 - widthWithScroll;
-    };
+    }
 
     var width = getScrollBarWidth();
-    console.log(width);
+    console.log('Scroll bar width: ' + width + 'px');
+
+    $('.men').on('click', function() {
+        $(this).find('.men__border').toggleClass('is-animate');
+    });
 
 });
-},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_canvas.js":8,"./modules/_catalog.js":9,"./modules/_category.js":10,"./modules/_main-slider.js":11}],2:[function(require,module,exports){
+},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_canvas.js":9,"./modules/_catalog.js":10,"./modules/_category.js":11,"./modules/_main-slider.js":12,"./modules/_routing.js":13}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -24884,6 +24893,2164 @@ return paper;
 };
 
 },{}],5:[function(require,module,exports){
+// name: sammy
+// version: 0.7.6
+
+// Sammy.js / http://sammyjs.org
+
+(function(factory){
+  // Support module loading scenarios
+  if (typeof define === 'function' && define.amd){
+    // AMD Anonymous Module
+    define(['jquery'], factory);
+  } else {
+    // No module loader (plain <script> tag) - put directly in global namespace
+    jQuery.sammy = window.Sammy = factory(jQuery);
+  }
+})(function($){
+
+  var Sammy,
+      PATH_REPLACER = "([^\/]+)",
+      PATH_NAME_MATCHER = /:([\w\d]+)/g,
+      QUERY_STRING_MATCHER = /\?([^#]*)?$/,
+      // mainly for making `arguments` an Array
+      _makeArray = function(nonarray) { return Array.prototype.slice.call(nonarray); },
+      // borrowed from jQuery
+      _isFunction = function( obj ) { return Object.prototype.toString.call(obj) === "[object Function]"; },
+      _isArray = function( obj ) { return Object.prototype.toString.call(obj) === "[object Array]"; },
+      _isRegExp = function( obj ) { return Object.prototype.toString.call(obj) === "[object RegExp]"; },
+      _decode = function( str ) { return decodeURIComponent((str || '').replace(/\+/g, ' ')); },
+      _encode = encodeURIComponent,
+      _escapeHTML = function(s) {
+        return String(s).replace(/&(?!\w+;)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      },
+      _routeWrapper = function(verb) {
+        return function() {
+          return this.route.apply(this, [verb].concat(Array.prototype.slice.call(arguments)));
+        };
+      },
+      _template_cache = {},
+      _has_history = !!(window.history && history.pushState),
+      loggers = [];
+
+
+  // `Sammy` (also aliased as $.sammy) is not only the namespace for a
+  // number of prototypes, its also a top level method that allows for easy
+  // creation/management of `Sammy.Application` instances. There are a
+  // number of different forms for `Sammy()` but each returns an instance
+  // of `Sammy.Application`. When a new instance is created using
+  // `Sammy` it is added to an Object called `Sammy.apps`. This
+  // provides for an easy way to get at existing Sammy applications. Only one
+  // instance is allowed per `element_selector` so when calling
+  // `Sammy('selector')` multiple times, the first time will create
+  // the application and the following times will extend the application
+  // already added to that selector.
+  //
+  // ### Example
+  //
+  //      // returns the app at #main or a new app
+  //      Sammy('#main')
+  //
+  //      // equivalent to "new Sammy.Application", except appends to apps
+  //      Sammy();
+  //      Sammy(function() { ... });
+  //
+  //      // extends the app at '#main' with function.
+  //      Sammy('#main', function() { ... });
+  //
+  Sammy = function() {
+    var args = _makeArray(arguments),
+        app, selector;
+    Sammy.apps = Sammy.apps || {};
+    if (args.length === 0 || args[0] && _isFunction(args[0])) { // Sammy()
+      return Sammy.apply(Sammy, ['body'].concat(args));
+    } else if (typeof (selector = args.shift()) == 'string') { // Sammy('#main')
+      app = Sammy.apps[selector] || new Sammy.Application();
+      app.element_selector = selector;
+      if (args.length > 0) {
+        $.each(args, function(i, plugin) {
+          app.use(plugin);
+        });
+      }
+      // if the selector changes make sure the reference in Sammy.apps changes
+      if (app.element_selector != selector) {
+        delete Sammy.apps[selector];
+      }
+      Sammy.apps[app.element_selector] = app;
+      return app;
+    }
+  };
+
+  Sammy.VERSION = '0.7.6';
+
+  // Add to the global logger pool. Takes a function that accepts an
+  // unknown number of arguments and should print them or send them somewhere
+  // The first argument is always a timestamp.
+  Sammy.addLogger = function(logger) {
+    loggers.push(logger);
+  };
+
+  // Sends a log message to each logger listed in the global
+  // loggers pool. Can take any number of arguments.
+  // Also prefixes the arguments with a timestamp.
+  Sammy.log = function()  {
+    var args = _makeArray(arguments);
+    args.unshift("[" + Date() + "]");
+    $.each(loggers, function(i, logger) {
+      logger.apply(Sammy, args);
+    });
+  };
+
+  if (typeof window.console != 'undefined') {
+    if (typeof window.console.log === 'function' && _isFunction(window.console.log.apply)) {
+      Sammy.addLogger(function() {
+        window.console.log.apply(window.console, arguments);
+      });
+    } else {
+      Sammy.addLogger(function() {
+        window.console.log(arguments);
+      });
+    }
+  } else if (typeof console != 'undefined') {
+    Sammy.addLogger(function() {
+      console.log.apply(console, arguments);
+    });
+  }
+
+  $.extend(Sammy, {
+    makeArray: _makeArray,
+    isFunction: _isFunction,
+    isArray: _isArray
+  });
+
+  // Sammy.Object is the base for all other Sammy classes. It provides some useful
+  // functionality, including cloning, iterating, etc.
+  Sammy.Object = function(obj) { // constructor
+    return $.extend(this, obj || {});
+  };
+
+  $.extend(Sammy.Object.prototype, {
+
+    // Escape HTML in string, use in templates to prevent script injection.
+    // Also aliased as `h()`
+    escapeHTML: _escapeHTML,
+    h: _escapeHTML,
+
+    // Returns a copy of the object with Functions removed.
+    toHash: function() {
+      var json = {};
+      $.each(this, function(k,v) {
+        if (!_isFunction(v)) {
+          json[k] = v;
+        }
+      });
+      return json;
+    },
+
+    // Renders a simple HTML version of this Objects attributes.
+    // Does not render functions.
+    // For example. Given this Sammy.Object:
+    //
+    //     var s = new Sammy.Object({first_name: 'Sammy', last_name: 'Davis Jr.'});
+    //     s.toHTML()
+    //     //=> '<strong>first_name</strong> Sammy<br /><strong>last_name</strong> Davis Jr.<br />'
+    //
+    toHTML: function() {
+      var display = "";
+      $.each(this, function(k, v) {
+        if (!_isFunction(v)) {
+          display += "<strong>" + k + "</strong> " + v + "<br />";
+        }
+      });
+      return display;
+    },
+
+    // Returns an array of keys for this object. If `attributes_only`
+    // is true will not return keys that map to a `function()`
+    keys: function(attributes_only) {
+      var keys = [];
+      for (var property in this) {
+        if (!_isFunction(this[property]) || !attributes_only) {
+          keys.push(property);
+        }
+      }
+      return keys;
+    },
+
+    // Checks if the object has a value at `key` and that the value is not empty
+    has: function(key) {
+      return this[key] && $.trim(this[key].toString()) !== '';
+    },
+
+    // convenience method to join as many arguments as you want
+    // by the first argument - useful for making paths
+    join: function() {
+      var args = _makeArray(arguments);
+      var delimiter = args.shift();
+      return args.join(delimiter);
+    },
+
+    // Shortcut to Sammy.log
+    log: function() {
+      Sammy.log.apply(Sammy, arguments);
+    },
+
+    // Returns a string representation of this object.
+    // if `include_functions` is true, it will also toString() the
+    // methods of this object. By default only prints the attributes.
+    toString: function(include_functions) {
+      var s = [];
+      $.each(this, function(k, v) {
+        if (!_isFunction(v) || include_functions) {
+          s.push('"' + k + '": ' + v.toString());
+        }
+      });
+      return "Sammy.Object: {" + s.join(',') + "}";
+    }
+  });
+
+
+  // Return whether the event targets this window.
+  Sammy.targetIsThisWindow = function targetIsThisWindow(event, tagName) {
+    var targetElement = $(event.target).closest(tagName);
+    if (targetElement.length === 0) { return true; }
+
+    var targetWindow = targetElement.attr('target');
+    if (!targetWindow || targetWindow === window.name || targetWindow === '_self') { return true; }
+    if (targetWindow === '_blank') { return false; }
+    if (targetWindow === 'top' && window === window.top) { return true; }
+    return false;
+  };
+
+
+  // The DefaultLocationProxy is the default location proxy for all Sammy applications.
+  // A location proxy is a prototype that conforms to a simple interface. The purpose
+  // of a location proxy is to notify the Sammy.Application its bound to when the location
+  // or 'external state' changes.
+  //
+  // The `DefaultLocationProxy` watches for changes to the path of the current window and
+  // is also able to set the path based on changes in the application. It does this by
+  // using different methods depending on what is available in the current browser. In
+  // the latest and greatest browsers it used the HTML5 History API and the `pushState`
+  // `popState` events/methods. This allows you to use Sammy to serve a site behind normal
+  // URI paths as opposed to the older default of hash (#) based routing. Because the server
+  // can interpret the changed path on a refresh or re-entry, though, it requires additional
+  // support on the server side. If you'd like to force disable HTML5 history support, please
+  // use the `disable_push_state` setting on `Sammy.Application`. If pushState support
+  // is enabled, `DefaultLocationProxy` also binds to all links on the page. If a link is clicked
+  // that matches the current set of routes, the URL is changed using pushState instead of
+  // fully setting the location and the app is notified of the change.
+  //
+  // If the browser does not have support for HTML5 History, `DefaultLocationProxy` automatically
+  // falls back to the older hash based routing. The newest browsers (IE, Safari > 4, FF >= 3.6)
+  // support a 'onhashchange' DOM event, thats fired whenever the location.hash changes.
+  // In this situation the DefaultLocationProxy just binds to this event and delegates it to
+  // the application. In the case of older browsers a poller is set up to track changes to the
+  // hash.
+  Sammy.DefaultLocationProxy = function(app, run_interval_every) {
+    this.app = app;
+    // set is native to false and start the poller immediately
+    this.is_native = false;
+    this.has_history = _has_history;
+    this._startPolling(run_interval_every);
+  };
+
+  Sammy.DefaultLocationProxy.fullPath = function(location_obj) {
+   // Bypass the `window.location.hash` attribute.  If a question mark
+    // appears in the hash IE6 will strip it and all of the following
+    // characters from `window.location.hash`.
+    var matches = location_obj.toString().match(/^[^#]*(#.+)$/);
+    var hash = matches ? matches[1] : '';
+    return [location_obj.pathname, location_obj.search, hash].join('');
+  };
+$.extend(Sammy.DefaultLocationProxy.prototype , {
+    // bind the proxy events to the current app.
+    bind: function() {
+      var proxy = this, app = this.app, lp = Sammy.DefaultLocationProxy;
+      $(window).bind('hashchange.' + this.app.eventNamespace(), function(e, non_native) {
+        // if we receive a native hash change event, set the proxy accordingly
+        // and stop polling
+        if (proxy.is_native === false && !non_native) {
+          proxy.is_native = true;
+          window.clearInterval(lp._interval);
+          lp._interval = null;
+        }
+        app.trigger('location-changed');
+      });
+      if (_has_history && !app.disable_push_state) {
+        // bind to popstate
+        $(window).bind('popstate.' + this.app.eventNamespace(), function(e) {
+          app.trigger('location-changed');
+        });
+        // bind to link clicks that have routes
+        $(document).delegate('a', 'click.history-' + this.app.eventNamespace(), function (e) {
+          if (e.isDefaultPrevented() || e.metaKey || e.ctrlKey) {
+            return;
+          }
+          var full_path = lp.fullPath(this),
+            // Get anchor's host name in a cross browser compatible way.
+            // IE looses hostname property when setting href in JS
+            // with a relative URL, e.g. a.setAttribute('href',"/whatever").
+            // Circumvent this problem by creating a new link with given URL and
+            // querying that for a hostname.
+            hostname = this.hostname ? this.hostname : function (a) {
+              var l = document.createElement("a");
+              l.href = a.href;
+              return l.hostname;
+            }(this);
+
+          if (hostname == window.location.hostname &&
+              app.lookupRoute('get', full_path) &&
+              Sammy.targetIsThisWindow(e, 'a')) {
+            e.preventDefault();
+            proxy.setLocation(full_path);
+            return false;
+          }
+        });
+      }
+      if (!lp._bindings) {
+        lp._bindings = 0;
+      }
+      lp._bindings++;
+    },
+
+    // unbind the proxy events from the current app
+    unbind: function() {
+      $(window).unbind('hashchange.' + this.app.eventNamespace());
+      $(window).unbind('popstate.' + this.app.eventNamespace());
+      $(document).undelegate('a', 'click.history-' + this.app.eventNamespace());
+      Sammy.DefaultLocationProxy._bindings--;
+      if (Sammy.DefaultLocationProxy._bindings <= 0) {
+        window.clearInterval(Sammy.DefaultLocationProxy._interval);
+        Sammy.DefaultLocationProxy._interval = null;
+      }
+    },
+
+    // get the current location from the hash.
+    getLocation: function() {
+      return Sammy.DefaultLocationProxy.fullPath(window.location);
+    },
+
+    // set the current location to `new_location`
+    setLocation: function(new_location) {
+      if (/^([^#\/]|$)/.test(new_location)) { // non-prefixed url
+        if (_has_history && !this.app.disable_push_state) {
+          new_location = '/' + new_location;
+        } else {
+          new_location = '#!/' + new_location;
+        }
+      }
+      if (new_location != this.getLocation()) {
+        // HTML5 History exists and new_location is a full path
+        if (_has_history && !this.app.disable_push_state && /^\//.test(new_location)) {
+          history.pushState({ path: new_location }, window.title, new_location);
+          this.app.trigger('location-changed');
+        } else {
+          return (window.location = new_location);
+        }
+      }
+    },
+
+    _startPolling: function(every) {
+      // set up interval
+      var proxy = this;
+      if (!Sammy.DefaultLocationProxy._interval) {
+        if (!every) { every = 10; }
+        var hashCheck = function() {
+          var current_location = proxy.getLocation();
+          if (typeof Sammy.DefaultLocationProxy._last_location == 'undefined' ||
+            current_location != Sammy.DefaultLocationProxy._last_location) {
+            window.setTimeout(function() {
+              $(window).trigger('hashchange', [true]);
+            }, 0);
+          }
+          Sammy.DefaultLocationProxy._last_location = current_location;
+        };
+        hashCheck();
+        Sammy.DefaultLocationProxy._interval = window.setInterval(hashCheck, every);
+      }
+    }
+  });
+
+
+  // Sammy.Application is the Base prototype for defining 'applications'.
+  // An 'application' is a collection of 'routes' and bound events that is
+  // attached to an element when `run()` is called.
+  // The only argument an 'app_function' is evaluated within the context of the application.
+  Sammy.Application = function(app_function) {
+    var app = this;
+    this.routes            = {};
+    this.listeners         = new Sammy.Object({});
+    this.arounds           = [];
+    this.befores           = [];
+    // generate a unique namespace
+    this.namespace         = (new Date()).getTime() + '-' + parseInt(Math.random() * 1000, 10);
+    this.context_prototype = function() { Sammy.EventContext.apply(this, arguments); };
+    this.context_prototype.prototype = new Sammy.EventContext();
+
+    if (_isFunction(app_function)) {
+      app_function.apply(this, [this]);
+    }
+    // set the location proxy if not defined to the default (DefaultLocationProxy)
+    if (!this._location_proxy) {
+      this.setLocationProxy(new Sammy.DefaultLocationProxy(this, this.run_interval_every));
+    }
+    if (this.debug) {
+      this.bindToAllEvents(function(e, data) {
+        app.log(app.toString(), e.cleaned_type, data || {});
+      });
+    }
+  };
+
+  Sammy.Application.prototype = $.extend({}, Sammy.Object.prototype, {
+
+    // the four route verbs
+    ROUTE_VERBS: ['get','post','put','delete'],
+
+    // An array of the default events triggered by the
+    // application during its lifecycle
+    APP_EVENTS: ['run', 'unload', 'lookup-route', 'run-route', 'route-found', 'event-context-before', 'event-context-after', 'changed', 'error', 'check-form-submission', 'redirect', 'location-changed'],
+
+    _last_route: null,
+    _location_proxy: null,
+    _running: false,
+
+    // Defines what element the application is bound to. Provide a selector
+    // (parseable by `jQuery()`) and this will be used by `$element()`
+    element_selector: 'body',
+
+    // When set to true, logs all of the default events using `log()`
+    debug: false,
+
+    // When set to true, and the error() handler is not overridden, will actually
+    // raise JS errors in routes (500) and when routes can't be found (404)
+    raise_errors: false,
+
+    // The time in milliseconds that the URL is queried for changes
+    run_interval_every: 50,
+
+    // if using the `DefaultLocationProxy` setting this to true will force the app to use
+    // traditional hash based routing as opposed to the new HTML5 PushState support
+    disable_push_state: false,
+
+    // The default template engine to use when using `partial()` in an
+    // `EventContext`. `template_engine` can either be a string that
+    // corresponds to the name of a method/helper on EventContext or it can be a function
+    // that takes two arguments, the content of the unrendered partial and an optional
+    // JS object that contains interpolation data. Template engine is only called/referred
+    // to if the extension of the partial is null or unknown. See `partial()`
+    // for more information
+    template_engine: null,
+
+    // //=> Sammy.Application: body
+    toString: function() {
+      return 'Sammy.Application:' + this.element_selector;
+    },
+
+    // returns a jQuery object of the Applications bound element.
+    $element: function(selector) {
+      return selector ? $(this.element_selector).find(selector) : $(this.element_selector);
+    },
+
+    // `use()` is the entry point for including Sammy plugins.
+    // The first argument to use should be a function() that is evaluated
+    // in the context of the current application, just like the `app_function`
+    // argument to the `Sammy.Application` constructor.
+    //
+    // Any additional arguments are passed to the app function sequentially.
+    //
+    // For much more detail about plugins, check out:
+    // [http://sammyjs.org/docs/plugins](http://sammyjs.org/docs/plugins)
+    //
+    // ### Example
+    //
+    //      var MyPlugin = function(app, prepend) {
+    //
+    //        this.helpers({
+    //          myhelper: function(text) {
+    //            alert(prepend + " " + text);
+    //          }
+    //        });
+    //
+    //      };
+    //
+    //      var app = $.sammy(function() {
+    //
+    //        this.use(MyPlugin, 'This is my plugin');
+    //
+    //        this.get('#/', function() {
+    //          this.myhelper('and dont you forget it!');
+    //          //=> Alerts: This is my plugin and dont you forget it!
+    //        });
+    //
+    //      });
+    //
+    // If plugin is passed as a string it assumes your are trying to load
+    // Sammy."Plugin". This is the preferred way of loading core Sammy plugins
+    // as it allows for better error-messaging.
+    //
+    // ### Example
+    //
+    //      $.sammy(function() {
+    //        this.use('Mustache'); //=> Sammy.Mustache
+    //        this.use('Storage'); //=> Sammy.Storage
+    //      });
+    //
+    use: function() {
+      // flatten the arguments
+      var args = _makeArray(arguments),
+          plugin = args.shift(),
+          plugin_name = plugin || '';
+      try {
+        args.unshift(this);
+        if (typeof plugin == 'string') {
+          plugin_name = 'Sammy.' + plugin;
+          plugin = Sammy[plugin];
+        }
+        plugin.apply(this, args);
+      } catch(e) {
+        if (typeof plugin === 'undefined') {
+          this.error("Plugin Error: called use() but plugin (" + plugin_name.toString() + ") is not defined", e);
+        } else if (!_isFunction(plugin)) {
+          this.error("Plugin Error: called use() but '" + plugin_name.toString() + "' is not a function", e);
+        } else {
+          this.error("Plugin Error", e);
+        }
+      }
+      return this;
+    },
+
+    // Sets the location proxy for the current app. By default this is set to
+    // a new `Sammy.DefaultLocationProxy` on initialization. However, you can set
+    // the location_proxy inside you're app function to give your app a custom
+    // location mechanism. See `Sammy.DefaultLocationProxy` and `Sammy.DataLocationProxy`
+    // for examples.
+    //
+    // `setLocationProxy()` takes an initialized location proxy.
+    //
+    // ### Example
+    //
+    //        // to bind to data instead of the default hash;
+    //        var app = $.sammy(function() {
+    //          this.setLocationProxy(new Sammy.DataLocationProxy(this));
+    //        });
+    //
+    setLocationProxy: function(new_proxy) {
+      var original_proxy = this._location_proxy;
+      this._location_proxy = new_proxy;
+      if (this.isRunning()) {
+        if (original_proxy) {
+          // if there is already a location proxy, unbind it.
+          original_proxy.unbind();
+        }
+        this._location_proxy.bind();
+      }
+    },
+
+    // provide log() override for inside an app that includes the relevant application element_selector
+    log: function() {
+      Sammy.log.apply(Sammy, Array.prototype.concat.apply([this.element_selector],arguments));
+    },
+
+
+    // `route()` is the main method for defining routes within an application.
+    // For great detail on routes, check out:
+    // [http://sammyjs.org/docs/routes](http://sammyjs.org/docs/routes)
+    //
+    // This method also has aliases for each of the different verbs (eg. `get()`, `post()`, etc.)
+    //
+    // ### Arguments
+    //
+    // * `verb` A String in the set of ROUTE_VERBS or 'any'. 'any' will add routes for each
+    //    of the ROUTE_VERBS. If only two arguments are passed,
+    //    the first argument is the path, the second is the callback and the verb
+    //    is assumed to be 'any'.
+    // * `path` A Regexp or a String representing the path to match to invoke this verb.
+    // * `callback` A Function that is called/evaluated when the route is run see: `runRoute()`.
+    //    It is also possible to pass a string as the callback, which is looked up as the name
+    //    of a method on the application.
+    //
+    route: function(verb, path) {
+      var app = this, param_names = [], add_route, path_match, callback = Array.prototype.slice.call(arguments,2);
+
+      // if the method signature is just (path, callback)
+      // assume the verb is 'any'
+      if (callback.length === 0 && _isFunction(path)) {
+        callback = [path];
+        path = verb;
+        verb = 'any';
+      }
+
+      verb = verb.toLowerCase(); // ensure verb is lower case
+
+      // if path is a string turn it into a regex
+      if (path.constructor == String) {
+
+        // Needs to be explicitly set because IE will maintain the index unless NULL is returned,
+        // which means that with two consecutive routes that contain params, the second set of params will not be found and end up in splat instead of params
+        // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/RegExp/lastIndex
+        PATH_NAME_MATCHER.lastIndex = 0;
+
+        // find the names
+        while ((path_match = PATH_NAME_MATCHER.exec(path)) !== null) {
+          param_names.push(path_match[1]);
+        }
+        // replace with the path replacement
+        path = new RegExp(path.replace(PATH_NAME_MATCHER, PATH_REPLACER) + "$");
+      }
+      // lookup callbacks
+      $.each(callback,function(i,cb){
+        if (typeof(cb) === 'string') {
+          callback[i] = app[cb];
+        }
+      });
+
+      add_route = function(with_verb) {
+        var r = {verb: with_verb, path: path, callback: callback, param_names: param_names};
+        // add route to routes array
+        app.routes[with_verb] = app.routes[with_verb] || [];
+        // place routes in order of definition
+        app.routes[with_verb].push(r);
+      };
+
+      if (verb === 'any') {
+        $.each(this.ROUTE_VERBS, function(i, v) { add_route(v); });
+      } else {
+        add_route(verb);
+      }
+
+      // return the app
+      return this;
+    },
+
+    // Alias for route('get', ...)
+    get: _routeWrapper('get'),
+
+    // Alias for route('post', ...)
+    post: _routeWrapper('post'),
+
+    // Alias for route('put', ...)
+    put: _routeWrapper('put'),
+
+    // Alias for route('delete', ...)
+    del: _routeWrapper('delete'),
+
+    // Alias for route('any', ...)
+    any: _routeWrapper('any'),
+
+    // `mapRoutes` takes an array of arrays, each array being passed to route()
+    // as arguments, this allows for mass definition of routes. Another benefit is
+    // this makes it possible/easier to load routes via remote JSON.
+    //
+    // ### Example
+    //
+    //      var app = $.sammy(function() {
+    //
+    //        this.mapRoutes([
+    //            ['get', '#/', function() { this.log('index'); }],
+    //            // strings in callbacks are looked up as methods on the app
+    //            ['post', '#/create', 'addUser'],
+    //            // No verb assumes 'any' as the verb
+    //            [/dowhatever/, function() { this.log(this.verb, this.path)}];
+    //          ]);
+    //      });
+    //
+    mapRoutes: function(route_array) {
+      var app = this;
+      $.each(route_array, function(i, route_args) {
+        app.route.apply(app, route_args);
+      });
+      return this;
+    },
+
+    // A unique event namespace defined per application.
+    // All events bound with `bind()` are automatically bound within this space.
+    eventNamespace: function() {
+      return ['sammy-app', this.namespace].join('-');
+    },
+
+    // Works just like `jQuery.fn.bind()` with a couple notable differences.
+    //
+    // * It binds all events to the application element
+    // * All events are bound within the `eventNamespace()`
+    // * Events are not actually bound until the application is started with `run()`
+    // * callbacks are evaluated within the context of a Sammy.EventContext
+    //
+    bind: function(name, data, callback) {
+      var app = this;
+      // build the callback
+      // if the arity is 2, callback is the second argument
+      if (typeof callback == 'undefined') { callback = data; }
+      var listener_callback =  function() {
+        // pull off the context from the arguments to the callback
+        var e, context, data;
+        e       = arguments[0];
+        data    = arguments[1];
+        if (data && data.context) {
+          context = data.context;
+          delete data.context;
+        } else {
+          context = new app.context_prototype(app, 'bind', e.type, data, e.target);
+        }
+        e.cleaned_type = e.type.replace(app.eventNamespace(), '');
+        callback.apply(context, [e, data]);
+      };
+
+      // it could be that the app element doesnt exist yet
+      // so attach to the listeners array and then run()
+      // will actually bind the event.
+      if (!this.listeners[name]) { this.listeners[name] = []; }
+      this.listeners[name].push(listener_callback);
+      if (this.isRunning()) {
+        // if the app is running
+        // *actually* bind the event to the app element
+        this._listen(name, listener_callback);
+      }
+      return this;
+    },
+
+    // Triggers custom events defined with `bind()`
+    //
+    // ### Arguments
+    //
+    // * `name` The name of the event. Automatically prefixed with the `eventNamespace()`
+    // * `data` An optional Object that can be passed to the bound callback.
+    // * `context` An optional context/Object in which to execute the bound callback.
+    //   If no context is supplied a the context is a new `Sammy.EventContext`
+    //
+    trigger: function(name, data) {
+      this.$element().trigger([name, this.eventNamespace()].join('.'), [data]);
+      return this;
+    },
+
+    // Reruns the current route
+    refresh: function() {
+      this.last_location = null;
+      this.trigger('location-changed');
+      return this;
+    },
+
+    // Takes a single callback that is pushed on to a stack.
+    // Before any route is run, the callbacks are evaluated in order within
+    // the current `Sammy.EventContext`
+    //
+    // If any of the callbacks explicitly return false, execution of any
+    // further callbacks and the route itself is halted.
+    //
+    // You can also provide a set of options that will define when to run this
+    // before based on the route it proceeds.
+    //
+    // ### Example
+    //
+    //      var app = $.sammy(function() {
+    //
+    //        // will run at #/route but not at #/
+    //        this.before('#/route', function() {
+    //          //...
+    //        });
+    //
+    //        // will run at #/ but not at #/route
+    //        this.before({except: {path: '#/route'}}, function() {
+    //          this.log('not before #/route');
+    //        });
+    //
+    //        this.get('#/', function() {});
+    //
+    //        this.get('#/route', function() {});
+    //
+    //      });
+    //
+    // See `contextMatchesOptions()` for a full list of supported options
+    //
+    before: function(options, callback) {
+      if (_isFunction(options)) {
+        callback = options;
+        options = {};
+      }
+      this.befores.push([options, callback]);
+      return this;
+    },
+
+    // A shortcut for binding a callback to be run after a route is executed.
+    // After callbacks have no guarunteed order.
+    after: function(callback) {
+      return this.bind('event-context-after', callback);
+    },
+
+
+    // Adds an around filter to the application. around filters are functions
+    // that take a single argument `callback` which is the entire route
+    // execution path wrapped up in a closure. This means you can decide whether
+    // or not to proceed with execution by not invoking `callback` or,
+    // more usefully wrapping callback inside the result of an asynchronous execution.
+    //
+    // ### Example
+    //
+    // The most common use case for around() is calling a _possibly_ async function
+    // and executing the route within the functions callback:
+    //
+    //      var app = $.sammy(function() {
+    //
+    //        var current_user = false;
+    //
+    //        function checkLoggedIn(callback) {
+    //          // /session returns a JSON representation of the logged in user
+    //          // or an empty object
+    //          if (!current_user) {
+    //            $.getJSON('/session', function(json) {
+    //              if (json.login) {
+    //                // show the user as logged in
+    //                current_user = json;
+    //                // execute the route path
+    //                callback();
+    //              } else {
+    //                // show the user as not logged in
+    //                current_user = false;
+    //                // the context of aroundFilters is an EventContext
+    //                this.redirect('#/login');
+    //              }
+    //            });
+    //          } else {
+    //            // execute the route path
+    //            callback();
+    //          }
+    //        };
+    //
+    //        this.around(checkLoggedIn);
+    //
+    //      });
+    //
+    around: function(callback) {
+      this.arounds.push(callback);
+      return this;
+    },
+
+    // Adds a onComplete function to the application. onComplete functions are executed
+    // at the end of a chain of route callbacks, if they call next(). Unlike after,
+    // which is called as soon as the route is complete, onComplete is like a final next()
+    // for all routes, and is thus run asynchronously
+    //
+    // ### Example
+    //
+    //      app.get('/chain',function(context,next) {
+    //          console.log('chain1');
+    //          next();
+    //      },function(context,next) {
+    //          console.log('chain2');
+    //          next();
+    //      });
+    //
+    //      app.get('/link',function(context,next) {
+    //          console.log('link1');
+    //          next();
+    //      },function(context,next) {
+    //          console.log('link2');
+    //          next();
+    //      });
+    //
+    //      app.onComplete(function() {
+    //          console.log("Running finally");
+    //      });
+    //
+    // If you go to '/chain', you will get the following messages:
+    //
+    //      chain1
+    //      chain2
+    //      Running onComplete
+    //
+    //
+    // If you go to /link, you will get the following messages:
+    //
+    //      link1
+    //      link2
+    //      Running onComplete
+    //
+    //
+    // It really comes to play when doing asynchronous:
+    //
+    //      app.get('/chain',function(context,next) {
+    //        $.get('/my/url',function() {
+    //          console.log('chain1');
+    //          next();
+    //        });
+    //      },function(context,next) {
+    //        console.log('chain2');
+    //        next();
+    //      });
+    //
+    onComplete: function(callback) {
+      this._onComplete = callback;
+      return this;
+    },
+
+    // Returns `true` if the current application is running.
+    isRunning: function() {
+      return this._running;
+    },
+
+    // Helpers extends the EventContext prototype specific to this app.
+    // This allows you to define app specific helper functions that can be used
+    // whenever you're inside of an event context (templates, routes, bind).
+    //
+    // ### Example
+    //
+    //     var app = $.sammy(function() {
+    //
+    //       helpers({
+    //         upcase: function(text) {
+    //          return text.toString().toUpperCase();
+    //         }
+    //       });
+    //
+    //       get('#/', function() { with(this) {
+    //         // inside of this context I can use the helpers
+    //         $('#main').html(upcase($('#main').text());
+    //       }});
+    //
+    //     });
+    //
+    //
+    // ### Arguments
+    //
+    // * `extensions` An object collection of functions to extend the context.
+    //
+    helpers: function(extensions) {
+      $.extend(this.context_prototype.prototype, extensions);
+      return this;
+    },
+
+    // Helper extends the event context just like `helpers()` but does it
+    // a single method at a time. This is especially useful for dynamically named
+    // helpers
+    //
+    // ### Example
+    //
+    //     // Trivial example that adds 3 helper methods to the context dynamically
+    //     var app = $.sammy(function(app) {
+    //
+    //       $.each([1,2,3], function(i, num) {
+    //         app.helper('helper' + num, function() {
+    //           this.log("I'm helper number " + num);
+    //         });
+    //       });
+    //
+    //       this.get('#/', function() {
+    //         this.helper2(); //=> I'm helper number 2
+    //       });
+    //     });
+    //
+    // ### Arguments
+    //
+    // * `name` The name of the method
+    // * `method` The function to be added to the prototype at `name`
+    //
+    helper: function(name, method) {
+      this.context_prototype.prototype[name] = method;
+      return this;
+    },
+
+    // Actually starts the application's lifecycle. `run()` should be invoked
+    // within a document.ready block to ensure the DOM exists before binding events, etc.
+    //
+    // ### Example
+    //
+    //     var app = $.sammy(function() { ... }); // your application
+    //     $(function() { // document.ready
+    //        app.run();
+    //     });
+    //
+    // ### Arguments
+    //
+    // * `start_url` Optionally, a String can be passed which the App will redirect to
+    //   after the events/routes have been bound.
+    run: function(start_url) {
+      if (this.isRunning()) { return false; }
+      var app = this;
+
+      // actually bind all the listeners
+      $.each(this.listeners.toHash(), function(name, callbacks) {
+        $.each(callbacks, function(i, listener_callback) {
+          app._listen(name, listener_callback);
+        });
+      });
+
+      this.trigger('run', {start_url: start_url});
+      this._running = true;
+      // set last location
+      this.last_location = null;
+      if (!(/\#(.+)/.test(this.getLocation())) && typeof start_url != 'undefined') {
+        this.setLocation(start_url);
+      }
+      // check url
+      this._checkLocation();
+      this._location_proxy.bind();
+      this.bind('location-changed', function() {
+        app._checkLocation();
+      });
+
+      // bind to submit to capture post/put/delete routes
+      this.bind('submit', function(e) {
+        if ( !Sammy.targetIsThisWindow(e, 'form') ) { return true; }
+        var returned = app._checkFormSubmission($(e.target).closest('form'));
+        return (returned === false) ? e.preventDefault() : false;
+      });
+
+      // bind unload to body unload
+      $(window).bind('unload', function() {
+        app.unload();
+      });
+
+      // trigger html changed
+      return this.trigger('changed');
+    },
+
+    // The opposite of `run()`, un-binds all event listeners and intervals
+    // `run()` Automatically binds a `onunload` event to run this when
+    // the document is closed.
+    unload: function() {
+      if (!this.isRunning()) { return false; }
+      var app = this;
+      this.trigger('unload');
+      // clear interval
+      this._location_proxy.unbind();
+      // unbind form submits
+      this.$element().unbind('submit').removeClass(app.eventNamespace());
+      // unbind all events
+      $.each(this.listeners.toHash() , function(name, listeners) {
+        $.each(listeners, function(i, listener_callback) {
+          app._unlisten(name, listener_callback);
+        });
+      });
+      this._running = false;
+      return this;
+    },
+
+    // Not only runs `unbind` but also destroys the app reference.
+    destroy: function() {
+      this.unload();
+      delete Sammy.apps[this.element_selector];
+      return this;
+    },
+
+    // Will bind a single callback function to every event that is already
+    // being listened to in the app. This includes all the `APP_EVENTS`
+    // as well as any custom events defined with `bind()`.
+    //
+    // Used internally for debug logging.
+    bindToAllEvents: function(callback) {
+      var app = this;
+      // bind to the APP_EVENTS first
+      $.each(this.APP_EVENTS, function(i, e) {
+        app.bind(e, callback);
+      });
+      // next, bind to listener names (only if they dont exist in APP_EVENTS)
+      $.each(this.listeners.keys(true), function(i, name) {
+        if ($.inArray(name, app.APP_EVENTS) == -1) {
+          app.bind(name, callback);
+        }
+      });
+      return this;
+    },
+
+    // Returns a copy of the given path with any query string after the hash
+    // removed.
+    routablePath: function(path) {
+      return path.replace(QUERY_STRING_MATCHER, '');
+    },
+
+    // Given a verb and a String path, will return either a route object or false
+    // if a matching route can be found within the current defined set.
+    lookupRoute: function(verb, path) {
+      var app = this, routed = false, i = 0, l, route;
+      if (typeof this.routes[verb] != 'undefined') {
+        l = this.routes[verb].length;
+        for (; i < l; i++) {
+          route = this.routes[verb][i];
+          if (app.routablePath(path).match(route.path)) {
+            routed = route;
+            break;
+          }
+        }
+      }
+      return routed;
+    },
+
+    // First, invokes `lookupRoute()` and if a route is found, parses the
+    // possible URL params and then invokes the route's callback within a new
+    // `Sammy.EventContext`. If the route can not be found, it calls
+    // `notFound()`. If `raise_errors` is set to `true` and
+    // the `error()` has not been overridden, it will throw an actual JS
+    // error.
+    //
+    // You probably will never have to call this directly.
+    //
+    // ### Arguments
+    //
+    // * `verb` A String for the verb.
+    // * `path` A String path to lookup.
+    // * `params` An Object of Params pulled from the URI or passed directly.
+    //
+    // ### Returns
+    //
+    // Either returns the value returned by the route callback or raises a 404 Not Found error.
+    //
+    runRoute: function(verb, path, params, target) {
+      var app = this,
+          route = this.lookupRoute(verb, path),
+          context,
+          wrapped_route,
+          arounds,
+          around,
+          befores,
+          before,
+          callback_args,
+          path_params,
+          final_returned;
+
+      if (this.debug) {
+        this.log('runRoute', [verb, path].join(' '));
+      }
+
+      this.trigger('run-route', {verb: verb, path: path, params: params});
+      if (typeof params == 'undefined') { params = {}; }
+
+      $.extend(params, this._parseQueryString(path));
+
+      if (route) {
+        this.trigger('route-found', {route: route});
+        // pull out the params from the path
+        if ((path_params = route.path.exec(this.routablePath(path))) !== null) {
+          // first match is the full path
+          path_params.shift();
+          // for each of the matches
+          $.each(path_params, function(i, param) {
+            // if theres a matching param name
+            if (route.param_names[i]) {
+              // set the name to the match
+              params[route.param_names[i]] = _decode(param);
+            } else {
+              // initialize 'splat'
+              if (!params.splat) { params.splat = []; }
+              params.splat.push(_decode(param));
+            }
+          });
+        }
+
+        // set event context
+        context  = new this.context_prototype(this, verb, path, params, target);
+        // ensure arrays
+        arounds = this.arounds.slice(0);
+        befores = this.befores.slice(0);
+        // set the callback args to the context + contents of the splat
+        callback_args = [context];
+        if (params.splat) {
+          callback_args = callback_args.concat(params.splat);
+        }
+        // wrap the route up with the before filters
+        wrapped_route = function() {
+          var returned, i, nextRoute;
+          while (befores.length > 0) {
+            before = befores.shift();
+            // check the options
+            if (app.contextMatchesOptions(context, before[0])) {
+              returned = before[1].apply(context, [context]);
+              if (returned === false) { return false; }
+            }
+          }
+          app.last_route = route;
+          context.trigger('event-context-before', {context: context});
+          // run multiple callbacks
+          if (typeof(route.callback) === "function") {
+            route.callback = [route.callback];
+          }
+          if (route.callback && route.callback.length) {
+            i = -1;
+            nextRoute = function() {
+              i++;
+              if (route.callback[i]) {
+                returned = route.callback[i].apply(context,callback_args);
+              } else if (app._onComplete && typeof(app._onComplete === "function")) {
+                app._onComplete(context);
+              }
+            };
+            callback_args.push(nextRoute);
+            nextRoute();
+          }
+          context.trigger('event-context-after', {context: context});
+          return returned;
+        };
+        $.each(arounds.reverse(), function(i, around) {
+          var last_wrapped_route = wrapped_route;
+          wrapped_route = function() { return around.apply(context, [last_wrapped_route]); };
+        });
+        try {
+          final_returned = wrapped_route();
+        } catch(e) {
+          this.error(['500 Error', verb, path].join(' '), e);
+        }
+        return final_returned;
+      } else {
+        return this.notFound(verb, path);
+      }
+    },
+
+    // Matches an object of options against an `EventContext` like object that
+    // contains `path` and `verb` attributes. Internally Sammy uses this
+    // for matching `before()` filters against specific options. You can set the
+    // object to _only_ match certain paths or verbs, or match all paths or verbs _except_
+    // those that match the options.
+    //
+    // ### Example
+    //
+    //     var app = $.sammy(),
+    //         context = {verb: 'get', path: '#/mypath'};
+    //
+    //     // match against a path string
+    //     app.contextMatchesOptions(context, '#/mypath'); //=> true
+    //     app.contextMatchesOptions(context, '#/otherpath'); //=> false
+    //     // equivalent to
+    //     app.contextMatchesOptions(context, {only: {path:'#/mypath'}}); //=> true
+    //     app.contextMatchesOptions(context, {only: {path:'#/otherpath'}}); //=> false
+    //     // match against a path regexp
+    //     app.contextMatchesOptions(context, /path/); //=> true
+    //     app.contextMatchesOptions(context, /^path/); //=> false
+    //     // match only a verb
+    //     app.contextMatchesOptions(context, {only: {verb:'get'}}); //=> true
+    //     app.contextMatchesOptions(context, {only: {verb:'post'}}); //=> false
+    //     // match all except a verb
+    //     app.contextMatchesOptions(context, {except: {verb:'post'}}); //=> true
+    //     app.contextMatchesOptions(context, {except: {verb:'get'}}); //=> false
+    //     // match all except a path
+    //     app.contextMatchesOptions(context, {except: {path:'#/otherpath'}}); //=> true
+    //     app.contextMatchesOptions(context, {except: {path:'#/mypath'}}); //=> false
+    //     // match all except a verb and a path
+    //     app.contextMatchesOptions(context, {except: {path:'#/otherpath', verb:'post'}}); //=> true
+    //     app.contextMatchesOptions(context, {except: {path:'#/mypath', verb:'post'}}); //=> true
+    //     app.contextMatchesOptions(context, {except: {path:'#/mypath', verb:'get'}}); //=> false
+    //     // match multiple paths
+    //     app.contextMatchesOptions(context, {path: ['#/mypath', '#/otherpath']}); //=> true
+    //     app.contextMatchesOptions(context, {path: ['#/otherpath', '#/thirdpath']}); //=> false
+    //     // equivalent to
+    //     app.contextMatchesOptions(context, {only: {path: ['#/mypath', '#/otherpath']}}); //=> true
+    //     app.contextMatchesOptions(context, {only: {path: ['#/otherpath', '#/thirdpath']}}); //=> false
+    //     // match all except multiple paths
+    //     app.contextMatchesOptions(context, {except: {path: ['#/mypath', '#/otherpath']}}); //=> false
+    //     app.contextMatchesOptions(context, {except: {path: ['#/otherpath', '#/thirdpath']}}); //=> true
+    //     // match all except multiple paths and verbs
+    //     app.contextMatchesOptions(context, {except: {path: ['#/mypath', '#/otherpath'], verb: ['get', 'post']}}); //=> false
+    //     app.contextMatchesOptions(context, {except: {path: ['#/otherpath', '#/thirdpath'], verb: ['get', 'post']}}); //=> true
+    //
+    contextMatchesOptions: function(context, match_options, positive) {
+      var options = match_options;
+      // normalize options
+      if (typeof options === 'string' || _isRegExp(options)) {
+        options = {path: options};
+      }
+      if (typeof positive === 'undefined') {
+        positive = true;
+      }
+      // empty options always match
+      if ($.isEmptyObject(options)) {
+        return true;
+      }
+      // Do we have to match against multiple paths?
+      if (_isArray(options.path)){
+        var results, numopt, opts, len;
+        results = [];
+        for (numopt = 0, len = options.path.length; numopt < len; numopt += 1) {
+          opts = $.extend({}, options, {path: options.path[numopt]});
+          results.push(this.contextMatchesOptions(context, opts));
+        }
+        var matched = $.inArray(true, results) > -1 ? true : false;
+        return positive ? matched : !matched;
+      }
+      if (options.only) {
+        return this.contextMatchesOptions(context, options.only, true);
+      } else if (options.except) {
+        return this.contextMatchesOptions(context, options.except, false);
+      }
+      var path_matched = true, verb_matched = true;
+      if (options.path) {
+        if (!_isRegExp(options.path)) {
+          options.path = new RegExp(options.path.toString() + '$');
+        }
+        path_matched = options.path.test(context.path);
+      }
+      if (options.verb) {
+        if(typeof options.verb === 'string') {
+          verb_matched = options.verb === context.verb;
+        } else {
+          verb_matched = options.verb.indexOf(context.verb) > -1;
+        }
+      }
+      return positive ? (verb_matched && path_matched) : !(verb_matched && path_matched);
+    },
+
+
+    // Delegates to the `location_proxy` to get the current location.
+    // See `Sammy.DefaultLocationProxy` for more info on location proxies.
+    getLocation: function() {
+      return this._location_proxy.getLocation();
+    },
+
+    // Delegates to the `location_proxy` to set the current location.
+    // See `Sammy.DefaultLocationProxy` for more info on location proxies.
+    //
+    // ### Arguments
+    //
+    // * `new_location` A new location string (e.g. '#/')
+    //
+    setLocation: function(new_location) {
+      return this._location_proxy.setLocation(new_location);
+    },
+
+    // Swaps the content of `$element()` with `content`
+    // You can override this method to provide an alternate swap behavior
+    // for `EventContext.partial()`.
+    //
+    // ### Example
+    //
+    //      var app = $.sammy(function() {
+    //
+    //        // implements a 'fade out'/'fade in'
+    //        this.swap = function(content, callback) {
+    //          var context = this;
+    //          context.$element().fadeOut('slow', function() {
+    //            context.$element().html(content);
+    //            context.$element().fadeIn('slow', function() {
+    //              if (callback) {
+    //                callback.apply();
+    //              }
+    //            });
+    //          });
+    //        };
+    //
+    //      });
+    //
+    swap: function(content, callback) {
+      var $el = this.$element().html(content);
+      if (_isFunction(callback)) { callback(content); }
+      return $el;
+    },
+
+    // a simple global cache for templates. Uses the same semantics as
+    // `Sammy.Cache` and `Sammy.Storage` so can easily be replaced with
+    // a persistent storage that lasts beyond the current request.
+    templateCache: function(key, value) {
+      if (typeof value != 'undefined') {
+        return _template_cache[key] = value;
+      } else {
+        return _template_cache[key];
+      }
+    },
+
+    // clear the templateCache
+    clearTemplateCache: function() {
+      return (_template_cache = {});
+    },
+
+    // This throws a '404 Not Found' error by invoking `error()`.
+    // Override this method or `error()` to provide custom
+    // 404 behavior (i.e redirecting to / or showing a warning)
+    notFound: function(verb, path) {
+      var ret = this.error(['404 Not Found', verb, path].join(' '));
+      return (verb === 'get') ? ret : true;
+    },
+
+    // The base error handler takes a string `message` and an `Error`
+    // object. If `raise_errors` is set to `true` on the app level,
+    // this will re-throw the error to the browser. Otherwise it will send the error
+    // to `log()`. Override this method to provide custom error handling
+    // e.g logging to a server side component or displaying some feedback to the
+    // user.
+    error: function(message, original_error) {
+      if (!original_error) { original_error = new Error(); }
+      original_error.message = [message, original_error.message].join(' ');
+      this.trigger('error', {message: original_error.message, error: original_error});
+      if (this.raise_errors) {
+        throw(original_error);
+      } else {
+        this.log(original_error.message, original_error);
+      }
+    },
+
+    _checkLocation: function() {
+      var location, returned;
+      // get current location
+      location = this.getLocation();
+      // compare to see if hash has changed
+      if (!this.last_location || this.last_location[0] != 'get' || this.last_location[1] != location) {
+        // reset last location
+        this.last_location = ['get', location];
+        // lookup route for current hash
+        returned = this.runRoute('get', location);
+      }
+      return returned;
+    },
+
+    _getFormVerb: function(form) {
+      var $form = $(form), verb, $_method;
+      $_method = $form.find('input[name="_method"]');
+      if ($_method.length > 0) { verb = $_method.val(); }
+      if (!verb) { verb = $form[0].getAttribute('method'); }
+      if (!verb || verb === '') { verb = 'get'; }
+      return $.trim(verb.toString().toLowerCase());
+    },
+
+    _checkFormSubmission: function(form) {
+      var $form, path, verb, params, returned;
+      this.trigger('check-form-submission', {form: form});
+      $form = $(form);
+      path  = $form.attr('action') || '';
+      verb  = this._getFormVerb($form);
+
+      if (this.debug) {
+        this.log('_checkFormSubmission', $form, path, verb);
+      }
+
+      if (verb === 'get') {
+        params = this._serializeFormParams($form);
+        if (params !== '') { path += '?' + params; }
+        this.setLocation(path);
+        returned = false;
+      } else {
+        params = $.extend({}, this._parseFormParams($form));
+        returned = this.runRoute(verb, path, params, form.get(0));
+      }
+      return (typeof returned == 'undefined') ? false : returned;
+    },
+
+    _serializeFormParams: function($form) {
+       var queryString = "",
+         fields = $form.serializeArray(),
+         i;
+       if (fields.length > 0) {
+         queryString = this._encodeFormPair(fields[0].name, fields[0].value);
+         for (i = 1; i < fields.length; i++) {
+           queryString = queryString + "&" + this._encodeFormPair(fields[i].name, fields[i].value);
+         }
+       }
+       return queryString;
+    },
+
+    _encodeFormPair: function(name, value){
+      return _encode(name) + "=" + _encode(value);
+    },
+
+    _parseFormParams: function($form) {
+      var params = {},
+          form_fields = $form.serializeArray(),
+          i;
+      for (i = 0; i < form_fields.length; i++) {
+        params = this._parseParamPair(params, form_fields[i].name, form_fields[i].value);
+      }
+      return params;
+    },
+
+    _parseQueryString: function(path) {
+      var params = {}, parts, pairs, pair, i;
+
+      parts = path.match(QUERY_STRING_MATCHER);
+      if (parts && parts[1]) {
+        pairs = parts[1].split('&');
+        for (i = 0; i < pairs.length; i++) {
+          pair = pairs[i].split('=');
+          params = this._parseParamPair(params, _decode(pair[0]), _decode(pair[1] || ""));
+        }
+      }
+      return params;
+    },
+
+    _parseParamPair: function(params, key, value) {
+      if (typeof params[key] !== 'undefined') {
+        if (_isArray(params[key])) {
+          params[key].push(value);
+        } else {
+          params[key] = [params[key], value];
+        }
+      } else {
+        params[key] = value;
+      }
+      return params;
+    },
+
+    _listen: function(name, callback) {
+      return this.$element().bind([name, this.eventNamespace()].join('.'), callback);
+    },
+
+    _unlisten: function(name, callback) {
+      return this.$element().unbind([name, this.eventNamespace()].join('.'), callback);
+    }
+
+  });
+
+  // `Sammy.RenderContext` is an object that makes sequential template loading,
+  // rendering and interpolation seamless even when dealing with asynchronous
+  // operations.
+  //
+  // `RenderContext` objects are not usually created directly, rather they are
+  // instantiated from an `Sammy.EventContext` by using `render()`, `load()` or
+  // `partial()` which all return `RenderContext` objects.
+  //
+  // `RenderContext` methods always returns a modified `RenderContext`
+  // for chaining (like jQuery itself).
+  //
+  // The core magic is in the `then()` method which puts the callback passed as
+  // an argument into a queue to be executed once the previous callback is complete.
+  // All the methods of `RenderContext` are wrapped in `then()` which allows you
+  // to queue up methods by chaining, but maintaining a guaranteed execution order
+  // even with remote calls to fetch templates.
+  //
+  Sammy.RenderContext = function(event_context) {
+    this.event_context    = event_context;
+    this.callbacks        = [];
+    this.previous_content = null;
+    this.content          = null;
+    this.next_engine      = false;
+    this.waiting          = false;
+  };
+
+  Sammy.RenderContext.prototype = $.extend({}, Sammy.Object.prototype, {
+
+    // The "core" of the `RenderContext` object, adds the `callback` to the
+    // queue. If the context is `waiting` (meaning an async operation is happening)
+    // then the callback will be executed in order, once the other operations are
+    // complete. If there is no currently executing operation, the `callback`
+    // is executed immediately.
+    //
+    // The value returned from the callback is stored in `content` for the
+    // subsequent operation. If you return `false`, the queue will pause, and
+    // the next callback in the queue will not be executed until `next()` is
+    // called. This allows for the guaranteed order of execution while working
+    // with async operations.
+    //
+    // If then() is passed a string instead of a function, the string is looked
+    // up as a helper method on the event context.
+    //
+    // ### Example
+    //
+    //      this.get('#/', function() {
+    //        // initialize the RenderContext
+    //        // Even though `load()` executes async, the next `then()`
+    //        // wont execute until the load finishes
+    //        this.load('myfile.txt')
+    //            .then(function(content) {
+    //              // the first argument to then is the content of the
+    //              // prev operation
+    //              $('#main').html(content);
+    //            });
+    //      });
+    //
+    then: function(callback) {
+      if (!_isFunction(callback)) {
+        // if a string is passed to then, assume we want to call
+        // a helper on the event context in its context
+        if (typeof callback === 'string' && callback in this.event_context) {
+          var helper = this.event_context[callback];
+          callback = function(content) {
+            return helper.apply(this.event_context, [content]);
+          };
+        } else {
+          return this;
+        }
+      }
+      var context = this;
+      if (this.waiting) {
+        this.callbacks.push(callback);
+      } else {
+        this.wait();
+        window.setTimeout(function() {
+          var returned = callback.apply(context, [context.content, context.previous_content]);
+          if (returned !== false) {
+            context.next(returned);
+          }
+        }, 0);
+      }
+      return this;
+    },
+
+    // Pause the `RenderContext` queue. Combined with `next()` allows for async
+    // operations.
+    //
+    // ### Example
+    //
+    //        this.get('#/', function() {
+    //          this.load('mytext.json')
+    //              .then(function(content) {
+    //                var context = this,
+    //                    data    = JSON.parse(content);
+    //                // pause execution
+    //                context.wait();
+    //                // post to a url
+    //                $.post(data.url, {}, function(response) {
+    //                  context.next(JSON.parse(response));
+    //                });
+    //              })
+    //              .then(function(data) {
+    //                // data is json from the previous post
+    //                $('#message').text(data.status);
+    //              });
+    //        });
+    wait: function() {
+      this.waiting = true;
+    },
+
+    // Resume the queue, setting `content` to be used in the next operation.
+    // See `wait()` for an example.
+    next: function(content) {
+      this.waiting = false;
+      if (typeof content !== 'undefined') {
+        this.previous_content = this.content;
+        this.content = content;
+      }
+      if (this.callbacks.length > 0) {
+        this.then(this.callbacks.shift());
+      }
+    },
+
+    // Load a template into the context.
+    // The `location` can either be a string specifying the remote path to the
+    // file, a jQuery object, or a DOM element.
+    //
+    // No interpolation happens by default, the content is stored in
+    // `content`.
+    //
+    // In the case of a path, unless the option `{cache: false}` is passed the
+    // data is stored in the app's `templateCache()`.
+    //
+    // If a jQuery or DOM object is passed the `innerHTML` of the node is pulled in.
+    // This is useful for nesting templates as part of the initial page load wrapped
+    // in invisible elements or `<script>` tags. With template paths, the template
+    // engine is looked up by the extension. For DOM/jQuery embedded templates,
+    // this isnt possible, so there are a couple of options:
+    //
+    //  * pass an `{engine:}` option.
+    //  * define the engine in the `data-engine` attribute of the passed node.
+    //  * just store the raw template data and use `interpolate()` manually
+    //
+    // If a `callback` is passed it is executed after the template load.
+    load: function(location, options, callback) {
+      var context = this;
+      return this.then(function() {
+        var should_cache, cached, is_json, location_array;
+        if (_isFunction(options)) {
+          callback = options;
+          options = {};
+        } else {
+          options = $.extend({}, options);
+        }
+        if (callback) { this.then(callback); }
+        if (typeof location === 'string') {
+          // it's a path
+          is_json      = (location.match(/\.json(\?|$)/) || options.json);
+          should_cache = is_json ? options.cache === true : options.cache !== false;
+          context.next_engine = context.event_context.engineFor(location);
+          delete options.cache;
+          delete options.json;
+          if (options.engine) {
+            context.next_engine = options.engine;
+            delete options.engine;
+          }
+          if (should_cache && (cached = this.event_context.app.templateCache(location))) {
+            return cached;
+          }
+          this.wait();
+          $.ajax($.extend({
+            url: location,
+            data: {},
+            dataType: is_json ? 'json' : 'text',
+            type: 'get',
+            success: function(data) {
+              if (should_cache) {
+                context.event_context.app.templateCache(location, data);
+              }
+              context.next(data);
+            }
+          }, options));
+          return false;
+        } else {
+          // it's a dom/jQuery
+          if (location.nodeType) {
+            return location.innerHTML;
+          }
+          if (location.selector) {
+            // it's a jQuery
+            context.next_engine = location.attr('data-engine');
+            if (options.clone === false) {
+              return location.remove()[0].innerHTML.toString();
+            } else {
+              return location[0].innerHTML.toString();
+            }
+          }
+        }
+      });
+    },
+
+    // Load partials
+    //
+    // ### Example
+    //
+    //      this.loadPartials({mypartial: '/path/to/partial'});
+    //
+    loadPartials: function(partials) {
+      var name;
+      if(partials) {
+        this.partials = this.partials || {};
+        for(name in partials) {
+          (function(context, name) {
+            context.load(partials[name])
+                   .then(function(template) {
+                     this.partials[name] = template;
+                   });
+          })(this, name);
+        }
+      }
+      return this;
+    },
+
+    // `load()` a template and then `interpolate()` it with data.
+    //
+    // can be called with multiple different signatures:
+    //
+    //      this.render(callback);
+    //      this.render('/location');
+    //      this.render('/location', {some: data});
+    //      this.render('/location', callback);
+    //      this.render('/location', {some: data}, callback);
+    //      this.render('/location', {some: data}, {my: partials});
+    //      this.render('/location', callback, {my: partials});
+    //      this.render('/location', {some: data}, callback, {my: partials});
+    //
+    // ### Example
+    //
+    //      this.get('#/', function() {
+    //        this.render('mytemplate.template', {name: 'test'});
+    //      });
+    //
+    render: function(location, data, callback, partials) {
+      if (_isFunction(location) && !data) {
+        // invoked as render(callback)
+        return this.then(location);
+      } else {
+        if(_isFunction(data)) {
+          // invoked as render(location, callback, [partials])
+          partials = callback;
+          callback = data;
+          data = null;
+        } else if(callback && !_isFunction(callback)) {
+          // invoked as render(location, data, partials)
+          partials = callback;
+          callback = null;
+        }
+
+        return this.loadPartials(partials)
+                   .load(location)
+                   .interpolate(data, location)
+                   .then(callback);
+      }
+    },
+
+    // `render()` the `location` with `data` and then `swap()` the
+    // app's `$element` with the rendered content.
+    partial: function(location, data, callback, partials) {
+      if (_isFunction(callback)) {
+        // invoked as partial(location, data, callback, [partials])
+        return this.render(location, data, partials).swap(callback);
+      } else if (_isFunction(data)) {
+        // invoked as partial(location, callback, [partials])
+        return this.render(location, {}, callback).swap(data);
+      } else {
+        // invoked as partial(location, data, [partials])
+        return this.render(location, data, callback).swap();
+      }
+    },
+
+    // defers the call of function to occur in order of the render queue.
+    // The function can accept any number of arguments as long as the last
+    // argument is a callback function. This is useful for putting arbitrary
+    // asynchronous functions into the queue. The content passed to the
+    // callback is passed as `content` to the next item in the queue.
+    //
+    // ### Example
+    //
+    //     this.send($.getJSON, '/app.json')
+    //         .then(function(json) {
+    //           $('#message).text(json['message']);
+    //          });
+    //
+    //
+    send: function() {
+      var context = this,
+          args = _makeArray(arguments),
+          fun  = args.shift();
+
+      if (_isArray(args[0])) { args = args[0]; }
+
+      return this.then(function(content) {
+        args.push(function(response) { context.next(response); });
+        context.wait();
+        fun.apply(fun, args);
+        return false;
+      });
+    },
+
+    // iterates over an array, applying the callback for each item item. the
+    // callback takes the same style of arguments as `jQuery.each()` (index, item).
+    // The return value of each callback is collected as a single string and stored
+    // as `content` to be used in the next iteration of the `RenderContext`.
+    collect: function(array, callback, now) {
+      var context = this;
+      var coll = function() {
+        if (_isFunction(array)) {
+          callback = array;
+          array = this.content;
+        }
+        var contents = [], doms = false;
+        $.each(array, function(i, item) {
+          var returned = callback.apply(context, [i, item]);
+          if (returned.jquery && returned.length == 1) {
+            returned = returned[0];
+            doms = true;
+          }
+          contents.push(returned);
+          return returned;
+        });
+        return doms ? contents : contents.join('');
+      };
+      return now ? coll() : this.then(coll);
+    },
+
+    // loads a template, and then interpolates it for each item in the `data`
+    // array. If a callback is passed, it will call the callback with each
+    // item in the array _after_ interpolation
+    renderEach: function(location, name, data, callback) {
+      if (_isArray(name)) {
+        callback = data;
+        data = name;
+        name = null;
+      }
+      return this.load(location).then(function(content) {
+          var rctx = this;
+          if (!data) {
+            data = _isArray(this.previous_content) ? this.previous_content : [];
+          }
+          if (callback) {
+            $.each(data, function(i, value) {
+              var idata = {}, engine = this.next_engine || location;
+              if (name) {
+                idata[name] = value;
+              } else {
+                idata = value;
+              }
+              callback(value, rctx.event_context.interpolate(content, idata, engine));
+            });
+          } else {
+            return this.collect(data, function(i, value) {
+              var idata = {}, engine = this.next_engine || location;
+              if (name) {
+                idata[name] = value;
+              } else {
+                idata = value;
+              }
+              return this.event_context.interpolate(content, idata, engine);
+            }, true);
+          }
+      });
+    },
+
+    // uses the previous loaded `content` and the `data` object to interpolate
+    // a template. `engine` defines the templating/interpolation method/engine
+    // that should be used. If `engine` is not passed, the `next_engine` is
+    // used. If `retain` is `true`, the final interpolated data is appended to
+    // the `previous_content` instead of just replacing it.
+    interpolate: function(data, engine, retain) {
+      var context = this;
+      return this.then(function(content, prev) {
+        if (!data && prev) { data = prev; }
+        if (this.next_engine) {
+          engine = this.next_engine;
+          this.next_engine = false;
+        }
+        var rendered = context.event_context.interpolate(content, data, engine, this.partials);
+        return retain ? prev + rendered : rendered;
+      });
+    },
+
+    // Swap the return contents ensuring order. See `Application#swap`
+    swap: function(callback) {
+      return this.then(function(content) {
+        this.event_context.swap(content, callback);
+        return content;
+      }).trigger('changed', {});
+    },
+
+    // Same usage as `jQuery.fn.appendTo()` but uses `then()` to ensure order
+    appendTo: function(selector) {
+      return this.then(function(content) {
+        $(selector).append(content);
+      }).trigger('changed', {});
+    },
+
+    // Same usage as `jQuery.fn.prependTo()` but uses `then()` to ensure order
+    prependTo: function(selector) {
+      return this.then(function(content) {
+        $(selector).prepend(content);
+      }).trigger('changed', {});
+    },
+
+    // Replaces the `$(selector)` using `html()` with the previously loaded
+    // `content`
+    replace: function(selector) {
+      return this.then(function(content) {
+        $(selector).html(content);
+      }).trigger('changed', {});
+    },
+
+    // trigger the event in the order of the event context. Same semantics
+    // as `Sammy.EventContext#trigger()`. If data is omitted, `content`
+    // is sent as `{content: content}`
+    trigger: function(name, data) {
+      return this.then(function(content) {
+        if (typeof data == 'undefined') { data = {content: content}; }
+        this.event_context.trigger(name, data);
+        return content;
+      });
+    }
+
+  });
+
+  // `Sammy.EventContext` objects are created every time a route is run or a
+  // bound event is triggered. The callbacks for these events are evaluated within a `Sammy.EventContext`
+  // This within these callbacks the special methods of `EventContext` are available.
+  //
+  // ### Example
+  //
+  //       $.sammy(function() {
+  //         // The context here is this Sammy.Application
+  //         this.get('#/:name', function() {
+  //           // The context here is a new Sammy.EventContext
+  //           if (this.params['name'] == 'sammy') {
+  //             this.partial('name.html.erb', {name: 'Sammy'});
+  //           } else {
+  //             this.redirect('#/somewhere-else')
+  //           }
+  //         });
+  //       });
+  //
+  // Initialize a new EventContext
+  //
+  // ### Arguments
+  //
+  // * `app` The `Sammy.Application` this event is called within.
+  // * `verb` The verb invoked to run this context/route.
+  // * `path` The string path invoked to run this context/route.
+  // * `params` An Object of optional params to pass to the context. Is converted
+  //   to a `Sammy.Object`.
+  // * `target` a DOM element that the event that holds this context originates
+  //   from. For post, put and del routes, this is the form element that triggered
+  //   the route.
+  //
+  Sammy.EventContext = function(app, verb, path, params, target) {
+    this.app    = app;
+    this.verb   = verb;
+    this.path   = path;
+    this.params = new Sammy.Object(params);
+    this.target = target;
+  };
+
+  Sammy.EventContext.prototype = $.extend({}, Sammy.Object.prototype, {
+
+    // A shortcut to the app's `$element()`
+    $element: function() {
+      return this.app.$element(_makeArray(arguments).shift());
+    },
+
+    // Look up a templating engine within the current app and context.
+    // `engine` can be one of the following:
+    //
+    // * a function: should conform to `function(content, data) { return interpolated; }`
+    // * a template path: 'template.ejs', looks up the extension to match to
+    //   the `ejs()` helper
+    // * a string referring to the helper: "mustache" => `mustache()`
+    //
+    // If no engine is found, use the app's default `template_engine`
+    //
+    engineFor: function(engine) {
+      var context = this, engine_match;
+      // if path is actually an engine function just return it
+      if (_isFunction(engine)) { return engine; }
+      // lookup engine name by path extension
+      engine = (engine || context.app.template_engine).toString();
+      if ((engine_match = engine.match(/\.([^\.\?\#]+)(\?|$)/))) {
+        engine = engine_match[1];
+      }
+      // set the engine to the default template engine if no match is found
+      if (engine && _isFunction(context[engine])) {
+        return context[engine];
+      }
+
+      if (context.app.template_engine) {
+        return this.engineFor(context.app.template_engine);
+      }
+      return function(content, data) { return content; };
+    },
+
+    // using the template `engine` found with `engineFor()`, interpolate the
+    // `data` into `content`
+    interpolate: function(content, data, engine, partials) {
+      return this.engineFor(engine).apply(this, [content, data, partials]);
+    },
+
+    // Create and return a `Sammy.RenderContext` calling `render()` on it.
+    // Loads the template and interpolate the data, however does not actual
+    // place it in the DOM.
+    //
+    // ### Example
+    //
+    //      // mytemplate.mustache <div class="name">{{name}}</div>
+    //      render('mytemplate.mustache', {name: 'quirkey'});
+    //      // sets the `content` to <div class="name">quirkey</div>
+    //      render('mytemplate.mustache', {name: 'quirkey'})
+    //        .appendTo('ul');
+    //      // appends the rendered content to $('ul')
+    //
+    render: function(location, data, callback, partials) {
+      return new Sammy.RenderContext(this).render(location, data, callback, partials);
+    },
+
+    // Create and return a `Sammy.RenderContext` calling `renderEach()` on it.
+    // Loads the template and interpolates the data for each item,
+    // however does not actually place it in the DOM.
+    //
+    // `name` is an optional parameter (if it is an array, it is used as `data`,
+    // and the third parameter used as `callback`, if set).
+    //
+    // If `data` is not provided, content from the previous step in the chain
+    // (if it is an array) is used, and `name` is used as the key for each
+    // element of the array (useful for referencing in template).
+    //
+    // ### Example
+    //
+    //      // mytemplate.mustache <div class="name">{{name}}</div>
+    //      renderEach('mytemplate.mustache', [{name: 'quirkey'}, {name: 'endor'}])
+    //      // sets the `content` to <div class="name">quirkey</div><div class="name">endor</div>
+    //      renderEach('mytemplate.mustache', [{name: 'quirkey'}, {name: 'endor'}]).appendTo('ul');
+    //      // appends the rendered content to $('ul')
+    //
+    //      // names.json: ["quirkey", "endor"]
+    //      this.load('names.json').renderEach('mytemplate.mustache', 'name').appendTo('ul');
+    //      // uses the template to render each item in the JSON array
+    //
+    renderEach: function(location, name, data, callback) {
+      return new Sammy.RenderContext(this).renderEach(location, name, data, callback);
+    },
+
+    // create a new `Sammy.RenderContext` calling `load()` with `location` and
+    // `options`. Called without interpolation or placement, this allows for
+    // preloading/caching the templates.
+    load: function(location, options, callback) {
+      return new Sammy.RenderContext(this).load(location, options, callback);
+    },
+
+    // create a new `Sammy.RenderContext` calling `loadPartials()` with `partials`.
+    loadPartials: function(partials) {
+      return new Sammy.RenderContext(this).loadPartials(partials);
+    },
+
+    // `render()` the `location` with `data` and then `swap()` the
+    // app's `$element` with the rendered content.
+    partial: function(location, data, callback, partials) {
+      return new Sammy.RenderContext(this).partial(location, data, callback, partials);
+    },
+
+    // create a new `Sammy.RenderContext` calling `send()` with an arbitrary
+    // function
+    send: function() {
+      var rctx = new Sammy.RenderContext(this);
+      return rctx.send.apply(rctx, arguments);
+    },
+
+    // Changes the location of the current window. If `to` begins with
+    // '#' it only changes the document's hash. If passed more than 1 argument
+    // redirect will join them together with forward slashes.
+    //
+    // ### Example
+    //
+    //      redirect('#/other/route');
+    //      // equivalent to
+    //      redirect('#', 'other', 'route');
+    //
+    redirect: function() {
+      var to, args = _makeArray(arguments),
+          current_location = this.app.getLocation(),
+          l = args.length;
+      if (l > 1) {
+        var i = 0, paths = [], pairs = [], params = {}, has_params = false;
+        for (; i < l; i++) {
+          if (typeof args[i] == 'string') {
+            paths.push(args[i]);
+          } else {
+            $.extend(params, args[i]);
+            has_params = true;
+          }
+        }
+        to = paths.join('/');
+        if (has_params) {
+          for (var k in params) {
+            pairs.push(this.app._encodeFormPair(k, params[k]));
+          }
+          to += '?' + pairs.join('&');
+        }
+      } else {
+        to = args[0];
+      }
+      this.trigger('redirect', {to: to});
+      this.app.last_location = [this.verb, this.path];
+      this.app.setLocation(to);
+      if (new RegExp(to).test(current_location)) {
+        this.app.trigger('location-changed');
+      }
+    },
+
+    // Triggers events on `app` within the current context.
+    trigger: function(name, data) {
+      if (typeof data == 'undefined') { data = {}; }
+      if (!data.context) { data.context = this; }
+      return this.app.trigger(name, data);
+    },
+
+    // A shortcut to app's `eventNamespace()`
+    eventNamespace: function() {
+      return this.app.eventNamespace();
+    },
+
+    // A shortcut to app's `swap()`
+    swap: function(contents, callback) {
+      return this.app.swap(contents, callback);
+    },
+
+    // Raises a possible `notFound()` error for the current path.
+    notFound: function() {
+      return this.app.notFound(this.verb, this.path);
+    },
+
+    // Default JSON parsing uses jQuery's `parseJSON()`. Include `Sammy.JSON`
+    // plugin for the more conformant "crockford special".
+    json: function(string) {
+      return $.parseJSON(string);
+    },
+
+    // //=> Sammy.EventContext: get #/ {}
+    toString: function() {
+      return "Sammy.EventContext: " + [this.verb, this.path, this.params].join(' ');
+    }
+
+  });
+
+  return Sammy;
+});
+
+},{}],6:[function(require,module,exports){
 /*
      _ _      _       _
  ___| (_) ___| | __  (_)___
@@ -24903,7 +27070,7 @@ return paper;
 /* global window, document, define, jQuery, setInterval, clearInterval */
 !function(a){"use strict";"function"==typeof define&&define.amd?define(["jquery"],a):"undefined"!=typeof exports?module.exports=a(require("./../../jquery/dist/jquery.js")):a(jQuery)}(function(a){"use strict";var b=window.Slick||{};b=function(){function c(c,d){var f,g,h,e=this;if(e.defaults={accessibility:!0,adaptiveHeight:!1,appendArrows:a(c),appendDots:a(c),arrows:!0,asNavFor:null,prevArrow:'<button type="button" data-role="none" class="slick-prev" aria-label="previous">Previous</button>',nextArrow:'<button type="button" data-role="none" class="slick-next" aria-label="next">Next</button>',autoplay:!1,autoplaySpeed:3e3,centerMode:!1,centerPadding:"50px",cssEase:"ease",customPaging:function(a,b){return'<button type="button" data-role="none">'+(b+1)+"</button>"},dots:!1,dotsClass:"slick-dots",draggable:!0,easing:"linear",edgeFriction:.35,fade:!1,focusOnSelect:!1,infinite:!0,initialSlide:0,lazyLoad:"ondemand",mobileFirst:!1,pauseOnHover:!0,pauseOnDotsHover:!1,respondTo:"window",responsive:null,rows:1,rtl:!1,slide:"",slidesPerRow:1,slidesToShow:1,slidesToScroll:1,speed:500,swipe:!0,swipeToSlide:!1,touchMove:!0,touchThreshold:5,useCSS:!0,variableWidth:!1,vertical:!1,verticalSwiping:!1,waitForAnimate:!0},e.initials={animating:!1,dragging:!1,autoPlayTimer:null,currentDirection:0,currentLeft:null,currentSlide:0,direction:1,$dots:null,listWidth:null,listHeight:null,loadIndex:0,$nextArrow:null,$prevArrow:null,slideCount:null,slideWidth:null,$slideTrack:null,$slides:null,sliding:!1,slideOffset:0,swipeLeft:null,$list:null,touchObject:{},transformsEnabled:!1,unslicked:!1},a.extend(e,e.initials),e.activeBreakpoint=null,e.animType=null,e.animProp=null,e.breakpoints=[],e.breakpointSettings=[],e.cssTransitions=!1,e.hidden="hidden",e.paused=!1,e.positionProp=null,e.respondTo=null,e.rowCount=1,e.shouldClick=!0,e.$slider=a(c),e.$slidesCache=null,e.transformType=null,e.transitionType=null,e.visibilityChange="visibilitychange",e.windowWidth=0,e.windowTimer=null,f=a(c).data("slick")||{},e.options=a.extend({},e.defaults,f,d),e.currentSlide=e.options.initialSlide,e.originalSettings=e.options,g=e.options.responsive||null,g&&g.length>-1){e.respondTo=e.options.respondTo||"window";for(h in g)g.hasOwnProperty(h)&&(e.breakpoints.push(g[h].breakpoint),e.breakpointSettings[g[h].breakpoint]=g[h].settings);e.breakpoints.sort(function(a,b){return e.options.mobileFirst===!0?a-b:b-a})}"undefined"!=typeof document.mozHidden?(e.hidden="mozHidden",e.visibilityChange="mozvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(e.hidden="webkitHidden",e.visibilityChange="webkitvisibilitychange"),e.autoPlay=a.proxy(e.autoPlay,e),e.autoPlayClear=a.proxy(e.autoPlayClear,e),e.changeSlide=a.proxy(e.changeSlide,e),e.clickHandler=a.proxy(e.clickHandler,e),e.selectHandler=a.proxy(e.selectHandler,e),e.setPosition=a.proxy(e.setPosition,e),e.swipeHandler=a.proxy(e.swipeHandler,e),e.dragHandler=a.proxy(e.dragHandler,e),e.keyHandler=a.proxy(e.keyHandler,e),e.autoPlayIterator=a.proxy(e.autoPlayIterator,e),e.instanceUid=b++,e.htmlExpr=/^(?:\s*(<[\w\W]+>)[^>]*)$/,e.init(!0),e.checkResponsive(!0)}var b=0;return c}(),b.prototype.addSlide=b.prototype.slickAdd=function(b,c,d){var e=this;if("boolean"==typeof c)d=c,c=null;else if(0>c||c>=e.slideCount)return!1;e.unload(),"number"==typeof c?0===c&&0===e.$slides.length?a(b).appendTo(e.$slideTrack):d?a(b).insertBefore(e.$slides.eq(c)):a(b).insertAfter(e.$slides.eq(c)):d===!0?a(b).prependTo(e.$slideTrack):a(b).appendTo(e.$slideTrack),e.$slides=e.$slideTrack.children(this.options.slide),e.$slideTrack.children(this.options.slide).detach(),e.$slideTrack.append(e.$slides),e.$slides.each(function(b,c){a(c).attr("data-slick-index",b)}),e.$slidesCache=e.$slides,e.reinit()},b.prototype.animateHeight=function(){var a=this;if(1===a.options.slidesToShow&&a.options.adaptiveHeight===!0&&a.options.vertical===!1){var b=a.$slides.eq(a.currentSlide).outerHeight(!0);a.$list.animate({height:b},a.options.speed)}},b.prototype.animateSlide=function(b,c){var d={},e=this;e.animateHeight(),e.options.rtl===!0&&e.options.vertical===!1&&(b=-b),e.transformsEnabled===!1?e.options.vertical===!1?e.$slideTrack.animate({left:b},e.options.speed,e.options.easing,c):e.$slideTrack.animate({top:b},e.options.speed,e.options.easing,c):e.cssTransitions===!1?(e.options.rtl===!0&&(e.currentLeft=-e.currentLeft),a({animStart:e.currentLeft}).animate({animStart:b},{duration:e.options.speed,easing:e.options.easing,step:function(a){a=Math.ceil(a),e.options.vertical===!1?(d[e.animType]="translate("+a+"px, 0px)",e.$slideTrack.css(d)):(d[e.animType]="translate(0px,"+a+"px)",e.$slideTrack.css(d))},complete:function(){c&&c.call()}})):(e.applyTransition(),b=Math.ceil(b),d[e.animType]=e.options.vertical===!1?"translate3d("+b+"px, 0px, 0px)":"translate3d(0px,"+b+"px, 0px)",e.$slideTrack.css(d),c&&setTimeout(function(){e.disableTransition(),c.call()},e.options.speed))},b.prototype.asNavFor=function(b){var c=this,d=c.options.asNavFor;d&&null!==d&&(d=a(d).not(c.$slider)),null!==d&&"object"==typeof d&&d.each(function(){var c=a(this).slick("getSlick");c.unslicked||c.slideHandler(b,!0)})},b.prototype.applyTransition=function(a){var b=this,c={};c[b.transitionType]=b.options.fade===!1?b.transformType+" "+b.options.speed+"ms "+b.options.cssEase:"opacity "+b.options.speed+"ms "+b.options.cssEase,b.options.fade===!1?b.$slideTrack.css(c):b.$slides.eq(a).css(c)},b.prototype.autoPlay=function(){var a=this;a.autoPlayTimer&&clearInterval(a.autoPlayTimer),a.slideCount>a.options.slidesToShow&&a.paused!==!0&&(a.autoPlayTimer=setInterval(a.autoPlayIterator,a.options.autoplaySpeed))},b.prototype.autoPlayClear=function(){var a=this;a.autoPlayTimer&&clearInterval(a.autoPlayTimer)},b.prototype.autoPlayIterator=function(){var a=this;a.options.infinite===!1?1===a.direction?(a.currentSlide+1===a.slideCount-1&&(a.direction=0),a.slideHandler(a.currentSlide+a.options.slidesToScroll)):(0===a.currentSlide-1&&(a.direction=1),a.slideHandler(a.currentSlide-a.options.slidesToScroll)):a.slideHandler(a.currentSlide+a.options.slidesToScroll)},b.prototype.buildArrows=function(){var b=this;b.options.arrows===!0&&b.slideCount>b.options.slidesToShow&&(b.$prevArrow=a(b.options.prevArrow),b.$nextArrow=a(b.options.nextArrow),b.htmlExpr.test(b.options.prevArrow)&&b.$prevArrow.appendTo(b.options.appendArrows),b.htmlExpr.test(b.options.nextArrow)&&b.$nextArrow.appendTo(b.options.appendArrows),b.options.infinite!==!0&&b.$prevArrow.addClass("slick-disabled"))},b.prototype.buildDots=function(){var c,d,b=this;if(b.options.dots===!0&&b.slideCount>b.options.slidesToShow){for(d='<ul class="'+b.options.dotsClass+'">',c=0;c<=b.getDotCount();c+=1)d+="<li>"+b.options.customPaging.call(this,b,c)+"</li>";d+="</ul>",b.$dots=a(d).appendTo(b.options.appendDots),b.$dots.find("li").first().addClass("slick-active").attr("aria-hidden","false")}},b.prototype.buildOut=function(){var b=this;b.$slides=b.$slider.children(":not(.slick-cloned)").addClass("slick-slide"),b.slideCount=b.$slides.length,b.$slides.each(function(b,c){a(c).attr("data-slick-index",b)}),b.$slidesCache=b.$slides,b.$slider.addClass("slick-slider"),b.$slideTrack=0===b.slideCount?a('<div class="slick-track"/>').appendTo(b.$slider):b.$slides.wrapAll('<div class="slick-track"/>').parent(),b.$list=b.$slideTrack.wrap('<div aria-live="polite" class="slick-list"/>').parent(),b.$slideTrack.css("opacity",0),(b.options.centerMode===!0||b.options.swipeToSlide===!0)&&(b.options.slidesToScroll=1),a("img[data-lazy]",b.$slider).not("[src]").addClass("slick-loading"),b.setupInfinite(),b.buildArrows(),b.buildDots(),b.updateDots(),b.options.accessibility===!0&&b.$list.prop("tabIndex",0),b.setSlideClasses("number"==typeof this.currentSlide?this.currentSlide:0),b.options.draggable===!0&&b.$list.addClass("draggable")},b.prototype.buildRows=function(){var b,c,d,e,f,g,h,a=this;if(e=document.createDocumentFragment(),g=a.$slider.children(),a.options.rows>1){for(h=a.options.slidesPerRow*a.options.rows,f=Math.ceil(g.length/h),b=0;f>b;b++){var i=document.createElement("div");for(c=0;c<a.options.rows;c++){var j=document.createElement("div");for(d=0;d<a.options.slidesPerRow;d++){var k=b*h+(c*a.options.slidesPerRow+d);g.get(k)&&j.appendChild(g.get(k))}i.appendChild(j)}e.appendChild(i)}a.$slider.html(e),a.$slider.children().children().children().width(100/a.options.slidesPerRow+"%").css({display:"inline-block"})}},b.prototype.checkResponsive=function(b){var d,e,f,c=this,g=!1,h=c.$slider.width(),i=window.innerWidth||a(window).width();if("window"===c.respondTo?f=i:"slider"===c.respondTo?f=h:"min"===c.respondTo&&(f=Math.min(i,h)),c.originalSettings.responsive&&c.originalSettings.responsive.length>-1&&null!==c.originalSettings.responsive){e=null;for(d in c.breakpoints)c.breakpoints.hasOwnProperty(d)&&(c.originalSettings.mobileFirst===!1?f<c.breakpoints[d]&&(e=c.breakpoints[d]):f>c.breakpoints[d]&&(e=c.breakpoints[d]));null!==e?null!==c.activeBreakpoint?e!==c.activeBreakpoint&&(c.activeBreakpoint=e,"unslick"===c.breakpointSettings[e]?c.unslick(e):(c.options=a.extend({},c.originalSettings,c.breakpointSettings[e]),b===!0&&(c.currentSlide=c.options.initialSlide),c.refresh()),g=e):(c.activeBreakpoint=e,"unslick"===c.breakpointSettings[e]?c.unslick(e):(c.options=a.extend({},c.originalSettings,c.breakpointSettings[e]),b===!0?c.currentSlide=c.options.initialSlide:c.refresh()),g=e):null!==c.activeBreakpoint&&(c.activeBreakpoint=null,c.options=c.originalSettings,b===!0&&(c.currentSlide=c.options.initialSlide),c.refresh(),g=e),b||g===!1||c.$slider.trigger("breakpoint",[c,g])}},b.prototype.changeSlide=function(b,c){var f,g,h,d=this,e=a(b.target);switch(e.is("a")&&b.preventDefault(),e.is("li")||(e=e.closest("li")),h=0!==d.slideCount%d.options.slidesToScroll,f=h?0:(d.slideCount-d.currentSlide)%d.options.slidesToScroll,b.data.message){case"previous":g=0===f?d.options.slidesToScroll:d.options.slidesToShow-f,d.slideCount>d.options.slidesToShow&&d.slideHandler(d.currentSlide-g,!1,c);break;case"next":g=0===f?d.options.slidesToScroll:f,d.slideCount>d.options.slidesToShow&&d.slideHandler(d.currentSlide+g,!1,c);break;case"index":var i=0===b.data.index?0:b.data.index||e.index()*d.options.slidesToScroll;d.slideHandler(d.checkNavigable(i),!1,c),e.children().trigger("focus");break;default:return}},b.prototype.checkNavigable=function(a){var c,d,b=this;if(c=b.getNavigableIndexes(),d=0,a>c[c.length-1])a=c[c.length-1];else for(var e in c){if(a<c[e]){a=d;break}d=c[e]}return a},b.prototype.cleanUpEvents=function(){var b=this;b.options.dots===!0&&b.slideCount>b.options.slidesToShow&&a("li",b.$dots).off("click.slick",b.changeSlide),b.options.dots===!0&&b.options.pauseOnDotsHover===!0&&b.options.autoplay===!0&&a("li",b.$dots).off("mouseenter.slick",a.proxy(b.setPaused,b,!0)).off("mouseleave.slick",a.proxy(b.setPaused,b,!1)),b.options.arrows===!0&&b.slideCount>b.options.slidesToShow&&(b.$prevArrow&&b.$prevArrow.off("click.slick",b.changeSlide),b.$nextArrow&&b.$nextArrow.off("click.slick",b.changeSlide)),b.$list.off("touchstart.slick mousedown.slick",b.swipeHandler),b.$list.off("touchmove.slick mousemove.slick",b.swipeHandler),b.$list.off("touchend.slick mouseup.slick",b.swipeHandler),b.$list.off("touchcancel.slick mouseleave.slick",b.swipeHandler),b.$list.off("click.slick",b.clickHandler),a(document).off(b.visibilityChange,b.visibility),b.$list.off("mouseenter.slick",a.proxy(b.setPaused,b,!0)),b.$list.off("mouseleave.slick",a.proxy(b.setPaused,b,!1)),b.options.accessibility===!0&&b.$list.off("keydown.slick",b.keyHandler),b.options.focusOnSelect===!0&&a(b.$slideTrack).children().off("click.slick",b.selectHandler),a(window).off("orientationchange.slick.slick-"+b.instanceUid,b.orientationChange),a(window).off("resize.slick.slick-"+b.instanceUid,b.resize),a("[draggable!=true]",b.$slideTrack).off("dragstart",b.preventDefault),a(window).off("load.slick.slick-"+b.instanceUid,b.setPosition),a(document).off("ready.slick.slick-"+b.instanceUid,b.setPosition)},b.prototype.cleanUpRows=function(){var b,a=this;a.options.rows>1&&(b=a.$slides.children().children(),b.removeAttr("style"),a.$slider.html(b))},b.prototype.clickHandler=function(a){var b=this;b.shouldClick===!1&&(a.stopImmediatePropagation(),a.stopPropagation(),a.preventDefault())},b.prototype.destroy=function(){var b=this;b.autoPlayClear(),b.touchObject={},b.cleanUpEvents(),a(".slick-cloned",b.$slider).detach(),b.$dots&&b.$dots.remove(),b.$prevArrow&&"object"!=typeof b.options.prevArrow&&b.$prevArrow.remove(),b.$nextArrow&&"object"!=typeof b.options.nextArrow&&b.$nextArrow.remove(),b.$slides&&(b.$slides.removeClass("slick-slide slick-active slick-center slick-visible").removeAttr("aria-hidden").removeAttr("data-slick-index").css({position:"",left:"",top:"",zIndex:"",opacity:"",width:""}),b.$slideTrack.children(this.options.slide).detach(),b.$slideTrack.detach(),b.$list.detach(),b.$slider.append(b.$slides)),b.cleanUpRows(),b.$slider.removeClass("slick-slider"),b.$slider.removeClass("slick-initialized"),b.unslicked=!0},b.prototype.disableTransition=function(a){var b=this,c={};c[b.transitionType]="",b.options.fade===!1?b.$slideTrack.css(c):b.$slides.eq(a).css(c)},b.prototype.fadeSlide=function(a,b){var c=this;c.cssTransitions===!1?(c.$slides.eq(a).css({zIndex:1e3}),c.$slides.eq(a).animate({opacity:1},c.options.speed,c.options.easing,b)):(c.applyTransition(a),c.$slides.eq(a).css({opacity:1,zIndex:1e3}),b&&setTimeout(function(){c.disableTransition(a),b.call()},c.options.speed))},b.prototype.filterSlides=b.prototype.slickFilter=function(a){var b=this;null!==a&&(b.unload(),b.$slideTrack.children(this.options.slide).detach(),b.$slidesCache.filter(a).appendTo(b.$slideTrack),b.reinit())},b.prototype.getCurrent=b.prototype.slickCurrentSlide=function(){var a=this;return a.currentSlide},b.prototype.getDotCount=function(){var a=this,b=0,c=0,d=0;if(a.options.infinite===!0)for(;b<a.slideCount;)++d,b=c+a.options.slidesToShow,c+=a.options.slidesToScroll<=a.options.slidesToShow?a.options.slidesToScroll:a.options.slidesToShow;else if(a.options.centerMode===!0)d=a.slideCount;else for(;b<a.slideCount;)++d,b=c+a.options.slidesToShow,c+=a.options.slidesToScroll<=a.options.slidesToShow?a.options.slidesToScroll:a.options.slidesToShow;return d-1},b.prototype.getLeft=function(a){var c,d,f,b=this,e=0;return b.slideOffset=0,d=b.$slides.first().outerHeight(),b.options.infinite===!0?(b.slideCount>b.options.slidesToShow&&(b.slideOffset=-1*b.slideWidth*b.options.slidesToShow,e=-1*d*b.options.slidesToShow),0!==b.slideCount%b.options.slidesToScroll&&a+b.options.slidesToScroll>b.slideCount&&b.slideCount>b.options.slidesToShow&&(a>b.slideCount?(b.slideOffset=-1*(b.options.slidesToShow-(a-b.slideCount))*b.slideWidth,e=-1*(b.options.slidesToShow-(a-b.slideCount))*d):(b.slideOffset=-1*b.slideCount%b.options.slidesToScroll*b.slideWidth,e=-1*b.slideCount%b.options.slidesToScroll*d))):a+b.options.slidesToShow>b.slideCount&&(b.slideOffset=(a+b.options.slidesToShow-b.slideCount)*b.slideWidth,e=(a+b.options.slidesToShow-b.slideCount)*d),b.slideCount<=b.options.slidesToShow&&(b.slideOffset=0,e=0),b.options.centerMode===!0&&b.options.infinite===!0?b.slideOffset+=b.slideWidth*Math.floor(b.options.slidesToShow/2)-b.slideWidth:b.options.centerMode===!0&&(b.slideOffset=0,b.slideOffset+=b.slideWidth*Math.floor(b.options.slidesToShow/2)),c=b.options.vertical===!1?-1*a*b.slideWidth+b.slideOffset:-1*a*d+e,b.options.variableWidth===!0&&(f=b.slideCount<=b.options.slidesToShow||b.options.infinite===!1?b.$slideTrack.children(".slick-slide").eq(a):b.$slideTrack.children(".slick-slide").eq(a+b.options.slidesToShow),c=f[0]?-1*f[0].offsetLeft:0,b.options.centerMode===!0&&(f=b.options.infinite===!1?b.$slideTrack.children(".slick-slide").eq(a):b.$slideTrack.children(".slick-slide").eq(a+b.options.slidesToShow+1),c=f[0]?-1*f[0].offsetLeft:0,c+=(b.$list.width()-f.outerWidth())/2)),c},b.prototype.getOption=b.prototype.slickGetOption=function(a){var b=this;return b.options[a]},b.prototype.getNavigableIndexes=function(){var e,a=this,b=0,c=0,d=[];for(a.options.infinite===!1?e=a.slideCount:(b=-1*a.options.slidesToScroll,c=-1*a.options.slidesToScroll,e=2*a.slideCount);e>b;)d.push(b),b=c+a.options.slidesToScroll,c+=a.options.slidesToScroll<=a.options.slidesToShow?a.options.slidesToScroll:a.options.slidesToShow;return d},b.prototype.getSlick=function(){return this},b.prototype.getSlideCount=function(){var c,d,e,b=this;return e=b.options.centerMode===!0?b.slideWidth*Math.floor(b.options.slidesToShow/2):0,b.options.swipeToSlide===!0?(b.$slideTrack.find(".slick-slide").each(function(c,f){return f.offsetLeft-e+a(f).outerWidth()/2>-1*b.swipeLeft?(d=f,!1):void 0}),c=Math.abs(a(d).attr("data-slick-index")-b.currentSlide)||1):b.options.slidesToScroll},b.prototype.goTo=b.prototype.slickGoTo=function(a,b){var c=this;c.changeSlide({data:{message:"index",index:parseInt(a)}},b)},b.prototype.init=function(b){var c=this;a(c.$slider).hasClass("slick-initialized")||(a(c.$slider).addClass("slick-initialized"),c.buildRows(),c.buildOut(),c.setProps(),c.startLoad(),c.loadSlider(),c.initializeEvents(),c.updateArrows(),c.updateDots()),b&&c.$slider.trigger("init",[c])},b.prototype.initArrowEvents=function(){var a=this;a.options.arrows===!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.on("click.slick",{message:"previous"},a.changeSlide),a.$nextArrow.on("click.slick",{message:"next"},a.changeSlide))},b.prototype.initDotEvents=function(){var b=this;b.options.dots===!0&&b.slideCount>b.options.slidesToShow&&a("li",b.$dots).on("click.slick",{message:"index"},b.changeSlide),b.options.dots===!0&&b.options.pauseOnDotsHover===!0&&b.options.autoplay===!0&&a("li",b.$dots).on("mouseenter.slick",a.proxy(b.setPaused,b,!0)).on("mouseleave.slick",a.proxy(b.setPaused,b,!1))},b.prototype.initializeEvents=function(){var b=this;b.initArrowEvents(),b.initDotEvents(),b.$list.on("touchstart.slick mousedown.slick",{action:"start"},b.swipeHandler),b.$list.on("touchmove.slick mousemove.slick",{action:"move"},b.swipeHandler),b.$list.on("touchend.slick mouseup.slick",{action:"end"},b.swipeHandler),b.$list.on("touchcancel.slick mouseleave.slick",{action:"end"},b.swipeHandler),b.$list.on("click.slick",b.clickHandler),a(document).on(b.visibilityChange,a.proxy(b.visibility,b)),b.$list.on("mouseenter.slick",a.proxy(b.setPaused,b,!0)),b.$list.on("mouseleave.slick",a.proxy(b.setPaused,b,!1)),b.options.accessibility===!0&&b.$list.on("keydown.slick",b.keyHandler),b.options.focusOnSelect===!0&&a(b.$slideTrack).children().on("click.slick",b.selectHandler),a(window).on("orientationchange.slick.slick-"+b.instanceUid,a.proxy(b.orientationChange,b)),a(window).on("resize.slick.slick-"+b.instanceUid,a.proxy(b.resize,b)),a("[draggable!=true]",b.$slideTrack).on("dragstart",b.preventDefault),a(window).on("load.slick.slick-"+b.instanceUid,b.setPosition),a(document).on("ready.slick.slick-"+b.instanceUid,b.setPosition)},b.prototype.initUI=function(){var a=this;a.options.arrows===!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.show(),a.$nextArrow.show()),a.options.dots===!0&&a.slideCount>a.options.slidesToShow&&a.$dots.show(),a.options.autoplay===!0&&a.autoPlay()},b.prototype.keyHandler=function(a){var b=this;37===a.keyCode&&b.options.accessibility===!0?b.changeSlide({data:{message:"previous"}}):39===a.keyCode&&b.options.accessibility===!0&&b.changeSlide({data:{message:"next"}})},b.prototype.lazyLoad=function(){function g(b){a("img[data-lazy]",b).each(function(){var b=a(this),c=a(this).attr("data-lazy"),d=document.createElement("img");d.onload=function(){b.animate({opacity:1},200)},d.src=c,b.css({opacity:0}).attr("src",c).removeAttr("data-lazy").removeClass("slick-loading")})}var c,d,e,f,b=this;b.options.centerMode===!0?b.options.infinite===!0?(e=b.currentSlide+(b.options.slidesToShow/2+1),f=e+b.options.slidesToShow+2):(e=Math.max(0,b.currentSlide-(b.options.slidesToShow/2+1)),f=2+(b.options.slidesToShow/2+1)+b.currentSlide):(e=b.options.infinite?b.options.slidesToShow+b.currentSlide:b.currentSlide,f=e+b.options.slidesToShow,b.options.fade===!0&&(e>0&&e--,f<=b.slideCount&&f++)),c=b.$slider.find(".slick-slide").slice(e,f),g(c),b.slideCount<=b.options.slidesToShow?(d=b.$slider.find(".slick-slide"),g(d)):b.currentSlide>=b.slideCount-b.options.slidesToShow?(d=b.$slider.find(".slick-cloned").slice(0,b.options.slidesToShow),g(d)):0===b.currentSlide&&(d=b.$slider.find(".slick-cloned").slice(-1*b.options.slidesToShow),g(d))},b.prototype.loadSlider=function(){var a=this;a.setPosition(),a.$slideTrack.css({opacity:1}),a.$slider.removeClass("slick-loading"),a.initUI(),"progressive"===a.options.lazyLoad&&a.progressiveLazyLoad()},b.prototype.next=b.prototype.slickNext=function(){var a=this;a.changeSlide({data:{message:"next"}})},b.prototype.orientationChange=function(){var a=this;a.checkResponsive(),a.setPosition()},b.prototype.pause=b.prototype.slickPause=function(){var a=this;a.autoPlayClear(),a.paused=!0},b.prototype.play=b.prototype.slickPlay=function(){var a=this;a.paused=!1,a.autoPlay()},b.prototype.postSlide=function(a){var b=this;b.$slider.trigger("afterChange",[b,a]),b.animating=!1,b.setPosition(),b.swipeLeft=null,b.options.autoplay===!0&&b.paused===!1&&b.autoPlay()},b.prototype.prev=b.prototype.slickPrev=function(){var a=this;a.changeSlide({data:{message:"previous"}})},b.prototype.preventDefault=function(a){a.preventDefault()},b.prototype.progressiveLazyLoad=function(){var c,d,b=this;c=a("img[data-lazy]",b.$slider).length,c>0&&(d=a("img[data-lazy]",b.$slider).first(),d.attr("src",d.attr("data-lazy")).removeClass("slick-loading").load(function(){d.removeAttr("data-lazy"),b.progressiveLazyLoad(),b.options.adaptiveHeight===!0&&b.setPosition()}).error(function(){d.removeAttr("data-lazy"),b.progressiveLazyLoad()}))},b.prototype.refresh=function(){var b=this,c=b.currentSlide;b.destroy(),a.extend(b,b.initials),b.init(),b.changeSlide({data:{message:"index",index:c}},!1)},b.prototype.reinit=function(){var b=this;b.$slides=b.$slideTrack.children(b.options.slide).addClass("slick-slide"),b.slideCount=b.$slides.length,b.currentSlide>=b.slideCount&&0!==b.currentSlide&&(b.currentSlide=b.currentSlide-b.options.slidesToScroll),b.slideCount<=b.options.slidesToShow&&(b.currentSlide=0),b.setProps(),b.setupInfinite(),b.buildArrows(),b.updateArrows(),b.initArrowEvents(),b.buildDots(),b.updateDots(),b.initDotEvents(),b.options.focusOnSelect===!0&&a(b.$slideTrack).children().on("click.slick",b.selectHandler),b.setSlideClasses(0),b.setPosition(),b.$slider.trigger("reInit",[b])},b.prototype.resize=function(){var b=this;a(window).width()!==b.windowWidth&&(clearTimeout(b.windowDelay),b.windowDelay=window.setTimeout(function(){b.windowWidth=a(window).width(),b.checkResponsive(),b.setPosition()},50))},b.prototype.removeSlide=b.prototype.slickRemove=function(a,b,c){var d=this;return"boolean"==typeof a?(b=a,a=b===!0?0:d.slideCount-1):a=b===!0?--a:a,d.slideCount<1||0>a||a>d.slideCount-1?!1:(d.unload(),c===!0?d.$slideTrack.children().remove():d.$slideTrack.children(this.options.slide).eq(a).remove(),d.$slides=d.$slideTrack.children(this.options.slide),d.$slideTrack.children(this.options.slide).detach(),d.$slideTrack.append(d.$slides),d.$slidesCache=d.$slides,d.reinit(),void 0)},b.prototype.setCSS=function(a){var d,e,b=this,c={};b.options.rtl===!0&&(a=-a),d="left"==b.positionProp?Math.ceil(a)+"px":"0px",e="top"==b.positionProp?Math.ceil(a)+"px":"0px",c[b.positionProp]=a,b.transformsEnabled===!1?b.$slideTrack.css(c):(c={},b.cssTransitions===!1?(c[b.animType]="translate("+d+", "+e+")",b.$slideTrack.css(c)):(c[b.animType]="translate3d("+d+", "+e+", 0px)",b.$slideTrack.css(c)))},b.prototype.setDimensions=function(){var a=this;a.options.vertical===!1?a.options.centerMode===!0&&a.$list.css({padding:"0px "+a.options.centerPadding}):(a.$list.height(a.$slides.first().outerHeight(!0)*a.options.slidesToShow),a.options.centerMode===!0&&a.$list.css({padding:a.options.centerPadding+" 0px"})),a.listWidth=a.$list.width(),a.listHeight=a.$list.height(),a.options.vertical===!1&&a.options.variableWidth===!1?(a.slideWidth=Math.ceil(a.listWidth/a.options.slidesToShow),a.$slideTrack.width(Math.ceil(a.slideWidth*a.$slideTrack.children(".slick-slide").length))):a.options.variableWidth===!0?a.$slideTrack.width(5e3*a.slideCount):(a.slideWidth=Math.ceil(a.listWidth),a.$slideTrack.height(Math.ceil(a.$slides.first().outerHeight(!0)*a.$slideTrack.children(".slick-slide").length)));var b=a.$slides.first().outerWidth(!0)-a.$slides.first().width();a.options.variableWidth===!1&&a.$slideTrack.children(".slick-slide").width(a.slideWidth-b)},b.prototype.setFade=function(){var c,b=this;b.$slides.each(function(d,e){c=-1*b.slideWidth*d,b.options.rtl===!0?a(e).css({position:"relative",right:c,top:0,zIndex:800,opacity:0}):a(e).css({position:"relative",left:c,top:0,zIndex:800,opacity:0})}),b.$slides.eq(b.currentSlide).css({zIndex:900,opacity:1})},b.prototype.setHeight=function(){var a=this;if(1===a.options.slidesToShow&&a.options.adaptiveHeight===!0&&a.options.vertical===!1){var b=a.$slides.eq(a.currentSlide).outerHeight(!0);a.$list.css("height",b)}},b.prototype.setOption=b.prototype.slickSetOption=function(a,b,c){var d=this;d.options[a]=b,c===!0&&(d.unload(),d.reinit())},b.prototype.setPosition=function(){var a=this;a.setDimensions(),a.setHeight(),a.options.fade===!1?a.setCSS(a.getLeft(a.currentSlide)):a.setFade(),a.$slider.trigger("setPosition",[a])},b.prototype.setProps=function(){var a=this,b=document.body.style;a.positionProp=a.options.vertical===!0?"top":"left","top"===a.positionProp?a.$slider.addClass("slick-vertical"):a.$slider.removeClass("slick-vertical"),(void 0!==b.WebkitTransition||void 0!==b.MozTransition||void 0!==b.msTransition)&&a.options.useCSS===!0&&(a.cssTransitions=!0),void 0!==b.OTransform&&(a.animType="OTransform",a.transformType="-o-transform",a.transitionType="OTransition",void 0===b.perspectiveProperty&&void 0===b.webkitPerspective&&(a.animType=!1)),void 0!==b.MozTransform&&(a.animType="MozTransform",a.transformType="-moz-transform",a.transitionType="MozTransition",void 0===b.perspectiveProperty&&void 0===b.MozPerspective&&(a.animType=!1)),void 0!==b.webkitTransform&&(a.animType="webkitTransform",a.transformType="-webkit-transform",a.transitionType="webkitTransition",void 0===b.perspectiveProperty&&void 0===b.webkitPerspective&&(a.animType=!1)),void 0!==b.msTransform&&(a.animType="msTransform",a.transformType="-ms-transform",a.transitionType="msTransition",void 0===b.msTransform&&(a.animType=!1)),void 0!==b.transform&&a.animType!==!1&&(a.animType="transform",a.transformType="transform",a.transitionType="transition"),a.transformsEnabled=null!==a.animType&&a.animType!==!1},b.prototype.setSlideClasses=function(a){var c,d,e,f,b=this;b.$slider.find(".slick-slide").removeClass("slick-active").attr("aria-hidden","true").removeClass("slick-center"),d=b.$slider.find(".slick-slide"),b.options.centerMode===!0?(c=Math.floor(b.options.slidesToShow/2),b.options.infinite===!0&&(a>=c&&a<=b.slideCount-1-c?b.$slides.slice(a-c,a+c+1).addClass("slick-active").attr("aria-hidden","false"):(e=b.options.slidesToShow+a,d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a?d.eq(d.length-1-b.options.slidesToShow).addClass("slick-center"):a===b.slideCount-1&&d.eq(b.options.slidesToShow).addClass("slick-center")),b.$slides.eq(a).addClass("slick-center")):a>=0&&a<=b.slideCount-b.options.slidesToShow?b.$slides.slice(a,a+b.options.slidesToShow).addClass("slick-active").attr("aria-hidden","false"):d.length<=b.options.slidesToShow?d.addClass("slick-active").attr("aria-hidden","false"):(f=b.slideCount%b.options.slidesToShow,e=b.options.infinite===!0?b.options.slidesToShow+a:a,b.options.slidesToShow==b.options.slidesToScroll&&b.slideCount-a<b.options.slidesToShow?d.slice(e-(b.options.slidesToShow-f),e+f).addClass("slick-active").attr("aria-hidden","false"):d.slice(e,e+b.options.slidesToShow).addClass("slick-active").attr("aria-hidden","false")),"ondemand"===b.options.lazyLoad&&b.lazyLoad()},b.prototype.setupInfinite=function(){var c,d,e,b=this;if(b.options.fade===!0&&(b.options.centerMode=!1),b.options.infinite===!0&&b.options.fade===!1&&(d=null,b.slideCount>b.options.slidesToShow)){for(e=b.options.centerMode===!0?b.options.slidesToShow+1:b.options.slidesToShow,c=b.slideCount;c>b.slideCount-e;c-=1)d=c-1,a(b.$slides[d]).clone(!0).attr("id","").attr("data-slick-index",d-b.slideCount).prependTo(b.$slideTrack).addClass("slick-cloned");for(c=0;e>c;c+=1)d=c,a(b.$slides[d]).clone(!0).attr("id","").attr("data-slick-index",d+b.slideCount).appendTo(b.$slideTrack).addClass("slick-cloned");b.$slideTrack.find(".slick-cloned").find("[id]").each(function(){a(this).attr("id","")})}},b.prototype.setPaused=function(a){var b=this;b.options.autoplay===!0&&b.options.pauseOnHover===!0&&(b.paused=a,a?b.autoPlayClear():b.autoPlay())},b.prototype.selectHandler=function(b){var c=this,d=a(b.target).is(".slick-slide")?a(b.target):a(b.target).parents(".slick-slide"),e=parseInt(d.attr("data-slick-index"));return e||(e=0),c.slideCount<=c.options.slidesToShow?(c.$slider.find(".slick-slide").removeClass("slick-active").attr("aria-hidden","true"),c.$slides.eq(e).addClass("slick-active").attr("aria-hidden","false"),c.options.centerMode===!0&&(c.$slider.find(".slick-slide").removeClass("slick-center"),c.$slides.eq(e).addClass("slick-center")),c.asNavFor(e),void 0):(c.slideHandler(e),void 0)},b.prototype.slideHandler=function(a,b,c){var d,e,f,g,h=null,i=this;return b=b||!1,i.animating===!0&&i.options.waitForAnimate===!0||i.options.fade===!0&&i.currentSlide===a||i.slideCount<=i.options.slidesToShow?void 0:(b===!1&&i.asNavFor(a),d=a,h=i.getLeft(d),g=i.getLeft(i.currentSlide),i.currentLeft=null===i.swipeLeft?g:i.swipeLeft,i.options.infinite===!1&&i.options.centerMode===!1&&(0>a||a>i.getDotCount()*i.options.slidesToScroll)?(i.options.fade===!1&&(d=i.currentSlide,c!==!0?i.animateSlide(g,function(){i.postSlide(d)}):i.postSlide(d)),void 0):i.options.infinite===!1&&i.options.centerMode===!0&&(0>a||a>i.slideCount-i.options.slidesToScroll)?(i.options.fade===!1&&(d=i.currentSlide,c!==!0?i.animateSlide(g,function(){i.postSlide(d)}):i.postSlide(d)),void 0):(i.options.autoplay===!0&&clearInterval(i.autoPlayTimer),e=0>d?0!==i.slideCount%i.options.slidesToScroll?i.slideCount-i.slideCount%i.options.slidesToScroll:i.slideCount+d:d>=i.slideCount?0!==i.slideCount%i.options.slidesToScroll?0:d-i.slideCount:d,i.animating=!0,i.$slider.trigger("beforeChange",[i,i.currentSlide,e]),f=i.currentSlide,i.currentSlide=e,i.setSlideClasses(i.currentSlide),i.updateDots(),i.updateArrows(),i.options.fade===!0?(c!==!0?i.fadeSlide(e,function(){i.postSlide(e)}):i.postSlide(e),i.animateHeight(),void 0):(c!==!0?i.animateSlide(h,function(){i.postSlide(e)}):i.postSlide(e),void 0)))},b.prototype.startLoad=function(){var a=this;a.options.arrows===!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.hide(),a.$nextArrow.hide()),a.options.dots===!0&&a.slideCount>a.options.slidesToShow&&a.$dots.hide(),a.$slider.addClass("slick-loading")},b.prototype.swipeDirection=function(){var a,b,c,d,e=this;return a=e.touchObject.startX-e.touchObject.curX,b=e.touchObject.startY-e.touchObject.curY,c=Math.atan2(b,a),d=Math.round(180*c/Math.PI),0>d&&(d=360-Math.abs(d)),45>=d&&d>=0?e.options.rtl===!1?"left":"right":360>=d&&d>=315?e.options.rtl===!1?"left":"right":d>=135&&225>=d?e.options.rtl===!1?"right":"left":e.options.verticalSwiping===!0?d>=35&&135>=d?"left":"right":"vertical"},b.prototype.swipeEnd=function(){var c,b=this;if(b.dragging=!1,b.shouldClick=b.touchObject.swipeLength>10?!1:!0,void 0===b.touchObject.curX)return!1;if(b.touchObject.edgeHit===!0&&b.$slider.trigger("edge",[b,b.swipeDirection()]),b.touchObject.swipeLength>=b.touchObject.minSwipe)switch(b.swipeDirection()){case"left":c=b.options.swipeToSlide?b.checkNavigable(b.currentSlide+b.getSlideCount()):b.currentSlide+b.getSlideCount(),b.slideHandler(c),b.currentDirection=0,b.touchObject={},b.$slider.trigger("swipe",[b,"left"]);break;case"right":c=b.options.swipeToSlide?b.checkNavigable(b.currentSlide-b.getSlideCount()):b.currentSlide-b.getSlideCount(),b.slideHandler(c),b.currentDirection=1,b.touchObject={},b.$slider.trigger("swipe",[b,"right"])
 }else b.touchObject.startX!==b.touchObject.curX&&(b.slideHandler(b.currentSlide),b.touchObject={})},b.prototype.swipeHandler=function(a){var b=this;if(!(b.options.swipe===!1||"ontouchend"in document&&b.options.swipe===!1||b.options.draggable===!1&&-1!==a.type.indexOf("mouse")))switch(b.touchObject.fingerCount=a.originalEvent&&void 0!==a.originalEvent.touches?a.originalEvent.touches.length:1,b.touchObject.minSwipe=b.listWidth/b.options.touchThreshold,b.options.verticalSwiping===!0&&(b.touchObject.minSwipe=b.listHeight/b.options.touchThreshold),a.data.action){case"start":b.swipeStart(a);break;case"move":b.swipeMove(a);break;case"end":b.swipeEnd(a)}},b.prototype.swipeMove=function(a){var d,e,f,g,h,b=this;return h=void 0!==a.originalEvent?a.originalEvent.touches:null,!b.dragging||h&&1!==h.length?!1:(d=b.getLeft(b.currentSlide),b.touchObject.curX=void 0!==h?h[0].pageX:a.clientX,b.touchObject.curY=void 0!==h?h[0].pageY:a.clientY,b.touchObject.swipeLength=Math.round(Math.sqrt(Math.pow(b.touchObject.curX-b.touchObject.startX,2))),b.options.verticalSwiping===!0&&(b.touchObject.swipeLength=Math.round(Math.sqrt(Math.pow(b.touchObject.curY-b.touchObject.startY,2)))),e=b.swipeDirection(),"vertical"!==e?(void 0!==a.originalEvent&&b.touchObject.swipeLength>4&&a.preventDefault(),g=(b.options.rtl===!1?1:-1)*(b.touchObject.curX>b.touchObject.startX?1:-1),b.options.verticalSwiping===!0&&(g=b.touchObject.curY>b.touchObject.startY?1:-1),f=b.touchObject.swipeLength,b.touchObject.edgeHit=!1,b.options.infinite===!1&&(0===b.currentSlide&&"right"===e||b.currentSlide>=b.getDotCount()&&"left"===e)&&(f=b.touchObject.swipeLength*b.options.edgeFriction,b.touchObject.edgeHit=!0),b.swipeLeft=b.options.vertical===!1?d+f*g:d+f*(b.$list.height()/b.listWidth)*g,b.options.verticalSwiping===!0&&(b.swipeLeft=d+f*g),b.options.fade===!0||b.options.touchMove===!1?!1:b.animating===!0?(b.swipeLeft=null,!1):(b.setCSS(b.swipeLeft),void 0)):void 0)},b.prototype.swipeStart=function(a){var c,b=this;return 1!==b.touchObject.fingerCount||b.slideCount<=b.options.slidesToShow?(b.touchObject={},!1):(void 0!==a.originalEvent&&void 0!==a.originalEvent.touches&&(c=a.originalEvent.touches[0]),b.touchObject.startX=b.touchObject.curX=void 0!==c?c.pageX:a.clientX,b.touchObject.startY=b.touchObject.curY=void 0!==c?c.pageY:a.clientY,b.dragging=!0,void 0)},b.prototype.unfilterSlides=b.prototype.slickUnfilter=function(){var a=this;null!==a.$slidesCache&&(a.unload(),a.$slideTrack.children(this.options.slide).detach(),a.$slidesCache.appendTo(a.$slideTrack),a.reinit())},b.prototype.unload=function(){var b=this;a(".slick-cloned",b.$slider).remove(),b.$dots&&b.$dots.remove(),b.$prevArrow&&"object"!=typeof b.options.prevArrow&&b.$prevArrow.remove(),b.$nextArrow&&"object"!=typeof b.options.nextArrow&&b.$nextArrow.remove(),b.$slides.removeClass("slick-slide slick-active slick-visible").attr("aria-hidden","true").css("width","")},b.prototype.unslick=function(a){var b=this;b.$slider.trigger("unslick",[b,a]),b.destroy()},b.prototype.updateArrows=function(){var b,a=this;b=Math.floor(a.options.slidesToShow/2),a.options.arrows===!0&&a.options.infinite!==!0&&a.slideCount>a.options.slidesToShow&&(a.$prevArrow.removeClass("slick-disabled"),a.$nextArrow.removeClass("slick-disabled"),0===a.currentSlide?(a.$prevArrow.addClass("slick-disabled"),a.$nextArrow.removeClass("slick-disabled")):a.currentSlide>=a.slideCount-a.options.slidesToShow&&a.options.centerMode===!1?(a.$nextArrow.addClass("slick-disabled"),a.$prevArrow.removeClass("slick-disabled")):a.currentSlide>=a.slideCount-1&&a.options.centerMode===!0&&(a.$nextArrow.addClass("slick-disabled"),a.$prevArrow.removeClass("slick-disabled")))},b.prototype.updateDots=function(){var a=this;null!==a.$dots&&(a.$dots.find("li").removeClass("slick-active").attr("aria-hidden","true"),a.$dots.find("li").eq(Math.floor(a.currentSlide/a.options.slidesToScroll)).addClass("slick-active").attr("aria-hidden","false"))},b.prototype.visibility=function(){var a=this;document[a.hidden]?(a.paused=!0,a.autoPlayClear()):a.options.autoplay===!0&&(a.paused=!1,a.autoPlay())},a.fn.slick=function(){var g,a=this,c=arguments[0],d=Array.prototype.slice.call(arguments,1),e=a.length,f=0;for(f;e>f;f++)if("object"==typeof c||"undefined"==typeof c?a[f].slick=new b(a[f],c):g=a[f].slick[c].apply(a[f].slick,d),"undefined"!=typeof g)return g;return a}});
-},{"./../../jquery/dist/jquery.js":2}],6:[function(require,module,exports){
+},{"./../../jquery/dist/jquery.js":2}],7:[function(require,module,exports){
 /*
  * jQuery Easing v1.3.2 - http://gsgd.co.uk/sandbox/jquery/easing/
  * Open source under the BSD License.
@@ -25048,7 +27215,7 @@ $.extend( $.easing,
 	}
 });})(jQuery);
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/sole/tween.js
@@ -25806,7 +27973,7 @@ TWEEN.Interpolation = {
 };
 
 module.exports=TWEEN;
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
@@ -25961,27 +28128,27 @@ Morph.prototype._initContent = function() {
 
 Morph.prototype._initEvents = function() {
     var that = this;
-    var clickCount = 0;
 
     paper.view.onFrame = function(event) {
         TWEEN.update();
     };
 
-    this.frontGroup.onClick = function() {
-        if ( clickCount === 0 ) {
-            that.square();
-            // that.activate('square');
-        }
-        if ( clickCount === 1 ) {
-            that.triangle();
-        }
-        if ( clickCount === 2 ) {
-            that.circle();
-            clickCount = 0;
-            return;
-        }
-        clickCount++;
-    };
+    // var clickCount = 0;
+    // this.frontGroup.onClick = function() {
+    //     if ( clickCount === 0 ) {
+    //         that.square();
+    //         // that.activate('square');
+    //     }
+    //     if ( clickCount === 1 ) {
+    //         that.triangle();
+    //     }
+    //     if ( clickCount === 2 ) {
+    //         that.circle();
+    //         clickCount = 0;
+    //         return;
+    //     }
+    //     clickCount++;
+    // };
 };
 
 Morph.prototype._render = function() {
@@ -26088,17 +28255,19 @@ Morph.prototype._calcPosition = function() {
 };
 
 Morph.prototype._changePicture = function(state) {
-    var prevState = this._getState('morph');
+    var currentState = this._getState('morph');
 
-    if (state == prevState) return;
+    if (state == currentState) return;
 
     var easing = TWEEN.Easing.Cubic.In,
-        dur    = 0.8 * this.dur,
+        dur    = this.dur,
         altDur = this.dur,
         delay  = altDur - dur,
-        raster;
+        prevState,
+        props,
+        pics;
 
-    /*### pics item
+    /*### props item
     # inner/outer          - inside/outside morph path;
     # pic                  - paper raster object;
     # initPos              - position of pic before animation, relative to canvas center;
@@ -26106,28 +28275,30 @@ Morph.prototype._changePicture = function(state) {
     # opacity              - opacity for pic after animation end;
     # delay                - delay between start animation for inner in outer;
     ###*/
-    pics = {
-        prev: {
+    props = {
+        // current picture
+        current : {
             inner: {
-                pic: this.objects.raster[prevState].pic,
-                initPos: this.objects.raster[prevState].position,
+                pic: this.objects.raster[currentState].pic,
+                initPos: this.objects.raster[currentState].position,
                 pos: {
                     x: paper.view.center.x - this.morphSize.x,
-                    y: this.objects.raster[prevState].position.y
+                    y: this.objects.raster[currentState].position.y
                 }
             },
             outer: {
-                pic: this.objects.raster[prevState].altPic,
-                initPos: this.objects.raster[prevState].position,
+                pic: this.objects.raster[currentState].altPic,
+                initPos: this.objects.raster[currentState].position,
                 pos: {
                     x: paper.view.center.x - this.morphSize.x / 2,
-                    y: this.objects.raster[prevState].position.y
+                    y: this.objects.raster[currentState].position.y
                 },
                 opacity: 0
             },
             delay   : 0
         },
-        next: {
+        // next picture
+        next : {
             inner: {
                 pic     : this.objects.raster[state].pic,
                 initPos : { x: paper.view.center.x + this.morphSize.x,
@@ -26144,6 +28315,19 @@ Morph.prototype._changePicture = function(state) {
             delay: 80,
         }
     };
+
+    pics = props;
+
+    // if ( state == this.prevMorphState ) {
+    //     console.log(1);
+    //     pics.current.inner.initPos = props.current.inner.pos;
+    //     pics.current.inner.pos = props.current.inner.initPos;
+    //     pics.next.inner.initPos = props.next.inner.pos;
+    //     pics.next.inner.pos = props.next.inner.initPos;
+    // } else {
+
+    //     console.log(2);
+    // }
 
     // reset properties after previous transformation in other methods
     pics.next.inner.pic.position.x = pics.next.inner.initPos.x;
@@ -26181,6 +28365,12 @@ Morph.prototype._changePicture = function(state) {
             .delay(item.delay)
             .start();
     });
+
+    // console.log(this.prevMorphState);
+
+    // this.prevMorphState = currentState;
+
+    // console.log(state);
 
 };
 
@@ -26298,16 +28488,16 @@ Morph.prototype._togglePicture = function(state) {
 
 Morph.prototype._morph = function(state) {
 
-    var prevState  = this._getState('morph');
+    var currentState  = this._getState('morph');
 
-    if ( state == prevState ) return;
+    if ( state == currentState ) return;
 
     var duration   = this.dur,
         callCount  = duration * 60 / 1000, // morph anim duration * frame per second
         easing     = TWEEN.Easing.Cubic.Out,
         morphPath  = this.objects.paths.morph,
         segments   = morphPath.segments,
-        prevPoints = this.pathPosition.morph[prevState],
+        prevPoints = this.pathPosition.morph[currentState],
         points     = this.pathPosition.morph[state];
 
     $.each(segments, function(index, segment) {
@@ -26320,7 +28510,7 @@ Morph.prototype._morph = function(state) {
             })
             .start();
 
-        if ( prevState == 'circle' || state == 'circle' ) {
+        if ( currentState == 'circle' || state == 'circle' ) {
             new TWEEN.Tween(segment.handleIn)
                 .to(points[index].handle, duration)
                 .easing(easing)
@@ -26336,7 +28526,7 @@ Morph.prototype._morph = function(state) {
 
     this._updateState('morph', state);
 
-    console.log('%c' + 'State change: ' + prevState + ' => ' + state, 'background:yellow');
+    console.log('%c' + 'State change: ' + currentState + ' => ' + state, 'background:yellow');
 };
 
 Morph.prototype._updateState = function(name, state) {
@@ -26365,8 +28555,6 @@ Morph.prototype.init = function() {
     this._initEvents();
     this._render();
     this._calcPosition();
-    // this._morph();
-    console.log(paper.view);
 };
 
 Morph.prototype.square = function() {
@@ -26414,7 +28602,7 @@ Morph.prototype.deactivate = function() {
 };
 
 module.exports = Morph;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":7}],9:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":8}],10:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Catalog(selector) {
@@ -26437,7 +28625,7 @@ Catalog.prototype.open = function() {
     setTimeout(function() {
         that.el.addClass(that.classes.done);
     }, that.animDelay);
-    that.setHeight();
+    // that.setHeight();
 };
 
 Catalog.prototype.close = function() {
@@ -26448,7 +28636,7 @@ Catalog.prototype.close = function() {
     }, that.animDur);
     setTimeout(function() {
         that.el.removeClass(that.classes.init);
-        that.el.css('height', '');
+        // that.el.css('height', '');
     }, that.animDur + that.animDelay);
 };
 
@@ -26457,15 +28645,17 @@ Catalog.prototype.setHeight = function() {
 };
 
 module.exports = Catalog;
-},{"./../../../bower_components/jquery/dist/jquery.js":2}],10:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2}],11:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require('jquery.easing');
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 
 function Category(wrapperSelector, itemSelector) {
-    this.wrapper = $(wrapperSelector);
-    this.items   = this.wrapper.find(itemSelector).toArray();
-    this.classes = {
+    this.wrapper   = $(wrapperSelector);
+    this.items     = this.wrapper.find(itemSelector).toArray();
+    this.active    = false;
+    this.wasActive = false;
+    this.classes   = {
         prev: 'is-prev',
         active: 'is-active',
         next: 'is-next'
@@ -26500,13 +28690,12 @@ Category.prototype._initEvents = function() {
 
     $(that.items).bind('click', function() {
         that.options.initSlide = $(this).index();
-        console.log(that.options.initSlide);
     });
 
-    that.wrapper.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-        $(slick.$slides[currentSlide]).removeClass(that.classes.active);
-        $(slick.$slides[nextSlide]).addClass(that.classes.active);
-    });
+    // that.wrapper.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+    //     $(slick.$slides[currentSlide]).removeClass(that.classes.active);
+    //     $(slick.$slides[nextSlide]).addClass(that.classes.active);
+    // });
     // that.wrapper.on('afterChange', function(event, slick, currentSlide) {
     //     $(slick.$slides[currentSlide]).addClass(that.classes.active);
     // });
@@ -26529,8 +28718,12 @@ Category.prototype._destroy = function() {
 
 Category.prototype.enable = function() {
     var that = this;
+    if ( !that.wasActive ) {
+        that._initEvents();
+        that.wasActive = true;
+    }
 
-    that._initEvents();
+    that.active = true;
 
     setTimeout(function() {
         that._init();
@@ -26538,12 +28731,14 @@ Category.prototype.enable = function() {
 };
 
 Category.prototype.disable = function() {
-    var that = this;
+    if ( !this.active ) return;
+
+    this.active = false;
     this._destroy();
 };
 
 module.exports = Category;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":5,"jquery.easing":6}],11:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"jquery.easing":7}],12:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 
@@ -26643,7 +28838,33 @@ MainSlider.prototype.makeVisible = function() {
 module.exports = MainSlider;
 
 
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":5}]},{},[1])
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],13:[function(require,module,exports){
+require("./../../../bower_components/jquery/dist/jquery.js");
+require("./../../../bower_components/sammy/lib/sammy.js");
+
+var router = $.sammy(function() {
+    this.get('/', function() {
+        console.log('#HOME');
+    });
+
+    this.get('#/rent', function() {
+        console.log('#RENT');
+        // content.html('content');
+    });
+
+    this.get('#/buy', function() {
+        console.log('#BUY');
+        // content.html('content');
+    });
+
+    this.get('#/invest', function() {
+        console.log('#INVEST');
+        // content.html('content');
+    });
+});
+
+module.exports = router;
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}]},{},[1])
 
 
 //# sourceMappingURL=main.js.map

@@ -1,14 +1,19 @@
-var app, Slider, Catalog, Morph, Category, catalog, morph, slider;
-
 require('jquery');
 require('modernizr');
+var Slider  = require('./modules/_main-slider.js');
+var Morph   = require('./modules/_canvas.js');
+var Catalog = require('./modules/_catalog.js');
+var Category = require('./modules/_category.js');
+var router = require('./modules/_routing.js');
 
-Slider  = require('./modules/_main-slider.js');
-Morph   = require('./modules/_canvas.js');
-Catalog = require('./modules/_catalog.js');
-Category = require('./modules/_category.js');
+
+var app, catalog, morph, slider;
+
+var content = $('#content');
 
 $(document).ready(function() {
+
+    router.run();
 
     app = {
         slider  : new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator'),
@@ -35,10 +40,10 @@ $(document).ready(function() {
     app.morph.init();
 
 
-    console.log(app.morph, app.category);
+    // console.log(app.morph, app.category);
 
     $('.catalog-btn').on('click', function(event) {
-        event.preventDefault();
+        // event.preventDefault();
         var state = $(this).data('morph-state');
         if ( !app.morph.state.active ) {
             app.openCatalog(state);
@@ -48,7 +53,7 @@ $(document).ready(function() {
     });
 
     $('#header .logo').on('click', function(event) {
-        event.preventDefault();
+        // event.preventDefault();
         app.closeCatalog();
     });
 
@@ -79,9 +84,13 @@ $(document).ready(function() {
             widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
         $outer.remove();
         return 100 - widthWithScroll;
-    };
+    }
 
     var width = getScrollBarWidth();
-    console.log(width);
+    console.log('Scroll bar width: ' + width + 'px');
+
+    $('.men').on('click', function() {
+        $(this).find('.men__border').toggleClass('is-animate');
+    });
 
 });

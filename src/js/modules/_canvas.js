@@ -152,27 +152,27 @@ Morph.prototype._initContent = function() {
 
 Morph.prototype._initEvents = function() {
     var that = this;
-    var clickCount = 0;
 
     paper.view.onFrame = function(event) {
         TWEEN.update();
     };
 
-    this.frontGroup.onClick = function() {
-        if ( clickCount === 0 ) {
-            that.square();
-            // that.activate('square');
-        }
-        if ( clickCount === 1 ) {
-            that.triangle();
-        }
-        if ( clickCount === 2 ) {
-            that.circle();
-            clickCount = 0;
-            return;
-        }
-        clickCount++;
-    };
+    // var clickCount = 0;
+    // this.frontGroup.onClick = function() {
+    //     if ( clickCount === 0 ) {
+    //         that.square();
+    //         // that.activate('square');
+    //     }
+    //     if ( clickCount === 1 ) {
+    //         that.triangle();
+    //     }
+    //     if ( clickCount === 2 ) {
+    //         that.circle();
+    //         clickCount = 0;
+    //         return;
+    //     }
+    //     clickCount++;
+    // };
 };
 
 Morph.prototype._render = function() {
@@ -279,17 +279,19 @@ Morph.prototype._calcPosition = function() {
 };
 
 Morph.prototype._changePicture = function(state) {
-    var prevState = this._getState('morph');
+    var currentState = this._getState('morph');
 
-    if (state == prevState) return;
+    if (state == currentState) return;
 
     var easing = TWEEN.Easing.Cubic.In,
-        dur    = 0.8 * this.dur,
+        dur    = this.dur,
         altDur = this.dur,
         delay  = altDur - dur,
-        raster;
+        prevState,
+        props,
+        pics;
 
-    /*### pics item
+    /*### props item
     # inner/outer          - inside/outside morph path;
     # pic                  - paper raster object;
     # initPos              - position of pic before animation, relative to canvas center;
@@ -297,28 +299,30 @@ Morph.prototype._changePicture = function(state) {
     # opacity              - opacity for pic after animation end;
     # delay                - delay between start animation for inner in outer;
     ###*/
-    pics = {
-        prev: {
+    props = {
+        // current picture
+        current : {
             inner: {
-                pic: this.objects.raster[prevState].pic,
-                initPos: this.objects.raster[prevState].position,
+                pic: this.objects.raster[currentState].pic,
+                initPos: this.objects.raster[currentState].position,
                 pos: {
                     x: paper.view.center.x - this.morphSize.x,
-                    y: this.objects.raster[prevState].position.y
+                    y: this.objects.raster[currentState].position.y
                 }
             },
             outer: {
-                pic: this.objects.raster[prevState].altPic,
-                initPos: this.objects.raster[prevState].position,
+                pic: this.objects.raster[currentState].altPic,
+                initPos: this.objects.raster[currentState].position,
                 pos: {
                     x: paper.view.center.x - this.morphSize.x / 2,
-                    y: this.objects.raster[prevState].position.y
+                    y: this.objects.raster[currentState].position.y
                 },
                 opacity: 0
             },
             delay   : 0
         },
-        next: {
+        // next picture
+        next : {
             inner: {
                 pic     : this.objects.raster[state].pic,
                 initPos : { x: paper.view.center.x + this.morphSize.x,
@@ -335,6 +339,19 @@ Morph.prototype._changePicture = function(state) {
             delay: 80,
         }
     };
+
+    pics = props;
+
+    // if ( state == this.prevMorphState ) {
+    //     console.log(1);
+    //     pics.current.inner.initPos = props.current.inner.pos;
+    //     pics.current.inner.pos = props.current.inner.initPos;
+    //     pics.next.inner.initPos = props.next.inner.pos;
+    //     pics.next.inner.pos = props.next.inner.initPos;
+    // } else {
+
+    //     console.log(2);
+    // }
 
     // reset properties after previous transformation in other methods
     pics.next.inner.pic.position.x = pics.next.inner.initPos.x;
@@ -372,6 +389,12 @@ Morph.prototype._changePicture = function(state) {
             .delay(item.delay)
             .start();
     });
+
+    // console.log(this.prevMorphState);
+
+    // this.prevMorphState = currentState;
+
+    // console.log(state);
 
 };
 
@@ -489,16 +512,16 @@ Morph.prototype._togglePicture = function(state) {
 
 Morph.prototype._morph = function(state) {
 
-    var prevState  = this._getState('morph');
+    var currentState  = this._getState('morph');
 
-    if ( state == prevState ) return;
+    if ( state == currentState ) return;
 
     var duration   = this.dur,
         callCount  = duration * 60 / 1000, // morph anim duration * frame per second
         easing     = TWEEN.Easing.Cubic.Out,
         morphPath  = this.objects.paths.morph,
         segments   = morphPath.segments,
-        prevPoints = this.pathPosition.morph[prevState],
+        prevPoints = this.pathPosition.morph[currentState],
         points     = this.pathPosition.morph[state];
 
     $.each(segments, function(index, segment) {
@@ -511,7 +534,7 @@ Morph.prototype._morph = function(state) {
             })
             .start();
 
-        if ( prevState == 'circle' || state == 'circle' ) {
+        if ( currentState == 'circle' || state == 'circle' ) {
             new TWEEN.Tween(segment.handleIn)
                 .to(points[index].handle, duration)
                 .easing(easing)
@@ -527,7 +550,7 @@ Morph.prototype._morph = function(state) {
 
     this._updateState('morph', state);
 
-    console.log('%c' + 'State change: ' + prevState + ' => ' + state, 'background:yellow');
+    console.log('%c' + 'State change: ' + currentState + ' => ' + state, 'background:yellow');
 };
 
 Morph.prototype._updateState = function(name, state) {
@@ -556,8 +579,6 @@ Morph.prototype.init = function() {
     this._initEvents();
     this._render();
     this._calcPosition();
-    // this._morph();
-    console.log(paper.view);
 };
 
 Morph.prototype.square = function() {

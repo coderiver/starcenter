@@ -3,9 +3,11 @@ require('jquery.easing');
 require('slick-carousel');
 
 function Category(wrapperSelector, itemSelector) {
-    this.wrapper = $(wrapperSelector);
-    this.items   = this.wrapper.find(itemSelector).toArray();
-    this.classes = {
+    this.wrapper   = $(wrapperSelector);
+    this.items     = this.wrapper.find(itemSelector).toArray();
+    this.active    = false;
+    this.wasActive = false;
+    this.classes   = {
         prev: 'is-prev',
         active: 'is-active',
         next: 'is-next'
@@ -40,13 +42,12 @@ Category.prototype._initEvents = function() {
 
     $(that.items).bind('click', function() {
         that.options.initSlide = $(this).index();
-        console.log(that.options.initSlide);
     });
 
-    that.wrapper.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-        $(slick.$slides[currentSlide]).removeClass(that.classes.active);
-        $(slick.$slides[nextSlide]).addClass(that.classes.active);
-    });
+    // that.wrapper.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+    //     $(slick.$slides[currentSlide]).removeClass(that.classes.active);
+    //     $(slick.$slides[nextSlide]).addClass(that.classes.active);
+    // });
     // that.wrapper.on('afterChange', function(event, slick, currentSlide) {
     //     $(slick.$slides[currentSlide]).addClass(that.classes.active);
     // });
@@ -69,8 +70,12 @@ Category.prototype._destroy = function() {
 
 Category.prototype.enable = function() {
     var that = this;
+    if ( !that.wasActive ) {
+        that._initEvents();
+        that.wasActive = true;
+    }
 
-    that._initEvents();
+    that.active = true;
 
     setTimeout(function() {
         that._init();
@@ -78,7 +83,9 @@ Category.prototype.enable = function() {
 };
 
 Category.prototype.disable = function() {
-    var that = this;
+    if ( !this.active ) return;
+
+    this.active = false;
     this._destroy();
 };
 

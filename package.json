@@ -45,6 +45,7 @@
     "gulp-util": "^3.0.4",
     "gulp.spritesmith": "^3.6.0",
     "postcss-assets": "^2.1.0",
+    "routie": "0.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.1"
@@ -53,6 +54,8 @@
     "jquery": "^2.1.4",
     "jquery.easing": "^1.3.2",
     "jquery.transit": "^0.9.12",
-    "tween.js": "^0.14.0"
+    "page": "^1.6.3",
+    "tween.js": "^0.14.0",
+    "velocity-animate": "^1.2.2"
   }
 }

@@ -20,7 +20,7 @@ Catalog.prototype.open = function() {
     setTimeout(function() {
         that.el.addClass(that.classes.done);
     }, that.animDelay);
-    that.setHeight();
+    // that.setHeight();
 };
 
 Catalog.prototype.close = function() {
@@ -31,7 +31,7 @@ Catalog.prototype.close = function() {
     }, that.animDur);
     setTimeout(function() {
         that.el.removeClass(that.classes.init);
-        that.el.css('height', '');
+        // that.el.css('height', '');
     }, that.animDur + that.animDelay);
 };
 

@@ -6,6 +6,7 @@ var gulp = require('./gulp')([
     'jade-all',
     'sass',
     'svg-sprite',
+    'svgo',
     'sprite',
     'watch'
     ]);

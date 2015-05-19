@@ -210,8 +210,74 @@
     overflow: hidden
 
 .deco
+  position: relative
   display: inline-block
   +f(hr, 12, 0.25)
+
+.deco_poligon
+  width: 41px
+  height: 46px
+  line-height: 46px
+  font-size: 18px
+  letter-spacing: 0.05em
+  text-align: center
+  .icon-poligon
+    position: absolute
+    top: 0
+    left: 0
+
+
+.heading
+  +f(hb, 16, 0.5)
+  text-transform: uppercase
+
+.heading_large
+  font-size: 18px
+
+.heading_small
+  font-size: 12px
+
+
+.text
+  +f(bsr, 16)
+  line-height: 1.375
+  p
+    margin: 12px 0
+    &:first-child
+      margin-top: 0
+    &:last-child
+      margin-top: 0
+
+.amount
+  +f(hb, 18)
+  line-height: 1
+
+.amount__sign
+  font-size: 30px
+  display: inline-block
+  vertical-align: middle
+  margin-right: 10px
+
+.amount__value
+  font-size: 36px
+  display: inline-block
+  vertical-align: middle
+  font-weight: normal
+
+.amount__text
+  position: relative
+  display: inline-block
+  vertical-align: bottom
+  bottom: 3px
+  font-size: 18px
+  margin-left: 10px
+
+.amount_md
+  .amount__sign
+  .amount__value
+    font-size: 48px
+  .amount__text
+    bottom: 5px
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end common blocks  ^^^^^
@@ -338,10 +404,7 @@
 
 .catalog
   height: $content-height
-  position: absolute
-  top: 0
-  left: 0
-  right: 0
+  position: relative
   z-index: 0
   overflow: hidden
   +wos
@@ -358,8 +421,8 @@
     transition: all 0.2s linear
 
   &.is-init
-    height: 100vh
-    z-index: 95
+    // height: 100vh
+    // z-index: 95
     #morph
       z-index: 1
     .main-slider
@@ -374,6 +437,7 @@
         transition-delay: 0.2s
         visibility: hidden
     .catalog-category__item
+      width: 33.3333%
       &:before
         opacity: 0
         visibility: hidden
@@ -391,10 +455,6 @@
       color: #AAA
       letter-spacing: 0.5em
       width: auto
-      &.is-active
-        color: $text
-        .catalog-btn__hover
-          width: 100%
     .catalog-btn__hover
       background: none
       color: $text
@@ -455,7 +515,7 @@
   z-index: 1
   display: inline-block
   vertical-align: middle
-  width: 33.3333%
+  width: 170px
   height: 100%
   text-align: center
   overflow: hidden
@@ -479,10 +539,13 @@
     &.slick-slide
       display: block
 
-  &.is-active
+  &.is-active, &.slick-center
     .catalog-btn
       transform: scale(1.3)
+      // font-size: 18px
   &.slick-center
+    // .catalog-btn
+    //   font-size: 18px
     .catalog-btn__hover
       width: 100%
 
@@ -495,7 +558,7 @@
     .catalog-btn__hover-text,
     .catalog-btn__front,
     .catalog-btm__hover
-      transition-delay: 0.3s
+      // transition-delay: 0.3s
 
 .catalog-btn
   display: inline-block
@@ -509,7 +572,7 @@
   text-transform: uppercase
   text-decoration: none
   text-align: center
-  transition: all 0.3s linear
+  // transition: all 0.3s linear
   overflow: hidden
   white-space: nowrap
   pointer-events: all
@@ -547,9 +610,196 @@
   display: inline-block
   position: relative
   line-height: 1.5
-  transition: font-size 0.5s linear
+  // transition: all 0.5s linear
 
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end catalog  ^^^^^
+//---------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------
+//            ##### begin facts #####
+//---------------------------------------------------------------------------
+
+.facts
+  position: relative
+  padding-top: 360px
+  height: 3400px
+  box-sizing: border-box
+  > .heading
+    text-align: center
+  .deco
+    position: absolute
+    top: 93px
+    right: 50%
+    margin-right: -330px
+
+.facts__text
+  max-width: 780px
+  margin: 200px auto 450px
+  +clr
+
+.facts__column
+  float: left
+  width: 50%
+  box-sizing: border-box
+  &:first-child
+    float: left
+    padding-right: 30px
+  &:last-child
+    float: right
+    padding-left: 30px
+
+.facts-group
+  height: 270px
+  position: relative
+  margin: 165px 0 65px
+
+.facts-group__inner
+  position: relative
+  z-index: 1
+  max-width: 1000px
+  height: 100%
+  margin: auto
+  // box-shadow: 0 0 0 1px #ccc
+
+
+.box
+  height: 520px
+  margin-top: 180px
+  box-sizing: border-box
+  background-image: url('../img/svg/man.svg')
+  +vertical
+  white-space: nowrap
+
+.box__inner
+  display: inline-block
+  vertical-align: middle
+  white-space: normal
+  font-size: 16px
+
+
+.curve
+  position: absolute
+  z-index: 0
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  > svg
+    display: block
+
+.skyline
+  > svg
+    display: block
+
+
+.fact
+  position: absolute
+  width: 312px
+  padding: 0 0 0 40px
+  box-sizing: border-box
+  +f(bsr, 16)
+
+.fact-1
+  top: 90px
+  left: 0
+
+.fact-2
+  top: 0
+  right: 120px
+
+.fact__number
+  display: block
+  margin: 14px 0 14px -40px
+  padding: 10px 10px 10px 40px
+  border: 1px solid
+  box-sizing: border-box
+  +f(hb, 30)
+  color: $text
+  background: #FFF
+
+
+.timeline
+  position: absolute
+  top: 450px
+  left: 50%
+  height: 1px
+  width: 2000px
+  background: $text
+  transform: translateX(-470px)
+
+.timeline__year
+  position: absolute
+  bottom: 0
+  width: 35px
+  height: 30px
+  +f(bsr, 12, 0.15)
+  &:before
+    content: ""
+    position: absolute
+    bottom: -4.5px
+    left: 0
+    width: 5px
+    height: 10px
+    background: $text
+  &:first-child
+    &:before
+      width: 10px
+      height: 10px
+      border-radius: 50%
+  $delta: 15
+  @for $i from 1 through 30
+    $delta: ceil($delta * 1.344)
+    &:nth-child(#{$i + 1})
+      left: (45 * $i + $delta) + px
+
+
+.men
+  position: relative
+  width: 720px
+  background: #FFF
+
+.men__border
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  stroke-dasharray: 910px
+  stroke-dashoffset: 910px
+  svg
+    display: block
+    transition: stroke-dashoffset 1.5s ease
+  &.is-animate
+    stroke-dashoffset: 0
+
+.men__table
+  position: relative
+  z-index: 1
+  table-layout: fixed
+
+.men__cell
+  text-align: left
+  padding: 0 10px 0 45px
+  vertical-align: middle
+  box-sizing: border-box
+  &:first-child
+    width: 195px
+  &:nth-child(2)
+    width: 235px
+  &:last-child
+    width: 290px
+
+.men__row1
+  .men__cell
+    height: 90px
+
+.men__row2
+  .men__cell
+    height: 100px
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end facts  ^^^^^
 //---------------------------------------------------------------------------

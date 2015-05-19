@@ -5,7 +5,6 @@ block title
 
 block content
 
-    
   //BEGIN catalog
   .catalog
     .catalog__inner
@@ -70,68 +69,135 @@ block content
 
       ul.catalog-category
         li.catalog-category__item
-          a.catalog-btn(href="#", data-morph-state="circle")
+          a.catalog-btn(href="#/rent", data-morph-state="circle")
             .catalog-btn__hover
               .catalog-btn__hover-in
                 span.catalog-btn__hover-text Арендовать
             .catalog-btn__front
               span Арендовать
         li.catalog-category__item
-          a.catalog-btn(href="#", data-morph-state="square")
+          a.catalog-btn(href="#/buy", data-morph-state="square")
             .catalog-btn__hover
               .catalog-btn__hover-in
                 span.catalog-btn__hover-text Купить
             .catalog-btn__front
               span Купить
         li.catalog-category__item
-          a.catalog-btn(href="#", data-morph-state="triangle") 
+          a.catalog-btn(href="#/invest", data-morph-state="triangle") 
             .catalog-btn__hover
               .catalog-btn__hover-in
                 span.catalog-btn__hover-text Инвестировать
             .catalog-btn__front
               span Инвестировать
-
-        //- li.catalog-category__item.clone
-        //-   a.catalog-btn(href="#", data-morph-state="circle")
-        //-     .catalog-btn__hover
-        //-       .catalog-btn__hover-in
-        //-         span.catalog-btn__hover-text Арендовать
-        //-     .catalog-btn__front
-        //-       span Арендовать
-        //- li.catalog-category__item.clone
-        //-   a.catalog-btn(href="#", data-morph-state="square")
-        //-     .catalog-btn__hover
-        //-       .catalog-btn__hover-in
-        //-         span.catalog-btn__hover-text Купить
-        //-     .catalog-btn__front
-        //-       span Купить
-        //- li.catalog-category__item.clone
-        //-   a.catalog-btn(href="#", data-morph-state="triangle") 
-        //-     .catalog-btn__hover
-        //-       .catalog-btn__hover-in
-        //-         span.catalog-btn__hover-text Инвестировать
-        //-     .catalog-btn__front
-        //-       span Инвестировать
-
-        //- li.catalog-category__item.catalog-category__item_clone
-        //-   a.catalog-btn(href="#", data-morph-state="circle") 
-        //-     .catalog-btn__hover
-        //-       .catalog-btn__hover-in
-        //-         span.catalog-btn__hover-text Арендовать
-        //-     .catalog-btn__front
-        //-       span Арендовать
-        //- li.catalog-category__item
-        //-   a.catalog-btn(href="#", data-morph-state="triangle") 
-        //-     .catalog-btn__hover
-        //-       .catalog-btn__hover-in
-        //-         span.catalog-btn__hover-text Трум-трум
-        //-     .catalog-btn__front
-        //-       span Трум-трум
-        //- li.catalog-category__item
-        //-   a.catalog-btn(href="#", data-morph-state="triangle") 
-        //-     .catalog-btn__hover
-        //-       .catalog-btn__hover-in
-        //-         span.catalog-btn__hover-text Вач-вах
-        //-     .catalog-btn__front
-        //-       span Вач-вах
   //END catalog
+
+  //BEGIN timeline
+  .facts
+    h2.heading.heading_large Мы на рынке более 10 лет
+    .deco.deco_poligon
+      +icon("poligon")
+      span W6
+
+    - var n = 2004
+    ul.timeline
+      while n < 2017
+        li(class="timeline__year")= n++
+
+    .facts__text
+      .facts__column
+        .text
+          p.
+            StarCentre – компания, которая реализовала в Украине опыт 
+            развитых стран, при котором формирование современного города 
+            с комфортными условиями проживания является задачей самих застройщиков.
+          p.
+            Сегодня StarCentre – это девелопер, у которого есть достаточно 
+            средств для реализации крупных проектов в столице  и не только. 
+      .facts__column
+        .text
+          p.
+            StarCentre - это градообразующая компания, которая за 12 лет работы реализовала 
+            на украинском рынке более 11 уникальных объектов. 
+          p.
+            Компания входит в тройку лидеров рынка, располагает финансами, возможностями, 
+            но главное – пониманием для планирования и развития города в перспективе.
+
+    .facts-group
+      .curve
+        include ../img/svg/optimized/curve.svg
+      .facts-group__inner
+        .fact.fact-1
+          h3.heading.
+            Мы <br> построили
+          .fact__number.
+              38 000 <sub>м<sup>2</sup></sub>
+          p.fact__text.
+            офисных и жилых площадей <br>
+            из них сдано больше половины
+
+        .fact.fact-2
+          h3.heading Планируем построить
+          .fact__number.
+              58 000 <sub>м<sup>2</sup></sub>
+          p.fact__text.
+            офисных и жилых площадей
+
+    .skyline
+      include ../img/svg/optimized/skyline.svg
+
+    .facts-group
+      .curve
+        include ../img/svg/optimized/curve.svg
+      .facts-group__inner
+        .fact.fact-1
+          h3.heading.
+            Мы <br> инвестировали
+          .fact__number.
+              $ 15 000 000
+          p.fact__text.
+            и мы будем вкладывать <br>
+            еще больше
+
+        .fact.fact-2
+          h3.heading.
+            Планируем <br> инвестировать
+          .fact__number.
+              $ 24 000 000
+          p.fact__text.
+            в разные виды недвижимости
+
+    .box
+      .box__inner
+        .men
+          .men__border
+            include ../img/svg/men-table.svg
+            //- div
+            //- div
+            //- div
+            //- div
+            //- div
+          table.men__table
+            tr.men__row1
+              td.men__cell
+                strong.heading.heading_small
+                  | С нами работают
+              td.men__cell
+                .amount
+                  span.amount__sign &gt;
+                  strong.amount__value 500
+                  span.amount__text людей
+              td.men__cell
+                strong.heading.heading_small
+                  | Планируем привлечь
+            tr.men__row2
+              td.men__cell(colspan="2")
+                p.
+                  мы будем привлекать их еще, ведь мы <br>
+                  дорожим хорошими работниками
+              td.men__cell
+                .amount.amount_md
+                  span.amount__sign &gt;
+                  strong.amount__value 700
+                  span.amount__text людей
+
+  //END timeline
