@@ -93,10 +93,18 @@ block content
 
   //BEGIN timeline
   .facts
-    h2.heading.heading_large Мы на рынке более 10 лет
-    .deco.deco_poligon
-      +icon("poligon")
+    .facts__heading
+      h2.heading.heading_large Мы на рынке более 10 лет
+    
+    .deco.deco_polygon.deco-1
+      +icon("polygon")
       span W6
+    .deco.deco-2
+      | 11’ — 7”
+    .deco.deco_polygon.deco-3
+      +icon("target")
+    .deco.deco_circle.deco-4
+      | D2
 
     - var n = 2004
     ul.timeline
@@ -167,49 +175,224 @@ block content
             в разные виды недвижимости
 
     .box
+      .box__bg
       .box__inner
-        .table.men
+        .table.men-table
           .table__border
             include ../img/svg/optimized/men-table.svg
-          table.men__table
-            tr.men__row1
-              td.men__cell
+          table.men-table__table
+            tr.men-table__row1
+              td.men-table__cell
                 strong.heading.heading_small
                   | С нами работают
-              td.men__cell
+              td.men-table__cell
                 .amount
                   span.amount__sign &gt;
                   strong.amount__value 500
                   span.amount__text людей
-              td.men__cell
+              td.men-table__cell
                 strong.heading.heading_small
-                  | Планируем привлечь
-            tr.men__row2
-              td.men__cell(colspan="2")
+                  | Планируем <br> привлечь
+            tr.men-table__row2
+              td.men-table__cell(colspan="2")
                 p.
                   мы будем привлекать их еще, ведь мы <br>
                   дорожим хорошими работниками
-              td.men__cell
+              td.men-table__cell
                 .amount.amount_md
                   span.amount__sign &gt;
                   strong.amount__value 700
                   span.amount__text людей
 
-        .table.partners
+        .table.partners-table
           .table__border
-            //- include ../img/svg/optimized/partners-table.svg
-          table.partners__table
-            tr.partners__row1
-              td.partners__cell(rowspan="2")
-                strong.heading.heading_small
-                  | Мы нашли 
-              td.partners__cell
-                .amount
+            include ../img/svg/optimized/partners-table.svg
+          table.partners-table__table
+            tr.partners-table__row1
+              td.partners-table__cell(rowspan="2")
+                strong.heading
+                  | Мы <br> нашли 
+              td.partners-table__cell
+                .amount.amount_lrg
                   span.amount__sign &gt;
                   strong.amount__value 100
                   span.amount__text партнеров
-            tr.partners__row2
-              td.partners__cell
+            tr.partners-table__row2
+              td.partners-table__cell
                 p с некоторыми мы работаем уже больше 8 лет
+    
+    .facts__heading
+      h3.heading
+        small.heading__small-text И все же
+        | мы открыты к новым предложениям
 
   //END timeline
+
+  //BEGIN advantage
+  section.advantage
+    .head
+      .head__bg
+      .head__img
+        img(src="img/head1.png", alt="")
+      .head__text
+        | Пре
+        br
+        | иму
+        br
+        | щес
+        br
+        | тва
+      .deco.deco-1
+        +icon("target")
+      .deco.deco-2
+        | 11’ — 7”
+
+    ul.advantage__inner
+      li.advantage__column
+        h3.heading.heading_border.heading_large
+          span.heading__small-text 01
+          | Иностранный <br> капитал
+        p 50% Украина
+        p 50% Вьетнам
+      li.advantage__column
+        h3.heading.heading_border.heading_large
+          span.heading__small-text 02
+          | Скорость <br> работы
+        p.
+          Мы быстро принимаем решение, т.к структура компании 
+          легкая не нужно проходить через 5-10 этапов согласования
+      li.advantage__column
+        h3.heading.heading_border.heading_large
+          span.heading__small-text 03
+          | Качество <br> материалов
+        p.
+          Типо средняя цена, а качество выше среднего, т.е мы ищем оптимум
+
+  //END advantage
+
+  //BEGIN capability
+  section.capability
+    .head.head_capability
+      .head__text
+        | Воз
+        br
+        | мож
+        br
+        | нос
+        br
+        | ти
+      .deco.deco_polygon.deco-1
+        +icon("polygon")
+        span W6
+  //END capability
+
+  //BEGIN partners
+  section.partners
+    .head.head_partners
+      .head__bg
+      .head__img
+        img(src="img/head2.png", alt="")
+      .head__text
+        | Па
+        br
+        | рт
+        br
+        | не
+        br
+        | ры
+      .deco.deco-1
+        +icon("target")
+
+    .partners__inner
+      .deco.deco_circle D2
+      .partners__heading
+        h3.heading
+          | Мы <br> верим
+        p
+          | что работая в команде можно сделать работу <br> быстрее и эффективнее. 
+
+      h3.heading.heading__center
+        | мы будем рады сотрудничеству если вы:
+
+      .tabs
+        header.tabs__head.table
+          .table__border
+            include ../img/svg/optimized/tabs-head.svg
+          a.tab-btn(href="#")
+            .tab-btn__hover
+              .tab-btn__hover-in
+                strong.heading
+                  small.heading__small-text 01
+                  | Строительная <br>компания
+            .tab-btn__front
+              strong.heading
+                small.heading__small-text 01
+                | Строительная <br>компания
+          a.tab-btn(href="#")
+            .tab-btn__hover
+              .tab-btn__hover-in
+                strong.heading
+                  small.heading__small-text 02
+                  | Оптовый <br> поставщик
+            .tab-btn__front
+              strong.heading
+                small.heading__small-text 02
+                | Оптовый <br> поставщик
+          a.tab-btn(href="#")
+            .tab-btn__hover
+              .tab-btn__hover-in
+                strong.heading
+                  small.heading__small-text 03
+                  | Инвестор
+            .tab-btn__front
+              strong.heading
+                small.heading__small-text 03
+                | Инвестор
+        .tabs__content
+          form.form
+            .form__row
+              input.input(type="text", name="NAME", placeholder="Ваше имя")
+            .form__row
+              input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+            .form__row
+              textarea.input(name="MESSAGE", placeholder="Сообщение")
+            .form__row
+              button.submit(type="button")
+                .submit__hover
+                  .submit__hover-in
+                    | Отправить
+                    +icon("arrow")
+                .submit__front
+                  | Отправить
+                  +icon("arrow")
+
+        footer.tabs__footer
+          .tabs__footer-cell
+            p Вы строите быстро и ответственно?
+          .tabs__footer-cell
+            p У вас качественные материалы <br> и отличный сервис?
+          .tabs__footer-cell
+            p Хотите стабильных и <br> больших доходов?
+
+  //END partners
+
+  //BEGIN contacts
+  section.contacts
+    .head.head_contacts
+      .head__bg
+      .head__img
+        img(src="img/head3.png", alt="")
+      .head__text
+        | Кон
+        br
+        | так
+        br
+        | ты
+      .deco.deco-1
+        +icon("target")
+      .deco.deco-2
+        | 31’ — 5”
+
+    .contacts__inner
+
+  //END contacts

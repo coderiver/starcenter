@@ -89,8 +89,11 @@ $(document).ready(function() {
     var width = getScrollBarWidth();
     console.log('Scroll bar width: ' + width + 'px');
 
-    $('.men').on('click', function() {
-        $(this).find('.men__border').toggleClass('is-animate');
+    $('.men-table').on('click', function() {
+        $(this).find('.table__border').toggleClass('is-animate');
+    });
+    $('.partners-table').on('click', function() {
+        $(this).find('.table__border').toggleClass('is-animate');
     });
     $('.skyline').on('click', function() {
         $(this).toggleClass('is-animate');

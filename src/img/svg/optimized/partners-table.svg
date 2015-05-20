@@ -1,0 +1,17 @@
+<svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        partners-table
+    </title>
+    <g id="Page-1" fill="none" fill-rule="evenodd">
+        <g id="partners-table" stroke-linecap="square" stroke="#333">
+            <g id="partners-table-inner">
+                <path d="M203.5 1.5v124h515" id="partners-table-line-4"/>
+            </g>
+            <g id="partners-table-outer" stroke-width="3">
+                <path d="M1.5 1.5h202v187" id="partners-table-line-3"/>
+                <path d="M1.5 1.5v187h717" id="partners-table-line-2"/>
+                <path d="M1.5 1.5h717v187" id="partners-table-line-1"/>
+            </g>
+        </g>
+    </g>
+</svg>

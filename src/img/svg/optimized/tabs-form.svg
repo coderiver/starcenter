@@ -1,0 +1,17 @@
+<svg width="1080" height="120" viewBox="0 0 1080 120" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g id="Page-1" fill="none" fill-rule="evenodd">
+        <g id="tabs-form" stroke-linecap="square" stroke="#333">
+            <g id="tabs-head-inner">
+                <path d="M361 1h360v117" id="tabs-head-line-4"/>
+                <path d="M1 .996h360v116" id="tabs-head-line-3"/>
+            </g>
+            <g id="tabs-head-outer" stroke-width="3">
+                <path d="M1.5 1.5v117h1077" id="tabs-head-line-2"/>
+                <path d="M1.5 1.5h1077v117" id="tabs-head-line-1"/>
+            </g>
+        </g>
+    </g>
+</svg>
