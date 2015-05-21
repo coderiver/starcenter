@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0" style="position:absolute">
 
-<symbol id="icon-arrow" viewBox="0 0 70 8">
-        <title>arrow</title><path d="M69.717 4.213l-3.27 3.27-.707-.708 2.562-2.562H0v-1h68.245L65.74.707 66.447 0l3.212 3.212H70v1h-.283z" fill-rule="evenodd"/>
+<symbol id="icon-arrow" viewBox="0 0 70 9">
+        <title>arrow</title><path d="M68.154 5H0V4h68.154l-2.146-2.356-.347-.38.697-.764.347.38 2.95 3.24.173.19.174.19-.347.38-2.95 3.24-.346.38-.695-.763.348-.38L68.154 5z" fill-rule="evenodd"/>
 </symbol>
 
 <symbol id="icon-polygon" viewBox="0 0 41 46">

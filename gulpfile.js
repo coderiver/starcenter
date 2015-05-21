@@ -7,6 +7,7 @@ var gulp = require('./gulp')([
     'sass',
     'svg-sprite',
     'svgo',
+    'svgo-borders',
     'sprite',
     'watch'
     ]);

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="70px" height="8px" viewBox="0 0 70 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="70px" height="9px" viewBox="0 0 70 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
     <title>arrow</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <path d="M69.717,4.213 L66.447,7.483 L65.74,6.775 L68.302,4.213 L0,4.213 L0,3.212 L68.245,3.212 L65.74,0.708 L66.447,0 L69.659,3.212 L70,3.212 L70,4.213 L69.717,4.213 L69.717,4.213 Z" id="arrow" fill="#333333" sketch:type="MSShapeGroup"></path>
+        <path d="M68.1544862,4.99971584 L0.491523973,4.99971584 L0,4.99971584 L0,4.00028416 L0.491523973,4.00028416 L68.1544862,4.00028416 L68.1544862,4.00028416 L66.0081764,1.64446142 L65.6606164,1.26297428 L66.3557363,0.5 L66.7032962,0.88148714 L69.6524401,4.11851286 L69.82622,4.30925643 L70,4.5 L69.6524401,4.88148714 L66.7032962,8.11851286 L66.3557363,8.5 L65.6606164,7.73702572 L66.0081764,7.35553858 L68.1544862,4.99971584 Z" id="arrow" fill="#333333" sketch:type="MSShapeGroup"></path>
     </g>
 </svg>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1080px" height="494px" viewBox="0 0 1080 494" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
+    <title>contacts-table</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="contacts-table" sketch:type="MSLayerGroup" transform="translate(1.500000, 1.500000)" stroke-linecap="square" stroke="#333333">
+            <g id="contacts-table-inner" transform="translate(451.000000, 0.000000)" sketch:type="MSShapeGroup">
+                <path d="M0,0 L0,421 L626,421" id="Line-Copy-4"></path>
+                <path d="M0,0 L0,207 L626,207" id="Line-Copy-2"></path>
+                <path d="M0,0 L0,155 L626,155" id="Line-Copy-3"></path>
+                <path d="M0,0 L0,103 L626,103" id="Line-Copy"></path>
+            </g>
+            <g id="contacts-table-outer" stroke-width="3" sketch:type="MSShapeGroup">
+                <path d="M0,-5.83289762e-17 L0,207 L451,207" id="Line-Copy"></path>
+                <path d="M0,-2.90235968e-17 L0,103 L451,103" id="Line"></path>
+                <path d="M-4.15527456e-16,0 L451,0 L451,491" id="Line"></path>
+                <path d="M-6.93291006e-14,-1.46537501e-16 L-6.93291006e-14,491 L1077,491" id="tabs-head-line-2"></path>
+                <path d="M0,0 L1077,0 L1077,491" id="tabs-head-line-1"></path>
+            </g>
+        </g>
+    </g>
+</svg>

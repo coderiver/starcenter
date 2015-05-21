@@ -10,8 +10,8 @@
   <body>
     <div style="position: absolute; top: 0; left: 0;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0" style="position:absolute">
 
-<symbol id="icon-arrow" viewBox="0 0 70 8">
-        <title>arrow</title><path d="M69.717 4.213l-3.27 3.27-.707-.708 2.562-2.562H0v-1h68.245L65.74.707 66.447 0l3.212 3.212H70v1h-.283z" fill-rule="evenodd"/>
+<symbol id="icon-arrow" viewBox="0 0 70 9">
+        <title>arrow</title><path d="M68.154 5H0V4h68.154l-2.146-2.356-.347-.38.697-.764.347.38 2.95 3.24.173.19.174.19-.347.38-2.95 3.24-.346.38-.695-.763.348-.38L68.154 5z" fill-rule="evenodd"/>
 </symbol>
 
 <symbol id="icon-polygon" viewBox="0 0 41 46">
@@ -65,456 +65,595 @@
     </header>
     <!--END header-->
     <!--BEGIN outer and inner-->
-    <div class="outer">
-      <div class="inner">
-        <!--BEGIN catalog-->
-        <div class="catalog">
-          <div class="catalog__inner">
-            <!--BEGIN slider-->
-            <div id="slider1" class="main-slider">
-              <div class="main-slider__morph">
-                <div class="blue-circle"></div>
-              </div>
-              <div class="main-slider__paginator">
-                <button type="button" class="is-active">01</button>
-                <button type="button">02</button>
-                <button type="button">03</button>
-              </div>
-              <div class="main-slider__slides">
-                <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
-                  <div class="slide__content">
-                    <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                    <button type="button" class="details-btn"><span>Узнать детали</span>
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
-                    </button>
+    <div id="outer">
+      <div id="inner">
+        <div class="l-center">
+          <!--BEGIN catalog-->
+          <div class="catalog">
+            <div class="catalog__inner">
+              <!--BEGIN slider-->
+              <div id="slider1" class="main-slider">
+                <div class="main-slider__morph">
+                  <div class="blue-circle"></div>
+                </div>
+                <div class="main-slider__paginator">
+                  <button type="button" class="is-active">01</button>
+                  <button type="button">02</button>
+                  <button type="button">03</button>
+                </div>
+                <div class="main-slider__slides">
+                  <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
+                    <div class="slide__content">
+                      <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                      <button type="button" class="details-btn"><span>Узнать детали</span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
+                    <div class="slide__content">
+                      <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                      <button type="button" class="details-btn"><span>Узнать детали</span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
+                    <div class="slide__content">
+                      <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                      <button type="button" class="details-btn"><span>Узнать детали</span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
-                  <div class="slide__content">
-                    <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                    <button type="button" class="details-btn"><span>Узнать детали</span>
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
-                  <div class="slide__content">
-                    <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                    <button type="button" class="details-btn"><span>Узнать детали</span>
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
               </div>
-            </div>
-            <!--END slider-->
-            <canvas id="morph" resize></canvas>
-            <div class="deco">37" &mdash; 2'</div>
-            <ul class="catalog-category">
-              <li class="catalog-category__item"><a href="#/rent" data-morph-state="circle" class="catalog-btn">
-                  <div class="catalog-btn__hover">
-                    <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Арендовать</span></div>
-                  </div>
-                  <div class="catalog-btn__front"><span>Арендовать</span></div></a></li>
-              <li class="catalog-category__item"><a href="#/buy" data-morph-state="square" class="catalog-btn">
-                  <div class="catalog-btn__hover">
-                    <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Купить</span></div>
-                  </div>
-                  <div class="catalog-btn__front"><span>Купить</span></div></a></li>
-              <li class="catalog-category__item"><a href="#/invest" data-morph-state="triangle" class="catalog-btn"> 
-                  <div class="catalog-btn__hover">
-                    <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Инвестировать</span></div>
-                  </div>
-                  <div class="catalog-btn__front"><span>Инвестировать</span></div></a></li>
-            </ul>
-          </div>
-        </div>
-        <!--END catalog-->
-        <!--BEGIN timeline-->
-        <div class="facts">
-          <div class="facts__heading">
-            <h2 class="heading heading_large">Мы на рынке более 10 лет</h2>
-          </div>
-          <div class="deco deco_polygon deco-1">
-            <svg class="icon icon-polygon">
-              <use xlink:href="#icon-polygon"></use>
-            </svg><span>W6</span>
-          </div>
-          <div class="deco deco-2">11’ — 7”</div>
-          <div class="deco deco_polygon deco-3">
-            <svg class="icon icon-target">
-              <use xlink:href="#icon-target"></use>
-            </svg>
-          </div>
-          <div class="deco deco_circle deco-4">D2</div>
-          <ul class="timeline">
-            <li class="timeline__year">2004</li>
-            <li class="timeline__year">2005</li>
-            <li class="timeline__year">2006</li>
-            <li class="timeline__year">2007</li>
-            <li class="timeline__year">2008</li>
-            <li class="timeline__year">2009</li>
-            <li class="timeline__year">2010</li>
-            <li class="timeline__year">2011</li>
-            <li class="timeline__year">2012</li>
-            <li class="timeline__year">2013</li>
-            <li class="timeline__year">2014</li>
-            <li class="timeline__year">2015</li>
-            <li class="timeline__year">2016</li>
-          </ul>
-          <div class="facts__text">
-            <div class="facts__column">
-              <div class="text">
-                <p>
-                  StarCentre – компания, которая реализовала в Украине опыт 
-                  развитых стран, при котором формирование современного города 
-                  с комфортными условиями проживания является задачей самих застройщиков.
-                </p>
-                <p>
-                  Сегодня StarCentre – это девелопер, у которого есть достаточно 
-                  средств для реализации крупных проектов в столице  и не только. 
-                </p>
-              </div>
-            </div>
-            <div class="facts__column">
-              <div class="text">
-                <p>
-                  StarCentre - это градообразующая компания, которая за 12 лет работы реализовала 
-                  на украинском рынке более 11 уникальных объектов. 
-                </p>
-                <p>
-                  Компания входит в тройку лидеров рынка, располагает финансами, возможностями, 
-                  но главное – пониманием для планирования и развития города в перспективе.
-                  
-                </p>
-              </div>
+              <!--END slider-->
+              <canvas id="morph" resize></canvas>
+              <div class="deco">37" &mdash; 2'</div>
+              <ul class="catalog-category">
+                <li class="catalog-category__item"><a href="#/rent" data-morph-state="circle" class="catalog-btn">
+                    <div class="catalog-btn__hover">
+                      <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Арендовать</span></div>
+                    </div>
+                    <div class="catalog-btn__front"><span>Арендовать</span></div></a></li>
+                <li class="catalog-category__item"><a href="#/buy" data-morph-state="square" class="catalog-btn">
+                    <div class="catalog-btn__hover">
+                      <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Купить</span></div>
+                    </div>
+                    <div class="catalog-btn__front"><span>Купить</span></div></a></li>
+                <li class="catalog-category__item"><a href="#/invest" data-morph-state="triangle" class="catalog-btn"> 
+                    <div class="catalog-btn__hover">
+                      <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Инвестировать</span></div>
+                    </div>
+                    <div class="catalog-btn__front"><span>Инвестировать</span></div></a></li>
+              </ul>
             </div>
           </div>
-          <div class="facts-group">
-            <div class="curve"><svg width="1368" height="192" viewBox="0 0 1368 192" xmlns="http://www.w3.org/2000/svg">
-    <title>
-        curve
-    </title>
-    <g id="Page-1" fill="none" fill-rule="evenodd">
-        <path d="M316 140c150.295 0 391.363-100 571.355-100 281.198 0 448.366-40 477.805-40 2.84 0 2.84 2 2.84 2-29.463 0-197.752 40-480.412 40-180.04 0-421.183 100-571.536 100-151.16 0-298.088 50-314.05 50C0 192 0 190 0 190c17.574 0 164.6-50 316-50z" id="curve" fill="#333"/>
-    </g>
-</svg>
-
+          <!--END catalog-->
+          <!--BEGIN timeline-->
+          <div class="facts">
+            <div class="facts__heading">
+              <h2 class="heading heading_large">Мы на рынке более 10 лет</h2>
             </div>
-            <div class="facts-group__inner">
-              <div class="fact fact-1">
-                <h3 class="heading">Мы <br> построили</h3>
-                <div class="fact__number">38 000 <sub>м<sup>2</sup></sub></div>
-                <p class="fact__text">
-                  офисных и жилых площадей <br>
-                  из них сдано больше половины
-                  
-                </p>
-              </div>
-              <div class="fact fact-2">
-                <h3 class="heading">Планируем построить</h3>
-                <div class="fact__number">58 000 <sub>м<sup>2</sup></sub></div>
-                <p class="fact__text">
-                  офисных и жилых площадей
-                  
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="skyline"><svg width="1371" height="272" viewBox="0 0 1371 272" xmlns="http://www.w3.org/2000/svg">
-    <title>
-        skyline
-    </title>
-    <g id="Page-1" fill="none" fill-rule="evenodd">
-        <path d="M1370.096 187.418h-10.68V1h-63.208v188.19h-5.633v-18.817h-38.856V21.287l-7.48-7.473h-68.886v154.81h-27.147v7.802h-6.667V126.18h-4.5V84.24h-5.524V38.15c-3.158 0-3.158-8.51-3.158-8.51h-48.277v9.218h-5.157v44.148l-3.19 3.187v38.1h-4.81v-42.18h-5.804V32.477c-2.72 0-2.72-11.19-2.72-11.19h-53.12v11.196c-2.84 0-2.84 48.213-2.84 48.213l-3.13 3.128v40.13c-3.257 0-3.257 83.674-3.257 83.674h-28.94V155.15c-4.045 0-4.045-3.593-4.045-3.593h-8.413l-.094-15.02h-14.38v4.796h-12.453v12.4h-12.91v-63.11l-10.835-14.37h-25.028l-10.153 14.4v26.916c0 2.127-16.237 16.225-16.237 16.225v29.158H817.52l.122 41.005H789.93l-5.62 5.613h-13.23v-71.518h-9.686v-7.718H749.79v6.38h-14.903v72.857h-27.53v-7.198h-22.554v-72h-7.44v6.343H636.74v64.53h-38.824v43.964h-21.07v-86.244h-9.614v-6.65h-9.768v4.817h-27.578v7.194h-45.52v67.008H480v-20.163h-10.107v-6.937h-21.01v5.572h-7.792v3.315c-2.854 0-16.343-13.478-16.343-13.478l-12.055 12.044c-1.597 0-1.597 9.057-1.597 9.057l-5.857 5.852h-4.26v32.263c-2.307 0-2.307-4.735-2.307-4.735h-9.757v-28.24h-7.753v-4.605h-8.944v-31.736H328.19v-5.318l-10.214-10.206v-12.13h-14.58v3.9h-21.747v8.515h-5.098v4.242c-3.674 0-3.674 80.313-3.674 80.313h-21.254v-17.196H239.21v-28.268h-16.543V198.05H175.65v35.282H90.843v-6.244H67.197v4.294h-6.932v39.66h-13.66V241.9H12.187v10.755H0" id="skyline" stroke="#333"/>
-    </g>
-</svg>
-
-          </div>
-          <div class="facts-group">
-            <div class="curve"><svg width="1368" height="192" viewBox="0 0 1368 192" xmlns="http://www.w3.org/2000/svg">
-    <title>
-        curve
-    </title>
-    <g id="Page-1" fill="none" fill-rule="evenodd">
-        <path d="M316 140c150.295 0 391.363-100 571.355-100 281.198 0 448.366-40 477.805-40 2.84 0 2.84 2 2.84 2-29.463 0-197.752 40-480.412 40-180.04 0-421.183 100-571.536 100-151.16 0-298.088 50-314.05 50C0 192 0 190 0 190c17.574 0 164.6-50 316-50z" id="curve" fill="#333"/>
-    </g>
-</svg>
-
-            </div>
-            <div class="facts-group__inner">
-              <div class="fact fact-1">
-                <h3 class="heading">Мы <br> инвестировали</h3>
-                <div class="fact__number">$ 15 000 000</div>
-                <p class="fact__text">
-                  и мы будем вкладывать <br>
-                  еще больше
-                  
-                </p>
-              </div>
-              <div class="fact fact-2">
-                <h3 class="heading">Планируем <br> инвестировать</h3>
-                <div class="fact__number">$ 24 000 000</div>
-                <p class="fact__text">
-                  в разные виды недвижимости
-                  
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="box">
-            <div class="box__bg"></div>
-            <div class="box__inner">
-              <div class="table men-table">
-                <div class="table__border"><svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
-    <title>
-        men-table
-    </title>
-    <g id="Page-1" fill="none" fill-rule="evenodd">
-        <g id="men-table" stroke-linecap="square" stroke="#333">
-            <g id="men-table-inner">
-                <path d="M1.5 1.5h195v88" id="men-table-line-5"/>
-                <path d="M1.5 1.5v88h717" id="men-table-line-4"/>
-            </g>
-            <g id="men-table-outer" stroke-width="3">
-                <path d="M1.5 1.5h430v187" id="men-table-line-3"/>
-                <path d="M1.5 1.5v187h717" id="men-table-line-2"/>
-                <path d="M1.5 1.5h717v187" id="men-table-line-1"/>
-            </g>
-        </g>
-    </g>
-</svg>
-
-                </div>
-                <table class="men-table__table">
-                  <tr class="men-table__row1">
-                    <td class="men-table__cell"><strong class="heading heading_small">С нами работают</strong></td>
-                    <td class="men-table__cell">
-                      <div class="amount"><span class="amount__sign">&gt;</span><strong class="amount__value">500</strong><span class="amount__text">людей</span></div>
-                    </td>
-                    <td class="men-table__cell"><strong class="heading heading_small">Планируем <br> привлечь</strong></td>
-                  </tr>
-                  <tr class="men-table__row2">
-                    <td colspan="2" class="men-table__cell">
-                      <p>
-                        мы будем привлекать их еще, ведь мы <br>
-                        дорожим хорошими работниками
-                      </p>
-                    </td>
-                    <td class="men-table__cell">
-                      <div class="amount amount_md"><span class="amount__sign">&gt;</span><strong class="amount__value">700</strong><span class="amount__text">людей</span></div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="table partners-table">
-                <div class="table__border"><svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
-    <title>
-        partners-table
-    </title>
-    <g id="Page-1" fill="none" fill-rule="evenodd">
-        <g id="partners-table" stroke-linecap="square" stroke="#333">
-            <g id="partners-table-inner">
-                <path d="M203.5 1.5v124h515" id="partners-table-line-4"/>
-            </g>
-            <g id="partners-table-outer" stroke-width="3">
-                <path d="M1.5 1.5h202v187" id="partners-table-line-3"/>
-                <path d="M1.5 1.5v187h717" id="partners-table-line-2"/>
-                <path d="M1.5 1.5h717v187" id="partners-table-line-1"/>
-            </g>
-        </g>
-    </g>
-</svg>
-
-                </div>
-                <table class="partners-table__table">
-                  <tr class="partners-table__row1">
-                    <td rowspan="2" class="partners-table__cell"><strong class="heading">Мы <br> нашли </strong></td>
-                    <td class="partners-table__cell">
-                      <div class="amount amount_lrg"><span class="amount__sign">&gt;</span><strong class="amount__value">100</strong><span class="amount__text">партнеров</span></div>
-                    </td>
-                  </tr>
-                  <tr class="partners-table__row2">
-                    <td class="partners-table__cell">
-                      <p>с некоторыми мы работаем уже больше 8 лет</p>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="facts__heading">
-            <h3 class="heading"><small class="heading__small-text">И все же</small>мы открыты к новым предложениям</h3>
-          </div>
-        </div>
-        <!--END timeline-->
-        <!--BEGIN advantage-->
-        <section class="advantage">
-          <div class="head">
-            <div class="head__bg"></div>
-            <div class="head__img"><img src="img/head1.png" alt=""></div>
-            <div class="head__text">Пре<br>иму<br>щес<br>тва</div>
-            <div class="deco deco-1">
-              <svg class="icon icon-target">
-                <use xlink:href="#icon-target"></use>
-              </svg>
-            </div>
-            <div class="deco deco-2">11’ — 7”</div>
-          </div>
-          <ul class="advantage__inner">
-            <li class="advantage__column">
-              <h3 class="heading heading_border heading_large"><span class="heading__small-text">01</span>Иностранный <br> капитал</h3>
-              <p>50% Украина</p>
-              <p>50% Вьетнам</p>
-            </li>
-            <li class="advantage__column">
-              <h3 class="heading heading_border heading_large"><span class="heading__small-text">02</span>Скорость <br> работы</h3>
-              <p>
-                Мы быстро принимаем решение, т.к структура компании 
-                легкая не нужно проходить через 5-10 этапов согласования
-              </p>
-            </li>
-            <li class="advantage__column">
-              <h3 class="heading heading_border heading_large"><span class="heading__small-text">03</span>Качество <br> материалов</h3>
-              <p>
-                Типо средняя цена, а качество выше среднего, т.е мы ищем оптимум
-                
-              </p>
-            </li>
-          </ul>
-        </section>
-        <!--END advantage-->
-        <!--BEGIN capability-->
-        <section class="capability">
-          <div class="head head_capability">
-            <div class="head__text">Воз<br>мож<br>нос<br>ти</div>
             <div class="deco deco_polygon deco-1">
               <svg class="icon icon-polygon">
                 <use xlink:href="#icon-polygon"></use>
               </svg><span>W6</span>
             </div>
-          </div>
-        </section>
-        <!--END capability-->
-        <!--BEGIN partners-->
-        <section class="partners">
-          <div class="head head_partners">
-            <div class="head__bg"></div>
-            <div class="head__img"><img src="img/head2.png" alt=""></div>
-            <div class="head__text">Па<br>рт<br>не<br>ры</div>
-            <div class="deco deco-1">
+            <div class="deco deco-2">11’ — 7”</div>
+            <div class="deco deco_polygon deco-3">
               <svg class="icon icon-target">
                 <use xlink:href="#icon-target"></use>
               </svg>
             </div>
-          </div>
-          <div class="partners__inner">
-            <div class="deco deco_circle">D2</div>
-            <div class="partners__heading">
-              <h3 class="heading">Мы <br> верим</h3>
-              <p>что работая в команде можно сделать работу <br> быстрее и эффективнее. </p>
+            <div class="deco deco_circle deco-4">D2</div>
+            <ul id="timeline" class="timeline">
+              <li class="timeline__year">2004</li>
+              <li class="timeline__year">2005</li>
+              <li class="timeline__year">2006</li>
+              <li class="timeline__year">2007</li>
+              <li class="timeline__year">2008</li>
+              <li class="timeline__year">2009</li>
+              <li class="timeline__year">2010</li>
+              <li class="timeline__year">2011</li>
+              <li class="timeline__year">2012</li>
+              <li class="timeline__year">2013</li>
+              <li class="timeline__year">2014</li>
+              <li class="timeline__year">2015</li>
+              <li class="timeline__year">2016</li>
+            </ul>
+            <div class="facts__text">
+              <div class="facts__column">
+                <div class="text">
+                  <p>
+                    StarCentre – компания, которая реализовала в Украине опыт 
+                    развитых стран, при котором формирование современного города 
+                    с комфортными условиями проживания является задачей самих застройщиков.
+                  </p>
+                  <p>
+                    Сегодня StarCentre – это девелопер, у которого есть достаточно 
+                    средств для реализации крупных проектов в столице  и не только. 
+                  </p>
+                </div>
+              </div>
+              <div class="facts__column">
+                <div class="text">
+                  <p>
+                    StarCentre - это градообразующая компания, которая за 12 лет работы реализовала 
+                    на украинском рынке более 11 уникальных объектов. 
+                  </p>
+                  <p>
+                    Компания входит в тройку лидеров рынка, располагает финансами, возможностями, 
+                    но главное – пониманием для планирования и развития города в перспективе.
+                    
+                  </p>
+                </div>
+              </div>
             </div>
-            <h3 class="heading heading__center">мы будем рады сотрудничеству если вы:</h3>
-            <div class="tabs">
-              <header class="tabs__head table">
-                <div class="table__border"><svg width="1080" height="121" viewBox="0 0 1080 121" xmlns="http://www.w3.org/2000/svg">
+            <div class="facts-group">
+              <div class="curve"><svg width="1368" height="192" viewBox="0 0 1368 192" xmlns="http://www.w3.org/2000/svg">
     <title>
-        tabs-head
+        curve
     </title>
-    <g id="Page-1" fill="none" fill-rule="evenodd">
-        <g id="tabs-head" stroke-linecap="square" stroke="#333">
-            <g id="tabs-head-inner">
-                <path d="M1.5 1.508h719v116" id="tabs-head-line-4"/>
-                <path d="M1.5 1.508h359v116" id="tabs-head-line-3"/>
-            </g>
-            <g id="tabs-head-outer" stroke-width="3">
-                <path d="M1.5 1.517v117h1077" id="tabs-head-line-2"/>
-                <path d="M1.5 1.517h1077v117" id="tabs-head-line-1"/>
-            </g>
+    <path d="M316 140c150.295 0 391.363-100 571.355-100 281.198 0 448.366-40 477.805-40 2.84 0 2.84 2 2.84 2-29.463 0-197.752 40-480.412 40-180.04 0-421.183 100-571.536 100-151.16 0-298.088 50-314.05 50C0 192 0 190 0 190c17.574 0 164.6-50 316-50z" fill="#333" fill-rule="evenodd"/>
+</svg>
+
+              </div>
+              <div class="facts-group__inner">
+                <div class="fact fact-1">
+                  <h3 class="heading">Мы <br> построили</h3>
+                  <div class="fact__number">38 000 <sub>м<sup>2</sup></sub></div>
+                  <p class="fact__text">
+                    офисных и жилых площадей <br>
+                    из них сдано больше половины
+                    
+                  </p>
+                </div>
+                <div class="fact fact-2">
+                  <h3 class="heading">Планируем построить</h3>
+                  <div class="fact__number">58 000 <sub>м<sup>2</sup></sub></div>
+                  <p class="fact__text">
+                    офисных и жилых площадей
+                    
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="skyline"><svg width="1371" height="272" viewBox="0 0 1371 272" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        skyline
+    </title>
+    <path d="M1370.096 187.418h-10.68V1h-63.208v188.19h-5.633v-18.817h-38.856V21.287l-7.48-7.473h-68.886v154.81h-27.147v7.802h-6.667V126.18h-4.5V84.24h-5.524V38.15c-3.158 0-3.158-8.51-3.158-8.51h-48.277v9.218h-5.157v44.148l-3.19 3.187v38.1h-4.81v-42.18h-5.804V32.477c-2.72 0-2.72-11.19-2.72-11.19h-53.12v11.196c-2.84 0-2.84 48.213-2.84 48.213l-3.13 3.128v40.13c-3.257 0-3.257 83.674-3.257 83.674h-28.94V155.15c-4.045 0-4.045-3.593-4.045-3.593h-8.413l-.094-15.02h-14.38v4.796h-12.453v12.4h-12.91v-63.11l-10.835-14.37h-25.028l-10.153 14.4v26.916c0 2.127-16.237 16.225-16.237 16.225v29.158H817.52l.122 41.005H789.93l-5.62 5.613h-13.23v-71.518h-9.686v-7.718H749.79v6.38h-14.903v72.857h-27.53v-7.198h-22.554v-72h-7.44v6.343H636.74v64.53h-38.824v43.964h-21.07v-86.244h-9.614v-6.65h-9.768v4.817h-27.578v7.194h-45.52v67.008H480v-20.163h-10.107v-6.937h-21.01v5.572h-7.792v3.315c-2.854 0-16.343-13.478-16.343-13.478l-12.055 12.044c-1.597 0-1.597 9.057-1.597 9.057l-5.857 5.852h-4.26v32.263c-2.307 0-2.307-4.735-2.307-4.735h-9.757v-28.24h-7.753v-4.605h-8.944v-31.736H328.19v-5.318l-10.214-10.206v-12.13h-14.58v3.9h-21.747v8.515h-5.098v4.242c-3.674 0-3.674 80.313-3.674 80.313h-21.254v-17.196H239.21v-28.268h-16.543V198.05H175.65v35.282H90.843v-6.244H67.197v4.294h-6.932v39.66h-13.66V241.9H12.187v10.755H0" stroke="#333" fill="none" fill-rule="evenodd"/>
+</svg>
+
+            </div>
+            <div class="facts-group">
+              <div class="curve"><svg width="1368" height="192" viewBox="0 0 1368 192" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        curve
+    </title>
+    <path d="M316 140c150.295 0 391.363-100 571.355-100 281.198 0 448.366-40 477.805-40 2.84 0 2.84 2 2.84 2-29.463 0-197.752 40-480.412 40-180.04 0-421.183 100-571.536 100-151.16 0-298.088 50-314.05 50C0 192 0 190 0 190c17.574 0 164.6-50 316-50z" fill="#333" fill-rule="evenodd"/>
+</svg>
+
+              </div>
+              <div class="facts-group__inner">
+                <div class="fact fact-1">
+                  <h3 class="heading">Мы <br> инвестировали</h3>
+                  <div class="fact__number">$ 15 000 000</div>
+                  <p class="fact__text">
+                    и мы будем вкладывать <br>
+                    еще больше
+                    
+                  </p>
+                </div>
+                <div class="fact fact-2">
+                  <h3 class="heading">Планируем <br> инвестировать</h3>
+                  <div class="fact__number">$ 24 000 000</div>
+                  <p class="fact__text">
+                    в разные виды недвижимости
+                    
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="box">
+              <div class="box__bg"></div>
+              <div class="box__inner">
+                <div class="table men-table">
+                  <div class="table__border"><svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        men-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.5h195v88" class="inner-border"/>
+        <path d="M1.5 1.5v88h717" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h430v187" class="outer-border"/>
+            <path d="M1.5 1.5v187h717" class="outer-border"/>
+            <path d="M1.5 1.5h717v187" class="outer-border"/>
         </g>
     </g>
 </svg>
 
-                </div><a href="#" class="tab-btn">
-                  <div class="tab-btn__hover">
-                    <div class="tab-btn__hover-in"><strong class="heading"><small class="heading__small-text">01</small>Строительная <br>компания</strong></div>
                   </div>
-                  <div class="tab-btn__front"><strong class="heading"><small class="heading__small-text">01</small>Строительная <br>компания</strong></div></a><a href="#" class="tab-btn">
-                  <div class="tab-btn__hover">
-                    <div class="tab-btn__hover-in"><strong class="heading"><small class="heading__small-text">02</small>Оптовый <br> поставщик</strong></div>
+                  <table class="men-table__table">
+                    <tr class="men-table__row1">
+                      <td class="men-table__cell"><strong class="heading heading_small">С нами работают</strong></td>
+                      <td class="men-table__cell">
+                        <div class="amount"><span class="amount__sign">&gt;</span><strong class="amount__value">500</strong><span class="amount__text">людей</span></div>
+                      </td>
+                      <td class="men-table__cell"><strong class="heading heading_small">Планируем <br> привлечь</strong></td>
+                    </tr>
+                    <tr class="men-table__row2">
+                      <td colspan="2" class="men-table__cell">
+                        <p>
+                          мы будем привлекать их еще, ведь мы <br>
+                          дорожим хорошими работниками
+                        </p>
+                      </td>
+                      <td class="men-table__cell">
+                        <div class="amount amount_md"><span class="amount__sign">&gt;</span><strong class="amount__value">700</strong><span class="amount__text">людей</span></div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="table partners-table">
+                  <div class="table__border"><svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        partners-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M203.5 1.5v124h515" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h202v187" class="outer-border"/>
+            <path d="M1.5 1.5v187h717" class="outer-border"/>
+            <path d="M1.5 1.5h717v187" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
                   </div>
-                  <div class="tab-btn__front"><strong class="heading"><small class="heading__small-text">02</small>Оптовый <br> поставщик</strong></div></a><a href="#" class="tab-btn">
-                  <div class="tab-btn__hover">
-                    <div class="tab-btn__hover-in"><strong class="heading"><small class="heading__small-text">03</small>Инвестор</strong></div>
-                  </div>
-                  <div class="tab-btn__front"><strong class="heading"><small class="heading__small-text">03</small>Инвестор</strong></div></a>
-              </header>
-              <div class="tabs__content">
-                <form class="form">
-                  <div class="form__row">
+                  <table class="partners-table__table">
+                    <tr class="partners-table__row1">
+                      <td rowspan="2" class="partners-table__cell"><strong class="heading">Мы <br> нашли </strong></td>
+                      <td class="partners-table__cell">
+                        <div class="amount amount_lrg"><span class="amount__sign">&gt;</span><strong class="amount__value">100</strong><span class="amount__text">партнеров</span></div>
+                      </td>
+                    </tr>
+                    <tr class="partners-table__row2">
+                      <td class="partners-table__cell">
+                        <p>с некоторыми мы работаем уже больше 8 лет</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="facts__heading">
+              <h3 class="heading"><small class="heading__small-text">И все же</small>мы открыты к новым предложениям</h3>
+            </div>
+          </div>
+          <!--END timeline-->
+          <!--BEGIN advantage-->
+          <section class="advantage">
+            <div class="head">
+              <div class="head__bg"></div>
+              <div class="head__img"><img src="img/head1.png" alt=""></div>
+              <div class="head__text">Пре<br>иму<br>щес<br>тва</div>
+              <div class="deco deco-1">
+                <svg class="icon icon-target">
+                  <use xlink:href="#icon-target"></use>
+                </svg>
+              </div>
+              <div class="deco deco-2">11’ — 7”</div>
+            </div>
+            <ul class="advantage__inner">
+              <li class="advantage__column">
+                <h3 class="heading heading_border heading_large"><span class="heading__small-text">01</span>Иностранный <br> капитал</h3>
+                <p>50% Украина</p>
+                <p>50% Вьетнам</p>
+              </li>
+              <li class="advantage__column">
+                <h3 class="heading heading_border heading_large"><span class="heading__small-text">02</span>Скорость <br> работы</h3>
+                <p>
+                  Мы быстро принимаем решение, т.к структура компании 
+                  легкая не нужно проходить через 5-10 этапов согласования
+                </p>
+              </li>
+              <li class="advantage__column">
+                <h3 class="heading heading_border heading_large"><span class="heading__small-text">03</span>Качество <br> материалов</h3>
+                <p>
+                  Типо средняя цена, а качество выше среднего, т.е мы ищем оптимум
+                  
+                </p>
+              </li>
+            </ul>
+          </section>
+          <!--END advantage-->
+          <!--BEGIN capability-->
+          <section class="capability">
+            <div class="head head_capability">
+              <div class="head__text">Воз<br>мож<br>нос<br>ти</div>
+              <div class="deco deco_polygon deco-1">
+                <svg class="icon icon-polygon">
+                  <use xlink:href="#icon-polygon"></use>
+                </svg><span>W6</span>
+              </div>
+            </div>
+          </section>
+          <!--END capability-->
+          <!--BEGIN partners-->
+          <section class="partners">
+            <div class="head head_partners">
+              <div class="head__bg"></div>
+              <div class="head__img"><img src="img/head2.png" alt=""></div>
+              <div class="head__text">Па<br>рт<br>не<br>ры</div>
+              <div class="deco deco-1">
+                <svg class="icon icon-target">
+                  <use xlink:href="#icon-target"></use>
+                </svg>
+              </div>
+            </div>
+            <div class="partners__inner">
+              <div class="deco deco_circle">D2</div>
+              <div class="partners__heading">
+                <h3 class="heading">Мы <br> верим</h3>
+                <p>что работая в команде можно сделать работу <br> быстрее и эффективнее. </p>
+              </div>
+              <h3 class="heading heading__center">мы будем рады сотрудничеству если вы:</h3>
+              <div class="tabs">
+                <header class="tabs__head table">
+                  <div class="table__border"><svg width="1080" height="121" viewBox="0 0 1080 121" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-head
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.508h719v116" class="inner-border"/>
+        <path d="M1.5 1.508h359v116" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.517v117h1077" class="outer-border"/>
+            <path d="M1.5 1.517h1077v117" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                  </div><a href="#" class="btn btn_tab">
+                    <div class="btn__hover">
+                      <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">01</small>Строительная <br>компания</strong></div>
+                    </div>
+                    <div class="btn__front"><strong class="heading"><small class="heading__small-text">01</small>Строительная <br>компания</strong></div></a><a href="#" class="btn btn_tab">
+                    <div class="btn__hover">
+                      <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">02</small>Оптовый <br> поставщик</strong></div>
+                    </div>
+                    <div class="btn__front"><strong class="heading"><small class="heading__small-text">02</small>Оптовый <br> поставщик</strong></div></a><a href="#" class="btn btn_tab">
+                    <div class="btn__hover">
+                      <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">03</small>Инвестор</strong></div>
+                    </div>
+                    <div class="btn__front"><strong class="heading"><small class="heading__small-text">03</small>Инвестор</strong></div></a>
+                </header>
+                <div class="tabs__content">
+                  <form name="COMPANY" class="form table">
+                    <div class="table__border"><svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                    </div>
                     <input type="text" name="NAME" placeholder="Ваше имя" class="input">
-                  </div>
-                  <div class="form__row">
                     <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
-                  </div>
-                  <div class="form__row">
                     <textarea name="MESSAGE" placeholder="Сообщение" class="input"></textarea>
-                  </div>
-                  <div class="form__row">
-                    <button type="button" class="submit">
-                      <div class="submit__hover">
-                        <div class="submit__hover-in">Отправить
+                    <button type="submit" class="btn btn_submit">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Отправить
                           <svg class="icon icon-arrow">
                             <use xlink:href="#icon-arrow"></use>
                           </svg>
                         </div>
                       </div>
-                      <div class="submit__front">Отправить
+                      <div class="btn__front">Отправить
                         <svg class="icon icon-arrow">
                           <use xlink:href="#icon-arrow"></use>
                         </svg>
                       </div>
                     </button>
+                  </form>
+                </div>
+                <div class="tabs__content">
+                  <form name="PROVIDER" class="form table">
+                    <div class="table__border"><svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                    </div>
+                    <input type="text" name="NAME" placeholder="Ваше имя" class="input">
+                    <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
+                    <textarea name="MESSAGE" placeholder="Сообщение" class="input"></textarea>
+                    <button type="submit" class="btn btn_submit">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Отправить
+                          <svg class="icon icon-arrow">
+                            <use xlink:href="#icon-arrow"></use>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="btn__front">Отправить
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </div>
+                    </button>
+                  </form>
+                </div>
+                <div class="tabs__content">
+                  <form name="INVESTOR" class="form table">
+                    <div class="table__border"><svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                    </div>
+                    <input type="text" name="NAME" placeholder="Ваше имя" class="input">
+                    <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
+                    <textarea name="MESSAGE" placeholder="Сообщение" class="input"></textarea>
+                    <button type="submit" class="btn btn_submit">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Отправить
+                          <svg class="icon icon-arrow">
+                            <use xlink:href="#icon-arrow"></use>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="btn__front">Отправить
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </div>
+                    </button>
+                  </form>
+                </div>
+                <footer class="tabs__footer">
+                  <div class="tabs__footer-cell">
+                    <p>Вы строите быстро и ответственно?</p>
                   </div>
-                </form>
+                  <div class="tabs__footer-cell">
+                    <p>У вас качественные материалы <br> и отличный сервис?</p>
+                  </div>
+                  <div class="tabs__footer-cell">
+                    <p>Хотите стабильных и <br> больших доходов?</p>
+                  </div>
+                </footer>
               </div>
-              <footer class="tabs__footer">
-                <div class="tabs__footer-cell">
-                  <p>Вы строите быстро и ответственно?</p>
-                </div>
-                <div class="tabs__footer-cell">
-                  <p>У вас качественные материалы <br> и отличный сервис?</p>
-                </div>
-                <div class="tabs__footer-cell">
-                  <p>Хотите стабильных и <br> больших доходов?</p>
-                </div>
-              </footer>
             </div>
-          </div>
-        </section>
-        <!--END partners-->
-        <!--BEGIN contacts-->
-        <section class="contacts">
-          <div class="head head_contacts">
-            <div class="head__bg"></div>
-            <div class="head__img"><img src="img/head3.png" alt=""></div>
-            <div class="head__text">Кон<br>так<br>ты</div>
-            <div class="deco deco-1">
-              <svg class="icon icon-target">
-                <use xlink:href="#icon-target"></use>
-              </svg>
+          </section>
+          <!--END partners-->
+          <!--BEGIN contacts-->
+          <section class="contacts">
+            <div class="head head_contacts">
+              <div class="head__bg"></div>
+              <div class="head__img"><img src="img/head3.png" alt=""></div>
+              <div class="head__text">Кон<br>так<br>ты</div>
+              <div class="deco deco-1">
+                <svg class="icon icon-target">
+                  <use xlink:href="#icon-target"></use>
+                </svg>
+              </div>
+              <div class="deco deco-2">31’ — 5”</div>
             </div>
-            <div class="deco deco-2">31’ — 5”</div>
+            <div class="contacts__inner">
+              <div class="contacts-table table">
+                <div class="table__border"><svg width="1080" height="494" viewBox="0 0 1080 494" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        contacts-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M452.5 1.5v421h626" class="inner-border"/>
+        <path d="M452.5 1.5v207h626" class="inner-border"/>
+        <path d="M452.5 1.5v155h626" class="inner-border"/>
+        <path d="M452.5 1.5v103h626" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v207h451" class="outer-border"/>
+            <path d="M1.5 1.5v103h451" class="outer-border"/>
+            <path d="M1.5 1.5h451v491" class="outer-border"/>
+            <path d="M1.5 1.5v491h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v491" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                </div>
+                <table>
+                  <tr class="contacts-table__row1">
+                    <td class="contacts-table__cell">
+                      <div class="contact-item"><small class="contact-item__label">Телефон</small><a href="tel:+380442204555" class="contact-item__phone">+380 (44) 220 45 55</a></div>
+                    </td>
+                    <td class="contacts-table__cell"><strong class="heading">Остались <br> вопросы?</strong></td>
+                  </tr>
+                  <tr class="contacts-table__row1">
+                    <td class="contacts-table__cell">
+                      <div class="contact-item"><small class="contact-item__label">e-mail</small><a href="mailto:info@starcentre.com">info@starcentre.com</a></div>
+                    </td>
+                    <td rowspan="2" class="contacts-table__cell">
+                      <form name="QUESTION" class="form">
+                        <input type="text" name="NAME" placeholder="Ваше имя" class="input">
+                        <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
+                        <textarea name="MESSAGE" placeholder="Сообщение" class="input"></textarea>
+                        <button type="submit" class="btn btn_submit">
+                          <div class="btn__hover">
+                            <div class="btn__hover-in">Отправить
+                              <svg class="icon icon-arrow">
+                                <use xlink:href="#icon-arrow"></use>
+                              </svg>
+                            </div>
+                          </div>
+                          <div class="btn__front">Отправить
+                            <svg class="icon icon-arrow">
+                              <use xlink:href="#icon-arrow"></use>
+                            </svg>
+                          </div>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                  <tr class="contacts-table__row2">
+                    <td class="contacts-table__cell">
+                      <div class="contact-item"><small class="contact-item__label">адрес</small>Киев <br>Краснозвездный <br>проспект 42</div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </section>
+          <!--END contacts-->
+        </div>
+        <!--BEGIN footer-->
+        <footer id="footer">
+          <!--BEGIN map-->
+          <div id="map"></div>
+          <!--END map-->
+          <div class="footer">
+            <p class="footer__copy">© StarCentre, 2015</p>
+            <p class="footer__link">Design by <a href="#">TRILO</a></p>
           </div>
-          <div class="contacts__inner"></div>
-        </section>
-        <!--END contacts-->
+        </footer>
+        <!--END footer-->
       </div>
     </div>
     <!--END outer and inner-->

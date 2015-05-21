@@ -20,10 +20,9 @@ body
   overflow: hidden
   height: 100%
 
-.outer
+#outer
   min-width: $content-width
   min-height: $content-height
-  width: 1368px
   position: absolute
   top: 0
   left: 0
@@ -34,7 +33,7 @@ body
   overflow: hidden
   +wos
 
-.inner
+#inner
   position: absolute
   // padding-top: $content-height
   top: 0
@@ -42,6 +41,17 @@ body
   right: -16px
   bottom: 0
   +scroll
+
+.l-center
+  width: 1368px
+  margin: auto
+
+.inner-wrapper
+  position: relative
+  z-index: 1
+  background: #FFF
+  padding-bottom: 510px
+
 
 #header
   position: absolute
@@ -67,3 +77,12 @@ body
   width: 1368px
   height: 680px
   pointer-events: none
+
+#footer
+  height: 510px
+  &.is-fixed
+    position: fixed
+    z-index: 0
+    bottom: 0
+    left: 0
+    right: 0

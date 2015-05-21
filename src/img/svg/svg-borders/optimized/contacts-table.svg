@@ -1,0 +1,18 @@
+<svg width="1080" height="494" viewBox="0 0 1080 494" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        contacts-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M452.5 1.5v421h626" class="inner-border"/>
+        <path d="M452.5 1.5v207h626" class="inner-border"/>
+        <path d="M452.5 1.5v155h626" class="inner-border"/>
+        <path d="M452.5 1.5v103h626" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v207h451" class="outer-border"/>
+            <path d="M1.5 1.5v103h451" class="outer-border"/>
+            <path d="M1.5 1.5h451v491" class="outer-border"/>
+            <path d="M1.5 1.5v491h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v491" class="outer-border"/>
+        </g>
+    </g>
+</svg>

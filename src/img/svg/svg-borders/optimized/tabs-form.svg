@@ -1,0 +1,14 @@
+<svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>

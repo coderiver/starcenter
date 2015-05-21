@@ -1,0 +1,14 @@
+<svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        men-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.5h195v88" class="inner-border"/>
+        <path d="M1.5 1.5v88h717" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h430v187" class="outer-border"/>
+            <path d="M1.5 1.5v187h717" class="outer-border"/>
+            <path d="M1.5 1.5h717v187" class="outer-border"/>
+        </g>
+    </g>
+</svg>

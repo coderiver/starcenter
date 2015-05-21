@@ -14,7 +14,7 @@ module.exports = function() {
                 plugins: [{
                     removeDesc: true
                 },{
-                    cleanupIDs: false
+                    cleanupIDs: true
                 },{
                     mergePaths: false
                 }

@@ -1,0 +1,13 @@
+<svg width="1080" height="121" viewBox="0 0 1080 121" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-head
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.508h719v116" class="inner-border"/>
+        <path d="M1.5 1.508h359v116" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.517v117h1077" class="outer-border"/>
+            <path d="M1.5 1.517h1077v117" class="outer-border"/>
+        </g>
+    </g>
+</svg>

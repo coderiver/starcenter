@@ -4,395 +4,475 @@ block title
   title Home
 
 block content
+  .l-center
 
-  //BEGIN catalog
-  .catalog
-    .catalog__inner
+    //BEGIN catalog
+    .catalog
+      .catalog__inner
 
-      //BEGIN slider
-      #slider1.main-slider
-        .main-slider__morph
-          .blue-circle
-        .main-slider__paginator
-          button(type="button").is-active 01
-          button(type="button") 02
-          button(type="button") 03
-        
-        .main-slider__slides
-          .slide
-            img.slide__img(src="img/slider/slider1.png", alt="")
-            .slide__content
-              .slide__text
-                | Наиболее выгодное предложение на рынке
-                span.price
-                  | 6 USD
-                  small.price__small
-                    | /м<sup>2</sup>
+        //BEGIN slider
+        #slider1.main-slider
+          .main-slider__morph
+            .blue-circle
+          .main-slider__paginator
+            button(type="button").is-active 01
+            button(type="button") 02
+            button(type="button") 03
+          
+          .main-slider__slides
+            .slide
+              img.slide__img(src="img/slider/slider1.png", alt="")
+              .slide__content
+                .slide__text
+                  | Наиболее выгодное предложение на рынке
+                  span.price
+                    | 6 USD
+                    small.price__small
+                      | /м<sup>2</sup>
 
-              button.details-btn(type="button")
-                span Узнать детали
-                +icon("arrow")
+                button.details-btn(type="button")
+                  span Узнать детали
+                  +icon("arrow")
 
-          .slide
-            img.slide__img(src="img/slider/slider2.png", alt="")
-            .slide__content
-              .slide__text
-                | Наиболее выгодное предложение на рынке
-                span.price
-                  | 10 USD
-                  small.price__small
-                    | /м<sup>2</sup>
+            .slide
+              img.slide__img(src="img/slider/slider2.png", alt="")
+              .slide__content
+                .slide__text
+                  | Наиболее выгодное предложение на рынке
+                  span.price
+                    | 10 USD
+                    small.price__small
+                      | /м<sup>2</sup>
 
-              button.details-btn(type="button")
-                span Узнать детали
-                +icon("arrow")
+                button.details-btn(type="button")
+                  span Узнать детали
+                  +icon("arrow")
 
-          .slide
-            img.slide__img(src="img/slider/slider3.png", alt="")
-            .slide__content
-              .slide__text
-                | Наиболее выгодное предложение на рынке
-                span.price
-                  | 20 USD
-                  small.price__small
-                    | /м<sup>2</sup>
+            .slide
+              img.slide__img(src="img/slider/slider3.png", alt="")
+              .slide__content
+                .slide__text
+                  | Наиболее выгодное предложение на рынке
+                  span.price
+                    | 20 USD
+                    small.price__small
+                      | /м<sup>2</sup>
 
-              button.details-btn(type="button")
-                span Узнать детали
-                +icon("arrow")
-      //END slider
+                button.details-btn(type="button")
+                  span Узнать детали
+                  +icon("arrow")
+        //END slider
 
-      canvas(id="morph", resize)
+        canvas(id="morph", resize)
 
-      .deco
-        | 37" &mdash; 2'
+        .deco
+          | 37" &mdash; 2'
 
-      ul.catalog-category
-        li.catalog-category__item
-          a.catalog-btn(href="#/rent", data-morph-state="circle")
-            .catalog-btn__hover
-              .catalog-btn__hover-in
-                span.catalog-btn__hover-text Арендовать
-            .catalog-btn__front
-              span Арендовать
-        li.catalog-category__item
-          a.catalog-btn(href="#/buy", data-morph-state="square")
-            .catalog-btn__hover
-              .catalog-btn__hover-in
-                span.catalog-btn__hover-text Купить
-            .catalog-btn__front
-              span Купить
-        li.catalog-category__item
-          a.catalog-btn(href="#/invest", data-morph-state="triangle") 
-            .catalog-btn__hover
-              .catalog-btn__hover-in
-                span.catalog-btn__hover-text Инвестировать
-            .catalog-btn__front
-              span Инвестировать
-  //END catalog
+        ul.catalog-category
+          li.catalog-category__item
+            a.catalog-btn(href="#/rent", data-morph-state="circle")
+              .catalog-btn__hover
+                .catalog-btn__hover-in
+                  span.catalog-btn__hover-text Арендовать
+              .catalog-btn__front
+                span Арендовать
+          li.catalog-category__item
+            a.catalog-btn(href="#/buy", data-morph-state="square")
+              .catalog-btn__hover
+                .catalog-btn__hover-in
+                  span.catalog-btn__hover-text Купить
+              .catalog-btn__front
+                span Купить
+          li.catalog-category__item
+            a.catalog-btn(href="#/invest", data-morph-state="triangle") 
+              .catalog-btn__hover
+                .catalog-btn__hover-in
+                  span.catalog-btn__hover-text Инвестировать
+              .catalog-btn__front
+                span Инвестировать
+    //END catalog
 
-  //BEGIN timeline
-  .facts
-    .facts__heading
-      h2.heading.heading_large Мы на рынке более 10 лет
-    
-    .deco.deco_polygon.deco-1
-      +icon("polygon")
-      span W6
-    .deco.deco-2
-      | 11’ — 7”
-    .deco.deco_polygon.deco-3
-      +icon("target")
-    .deco.deco_circle.deco-4
-      | D2
-
-    - var n = 2004
-    ul.timeline
-      while n < 2017
-        li(class="timeline__year")= n++
-
-    .facts__text
-      .facts__column
-        .text
-          p.
-            StarCentre – компания, которая реализовала в Украине опыт 
-            развитых стран, при котором формирование современного города 
-            с комфортными условиями проживания является задачей самих застройщиков.
-          p.
-            Сегодня StarCentre – это девелопер, у которого есть достаточно 
-            средств для реализации крупных проектов в столице  и не только. 
-      .facts__column
-        .text
-          p.
-            StarCentre - это градообразующая компания, которая за 12 лет работы реализовала 
-            на украинском рынке более 11 уникальных объектов. 
-          p.
-            Компания входит в тройку лидеров рынка, располагает финансами, возможностями, 
-            но главное – пониманием для планирования и развития города в перспективе.
-
-    .facts-group
-      .curve
-        include ../img/svg/optimized/curve.svg
-      .facts-group__inner
-        .fact.fact-1
-          h3.heading.
-            Мы <br> построили
-          .fact__number.
-              38 000 <sub>м<sup>2</sup></sub>
-          p.fact__text.
-            офисных и жилых площадей <br>
-            из них сдано больше половины
-
-        .fact.fact-2
-          h3.heading Планируем построить
-          .fact__number.
-              58 000 <sub>м<sup>2</sup></sub>
-          p.fact__text.
-            офисных и жилых площадей
-
-    .skyline
-      include ../img/svg/optimized/skyline.svg
-
-    .facts-group
-      .curve
-        include ../img/svg/optimized/curve.svg
-      .facts-group__inner
-        .fact.fact-1
-          h3.heading.
-            Мы <br> инвестировали
-          .fact__number.
-              $ 15 000 000
-          p.fact__text.
-            и мы будем вкладывать <br>
-            еще больше
-
-        .fact.fact-2
-          h3.heading.
-            Планируем <br> инвестировать
-          .fact__number.
-              $ 24 000 000
-          p.fact__text.
-            в разные виды недвижимости
-
-    .box
-      .box__bg
-      .box__inner
-        .table.men-table
-          .table__border
-            include ../img/svg/optimized/men-table.svg
-          table.men-table__table
-            tr.men-table__row1
-              td.men-table__cell
-                strong.heading.heading_small
-                  | С нами работают
-              td.men-table__cell
-                .amount
-                  span.amount__sign &gt;
-                  strong.amount__value 500
-                  span.amount__text людей
-              td.men-table__cell
-                strong.heading.heading_small
-                  | Планируем <br> привлечь
-            tr.men-table__row2
-              td.men-table__cell(colspan="2")
-                p.
-                  мы будем привлекать их еще, ведь мы <br>
-                  дорожим хорошими работниками
-              td.men-table__cell
-                .amount.amount_md
-                  span.amount__sign &gt;
-                  strong.amount__value 700
-                  span.amount__text людей
-
-        .table.partners-table
-          .table__border
-            include ../img/svg/optimized/partners-table.svg
-          table.partners-table__table
-            tr.partners-table__row1
-              td.partners-table__cell(rowspan="2")
-                strong.heading
-                  | Мы <br> нашли 
-              td.partners-table__cell
-                .amount.amount_lrg
-                  span.amount__sign &gt;
-                  strong.amount__value 100
-                  span.amount__text партнеров
-            tr.partners-table__row2
-              td.partners-table__cell
-                p с некоторыми мы работаем уже больше 8 лет
-    
-    .facts__heading
-      h3.heading
-        small.heading__small-text И все же
-        | мы открыты к новым предложениям
-
-  //END timeline
-
-  //BEGIN advantage
-  section.advantage
-    .head
-      .head__bg
-      .head__img
-        img(src="img/head1.png", alt="")
-      .head__text
-        | Пре
-        br
-        | иму
-        br
-        | щес
-        br
-        | тва
-      .deco.deco-1
-        +icon("target")
-      .deco.deco-2
-        | 11’ — 7”
-
-    ul.advantage__inner
-      li.advantage__column
-        h3.heading.heading_border.heading_large
-          span.heading__small-text 01
-          | Иностранный <br> капитал
-        p 50% Украина
-        p 50% Вьетнам
-      li.advantage__column
-        h3.heading.heading_border.heading_large
-          span.heading__small-text 02
-          | Скорость <br> работы
-        p.
-          Мы быстро принимаем решение, т.к структура компании 
-          легкая не нужно проходить через 5-10 этапов согласования
-      li.advantage__column
-        h3.heading.heading_border.heading_large
-          span.heading__small-text 03
-          | Качество <br> материалов
-        p.
-          Типо средняя цена, а качество выше среднего, т.е мы ищем оптимум
-
-  //END advantage
-
-  //BEGIN capability
-  section.capability
-    .head.head_capability
-      .head__text
-        | Воз
-        br
-        | мож
-        br
-        | нос
-        br
-        | ти
+    //BEGIN timeline
+    .facts
+      .facts__heading
+        h2.heading.heading_large Мы на рынке более 10 лет
+      
       .deco.deco_polygon.deco-1
         +icon("polygon")
         span W6
-  //END capability
-
-  //BEGIN partners
-  section.partners
-    .head.head_partners
-      .head__bg
-      .head__img
-        img(src="img/head2.png", alt="")
-      .head__text
-        | Па
-        br
-        | рт
-        br
-        | не
-        br
-        | ры
-      .deco.deco-1
+      .deco.deco-2
+        | 11’ — 7”
+      .deco.deco_polygon.deco-3
         +icon("target")
+      .deco.deco_circle.deco-4
+        | D2
 
-    .partners__inner
-      .deco.deco_circle D2
-      .partners__heading
+      - var n = 2004
+      ul#timeline.timeline
+        while n < 2017
+          li(class="timeline__year")= n++
+
+      .facts__text
+        .facts__column
+          .text
+            p.
+              StarCentre – компания, которая реализовала в Украине опыт 
+              развитых стран, при котором формирование современного города 
+              с комфортными условиями проживания является задачей самих застройщиков.
+            p.
+              Сегодня StarCentre – это девелопер, у которого есть достаточно 
+              средств для реализации крупных проектов в столице  и не только. 
+        .facts__column
+          .text
+            p.
+              StarCentre - это градообразующая компания, которая за 12 лет работы реализовала 
+              на украинском рынке более 11 уникальных объектов. 
+            p.
+              Компания входит в тройку лидеров рынка, располагает финансами, возможностями, 
+              но главное – пониманием для планирования и развития города в перспективе.
+
+      .facts-group
+        .curve
+          include ../img/svg/optimized/curve.svg
+        .facts-group__inner
+          .fact.fact-1
+            h3.heading.
+              Мы <br> построили
+            .fact__number.
+                38 000 <sub>м<sup>2</sup></sub>
+            p.fact__text.
+              офисных и жилых площадей <br>
+              из них сдано больше половины
+
+          .fact.fact-2
+            h3.heading Планируем построить
+            .fact__number.
+                58 000 <sub>м<sup>2</sup></sub>
+            p.fact__text.
+              офисных и жилых площадей
+
+      .skyline
+        include ../img/svg/optimized/skyline.svg
+
+      .facts-group
+        .curve
+          include ../img/svg/optimized/curve.svg
+        .facts-group__inner
+          .fact.fact-1
+            h3.heading.
+              Мы <br> инвестировали
+            .fact__number.
+                $ 15 000 000
+            p.fact__text.
+              и мы будем вкладывать <br>
+              еще больше
+
+          .fact.fact-2
+            h3.heading.
+              Планируем <br> инвестировать
+            .fact__number.
+                $ 24 000 000
+            p.fact__text.
+              в разные виды недвижимости
+
+      .box
+        .box__bg
+        .box__inner
+          .table.men-table
+            .table__border
+              include ../img/svg/svg-borders/optimized/men-table.svg
+            table.men-table__table
+              tr.men-table__row1
+                td.men-table__cell
+                  strong.heading.heading_small
+                    | С нами работают
+                td.men-table__cell
+                  .amount
+                    span.amount__sign &gt;
+                    strong.amount__value 500
+                    span.amount__text людей
+                td.men-table__cell
+                  strong.heading.heading_small
+                    | Планируем <br> привлечь
+              tr.men-table__row2
+                td.men-table__cell(colspan="2")
+                  p.
+                    мы будем привлекать их еще, ведь мы <br>
+                    дорожим хорошими работниками
+                td.men-table__cell
+                  .amount.amount_md
+                    span.amount__sign &gt;
+                    strong.amount__value 700
+                    span.amount__text людей
+
+          .table.partners-table
+            .table__border
+              include ../img/svg/svg-borders/optimized/partners-table.svg
+            table.partners-table__table
+              tr.partners-table__row1
+                td.partners-table__cell(rowspan="2")
+                  strong.heading
+                    | Мы <br> нашли 
+                td.partners-table__cell
+                  .amount.amount_lrg
+                    span.amount__sign &gt;
+                    strong.amount__value 100
+                    span.amount__text партнеров
+              tr.partners-table__row2
+                td.partners-table__cell
+                  p с некоторыми мы работаем уже больше 8 лет
+      
+      .facts__heading
         h3.heading
-          | Мы <br> верим
-        p
-          | что работая в команде можно сделать работу <br> быстрее и эффективнее. 
+          small.heading__small-text И все же
+          | мы открыты к новым предложениям
 
-      h3.heading.heading__center
-        | мы будем рады сотрудничеству если вы:
+    //END timeline
 
-      .tabs
-        header.tabs__head.table
-          .table__border
-            include ../img/svg/optimized/tabs-head.svg
-          a.tab-btn(href="#")
-            .tab-btn__hover
-              .tab-btn__hover-in
+    //BEGIN advantage
+    section.advantage
+      .head
+        .head__bg
+        .head__img
+          img(src="img/head1.png", alt="")
+        .head__text
+          | Пре
+          br
+          | иму
+          br
+          | щес
+          br
+          | тва
+        .deco.deco-1
+          +icon("target")
+        .deco.deco-2
+          | 11’ — 7”
+
+      ul.advantage__inner
+        li.advantage__column
+          h3.heading.heading_border.heading_large
+            span.heading__small-text 01
+            | Иностранный <br> капитал
+          p 50% Украина
+          p 50% Вьетнам
+        li.advantage__column
+          h3.heading.heading_border.heading_large
+            span.heading__small-text 02
+            | Скорость <br> работы
+          p.
+            Мы быстро принимаем решение, т.к структура компании 
+            легкая не нужно проходить через 5-10 этапов согласования
+        li.advantage__column
+          h3.heading.heading_border.heading_large
+            span.heading__small-text 03
+            | Качество <br> материалов
+          p.
+            Типо средняя цена, а качество выше среднего, т.е мы ищем оптимум
+
+    //END advantage
+
+    //BEGIN capability
+    section.capability
+      .head.head_capability
+        .head__text
+          | Воз
+          br
+          | мож
+          br
+          | нос
+          br
+          | ти
+        .deco.deco_polygon.deco-1
+          +icon("polygon")
+          span W6
+    //END capability
+
+    //BEGIN partners
+    section.partners
+      .head.head_partners
+        .head__bg
+        .head__img
+          img(src="img/head2.png", alt="")
+        .head__text
+          | Па
+          br
+          | рт
+          br
+          | не
+          br
+          | ры
+        .deco.deco-1
+          +icon("target")
+
+      .partners__inner
+        .deco.deco_circle D2
+        .partners__heading
+          h3.heading
+            | Мы <br> верим
+          p
+            | что работая в команде можно сделать работу <br> быстрее и эффективнее. 
+
+        h3.heading.heading__center
+          | мы будем рады сотрудничеству если вы:
+
+        .tabs
+          header.tabs__head.table
+            .table__border
+              include ../img/svg/svg-borders/optimized/tabs-head.svg
+            a.btn.btn_tab(href="#")
+              .btn__hover
+                .btn__hover-in
+                  strong.heading
+                    small.heading__small-text 01
+                    | Строительная <br>компания
+              .btn__front
                 strong.heading
                   small.heading__small-text 01
                   | Строительная <br>компания
-            .tab-btn__front
-              strong.heading
-                small.heading__small-text 01
-                | Строительная <br>компания
-          a.tab-btn(href="#")
-            .tab-btn__hover
-              .tab-btn__hover-in
+            a.btn.btn_tab(href="#")
+              .btn__hover
+                .btn__hover-in
+                  strong.heading
+                    small.heading__small-text 02
+                    | Оптовый <br> поставщик
+              .btn__front
                 strong.heading
                   small.heading__small-text 02
                   | Оптовый <br> поставщик
-            .tab-btn__front
-              strong.heading
-                small.heading__small-text 02
-                | Оптовый <br> поставщик
-          a.tab-btn(href="#")
-            .tab-btn__hover
-              .tab-btn__hover-in
+            a.btn.btn_tab(href="#")
+              .btn__hover
+                .btn__hover-in
+                  strong.heading
+                    small.heading__small-text 03
+                    | Инвестор
+              .btn__front
                 strong.heading
                   small.heading__small-text 03
                   | Инвестор
-            .tab-btn__front
-              strong.heading
-                small.heading__small-text 03
-                | Инвестор
-        .tabs__content
-          form.form
-            .form__row
+          .tabs__content
+            form.form.table(name="COMPANY")
+              .table__border
+                include ../img/svg/svg-borders/optimized/tabs-form.svg
               input.input(type="text", name="NAME", placeholder="Ваше имя")
-            .form__row
               input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
-            .form__row
               textarea.input(name="MESSAGE", placeholder="Сообщение")
-            .form__row
-              button.submit(type="button")
-                .submit__hover
-                  .submit__hover-in
+              button.btn.btn_submit(type="submit")
+                .btn__hover
+                  .btn__hover-in
                     | Отправить
                     +icon("arrow")
-                .submit__front
+                .btn__front
+                  | Отправить
+                  +icon("arrow")
+          .tabs__content
+            form.form.table(name="PROVIDER")
+              .table__border
+                include ../img/svg/svg-borders/optimized/tabs-form.svg
+              input.input(type="text", name="NAME", placeholder="Ваше имя")
+              input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+              textarea.input(name="MESSAGE", placeholder="Сообщение")
+              button.btn.btn_submit(type="submit")
+                .btn__hover
+                  .btn__hover-in
+                    | Отправить
+                    +icon("arrow")
+                .btn__front
+                  | Отправить
+                  +icon("arrow")
+          .tabs__content
+            form.form.table(name="INVESTOR")
+              .table__border
+                include ../img/svg/svg-borders/optimized/tabs-form.svg
+              input.input(type="text", name="NAME", placeholder="Ваше имя")
+              input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+              textarea.input(name="MESSAGE", placeholder="Сообщение")
+              button.btn.btn_submit(type="submit")
+                .btn__hover
+                  .btn__hover-in
+                    | Отправить
+                    +icon("arrow")
+                .btn__front
                   | Отправить
                   +icon("arrow")
 
-        footer.tabs__footer
-          .tabs__footer-cell
-            p Вы строите быстро и ответственно?
-          .tabs__footer-cell
-            p У вас качественные материалы <br> и отличный сервис?
-          .tabs__footer-cell
-            p Хотите стабильных и <br> больших доходов?
+          footer.tabs__footer
+            .tabs__footer-cell
+              p Вы строите быстро и ответственно?
+            .tabs__footer-cell
+              p У вас качественные материалы <br> и отличный сервис?
+            .tabs__footer-cell
+              p Хотите стабильных и <br> больших доходов?
 
-  //END partners
+    //END partners
 
-  //BEGIN contacts
-  section.contacts
-    .head.head_contacts
-      .head__bg
-      .head__img
-        img(src="img/head3.png", alt="")
-      .head__text
-        | Кон
-        br
-        | так
-        br
-        | ты
-      .deco.deco-1
-        +icon("target")
-      .deco.deco-2
-        | 31’ — 5”
+    //BEGIN contacts
+    section.contacts
+      .head.head_contacts
+        .head__bg
+        .head__img
+          img(src="img/head3.png", alt="")
+        .head__text
+          | Кон
+          br
+          | так
+          br
+          | ты
+        .deco.deco-1
+          +icon("target")
+        .deco.deco-2
+          | 31’ — 5”
 
-    .contacts__inner
+      .contacts__inner
+        .contacts-table.table
+          .table__border
+            include ../img/svg/svg-borders/optimized/contacts-table.svg
+          table
+            tr.contacts-table__row1
+              td.contacts-table__cell
+                .contact-item
+                  small.contact-item__label Телефон
+                  a.contact-item__phone(href="tel:+380442204555") +380 (44) 220 45 55
+              td.contacts-table__cell
+                strong.heading Остались <br> вопросы?
+            tr.contacts-table__row1
+              td.contacts-table__cell
+                .contact-item
+                  small.contact-item__label e-mail
+                  a(href="mailto:info@starcentre.com") info@starcentre.com
+              td.contacts-table__cell(rowspan="2")
+                form.form(name="QUESTION")
+                  input.input(type="text", name="NAME", placeholder="Ваше имя")
+                  input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+                  textarea.input(name="MESSAGE", placeholder="Сообщение")
+                  button.btn.btn_submit(type="submit")
+                    .btn__hover
+                      .btn__hover-in
+                        | Отправить
+                        +icon("arrow")
+                    .btn__front
+                      | Отправить
+                      +icon("arrow")
+            tr.contacts-table__row2
+              td.contacts-table__cell
+                .contact-item
+                  small.contact-item__label адрес
+                  | Киев 
+                  br
+                  | Краснозвездный 
+                  br
+                  | проспект 42
+    //END contacts
 
-  //END contacts
+  //BEGIN footer
+  footer#footer
+    
+    //BEGIN map
+    #map
+    //END map
+    
+    .footer
+      p.footer__copy
+        | © StarCentre, 2015
+      p.footer__link
+        | Design by <a href="#">TRILO</a>
+  //END footer

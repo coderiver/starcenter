@@ -1,10 +1,13 @@
 require('jquery');
 require('modernizr');
+var ScrollMagic = require('scrollmagic');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
 var Category = require('./modules/_category.js');
+var Tabs = require('./modules/_tabs.js');
 var router = require('./modules/_routing.js');
+var TWEEN = require('tween.js');
 
 
 var app, catalog, morph, slider;
@@ -19,7 +22,9 @@ $(document).ready(function() {
         slider  : new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator'),
         morph   : new Morph('#morph'),
         catalog : new Catalog('.catalog'),
-        category: new Category('.catalog-category', '.catalog-category__item')
+        category: new Category('.catalog-category', '.catalog-category__item'),
+        tabs    : new Tabs('.tabs', '.btn_tab', '.tabs__content'),
+        scrollmagic: {}
     };
 
     app.openCatalog = function(state) {
@@ -36,9 +41,30 @@ $(document).ready(function() {
         app.category.disable();
     };
 
+
+    // init
     app.slider.init();
     app.morph.init();
+    app.tabs.init();
 
+    app.scrollmagic.controller = new ScrollMagic.Controller();
+
+    app.scrollmagic.timeline = new ScrollMagic.Scene({
+        duration: 554,
+        triggerElement: '#timeline',
+        triggerHook: 'onCenter',
+        reverse: true,
+        loglevel: 1 // 0..3
+    });
+
+    app.scrollmagic.timeline
+        .setPin('#timeline')
+        // .on('progress', function(e) {
+        //     console.log(e);
+        // })
+        .addTo(app.scrollmagic.controller);
+
+    console.log(app);
 
     // console.log(app.morph, app.category);
 
@@ -95,8 +121,14 @@ $(document).ready(function() {
     $('.partners-table').on('click', function() {
         $(this).find('.table__border').toggleClass('is-animate');
     });
+    $('.contacts-table').on('click', function() {
+        $(this).find('.table__border').toggleClass('is-animate');
+    });
     $('.skyline').on('click', function() {
         $(this).toggleClass('is-animate');
     });
 
 });
+
+
+module.exports = app;
