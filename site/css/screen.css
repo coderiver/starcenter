@@ -54,15 +54,13 @@ table { border-spacing: 0; border-collapse: collapse; width: 100%; }
 body { font-size: 16px; line-height: 1.4; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; color: #333; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
 body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; position: relative; }
-@media only screen and (max-width: 1200px) { body { overflow-x: auto; overflow-y: hidden; } }
-@media only screen and (max-height: 680px) { body { overflow-x: hidden; overflow-y: auto; } }
 
 .center-wrap { max-width: 1368px; margin: 0 auto; position: relative; z-index: 0; overflow: hidden; height: 100%; }
 
-#outer { min-width: 1200px; min-height: 680px; position: absolute; top: 0; left: 0; right: 0; height: 100%; margin: auto; z-index: 1; overflow: hidden; -webkit-overflow-scrolling: touch; }
+#outer { position: absolute; top: 0; left: 0; right: 0; height: 100%; z-index: 1; overflow: hidden; overflow-x: hidden; overflow-y: scroll; right: -17px; }
+.mac-os #outer { right: -15px; }
 
-#inner { position: absolute; top: 0; left: 0; right: -16px; bottom: 0; overflow-x: hidden; overflow-y: scroll; right: -17px; }
-.mac-os #inner { right: -15px; }
+#inner { position: relative; z-index: 2; margin-bottom: 510px; background: #FFF; }
 
 .l-center { width: 1368px; margin: auto; }
 
@@ -73,9 +71,6 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 #nav { position: absolute; z-index: 100; top: 0; right: 0; bottom: 0; }
 
 #morph { position: absolute; z-index: 0; top: 15px; left: 50%; margin-left: -684px; width: 1368px; height: 680px; pointer-events: none; }
-
-#footer { height: 510px; }
-#footer.is-fixed { position: fixed; z-index: 0; bottom: 0; left: 0; right: 0; }
 
 .icon { display: inline-block; height: 1em; width: 1em; fill: #333; stroke: inherit; font-size: 20px; width: 1em; }
 
@@ -118,8 +113,12 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 
 .header__lang { display: inline-block; text-transform: uppercase; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.25em; background: none; color: inherit; }
 
-.footer { height: 60px; padding: 15px 50px 15px 30px; box-sizing: border-box; line-height: 30px; font-family: "HelveticaNeueCyr-Roman", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.05em; background: #FFF; color: #CCC; *zoom: 1; }
-.footer:after { content: " "; display: table; clear: both; }
+.footer { position: fixed; z-index: 1; bottom: 0; left: 0; right: 0; height: 510px; box-sizing: border-box; font-family: "HelveticaNeueCyr-Roman", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.05em; background: #FFF; color: #CCC; overflow: hidden; }
+
+.footer__map { position: absolute; z-index: 0; bottom: 60px; left: 0; right: 0; height: 450px; background: #ccc; }
+
+.footer__bottom { position: absolute; z-index: 1; bottom: 0; left: 0; right: 0; height: 60px; padding: 15px 50px 15px 30px; line-height: 30px; box-sizing: border-box; *zoom: 1; }
+.footer__bottom:after { content: " "; display: table; clear: both; }
 
 .footer__copy { float: left; text-transform: uppercase; }
 
@@ -129,7 +128,7 @@ body { min-width: 1200px; min-height: 600px; height: 100%; overflow: hidden; pos
 
 .logo { display: inline-block; vertical-align: middle; color: inherit; text-decoration: none; fill: #333; font: 0/0 a; text-shadow: none; color: transparent; }
 
-#map { height: 450px; background: #EFEFEF; }
+#map { width: 100%; height: 100%; overflow: hidden; }
 
 .nav { width: 33px; min-height: 680px; }
 
@@ -414,17 +413,19 @@ textarea.input { height: 214px; resize: none; }
 .partners-table__cell { vertical-align: middle; padding-left: 70px; box-sizing: border-box; }
 .partners-table__cell:first-child { width: 202px; }
 
-.head { position: relative; height: 423px; margin-bottom: 90px; }
+.head { position: relative; margin-bottom: 90px; height: 423px; overflow: hidden; }
 .head .deco { position: absolute; z-index: 3; }
 .head .deco-1 { top: 230px; right: 100px; }
 .head .deco-2 { top: -190px; left: 150px; }
 
-.head__bg { position: absolute; z-index: 0; top: 0; bottom: 0; left: 0; right: 0; background-image: -webkit-linear-gradient(bottom, #CDF0E9 0%, #42BAAD 100%); background-image: linear-gradient(to top, #CDF0E9 0%, #42BAAD 100%); }
+.head__bg { position: absolute; z-index: 0; bottom: 0; left: 0; right: 0; height: 423px; background-image: -webkit-linear-gradient(bottom, #CDF0E9 0%, #42BAAD 100%); background-image: linear-gradient(to top, #CDF0E9 0%, #42BAAD 100%); }
 
 .head__img { position: absolute; z-index: 1; bottom: 0; left: 120px; }
 .head__img img { display: block; }
 
-.head__text { position: absolute; z-index: 2; top: 73px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; }
+.head__text { position: absolute; z-index: 2; bottom: 73px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; }
+
+.head_advantage { height: 541px; margin-top: 118px; }
 
 .head_capability .deco-1 { top: 180px; right: 458px; }
 
@@ -432,11 +433,12 @@ textarea.input { height: 214px; resize: none; }
 .head_partners .head__bg { background-image: -webkit-linear-gradient(bottom, #EDE4F6 0%, #4297BA 100%); background-image: linear-gradient(to top, #EDE4F6 0%, #4297BA 100%); }
 .head_partners .head__img { left: auto; right: 0; }
 
+.head_contacts { height: 500px; margin-top: 77px; }
 .head_contacts .deco-1 { top: 54px; right: 85px; }
 .head_contacts .deco-2 { top: -120px; left: 75px; }
 .head_contacts .head__bg { background-image: -webkit-linear-gradient(bottom, #FFDCC5 0%, #25A1B0 100%); background-image: linear-gradient(to top, #FFDCC5 0%, #25A1B0 100%); }
 .head_contacts .head__img { left: 140px; }
-.head_contacts .head__text { top: 108px; }
+.head_contacts .head__text { bottom: 108px; }
 
 .advantage__inner { max-width: 900px; margin: auto; padding-left: 150px; box-sizing: border-box; *zoom: 1; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 14px; color: #777; line-height: 1.57; }
 .advantage__inner:after { content: " "; display: table; clear: both; }

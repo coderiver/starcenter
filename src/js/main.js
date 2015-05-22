@@ -1,16 +1,21 @@
 // window.jQuery = window.$ = require('jquery');
 require('jquery');
 require('modernizr');
-require('velocity-animate');
+// require('velocity-animate');
+require('../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 var ScrollMagic = require('scrollmagic');
-require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.velocity.js');
+// var skrollr = require('skrollr').init();
+require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
+// require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/jquery.ScrollMagic.js');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var router = require('./modules/_routing.js');
-var TWEEN = require('tween.js');
+// var TWEEN = require('tween.js');
 
 
 var app, catalog, morph, slider;
@@ -101,7 +106,6 @@ $(document).ready(function() {
     app.scrollmagic.box = {
         el: $('.box')[0],
         duration: 940,
-        offset: 160,
         scene: null
     };
     $([ app.scrollmagic.factsText,
@@ -137,7 +141,7 @@ $(document).ready(function() {
     })
         // .setPin(app.scrollmagic.boxInner.container[0])
         .on('enter', function(e) {
-            console.log(e);
+            // console.log(e);
             var container = app.scrollmagic.boxInner.container;
             container.css({
                 top: container.offset().top,
@@ -146,7 +150,7 @@ $(document).ready(function() {
             });
         })
         .on('leave', function(e) {
-            console.log(e);
+            // console.log(e);
             var container = app.scrollmagic.boxInner.container;
             if ( e.progress === 0 ) {
                 container.css({
@@ -164,6 +168,45 @@ $(document).ready(function() {
             }
         })
         .addTo(app.scrollmagic.controller);
+
+    //##### scenes for all heads
+    app.scrollmagic.head = {
+        elements: $('.head:not(.head_capability)'),
+        // tween: new TimelieneLite(),
+        scenes: {}
+    };
+    app.scrollmagic.head.elements.each(function(index, el) {
+        var tween = new TimelineLite().add([
+            TweenLite.to($(el).find('.head__img'), 0.5, {y: '+=30px'}),
+            TweenLite.to($(el).find('.head__text'), 0.5, {y: '+=60px'}),
+            TweenLite.to($(el).find('.deco'), 0.5, {y: '+=50px'}),
+            ]);
+        app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
+            duration: $(window).height(),
+            // offset: -200,
+            triggerElement: el,
+            triggerHook: 'onCenter',
+            loglevel: 1
+        })
+            .setTween(tween)
+            .addTo(app.scrollmagic.controller);
+    });
+
+    //##### scene for footer
+    // app.scrollmagic.footer = {
+    //     el: $('.footer')[0],
+    //     tween: TweenLite.to($('.footer'), 0.5, {height: '510px'}),
+    //     scene: null
+    // };
+    // app.scrollmagic.footer.scene = new ScrollMagic.Scene({
+    //     duration: 450,
+    //     offset: 50,
+    //     triggerElement: app.scrollmagic.footer.el,
+    //     triggerHook: 'onEnter',
+    //     loglevel: 1
+    // })
+    //     .setTween(app.scrollmagic.footer.tween)
+    //     .addTo(app.scrollmagic.controller);
 
 
     console.log(app);

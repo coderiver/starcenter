@@ -6,12 +6,12 @@ body
   overflow: hidden
   position: relative
   // +scroll
-  +r(1200)
-    overflow-x: auto
-    overflow-y: hidden
-  +rh(680)
-    overflow-x: hidden
-    overflow-y: auto
+  // +r(1200)
+  //   overflow-x: auto
+  //   overflow-y: hidden
+  // +rh(680)
+  //   overflow-x: hidden
+  //   overflow-y: auto
 
 .center-wrap
   max-width: 1368px
@@ -22,26 +22,29 @@ body
   height: 100%
 
 #outer
-  min-width: $content-width
-  min-height: $content-height
+  // min-width: $content-width
+  // min-height: $content-height
   position: absolute
   top: 0
   left: 0
   right: 0
   height: 100%
-  margin: auto
   z-index: 1
   overflow: hidden
-  +wos
+  +scroll
 
 #inner
-  position: absolute
-  // padding-top: $content-height
-  top: 0
-  left: 0
-  right: -16px
-  bottom: 0
-  +scroll
+  position: relative
+  z-index: 2
+  margin-bottom: 510px
+  background: #FFF
+  // position: absolute
+  // // padding-top: $content-height
+  // top: 0
+  // left: 0
+  // right: -16px
+  // bottom: 0
+  // +scroll
 
 .l-center
   width: 1368px
@@ -78,12 +81,3 @@ body
   width: 1368px
   height: 680px
   pointer-events: none
-
-#footer
-  height: 510px
-  &.is-fixed
-    position: fixed
-    z-index: 0
-    bottom: 0
-    left: 0
-    right: 0
