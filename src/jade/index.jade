@@ -94,7 +94,7 @@ block content
 
     //BEGIN timeline
     .facts
-      #trigger1.facts__heading
+      .facts__heading
         h2.heading.heading_large Мы на рынке более 10 лет
       
       .deco.deco_polygon.deco-1
@@ -112,7 +112,6 @@ block content
         while n < 2017
           li(class="timeline__year")= n++
 
-      #trigger2
       .facts__text
         .facts__column
           .text
@@ -179,49 +178,50 @@ block content
       .box
         .box__bg
         .box__inner
-          .table.men-table
-            .table__border
-              include ../img/svg/svg-borders/optimized/men-table.svg
-            table.men-table__table
-              tr.men-table__row1
-                td.men-table__cell
-                  strong.heading.heading_small
-                    | С нами работают
-                td.men-table__cell
-                  .amount
-                    span.amount__sign &gt;
-                    strong.amount__value 500
-                    span.amount__text людей
-                td.men-table__cell
-                  strong.heading.heading_small
-                    | Планируем <br> привлечь
-              tr.men-table__row2
-                td.men-table__cell(colspan="2")
-                  p.
-                    мы будем привлекать их еще, ведь мы <br>
-                    дорожим хорошими работниками
-                td.men-table__cell
-                  .amount.amount_md
-                    span.amount__sign &gt;
-                    strong.amount__value 700
-                    span.amount__text людей
+          .box__table
+            .table.men-table
+              .table__border
+                include ../img/svg/svg-borders/optimized/men-table.svg
+              table.men-table__table
+                tr.men-table__row1
+                  td.men-table__cell
+                    strong.heading.heading_small
+                      | С нами работают
+                  td.men-table__cell
+                    .amount
+                      span.amount__sign &gt;
+                      strong.amount__value 500
+                      span.amount__text людей
+                  td.men-table__cell
+                    strong.heading.heading_small
+                      | Планируем <br> привлечь
+                tr.men-table__row2
+                  td.men-table__cell(colspan="2")
+                    p.
+                      мы будем привлекать их еще, ведь мы <br>
+                      дорожим хорошими работниками
+                  td.men-table__cell
+                    .amount.amount_md
+                      span.amount__sign &gt;
+                      strong.amount__value 700
+                      span.amount__text людей
 
-          .table.partners-table
-            .table__border
-              include ../img/svg/svg-borders/optimized/partners-table.svg
-            table.partners-table__table
-              tr.partners-table__row1
-                td.partners-table__cell(rowspan="2")
-                  strong.heading
-                    | Мы <br> нашли 
-                td.partners-table__cell
-                  .amount.amount_lrg
-                    span.amount__sign &gt;
-                    strong.amount__value 100
-                    span.amount__text партнеров
-              tr.partners-table__row2
-                td.partners-table__cell
-                  p с некоторыми мы работаем уже больше 8 лет
+            .table.partners-table
+              .table__border
+                include ../img/svg/svg-borders/optimized/partners-table.svg
+              table.partners-table__table
+                tr.partners-table__row1
+                  td.partners-table__cell(rowspan="2")
+                    strong.heading
+                      | Мы <br> нашли 
+                  td.partners-table__cell
+                    .amount.amount_lrg
+                      span.amount__sign &gt;
+                      strong.amount__value 100
+                      span.amount__text партнеров
+                tr.partners-table__row2
+                  td.partners-table__cell
+                    p с некоторыми мы работаем уже больше 8 лет
       
       .facts__heading
         h3.heading

@@ -610,7 +610,7 @@ textarea.input
   left: 0
   right: 0
   bottom: 0
-  +scroll
+  // +scroll
 
 .catalog-category
   position: absolute
@@ -836,6 +836,12 @@ textarea.input
   right: 0
   bottom: 0
   background-image: url('../img/svg/man.svg')
+  transition: all 0.5s ease
+  transform: scale(0.5)
+  opacity: 0
+  .box.is-animate &
+    opacity: 1
+    transform: none
 
 .box__inner
   position: relative
@@ -844,6 +850,17 @@ textarea.input
   vertical-align: middle
   white-space: normal
   font-size: 16px
+  width: 720px
+  height: 190px
+
+.box__table
+  position: relative
+  pointer-events: none
+  // transition: top 0.2s linear
+  .table
+    position: absolute
+    top: 0
+    left: 0
 
 
 .curve
@@ -882,7 +899,7 @@ textarea.input
 .fact-2
   top: 0
   right: 120px
-  transform: translate(-230px, 0)
+  transform: translate3d(-230px, 0, 0)
   transition: transform 2s ease
 
 .fact__number
@@ -904,7 +921,7 @@ textarea.input
   width: 2000px
   background: $text
   // transform: translateX(-470px)
-  transition: all 0.1s linear
+  // transition: all 0.1s linear
 
 .timeline__year
   position: absolute
@@ -1009,6 +1026,7 @@ textarea.input
 
 
 .men-table
+  z-index: 1
   width: 720px
 
 .men-table__border
@@ -1050,10 +1068,8 @@ textarea.input
 
 
 .partners-table
+  z-index: 0
   width: 720px
-
-// .partners-table__table
-//   width: 100%
 
 .partners-table__row1
   .partners-table__cell

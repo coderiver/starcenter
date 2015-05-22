@@ -56,56 +56,115 @@ $(document).ready(function() {
     //##### timeline scene
     app.scrollmagic.timeline = {
         el: $('#timeline')[0],
-        jqel: $('#timeline'),
-        trigger: $('#trigger1')[0],
+        // jqel: $('#timeline'),
+        // trigger: $('#trigger1')[0],
         scene: null
     };
     app.scrollmagic.timeline.scene = new ScrollMagic.Scene({
         duration: 554,
-        triggerElement: app.scrollmagic.timeline.trigger,
+        triggerElement: app.scrollmagic.timeline.el,
         triggerHook: 'onCenter',
         loglevel: 1
     })
+        .setPin(app.scrollmagic.timeline.el)
         // .setVelocity(app.scrollmagic.timeline.el, {top: '+=554'}, {duration: 1000})
-        .on('progress', function(e) {
-           console.log(e);
-           console.log(app.scrollmagic.timeline.el);
-           app.scrollmagic.timeline.el.style.top = 450 + Math.ceil(554 * e.progress) + 'px';
-           app.scrollmagic.timeline.el.style.marginLeft = -470 - Math.ceil(1200 * e.progress) + 'px';
-        })
+        // .on('progress', function(e) {
+        //    console.log(e);
+        //    console.log(app.scrollmagic.timeline.el);
+        //    app.scrollmagic.timeline.el.style.top = 450 + Math.ceil(554 * e.progress) + 'px';
+        //    app.scrollmagic.timeline.el.style.marginLeft = -470 - Math.ceil(1200 * e.progress) + 'px';
+        // })
         .addTo(app.scrollmagic.controller);
 
 
     //##### only class toggle scene
     app.scrollmagic.factsText = {
         el: $('.facts__text')[0],
+        offset: -200,
         scene: null
     };
     app.scrollmagic.factsGroup1 = {
         el: $('.facts-group')[0],
+        offset: -200,
         scene: null
     };
     app.scrollmagic.factsGroup2 = {
         el: $('.facts-group')[1],
+        offset: -200,
         scene: null
     };
     app.scrollmagic.tabs = {
         el: $('.tabs')[0],
+        offset: -200,
+        scene: null
+    };
+    app.scrollmagic.box = {
+        el: $('.box')[0],
+        duration: 940,
+        offset: 160,
         scene: null
     };
     $([ app.scrollmagic.factsText,
         app.scrollmagic.factsGroup1,
         app.scrollmagic.factsGroup2,
-        app.scrollmagic.tabs
+        app.scrollmagic.tabs,
+        app.scrollmagic.box
         ]).each(function(index, item) {
             item.scene = new ScrollMagic.Scene({
-                triggerElement: item.el,
-                triggerHook: 'onCenter',
+                duration: item.duration || 0,
+                offset: item.offset || 0,
+                triggerElement: item.trigger || item.el,
+                triggerHook: item.triggerHook || 'onCenter',
                 loglevel: 1
             })
                 .setClassToggle(item.el, 'is-animate')
                 .addTo(app.scrollmagic.controller);
     });
+
+    //##### scene for box with men on background
+    app.scrollmagic.boxInner = {
+        el: $('.box__inner')[0],
+        container: $('.box__table'),
+        table1: $('.box .men-table'),
+        table2: $('.box .partners-table'),
+        scene: null
+    };
+    app.scrollmagic.boxInner.scene = new ScrollMagic.Scene({
+        duration: 500,
+        triggerElement: app.scrollmagic.boxInner.el,
+        triggerHook: 'onCenter',
+        loglevel: 1
+    })
+        // .setPin(app.scrollmagic.boxInner.container[0])
+        .on('enter', function(e) {
+            console.log(e);
+            var container = app.scrollmagic.boxInner.container;
+            container.css({
+                top: container.offset().top,
+                left: container.offset().left,
+                position: 'fixed'
+            });
+        })
+        .on('leave', function(e) {
+            console.log(e);
+            var container = app.scrollmagic.boxInner.container;
+            if ( e.progress === 0 ) {
+                container.css({
+                    position: '',
+                    top: '',
+                    left: ''
+                });
+            }
+            if ( e.progress === 1 ) {
+                container.css({
+                    position: '',
+                    top: Math.ceil(500 * e.progress),
+                    left: ''
+                });
+            }
+        })
+        .addTo(app.scrollmagic.controller);
+
 
     console.log(app);
     console.log(app.scrollmagic);
