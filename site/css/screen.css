@@ -318,11 +318,14 @@ textarea.input { height: 214px; resize: none; }
 .facts__text { max-width: 780px; margin: 200px auto 450px; *zoom: 1; }
 .facts__text:after { content: " "; display: table; clear: both; }
 
-.facts__column { float: left; width: 50%; box-sizing: border-box; }
+.facts__column { position: relative; float: left; width: 50%; box-sizing: border-box; -webkit-transform: translate(0, 50px); -ms-transform: translate(0, 50px); transform: translate(0, 50px); opacity: 0; -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease; transition: transform 0.5s ease, opacity 0.5s ease; }
 .facts__column:first-child { float: left; padding-right: 30px; }
-.facts__column:last-child { float: right; padding-left: 30px; }
+.facts__column:last-child { float: right; padding-left: 30px; -webkit-transition-delay: 0.1s; transition-delay: 0.1s; }
+.facts__text.is-animate .facts__column { opacity: 1; -webkit-transform: none; -ms-transform: none; transform: none; }
 
 .facts-group { height: 270px; position: relative; margin: 165px 0 65px; }
+.facts-group.is-animate .fact-2 { -webkit-transform: none; -ms-transform: none; transform: none; }
+.facts-group.is-animate .curve { stroke-dashoffset: 0; }
 
 .facts-group__inner { position: relative; z-index: 1; max-width: 1000px; height: 100%; margin: auto; }
 
@@ -333,8 +336,8 @@ textarea.input { height: 214px; resize: none; }
 
 .box__inner { position: relative; z-index: 1; display: inline-block; vertical-align: middle; white-space: normal; font-size: 16px; }
 
-.curve { position: absolute; z-index: 0; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
-.curve > svg { display: block; }
+.curve { position: absolute; z-index: 0; top: 50%; left: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); stroke-dasharray: 1384px; stroke-dashoffset: -1384px; }
+.curve > svg { display: block; -webkit-transition: stroke-dashoffset 2s ease; transition: stroke-dashoffset 2s ease; }
 
 .skyline > svg { display: block; -webkit-transition: stroke-dashoffset 2s ease; transition: stroke-dashoffset 2s ease; }
 .skyline.is-animate { stroke-dashoffset: 0; }
@@ -343,11 +346,11 @@ textarea.input { height: 214px; resize: none; }
 
 .fact-1 { top: 90px; left: 0; }
 
-.fact-2 { top: 0; right: 120px; }
+.fact-2 { top: 0; right: 120px; -webkit-transform: translate(-230px, 0); -ms-transform: translate(-230px, 0); transform: translate(-230px, 0); -webkit-transition: -webkit-transform 2s ease; transition: transform 2s ease; }
 
 .fact__number { display: block; margin: 14px 0 14px -40px; padding: 10px 10px 10px 40px; border: 1px solid; box-sizing: border-box; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 30px; color: #333; background: #FFF; }
 
-.timeline { position: absolute; top: 450px; left: 50%; height: 1px; width: 2000px; background: #333; -webkit-transform: translateX(-470px); -ms-transform: translateX(-470px); transform: translateX(-470px); }
+.timeline { position: absolute; top: 450px; left: 50%; height: 1px; width: 2000px; background: #333; -webkit-transition: all 0.1s linear; transition: all 0.1s linear; }
 
 .timeline__year { position: absolute; bottom: 0; width: 35px; height: 30px; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.15em; }
 .timeline__year:before { content: ""; position: absolute; bottom: -4.5px; left: 0; width: 5px; height: 10px; background: #333; }
@@ -456,7 +459,10 @@ textarea.input { height: 214px; resize: none; }
 .tabs__footer { margin-top: 35px; *zoom: 1; }
 .tabs__footer:after { content: " "; display: table; clear: both; }
 
-.tabs__footer-cell { float: left; width: 33.333%; box-sizing: border-box; padding: 0 0 0 70px; }
+.tabs__footer-cell { float: left; width: 33.333%; box-sizing: border-box; padding: 0 0 0 70px; -webkit-transform: translate(0, 50px); -ms-transform: translate(0, 50px); transform: translate(0, 50px); opacity: 0; -webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease; transition: transform 0.5s ease, opacity 0.5s ease; }
+.tabs.is-animate .tabs__footer-cell { opacity: 1; -webkit-transform: none; -ms-transform: none; transform: none; }
+.tabs__footer-cell:nth-child(2) { -webkit-transition-delay: 0.1s; transition-delay: 0.1s; }
+.tabs__footer-cell:nth-child(3) { -webkit-transition-delay: 0.2s; transition-delay: 0.2s; }
 
 .btn_tab { float: left; width: 360px; height: 120px; }
 .btn_tab .btn__hover-in { width: 360px; }

@@ -788,6 +788,7 @@ textarea.input
   +clr
 
 .facts__column
+  position: relative
   float: left
   width: 50%
   box-sizing: border-box
@@ -797,11 +798,18 @@ textarea.input
   &:last-child
     float: right
     padding-left: 30px
+    transition-delay: 0.1s
+  +slide-fade(facts__text)
 
 .facts-group
   height: 270px
   position: relative
   margin: 165px 0 65px
+  &.is-animate
+    .fact-2
+      transform: none
+    .curve
+      stroke-dashoffset: 0
 
 .facts-group__inner
   position: relative
@@ -844,8 +852,11 @@ textarea.input
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
+  stroke-dasharray: 1384px
+  stroke-dashoffset: -1384px
   > svg
     display: block
+    transition: stroke-dashoffset 2s ease
 
 .skyline
   // stroke-dasharray: 4000px
@@ -871,6 +882,8 @@ textarea.input
 .fact-2
   top: 0
   right: 120px
+  transform: translate(-230px, 0)
+  transition: transform 2s ease
 
 .fact__number
   display: block
@@ -890,7 +903,8 @@ textarea.input
   height: 1px
   width: 2000px
   background: $text
-  transform: translateX(-470px)
+  // transform: translateX(-470px)
+  transition: all 0.1s linear
 
 .timeline__year
   position: absolute
@@ -1226,6 +1240,11 @@ textarea.input
   width: 33.333%
   box-sizing: border-box
   padding: 0 0 0 70px
+  +slide-fade(tabs)
+  &:nth-child(2)
+    transition-delay: 0.1s
+  &:nth-child(3)
+    transition-delay: 0.2s
 
 .btn_tab
   float: left

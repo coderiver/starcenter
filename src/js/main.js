@@ -1,6 +1,9 @@
+// window.jQuery = window.$ = require('jquery');
 require('jquery');
 require('modernizr');
+require('velocity-animate');
 var ScrollMagic = require('scrollmagic');
+require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.velocity.js');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
@@ -49,22 +52,63 @@ $(document).ready(function() {
 
     app.scrollmagic.controller = new ScrollMagic.Controller();
 
-    app.scrollmagic.timeline = new ScrollMagic.Scene({
-        duration: 554,
-        triggerElement: '#timeline',
-        triggerHook: 'onCenter',
-        reverse: true,
-        loglevel: 1 // 0..3
-    });
 
-    app.scrollmagic.timeline
-        .setPin('#timeline')
-        // .on('progress', function(e) {
-        //     console.log(e);
-        // })
+    //##### timeline scene
+    app.scrollmagic.timeline = {
+        el: $('#timeline')[0],
+        jqel: $('#timeline'),
+        trigger: $('#trigger1')[0],
+        scene: null
+    };
+    app.scrollmagic.timeline.scene = new ScrollMagic.Scene({
+        duration: 554,
+        triggerElement: app.scrollmagic.timeline.trigger,
+        triggerHook: 'onCenter',
+        loglevel: 1
+    })
+        // .setVelocity(app.scrollmagic.timeline.el, {top: '+=554'}, {duration: 1000})
+        .on('progress', function(e) {
+           console.log(e);
+           console.log(app.scrollmagic.timeline.el);
+           app.scrollmagic.timeline.el.style.top = 450 + Math.ceil(554 * e.progress) + 'px';
+           app.scrollmagic.timeline.el.style.marginLeft = -470 - Math.ceil(1200 * e.progress) + 'px';
+        })
         .addTo(app.scrollmagic.controller);
 
+
+    //##### only class toggle scene
+    app.scrollmagic.factsText = {
+        el: $('.facts__text')[0],
+        scene: null
+    };
+    app.scrollmagic.factsGroup1 = {
+        el: $('.facts-group')[0],
+        scene: null
+    };
+    app.scrollmagic.factsGroup2 = {
+        el: $('.facts-group')[1],
+        scene: null
+    };
+    app.scrollmagic.tabs = {
+        el: $('.tabs')[0],
+        scene: null
+    };
+    $([ app.scrollmagic.factsText,
+        app.scrollmagic.factsGroup1,
+        app.scrollmagic.factsGroup2,
+        app.scrollmagic.tabs
+        ]).each(function(index, item) {
+            item.scene = new ScrollMagic.Scene({
+                triggerElement: item.el,
+                triggerHook: 'onCenter',
+                loglevel: 1
+            })
+                .setClassToggle(item.el, 'is-animate')
+                .addTo(app.scrollmagic.controller);
+    });
+
     console.log(app);
+    console.log(app.scrollmagic);
 
     // console.log(app.morph, app.category);
 

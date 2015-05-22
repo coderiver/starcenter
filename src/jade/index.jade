@@ -94,7 +94,7 @@ block content
 
     //BEGIN timeline
     .facts
-      .facts__heading
+      #trigger1.facts__heading
         h2.heading.heading_large Мы на рынке более 10 лет
       
       .deco.deco_polygon.deco-1
@@ -108,10 +108,11 @@ block content
         | D2
 
       - var n = 2004
-      ul#timeline.timeline
+      ul#timeline.timeline(style="top: 450px, margin-left:-470px")
         while n < 2017
           li(class="timeline__year")= n++
 
+      #trigger2
       .facts__text
         .facts__column
           .text
@@ -131,7 +132,7 @@ block content
               Компания входит в тройку лидеров рынка, располагает финансами, возможностями, 
               но главное – пониманием для планирования и развития города в перспективе.
 
-      .facts-group
+      #group1.facts-group
         .curve
           include ../img/svg/optimized/curve.svg
         .facts-group__inner
@@ -154,7 +155,7 @@ block content
       .skyline
         include ../img/svg/optimized/skyline.svg
 
-      .facts-group
+      #group2.facts-group
         .curve
           include ../img/svg/optimized/curve.svg
         .facts-group__inner

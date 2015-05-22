@@ -21,3 +21,11 @@
   right: -17px
   .mac-os &
     right: -15px
+
+=slide-fade($parrent)
+  transform: translate(0, 50px)
+  opacity: 0
+  transition: transform 0.5s ease, opacity 0.5s ease
+  .#{$parrent}.is-animate &
+    opacity: 1
+    transform: none
