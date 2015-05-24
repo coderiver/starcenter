@@ -61,25 +61,46 @@ $(document).ready(function() {
 
     //##### timeline scene
     app.scrollmagic.timeline = {
-        el: $('#timeline')[0],
-        // jqel: $('#timeline'),
-        // trigger: $('#trigger1')[0],
+        el: $('#timeline'),
+        trigger: $('#trigger1')[0],
+        // tween: TweenLite.to($('.timeline__inner'), 1, {x: '-=1100px', ease: Linear.easeNone}),
         scene: null
     };
     app.scrollmagic.timeline.scene = new ScrollMagic.Scene({
         duration: 554,
-        triggerElement: app.scrollmagic.timeline.el,
-        triggerHook: 'onCenter',
+        triggerElement: app.scrollmagic.timeline.trigger,
+        triggerHook: 'onLeave',
         loglevel: 1
     })
-        .setPin(app.scrollmagic.timeline.el)
-        // .setVelocity(app.scrollmagic.timeline.el, {top: '+=554'}, {duration: 1000})
-        // .on('progress', function(e) {
-        //    console.log(e);
-        //    console.log(app.scrollmagic.timeline.el);
-        //    app.scrollmagic.timeline.el.style.top = 450 + Math.ceil(554 * e.progress) + 'px';
-        //    app.scrollmagic.timeline.el.style.marginLeft = -470 - Math.ceil(1200 * e.progress) + 'px';
-        // })
+        .on('enter', function(e) {
+            var el = app.scrollmagic.timeline.el;
+            el.css({
+                top: el.offset().top,
+                left: el.offset().left,
+                position: 'fixed'
+            });
+            $('.facts__text').removeClass('is-animate');
+        })
+        .on('leave', function(e) {
+            var el = app.scrollmagic.timeline.el;
+            if ( e.progress === 0 ) {
+                el.css({
+                    position: '',
+                    top: '',
+                    left: ''
+                });
+                $('.facts__text').addClass('is-animate');
+            }
+            if ( e.progress === 1 ) {
+                el.css({
+                    position: '',
+                    top: Math.ceil(450 + 554 * e.progress),
+                    left: ''
+                });
+            }
+        })
+        // .setTween(app.scrollmagic.timeline.tween)
+        .setTween($('.timeline__inner'), 1, {x: '-=1100px', ease: Linear.easeNone})
         .addTo(app.scrollmagic.controller);
 
 
@@ -140,9 +161,7 @@ $(document).ready(function() {
         triggerHook: 'onCenter',
         loglevel: 1
     })
-        // .setPin(app.scrollmagic.boxInner.container[0])
         .on('enter', function(e) {
-            // console.log(e);
             var container = app.scrollmagic.boxInner.container;
             container.css({
                 top: container.offset().top,
@@ -151,7 +170,6 @@ $(document).ready(function() {
             });
         })
         .on('leave', function(e) {
-            // console.log(e);
             var container = app.scrollmagic.boxInner.container;
             if ( e.progress === 0 ) {
                 container.css({
@@ -173,14 +191,13 @@ $(document).ready(function() {
     //##### scenes for all heads
     app.scrollmagic.head = {
         elements: $('.head:not(.head_capability)'),
-        // tween: new TimelieneLite(),
         scenes: {}
     };
     app.scrollmagic.head.elements.each(function(index, el) {
         var tween = new TimelineLite().add([
-            TweenLite.to($(el).find('.head__img'), 0.5, {y: '+=30px'}),
-            TweenLite.to($(el).find('.head__text'), 0.5, {y: '+=60px'}),
-            TweenLite.to($(el).find('.deco'), 0.5, {y: '+=50px'}),
+            TweenLite.to($(el).find('.head__img'), 1, {y: '+=30px'}),
+            TweenLite.to($(el).find('.head__text'), 1, {y: '+=60px'}),
+            TweenLite.to($(el).find('.deco'), 1, {y: '+=50px'}),
             ]);
         app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height(),
@@ -193,30 +210,29 @@ $(document).ready(function() {
             .addTo(app.scrollmagic.controller);
     });
 
-    //##### scene for footer
-    // app.scrollmagic.footer = {
-    //     el: $('.footer')[0],
-    //     tween: TweenLite.to($('.footer'), 0.5, {height: '510px'}),
-    //     scene: null
-    // };
-    // app.scrollmagic.footer.scene = new ScrollMagic.Scene({
-    //     duration: 450,
-    //     offset: 50,
-    //     triggerElement: app.scrollmagic.footer.el,
-    //     triggerHook: 'onEnter',
-    //     loglevel: 1
-    // })
-    //     .setTween(app.scrollmagic.footer.tween)
-    //     .addTo(app.scrollmagic.controller);
+    app.scrollmagic.borders = {
+        el: $('.js-border'),
+        scenes: {}
+    };
+
+    app.scrollmagic.borders.el.each(function(index, el) {
+        app.scrollmagic.borders.scenes['border' + index] = new ScrollMagic.Scene({
+            offset: -100,
+            triggerElement: el,
+            triggerHook: 'onCenter',
+            loglevel: 1
+        })
+            .setClassToggle(el, 'is-animate')
+            .addTo(app.scrollmagic.controller);
+    });
 
 
     console.log(app);
-    console.log(app.scrollmagic);
+    console.log(app.scrollmagic.borders.el);
 
     // console.log(app.morph, app.category);
 
     $('.catalog-btn').on('click', function(event) {
-        // event.preventDefault();
         var state = $(this).data('morph-state');
         if ( !app.morph.state.active ) {
             app.openCatalog(state);
@@ -226,7 +242,6 @@ $(document).ready(function() {
     });
 
     $('#header .logo').on('click', function(event) {
-        // event.preventDefault();
         app.closeCatalog();
     });
 

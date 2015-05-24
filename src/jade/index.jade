@@ -93,7 +93,7 @@ block content
 
   //BEGIN timeline
   .facts
-    .facts__heading
+    .facts__heading#trigger1
       h2.heading.heading_large Мы на рынке более 10 лет
     
     .deco.deco_polygon.deco-1
@@ -107,9 +107,10 @@ block content
       | D2
 
     - var n = 2004
-    ul#timeline.timeline(style="top: 450px, margin-left:-470px")
-      while n < 2017
-        li(class="timeline__year")= n++
+    #timeline.timeline
+      ul.timeline__inner
+        while n < 2017
+          li(class="timeline__year")= n++
 
     .facts__text
       .facts__column
@@ -179,7 +180,7 @@ block content
       .box__inner
         .box__table
           .table.men-table
-            .table__border
+            .table__border.js-border
               include ../img/svg/svg-borders/optimized/men-table.svg
             table.men-table__table
               tr.men-table__row1
@@ -315,7 +316,7 @@ block content
 
       .tabs
         header.tabs__head.table
-          .table__border
+          .table__border.js-border
             include ../img/svg/svg-borders/optimized/tabs-head.svg
           a.btn.btn_tab(href="#")
             .btn__hover
@@ -421,7 +422,7 @@ block content
 
     .contacts__inner
       .contacts-table.table
-        .table__border
+        .table__border.js-border
           include ../img/svg/svg-borders/optimized/contacts-table.svg
         table
           tr.contacts-table__row1

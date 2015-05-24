@@ -352,7 +352,9 @@ textarea.input { height: 214px; resize: none; }
 
 .fact__number { display: block; margin: 14px 0 14px -40px; padding: 10px 10px 10px 40px; border: 1px solid; box-sizing: border-box; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 30px; color: #333; background: #FFF; }
 
-.timeline { position: absolute; top: 450px; left: 50%; height: 1px; width: 2000px; background: #333; }
+.timeline { position: absolute; top: 450px; left: 50%; height: 1px; width: 1px; }
+
+.timeline__inner { position: absolute; top: 0; left: 0; height: 1px; width: 2000px; background: #333; }
 
 .timeline__year { position: absolute; bottom: 0; width: 35px; height: 30px; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.15em; }
 .timeline__year:before { content: ""; position: absolute; bottom: -4.5px; left: 0; width: 5px; height: 10px; background: #333; }
@@ -382,6 +384,7 @@ textarea.input { height: 214px; resize: none; }
 .table__border .inner-border { -webkit-transition: stroke-dashoffset 1s ease; transition: stroke-dashoffset 1s ease; }
 .men-table .table__border { stroke-dasharray: 910px; stroke-dashoffset: 910px; }
 .partners-table .table__border { stroke-dasharray: 910px; stroke-dashoffset: 910px; }
+.tabs__head .table__border { stroke-dasharray: 1195px; stroke-dashoffset: 1195px; }
 .tabs__content .table__border { stroke-dasharray: 1464px; stroke-dashoffset: 1464px; }
 .contacts-table .table__border { stroke-dasharray: 1568px; stroke-dashoffset: 1568px; }
 .table__border.is-animate { stroke-dashoffset: 0; }
@@ -474,7 +477,7 @@ textarea.input { height: 214px; resize: none; }
 .btn_tab .heading { color: inherit; }
 .btn_tab .btn__front, .btn_tab .btn__hover-in { padding: 22px 0 0 70px; }
 
-.contacts { margin-bottom: 80px; }
+.contacts { padding-bottom: 80px; }
 
 .contacts__inner { width: 1080px; margin: auto; }
 

@@ -943,10 +943,15 @@ textarea.input
   top: 450px
   left: 50%
   height: 1px
+  width: 1px
+
+.timeline__inner
+  position: absolute
+  top: 0
+  left: 0
+  height: 1px
   width: 2000px
   background: $text
-  // transform: translateX(-470px)
-  // transition: all 0.1s linear
 
 .timeline__year
   position: absolute
@@ -1034,6 +1039,9 @@ textarea.input
   .partners-table &
     stroke-dasharray: 910px
     stroke-dashoffset: 910px
+  .tabs__head &
+    stroke-dasharray: 1195px
+    stroke-dashoffset: 1195px
   .tabs__content &
     stroke-dasharray: 1464px
     stroke-dashoffset: 1464px
@@ -1317,7 +1325,7 @@ textarea.input
 //---------------------------------------------------------------------------
 
 .contacts
-  margin-bottom: 80px
+  padding-bottom: 80px
 
 .contacts__inner
   width: 1080px
