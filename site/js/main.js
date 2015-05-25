@@ -1,15 +1,12 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// window.jQuery = window.$ = require('jquery');
 require("./../../bower_components/jquery/dist/jquery.js");
 require("./../../bower_components/modernizr/modernizr.js");
-// require('velocity-animate');
 require('../../node_modules/gsap/src/uncompressed/TweenLite.js');
 require('../../node_modules/gsap/src/uncompressed/TimelineLite.js');
 require('../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
+require('../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
 var ScrollMagic = require('scrollmagic');
-// var skrollr = require('skrollr').init();
 require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
-// require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/jquery.ScrollMagic.js');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
@@ -59,55 +56,39 @@ $(document).ready(function() {
     app.scrollmagic.controller = new ScrollMagic.Controller();
 
 
+
+
     //##### timeline scene
     app.scrollmagic.timeline = {
         el: $('#timeline'),
         trigger: $('#trigger1')[0],
-        // tween: TweenLite.to($('.timeline__inner'), 1, {x: '-=1100px', ease: Linear.easeNone}),
+        animated: false,
+        state2: false,
         scene: null
     };
     app.scrollmagic.timeline.scene = new ScrollMagic.Scene({
-        duration: 554,
+        duration: 450,
+        offset: 90,
         triggerElement: app.scrollmagic.timeline.trigger,
-        triggerHook: 'onLeave',
+        triggerHook: 'onCenter',
         loglevel: 1
     })
-        .on('enter', function(e) {
-            var el = app.scrollmagic.timeline.el;
-            el.css({
-                top: el.offset().top,
-                left: el.offset().left,
-                position: 'fixed'
-            });
-            $('.facts__text').removeClass('is-animate');
+        .on('start', function(e) {
+            app.scrollmagic.timeline.el.toggleClass('is-animate');
         })
-        .on('leave', function(e) {
-            var el = app.scrollmagic.timeline.el;
-            if ( e.progress === 0 ) {
-                el.css({
-                    position: '',
-                    top: '',
-                    left: ''
-                });
-                $('.facts__text').addClass('is-animate');
-            }
-            if ( e.progress === 1 ) {
-                el.css({
-                    position: '',
-                    top: Math.ceil(450 + 554 * e.progress),
-                    left: ''
-                });
-            }
+        .on('end', function(e) {
+            app.scrollmagic.timeline.el.toggleClass('state-2');
         })
-        // .setTween(app.scrollmagic.timeline.tween)
-        .setTween($('.timeline__inner'), 1, {x: '-=1100px', ease: Linear.easeNone})
         .addTo(app.scrollmagic.controller);
+
+
 
 
     //##### only class toggle scene
     app.scrollmagic.factsText = {
         el: $('.facts__text')[0],
         offset: -200,
+        duration: 450,
         scene: null
     };
     app.scrollmagic.factsGroup1 = {
@@ -125,16 +106,10 @@ $(document).ready(function() {
         offset: -200,
         scene: null
     };
-    app.scrollmagic.box = {
-        el: $('.box')[0],
-        duration: 940,
-        scene: null
-    };
     $([ app.scrollmagic.factsText,
         app.scrollmagic.factsGroup1,
         app.scrollmagic.factsGroup2,
-        app.scrollmagic.tabs,
-        app.scrollmagic.box
+        app.scrollmagic.tabs
         ]).each(function(index, item) {
             item.scene = new ScrollMagic.Scene({
                 duration: item.duration || 0,
@@ -147,46 +122,218 @@ $(document).ready(function() {
                 .addTo(app.scrollmagic.controller);
     });
 
-    //##### scene for box with men on background
-    app.scrollmagic.boxInner = {
-        el: $('.box__inner')[0],
-        container: $('.box__table'),
+
+
+    // ##### scene for box with men on background
+    app.scrollmagic.box = {
+        el: $('.box'),
+        trigger: $('.box-wrapper'),
         table1: $('.box .men-table'),
         table2: $('.box .partners-table'),
+        canAnimate: true,
+        stateChanged: false,
         scene: null
     };
-    app.scrollmagic.boxInner.scene = new ScrollMagic.Scene({
+    app.scrollmagic.box.scene = new ScrollMagic.Scene({
         duration: 500,
-        triggerElement: app.scrollmagic.boxInner.el,
+        offset: 285,
         triggerHook: 'onCenter',
+        triggerElement: app.scrollmagic.box.trigger[0],
         loglevel: 1
     })
-        .on('enter', function(e) {
-            var container = app.scrollmagic.boxInner.container;
-            container.css({
-                top: container.offset().top,
-                left: container.offset().left,
-                position: 'fixed'
-            });
-        })
-        .on('leave', function(e) {
-            var container = app.scrollmagic.boxInner.container;
-            if ( e.progress === 0 ) {
-                container.css({
-                    position: '',
-                    top: '',
-                    left: ''
+        .on('start', function(e) {
+            var box = app.scrollmagic.box.el;
+
+            if ( e.state === 'DURING' ) {
+                box.css({
+                    top: box.offset().top,
+                    left: box.offset().left,
+                    width: box.width(),
+                    position: 'fixed'
                 });
             }
-            if ( e.progress === 1 ) {
-                container.css({
+
+            if ( e.state === 'BEFORE' ) {
+                box.css({
+                    position: '',
+                    top: '',
+                    left: '',
+                    width: ''
+                });
+            }
+
+            app.scrollmagic.box.table1.find('.table__border').toggleClass('is-animate');
+
+            if ( e.state == 'DURING' && app.scrollmagic.box.canAnimate) {
+                app.scrollmagic.box.canAnimate = false;
+                showPeople();
+                setTimeout(function() {
+                    app.scrollmagic.box.canAnimate = true;
+                }, 2500);
+            }
+
+            if ( e.state == 'BEFORE' && app.scrollmagic.box.canAnimate) {
+                app.scrollmagic.box.canAnimate = false;
+                hidePeople();
+                setTimeout(function() {
+                    app.scrollmagic.box.canAnimate = true;
+                }, 2500);
+            }
+        })
+        .on('end', function(e) {
+            var box = app.scrollmagic.box.el;
+            if ( e.state === 'DURING' ) {
+                box.css({
+                    top: box.offset().top,
+                    left: box.offset().left,
+                    width: box.width(),
+                    position: 'fixed'
+                });
+            }
+            if ( e.state === 'AFTER' ) {
+                box.css({
                     position: '',
                     top: Math.ceil(500 * e.progress),
-                    left: ''
+                    left: '',
+                    width: ''
                 });
+            }
+        })
+        .on('progress', function(e) {
+            if ( e.progress >= 0.6 && !app.scrollmagic.box.stateChanged ) {
+                app.scrollmagic.box.stateChanged = true;
+
+                app.scrollmagic.box.table1.find('.table__border').removeClass('is-animate');
+                TweenLite.fromTo(app.scrollmagic.box.table1, 0.5, {opacity: 1}, {opacity: 0});
+
+                setTimeout(function() {
+                    app.scrollmagic.box.table2.find('.table__border').addClass('is-animate');
+                    TweenLite.fromTo(app.scrollmagic.box.table2, 0.5, {opacity: 0}, {opacity: 1});
+                }, 0.5);
+
+                app.scrollmagic.box.el.addClass('is-animate');
+            }
+
+            if ( e.progress < 0.6 && app.scrollmagic.box.stateChanged ) {
+                app.scrollmagic.box.stateChanged = false;
+
+                app.scrollmagic.box.table2.find('.table__border').removeClass('is-animate');
+                TweenLite.fromTo(app.scrollmagic.box.table2, 0.5, {opacity: 1}, {opacity: 0});
+
+                setTimeout(function() {
+                    app.scrollmagic.box.table1.find('.table__border').addClass('is-animate');
+                    TweenLite.fromTo(app.scrollmagic.box.table1, 0.5, {opacity: 0}, {opacity: 1});
+                }, 0.5);
+
+                app.scrollmagic.box.el.removeClass('is-animate');
             }
         })
         .addTo(app.scrollmagic.controller);
+
+    function showPeople(cb) {
+        var man = $('.box__bg .icon-man');
+        man.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.002 * index);
+        });
+    }
+    function hidePeople(cb) {
+        var man = $('.box__bg .icon-man');
+        man.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.002 * (man.length - index));
+        });
+    }
+
+
+
+    //##### scene for box with men on background
+    // app.scrollmagic.boxInner = {
+    //     el: $('.box__inner')[0],
+    //     container: $('.box__table'),
+    //     table1: $('.box .men-table'),
+    //     table2: $('.box .partners-table'),
+    //     stateChanged: false,
+    //     scene: null
+    // };
+    // app.scrollmagic.boxInner.scene = new ScrollMagic.Scene({
+    //     duration: 500,
+    //     triggerElement: app.scrollmagic.boxInner.el,
+    //     triggerHook: 'onCenter',
+    //     loglevel: 1
+    // })
+        // .on('enter', function(e) {
+        //     var container = app.scrollmagic.boxInner.container;
+        //     container.css({
+        //         top: container.offset().top,
+        //         left: container.offset().left,
+        //         position: 'fixed'
+        //     });
+        // })
+        // .on('leave', function(e) {
+        //     var container = app.scrollmagic.boxInner.container;
+        //     if ( e.progress === 0 ) {
+        //         container.css({
+        //             position: '',
+        //             top: '',
+        //             left: ''
+        //         });
+        //     }
+        //     if ( e.progress === 1 ) {
+        //         container.css({
+        //             position: '',
+        //             top: Math.ceil(500 * e.progress),
+        //             left: ''
+        //         });
+        //     }
+        // })
+        // .on('progress', function(e) {
+        //     if ( e.progress >= 0.4 && !app.scrollmagic.boxInner.stateChanged ) {
+        //         app.scrollmagic.boxInner.stateChanged = true;
+
+        //         app.scrollmagic.boxInner.table1.find('.table__border').removeClass('is-animate');
+        //         TweenLite.fromTo(app.scrollmagic.boxInner.table1, 0.5, {opacity: 1}, {opacity: 0});
+
+        //         setTimeout(function() {
+        //             app.scrollmagic.boxInner.table2.find('.table__border').addClass('is-animate');
+        //             TweenLite.fromTo(app.scrollmagic.boxInner.table2, 0.5, {opacity: 0}, {opacity: 1});
+        //         }, 0.5);
+
+        //         app.scrollmagic.box.el.addClass('is-animate');
+        //     }
+        //     if ( e.progress < 0.4 && app.scrollmagic.boxInner.stateChanged ) {
+        //         app.scrollmagic.boxInner.stateChanged = false;
+
+        //         app.scrollmagic.boxInner.table2.find('.table__border').removeClass('is-animate');
+        //         TweenLite.fromTo(app.scrollmagic.boxInner.table2, 0.5, {opacity: 1}, {opacity: 0});
+
+        //         setTimeout(function() {
+        //             app.scrollmagic.boxInner.table1.find('.table__border').addClass('is-animate');
+        //             TweenLite.fromTo(app.scrollmagic.boxInner.table1, 0.5, {opacity: 0}, {opacity: 1});
+        //         }, 0.5);
+
+        //         app.scrollmagic.box.el.removeClass('is-animate');
+        //     }
+        // })
+        // .addTo(app.scrollmagic.controller);
+
+
+    // ##### parallax for decorative elements
+    app.scrollmagic.deco = {
+        el: $('.deco__inner'),
+        scenes: {}
+    };
+    app.scrollmagic.deco.el.each(function(index, el) {
+        var tween = TweenLite.fromTo(el, 0.5, {y: '-50px'}, {y: '50px'});
+        app.scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
+            duration: $(window).height(),
+            triggerElement: $(el).parents('.deco')[0],
+            triggerHook: 'onEnter',
+            loglevel: 1
+        })
+            .setTween(tween)
+            .addTo(app.scrollmagic.controller);
+    });
+
+
 
     //##### scenes for all heads
     app.scrollmagic.head = {
@@ -194,27 +341,45 @@ $(document).ready(function() {
         scenes: {}
     };
     app.scrollmagic.head.elements.each(function(index, el) {
-        var tween = new TimelineLite().add([
-            TweenLite.to($(el).find('.head__img'), 1, {y: '+=30px'}),
-            TweenLite.to($(el).find('.head__text'), 1, {y: '+=60px'}),
-            TweenLite.to($(el).find('.deco'), 1, {y: '+=50px'}),
-            ]);
-        app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
-            duration: $(window).height(),
-            // offset: -200,
-            triggerElement: el,
-            triggerHook: 'onCenter',
-            loglevel: 1
-        })
-            .setTween(tween)
-            .addTo(app.scrollmagic.controller);
+        // var tween = new TimelineLite().add([
+        //     TweenLite.to($(el).find('.head__img'), 1, {y: '20%', ease: Linear.easeNone}),
+        //     TweenLite.to($(el).find('.head__text'), 1, {y: '20%', ease: Linear.easeNone}),
+        //     TweenLite.to($(el).find('.deco'), 1, {y: '20%', ease: Linear.easeNone}),
+        //     ]);
+        // app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
+        //     duration: $(window).height(),
+        //     // offset: -200,
+        //     triggerElement: el,
+        //     triggerHook: 'onCenter',
+        //     loglevel: 1
+        // })
+        //     .setTween(tween)
+        //     .addTo(app.scrollmagic.controller);
+
+        var bg   = $(el).find('.head__bg'),
+            img  = $(el).find('.head__img'),
+            text = $(el).find('.head__text');
+            // deco = $(el).find('.deco');
+        bg.mousemove(function(e) {
+            TweenLite.to(img,  0.2, {x: e.screenX / 150, y: e.screenY / 150});
+            TweenLite.to(text, 0.2, {x: e.screenX / 100,  y: e.screenY / 100});
+            // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
+        });
+        bg.mouseleave(function(e) {
+            TweenLite.to(img,  0.5, {x: 0, y: 0});
+            TweenLite.to(text, 0.5, {x: 0, y: 0});
+            // TweenLite.to(deco, 0.5, {x: 0, y: 0});
+        });
     });
 
+
+
+
+    //##### draw border table when table is in viewport
     app.scrollmagic.borders = {
         el: $('.js-border'),
         scenes: {}
     };
-
     app.scrollmagic.borders.el.each(function(index, el) {
         app.scrollmagic.borders.scenes['border' + index] = new ScrollMagic.Scene({
             offset: -100,
@@ -226,9 +391,8 @@ $(document).ready(function() {
             .addTo(app.scrollmagic.controller);
     });
 
-
     console.log(app);
-    console.log(app.scrollmagic.borders.el);
+    console.log(app.scrollmagic);
 
     // console.log(app.morph, app.category);
 
@@ -277,24 +441,46 @@ $(document).ready(function() {
     var width = getScrollBarWidth();
     console.log('Scroll bar width: ' + width + 'px');
 
-    $('.men-table').on('click', function() {
-        $(this).find('.table__border').toggleClass('is-animate');
+    // $('.men-table').on('click', function() {
+    //     $(this).find('.table__border').toggleClass('is-animate');
+    // });
+    // $('.partners-table').on('click', function() {
+    //     $(this).find('.table__border').toggleClass('is-animate');
+    // });
+    // $('.contacts-table').on('click', function() {
+    //     $(this).find('.table__border').toggleClass('is-animate');
+    // });
+    // $('.skyline').on('click', function() {
+    //     $(this).toggleClass('is-animate');
+    // });
+
+    $(function(){
+
+        var $window = $('#outer');
+        var scrollTime = 1.2;
+        var scrollDistance = 170;
+
+        $window.on("mousewheel DOMMouseScroll", function(event){
+            event.preventDefault();
+            var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
+            var scrollTop = $window.scrollTop();
+            var finalScroll = scrollTop - parseInt(delta*scrollDistance);
+
+            TweenLite.to($window, scrollTime, {
+                scrollTo : { y: finalScroll, autoKill:true },
+                    ease: Power1.easeOut,
+                    overwrite: 5
+                });
+
+        });
     });
-    $('.partners-table').on('click', function() {
-        $(this).find('.table__border').toggleClass('is-animate');
-    });
-    $('.contacts-table').on('click', function() {
-        $(this).find('.table__border').toggleClass('is-animate');
-    });
-    $('.skyline').on('click', function() {
-        $(this).toggleClass('is-animate');
-    });
+
+    // $('#outer').on('mousewheel DOMMouseScroll', function(event) {
+    //     console.log('deltaY: ' + event.originalEvent.deltaY);
+    // });
 
 });
-
-
-module.exports = app;
-},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_canvas.js":15,"./modules/_catalog.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_routing.js":19,"./modules/_tabs.js":20,"scrollmagic":12}],2:[function(require,module,exports){
+},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":14,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_canvas.js":16,"./modules/_catalog.js":17,"./modules/_category.js":18,"./modules/_main-slider.js":19,"./modules/_routing.js":20,"./modules/_tabs.js":21,"scrollmagic":13}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -39554,6 +39740,130 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{"../TweenLite.js":8}],11:[function(require,module,exports){
+(function (global){
+/*!
+ * VERSION: 1.7.5
+ * DATE: 2015-02-26
+ * UPDATES AND DOCS AT: http://greensock.com
+ *
+ * @license Copyright (c) 2008-2015, GreenSock. All rights reserved.
+ * This work is subject to the terms at http://greensock.com/standard-license or for
+ * Club GreenSock members, the software agreement that was issued with your membership.
+ * 
+ * @author: Jack Doyle, jack@greensock.com
+ **/
+var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : this || window; //helps ensure compatibility with AMD/RequireJS and CommonJS/Node
+(_gsScope._gsQueue || (_gsScope._gsQueue = [])).push( function() {
+
+	"use strict";
+
+	var _doc = document.documentElement,
+		_window = window,
+		_max = function(element, axis) {
+			var dim = (axis === "x") ? "Width" : "Height",
+				scroll = "scroll" + dim,
+				client = "client" + dim,
+				body = document.body;
+			return (element === _window || element === _doc || element === body) ? Math.max(_doc[scroll], body[scroll]) - (_window["inner" + dim] || _doc[client] || body[client]) : element[scroll] - element["offset" + dim];
+		},
+
+		ScrollToPlugin = _gsScope._gsDefine.plugin({
+			propName: "scrollTo",
+			API: 2,
+			version:"1.7.5",
+
+			//called when the tween renders for the first time. This is where initial values should be recorded and any setup routines should run.
+			init: function(target, value, tween) {
+				this._wdw = (target === _window);
+				this._target = target;
+				this._tween = tween;
+				if (typeof(value) !== "object") {
+					value = {y:value}; //if we don't receive an object as the parameter, assume the user intends "y".
+				}
+				this.vars = value;
+				this._autoKill = (value.autoKill !== false);
+				this.x = this.xPrev = this.getX();
+				this.y = this.yPrev = this.getY();
+				if (value.x != null) {
+					this._addTween(this, "x", this.x, (value.x === "max") ? _max(target, "x") : value.x, "scrollTo_x", true);
+					this._overwriteProps.push("scrollTo_x");
+				} else {
+					this.skipX = true;
+				}
+				if (value.y != null) {
+					this._addTween(this, "y", this.y, (value.y === "max") ? _max(target, "y") : value.y, "scrollTo_y", true);
+					this._overwriteProps.push("scrollTo_y");
+				} else {
+					this.skipY = true;
+				}
+				return true;
+			},
+
+			//called each time the values should be updated, and the ratio gets passed as the only parameter (typically it's a value between 0 and 1, but it can exceed those when using an ease like Elastic.easeOut or Back.easeOut, etc.)
+			set: function(v) {
+				this._super.setRatio.call(this, v);
+
+				var x = (this._wdw || !this.skipX) ? this.getX() : this.xPrev,
+					y = (this._wdw || !this.skipY) ? this.getY() : this.yPrev,
+					yDif = y - this.yPrev,
+					xDif = x - this.xPrev;
+
+				if (this._autoKill) {
+					//note: iOS has a bug that throws off the scroll by several pixels, so we need to check if it's within 7 pixels of the previous one that we set instead of just looking for an exact match.
+					if (!this.skipX && (xDif > 7 || xDif < -7) && x < _max(this._target, "x")) {
+						this.skipX = true; //if the user scrolls separately, we should stop tweening!
+					}
+					if (!this.skipY && (yDif > 7 || yDif < -7) && y < _max(this._target, "y")) {
+						this.skipY = true; //if the user scrolls separately, we should stop tweening!
+					}
+					if (this.skipX && this.skipY) {
+						this._tween.kill();
+						if (this.vars.onAutoKill) {
+							this.vars.onAutoKill.apply(this.vars.onAutoKillScope || this._tween, this.vars.onAutoKillParams || []);
+						}
+					}
+				}
+				if (this._wdw) {
+					_window.scrollTo((!this.skipX) ? this.x : x, (!this.skipY) ? this.y : y);
+				} else {
+					if (!this.skipY) {
+						this._target.scrollTop = this.y;
+					}
+					if (!this.skipX) {
+						this._target.scrollLeft = this.x;
+					}
+				}
+				this.xPrev = this.x;
+				this.yPrev = this.y;
+			}
+
+		}),
+		p = ScrollToPlugin.prototype;
+
+	ScrollToPlugin.max = _max;
+
+	p.getX = function() {
+		return (!this._wdw) ? this._target.scrollLeft : (_window.pageXOffset != null) ? _window.pageXOffset : (_doc.scrollLeft != null) ? _doc.scrollLeft : document.body.scrollLeft;
+	};
+
+	p.getY = function() {
+		return (!this._wdw) ? this._target.scrollTop : (_window.pageYOffset != null) ? _window.pageYOffset : (_doc.scrollTop != null) ? _doc.scrollTop : document.body.scrollTop;
+	};
+
+	p._kill = function(lookup) {
+		if (lookup.scrollTo_x) {
+			this.skipX = true;
+		}
+		if (lookup.scrollTo_y) {
+			this.skipY = true;
+		}
+		return this._super._kill.call(this, lookup);
+	};
+
+}); if (_gsScope._gsDefine) { _gsScope._gsQueue.pop()(); }
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{}],12:[function(require,module,exports){
 /*
  * jQuery Easing v1.3.2 - http://gsgd.co.uk/sandbox/jquery/easing/
  * Open source under the BSD License.
@@ -39698,7 +40008,7 @@ $.extend( $.easing,
 	}
 });})(jQuery);
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*!
  * ScrollMagic v2.0.5 (2015-04-29)
  * The javascript library for magical scroll interactions.
@@ -42479,7 +42789,7 @@ $.extend( $.easing,
 
 	return ScrollMagic;
 }));
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*!
  * ScrollMagic v2.0.5 (2015-04-29)
  * The javascript library for magical scroll interactions.
@@ -42790,7 +43100,7 @@ $.extend( $.easing,
 
 	});
 }));
-},{"gsap":9,"scrollmagic":12}],14:[function(require,module,exports){
+},{"gsap":9,"scrollmagic":13}],15:[function(require,module,exports){
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/sole/tween.js
@@ -43548,7 +43858,7 @@ TWEEN.Interpolation = {
 };
 
 module.exports=TWEEN;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
@@ -44177,7 +44487,7 @@ Morph.prototype.deactivate = function() {
 };
 
 module.exports = Morph;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],16:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":15}],17:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Catalog(selector) {
@@ -44220,7 +44530,7 @@ Catalog.prototype.setHeight = function() {
 };
 
 module.exports = Catalog;
-},{"./../../../bower_components/jquery/dist/jquery.js":2}],17:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2}],18:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require('jquery.easing');
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
@@ -44266,14 +44576,6 @@ Category.prototype._initEvents = function() {
     $(that.items).bind('click', function() {
         that.options.initSlide = $(this).index();
     });
-
-    // that.wrapper.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-    //     $(slick.$slides[currentSlide]).removeClass(that.classes.active);
-    //     $(slick.$slides[nextSlide]).addClass(that.classes.active);
-    // });
-    // that.wrapper.on('afterChange', function(event, slick, currentSlide) {
-    //     $(slick.$slides[currentSlide]).addClass(that.classes.active);
-    // });
 };
 
 Category.prototype._init = function() {
@@ -44282,7 +44584,9 @@ Category.prototype._init = function() {
     that.clonedItems = $(that.items).clone(true).addClass('clone');
     that.wrapper.append(that.clonedItems);
     that.wrapper.slick(that.slickOptions);
-    that.wrapper.slick('slickGoTo', that.options.initSlide);
+    setTimeout(function() {
+        that.wrapper.slick('slickGoTo', that.options.initSlide);
+    }, 200);
 };
 
 Category.prototype._destroy = function() {
@@ -44313,7 +44617,7 @@ Category.prototype.disable = function() {
 };
 
 module.exports = Category;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"jquery.easing":11}],18:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"jquery.easing":12}],19:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 
@@ -44413,7 +44717,7 @@ MainSlider.prototype.makeVisible = function() {
 module.exports = MainSlider;
 
 
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],19:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 
@@ -44439,7 +44743,7 @@ var router = $.sammy(function() {
 });
 
 module.exports = router;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],20:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],21:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Tabs(wrapper, tabButton, tabContent) {

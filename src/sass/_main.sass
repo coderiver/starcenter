@@ -233,27 +233,32 @@
   display: inline-block
   +f(hr, 12, 0.25)
 
+.deco__inner
+  position: relative
+
 .deco_polygon
-  width: 41px
-  height: 46px
-  line-height: 46px
-  font-size: 18px
-  letter-spacing: 0.05em
-  text-align: center
+  .deco__inner
+    width: 41px
+    height: 46px
+    line-height: 46px
+    font-size: 18px
+    letter-spacing: 0.05em
+    text-align: center
   .icon-polygon
     position: absolute
     top: 0
     left: 0
 
 .deco_circle
-  width: 33px
-  height: 33px
-  border: 1px solid
-  text-align: center
-  line-height: 34px
-  font-size: 18px
-  letter-spacing: 0
-  border-radius: 50%
+  .deco__inner
+    width: 33px
+    height: 33px
+    border: 1px solid
+    text-align: center
+    line-height: 34px
+    font-size: 18px
+    letter-spacing: 0
+    border-radius: 50%
 
 
 .heading
@@ -348,6 +353,7 @@
 
 
 .btn
+  display: inline-block
   position: relative
   box-sizing: border-box
   -webkit-appearance: none
@@ -355,6 +361,7 @@
   text-decoration: none
   color: $text
   background: none
+  white-space: nowrap
   &:hover,
   &.is-active
     .btn__hover
@@ -375,6 +382,8 @@
 .btn__hover-in
   box-sizing: border-box
   height: 100%
+  position: relative
+  z-index: 1
 
 .btn__front
   position: relative
@@ -401,6 +410,26 @@
   &:hover
     .icon-arrow
       transform: translate(50px, 0)
+
+
+.btn_transparent
+  +f(hb, 10, 0.3)
+  color: $text-light
+  text-transform: uppercase
+  line-height: 35px
+  .btn__hover
+    background: none
+    color: $text
+  .btn__hover-in
+    color: $text
+    &:before
+      content: ""
+      position: absolute
+      bottom: 0
+      left: 0
+      width: 100%
+      height: 3px
+      background: $text
 
 
 .input
@@ -786,6 +815,7 @@ textarea.input
     text-align: center
   .deco
     position: absolute
+    z-index: 2
   .deco-1
     top: 93px
     right: 50%
@@ -845,40 +875,59 @@ textarea.input
   // box-shadow: 0 0 0 1px #ccc
 
 
+.box-wrapper
+  margin: 180px 0 390px
+  position: relative
+  height: 520px
+
 .box
   position: relative
   height: 520px
-  margin: 180px 0 390px
+  // margin: 345px 0 555px
   box-sizing: border-box
   +vertical
   white-space: nowrap
+  pointer-events: none
 
 .box__bg
   position: absolute
   z-index: 0
-  top: 0
+  top: 50%
   left: 0
   right: 0
-  bottom: 0
-  background-image: url('../img/svg/man.svg')
+  height: 530px
+  margin-top: -265px
+  white-space: normal
+  pointer-events: none
+  // background-image: url('../img/svg/man.svg')
   transition: all 0.5s ease
-  transform: scale(0.5)
-  opacity: 0
+  opacity: 1
   .box.is-animate &
-    opacity: 1
-    transform: none
+    transform: scale(0.5,0.5)
+    opacity: 0
+  .icon-man
+    opacity: 0
+    background: url('../img/svg/man.svg') no-repeat center center
+    display: inline-block
+    vertical-align: top
+    width: 22px
+    height: 44px
+    transform: translate3d(0,-30px,0)
 
 .box__inner
-  position: relative
-  z-index: 1
   display: inline-block
   vertical-align: middle
-  white-space: normal
+  position: relative
+  z-index: 1
   font-size: 16px
   width: 720px
   height: 190px
+  white-space: normal
 
 .box__table
+  display: inline-block
+  width: 720px
+  height: 190px
   position: relative
   pointer-events: none
   // transition: top 0.2s linear
@@ -895,7 +944,7 @@ textarea.input
   left: 50%
   transform: translate(-50%, -50%)
   stroke-dasharray: 1384px
-  stroke-dashoffset: -1384px
+  stroke-dashoffset: 1384px
   > svg
     display: block
     transition: stroke-dashoffset 2s ease
@@ -944,14 +993,63 @@ textarea.input
   left: 50%
   height: 1px
   width: 1px
+  &.is-animate
+    .timeline__inner
+      transform: translate3d(-470px,0,0)
+      width: 3000px
+      transition: width 4s ease, transform 1.5s ease
+    .timeline__year
+      opacity: 1
+      transform: translate3d(0,0,0)
+      &:nth-child(2)
+        transition-delay: 0.1s
+      &:nth-child(3)
+        transition-delay: 0.2s
+      &:nth-child(4)
+        transition-delay: 0.3s
+      &:nth-child(5)
+        transition-delay: 0.4s
+      &:nth-child(6)
+        transition-delay: 0.5s
+      &:nth-child(7)
+        transition-delay: 0.6s
+      &:nth-child(8)
+        transition-delay: 0.7s
+      &:nth-child(9)
+        transition-delay: 0.8s
+      &:nth-child(10)
+        transition-delay: 0.9s
+      &:nth-child(11)
+        transition-delay: 1s
+      &:nth-child(12)
+        transition-delay: 1.1s
+      &:nth-child(13)
+        transition-delay: 1.2s
+      &:nth-child(14)
+        transition-delay: 1.3s
+      &:nth-child(15)
+        transition-delay: 1.4s
+  &.state-2
+    .timeline__inner
+      transform: translate3d(-1800px,554px,0)
+    .timeline__year
+      &:nth-child(12)
+        transform: translate3d(315px,0,0)
+        transition-delay: 0s
+        transition-duration: 1.5s
+      &:nth-child(13)
+        transform: translate3d(738px,0,0)
+        transition-delay: 0s
+        transition-duration: 1.5s
 
 .timeline__inner
   position: absolute
   top: 0
   left: 0
   height: 1px
-  width: 2000px
+  width: 1px
   background: $text
+  transition: width 2s ease, transform 1.5s ease
 
 .timeline__year
   position: absolute
@@ -959,6 +1057,9 @@ textarea.input
   width: 35px
   height: 30px
   +f(bsr, 12, 0.15)
+  transform: translate3d(0,-100%,0)
+  opacity: 0
+  transition: all 0.3s ease
   &:before
     content: ""
     position: absolute
@@ -968,6 +1069,8 @@ textarea.input
     height: 10px
     background: $text
   &:first-child
+    transform: none
+    opacity: 1
     &:before
       width: 10px
       height: 10px
@@ -979,32 +1082,46 @@ textarea.input
   //     left: (45 * $i + $delta) + px
   &:nth-child(2)
     left: 48px
+    transition-delay: 1.4s
   &:nth-child(3)
     left: 105px
+    transition-delay: 1.3s
   &:nth-child(4)
     left: 168px
+    transition-delay: 1.2s
   &:nth-child(5)
     left: 240px
+    transition-delay: 1.1s
   &:nth-child(6)
     left: 320px
+    transition-delay: 1s
   &:nth-child(7)
     left: 410px
+    transition-delay: 0.9s
   &:nth-child(8)
     left: 505px
+    transition-delay: 0.8s
   &:nth-child(9)
     left: 610px
+    transition-delay: 0.7s
   &:nth-child(10)
     left: 720px
+    transition-delay: 0.6s
   &:nth-child(11)
     left: 850px
+    transition-delay: 0.5s
   &:nth-child(12)
     left: 985px
+    transition-delay: 0.4s
   &:nth-child(13)
     left: 1130px
+    transition-delay: 0.3s
   &:nth-child(14)
-    left: 1365px
+    left: 1300px
+    transition-delay: 0.2s
   &:nth-child(15)
-    left: 1950px
+    left: 1500px
+    transition-delay: 0.1s
 
 
 .table
@@ -1138,16 +1255,24 @@ textarea.input
   position: relative
   margin-bottom: 90px
   height: 423px
-  overflow: hidden
   .deco
     position: absolute
     z-index: 3
+    pointer-events: none
   .deco-1
     top: 230px
     right: 100px
   .deco-2
     top: -190px
     left: 150px
+
+.head__inner
+  position: absolute
+  bottom: 0
+  left: 0
+  right: 0
+  height: 100%
+  overflow: hidden
 
 .head__bg
   position: absolute
@@ -1161,8 +1286,9 @@ textarea.input
 .head__img
   position: absolute
   z-index: 1
-  bottom: 0
+  bottom: -10px
   left: 120px
+  pointer-events: none
   img
     display: block
 
@@ -1174,10 +1300,11 @@ textarea.input
   +f(hb, 40, 0.8)
   line-height: 1.75
   text-transform: uppercase
+  pointer-events: none
 
 .head_advantage
-  height: 541px
-  margin-top: (541-423) + px
+  .head__inner
+    height: 541px
 
 .head_capability
   .deco-1
@@ -1195,8 +1322,8 @@ textarea.input
     right: 0
 
 .head_contacts
-  height: 500px
-  margin-top: (500-423) + px
+  .head__inner
+    height: 500px
   .deco-1
     top: 54px
     right: 85px
@@ -1372,4 +1499,101 @@ textarea.input
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end sevtion contacts  ^^^^^
+//---------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------
+//            ##### begin catalog-content #####
+//---------------------------------------------------------------------------
+
+.filter
+  max-width: 790px
+  box-sizing: border-box
+  margin: auto
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: center
+
+
+.object
+  position: relative
+  width: 790px
+  height: 450px
+  margin: auto
+  .info
+    position: absolute
+    z-index: 2
+    bottom: -20px
+    right: -30px
+
+.object__pic
+  position: relative
+  z-index: 0
+  width: 100%
+  height: 100%
+  background: no-repeat center center
+  background-size: cover
+
+
+.info
+  width: 650px
+  height: 180px
+  box-sizing: border-box
+  box-shadow: 0 0 0 10px #FFF
+
+.info__inner
+  position: relative
+  z-index: 2
+  +clr
+
+.info__cell
+  float: left
+  box-sizing: border-box
+  height: 90px
+  padding: 15px 5px 5px 40px
+
+.info__cell1
+  width: 400px
+  padding: 0
+
+.info__cell2
+  width: 200px
+
+.info__cell3
+  width: 250px
+
+
+.info-item
+  +f(hr, 24, 0.2)
+  line-height: 1.25
+
+.info-item__label
+  display: block
+  +f(hb, 10, 0.15)
+  color: $text-light
+  line-height: 2.2
+  text-transform: uppercase
+
+
+.btn_object
+  width: 400px
+  height: 90px
+  +f(hb, 30, 0.25)
+  line-height: 0.8
+  text-transform: uppercase
+  small
+    +f(hr, 14)
+    line-height: 1.57
+    text-transform: none
+    color: $text-light
+    letter-spacing: 0
+  .btn__front,
+  .btn__hover-in
+    padding: 20px 5px 5px 40px
+
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end catalog-content  ^^^^^
 //---------------------------------------------------------------------------

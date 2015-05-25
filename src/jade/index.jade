@@ -65,7 +65,8 @@ block content
       canvas(id="morph", resize)
 
       .deco
-        | 37" &mdash; 2'
+        .deco__inner
+          | 37" &mdash; 2'
 
       ul.catalog-category
         li.catalog-category__item
@@ -97,20 +98,24 @@ block content
       h2.heading.heading_large Мы на рынке более 10 лет
     
     .deco.deco_polygon.deco-1
-      +icon("polygon")
-      span W6
+      .deco__inner
+        +icon("polygon")
+        span W6
     .deco.deco-2
-      | 11’ — 7”
+      .deco__inner
+        | 11’ — 7”
     .deco.deco_polygon.deco-3
-      +icon("target")
+      .deco__inner
+        +icon("target")
     .deco.deco_circle.deco-4
-      | D2
+      .deco__inner
+        | D2
 
-    - var n = 2004
+    - var years = 2004
     #timeline.timeline
       ul.timeline__inner
-        while n < 2017
-          li(class="timeline__year")= n++
+        while years <= 2016
+          li(class="timeline__year")= years++
 
     .facts__text
       .facts__column
@@ -174,54 +179,58 @@ block content
               $ 24 000 000
           p.fact__text.
             в разные виды недвижимости
+    
+    .box-wrapper
+      .box
+        .box__bg
+          - var man = 1
+          while man <= 744
+            div(class='icon-man icon-man-' + man++)
+        .box__inner
+          .box__table
+            .table.men-table
+              .table__border
+                include ../img/svg/svg-borders/optimized/men-table.svg
+              table.men-table__table
+                tr.men-table__row1
+                  td.men-table__cell
+                    strong.heading.heading_small
+                      | С нами работают
+                  td.men-table__cell
+                    .amount
+                      span.amount__sign &gt;
+                      strong.amount__value 500
+                      span.amount__text людей
+                  td.men-table__cell
+                    strong.heading.heading_small
+                      | Планируем <br> привлечь
+                tr.men-table__row2
+                  td.men-table__cell(colspan="2")
+                    p.
+                      мы будем привлекать их еще, ведь мы <br>
+                      дорожим хорошими работниками
+                  td.men-table__cell
+                    .amount.amount_md
+                      span.amount__sign &gt;
+                      strong.amount__value 700
+                      span.amount__text людей
 
-    .box
-      .box__bg
-      .box__inner
-        .box__table
-          .table.men-table
-            .table__border.js-border
-              include ../img/svg/svg-borders/optimized/men-table.svg
-            table.men-table__table
-              tr.men-table__row1
-                td.men-table__cell
-                  strong.heading.heading_small
-                    | С нами работают
-                td.men-table__cell
-                  .amount
-                    span.amount__sign &gt;
-                    strong.amount__value 500
-                    span.amount__text людей
-                td.men-table__cell
-                  strong.heading.heading_small
-                    | Планируем <br> привлечь
-              tr.men-table__row2
-                td.men-table__cell(colspan="2")
-                  p.
-                    мы будем привлекать их еще, ведь мы <br>
-                    дорожим хорошими работниками
-                td.men-table__cell
-                  .amount.amount_md
-                    span.amount__sign &gt;
-                    strong.amount__value 700
-                    span.amount__text людей
-
-          .table.partners-table
-            .table__border
-              include ../img/svg/svg-borders/optimized/partners-table.svg
-            table.partners-table__table
-              tr.partners-table__row1
-                td.partners-table__cell(rowspan="2")
-                  strong.heading
-                    | Мы <br> нашли 
-                td.partners-table__cell
-                  .amount.amount_lrg
-                    span.amount__sign &gt;
-                    strong.amount__value 100
-                    span.amount__text партнеров
-              tr.partners-table__row2
-                td.partners-table__cell
-                  p с некоторыми мы работаем уже больше 8 лет
+            .table.partners-table
+              .table__border
+                include ../img/svg/svg-borders/optimized/partners-table.svg
+              table.partners-table__table
+                tr.partners-table__row1
+                  td.partners-table__cell(rowspan="2")
+                    strong.heading
+                      | Мы <br> нашли 
+                  td.partners-table__cell
+                    .amount.amount_lrg
+                      span.amount__sign &gt;
+                      strong.amount__value 100
+                      span.amount__text партнеров
+                tr.partners-table__row2
+                  td.partners-table__cell
+                    p с некоторыми мы работаем уже больше 8 лет
     
     .facts__heading
       h3.heading
@@ -232,21 +241,24 @@ block content
   //BEGIN advantage
   section.advantage
     .head.head_advantage
-      .head__bg
-      .head__img
-        img(src="img/head1.png", alt="")
-      .head__text
-        | Пре
-        br
-        | иму
-        br
-        | щес
-        br
-        | тва
+      .head__inner
+        .head__bg
+        .head__img
+          img(src="img/head1.png", alt="")
+        .head__text
+          | Пре
+          br
+          | иму
+          br
+          | щес
+          br
+          | тва
       .deco.deco-1
-        +icon("target")
+        .deco__inner
+          +icon("target")
       .deco.deco-2
-        | 11’ — 7”
+        .deco__inner
+          | 11’ — 7”
 
     ul.advantage__inner
       li.advantage__column
@@ -282,29 +294,33 @@ block content
         br
         | ти
       .deco.deco_polygon.deco-1
-        +icon("polygon")
-        span W6
+        .deco__inner
+          +icon("polygon")
+          span W6
   //END capability
 
   //BEGIN partners
   section.partners
     .head.head_partners
-      .head__bg
-      .head__img
-        img(src="img/head2.png", alt="")
-      .head__text
-        | Па
-        br
-        | рт
-        br
-        | не
-        br
-        | ры
+      .head__inner
+        .head__bg
+        .head__img
+          img(src="img/head2.png", alt="")
+        .head__text
+          | Па
+          br
+          | рт
+          br
+          | не
+          br
+          | ры
       .deco.deco-1
-        +icon("target")
+        .deco__inner
+          +icon("target")
 
     .partners__inner
-      .deco.deco_circle D2
+      .deco.deco_circle
+        .deco__inner D2
       .partners__heading
         h3.heading
           | Мы <br> верим
@@ -406,19 +422,22 @@ block content
   //BEGIN contacts
   section.contacts
     .head.head_contacts
-      .head__bg
-      .head__img
-        img(src="img/head3.png", alt="")
-      .head__text
-        | Кон
-        br
-        | так
-        br
-        | ты
+      .head__inner
+        .head__bg
+        .head__img
+          img(src="img/head3.png", alt="")
+        .head__text
+          | Кон
+          br
+          | так
+          br
+          | ты
       .deco.deco-1
-        +icon("target")
+        .deco__inner
+          +icon("target")
       .deco.deco-2
-        | 31’ — 5”
+        .deco__inner
+          | 31’ — 5”
 
     .contacts__inner
       .contacts-table.table
@@ -460,3 +479,95 @@ block content
                 br
                 | проспект 42
   //END contacts
+
+
+  //BEGIN catalog-content
+  .filter
+    a.btn.btn_transparent(href="#")
+      .btn__front
+        | Вся недвижимость
+      .btn__hover
+        .btn__hover-in
+          | Вся недвижимость
+    a.btn.btn_transparent(href="#")
+      .btn__front
+        | Комерческая недвижимость
+      .btn__hover
+        .btn__hover-in
+          | Комерческая недвижимость
+    a.btn.btn_transparent(href="#")
+      .btn__front
+        | Жилая недвижимость
+      .btn__hover
+        .btn__hover-in
+          | Жилая недвижимость
+
+  .catalog-content
+    .object
+      .object__pic(style="background-image:url('img/objects/object1.jpg')")
+      .info.table
+        .table__border.js-border
+          include ../img/svg/svg-borders/optimized/info-table.svg
+        .info__inner
+          .info__cell.info__cell1
+            a.btn.btn_object(href="#")
+              .btn__hover
+                .btn__hover-in
+                  | БЦ Flagship
+                  br
+                  small Київ, вул. Горького, 176
+              .btn__front
+                | БЦ Flagship
+                br
+                small Київ, вул. Горького, 176
+          .info__cell.info__cell3
+            .info-item
+              small.info-item__label Площадь
+              | 32 000 m2
+          .info__cell.info__cell2
+            .info-item
+              small.info-item__label Год сдачи
+              | 2014
+          .info__cell.info__cell2
+            .info-item
+              small.info-item__label Этажность
+              | 5
+          .info__cell.info__cell3
+            .info-item
+              small.info-item__label Свободная Площадь
+              |2 000 m2
+
+    .object
+      .object__pic(style="background-image:url('img/objects/object2.jpg')")
+      .info.table
+        .table__border.js-border
+          include ../img/svg/svg-borders/optimized/info-table.svg
+        .info__inner
+          .info__cell.info__cell1
+            a.btn.btn_object(href="#")
+              .btn__hover
+                .btn__hover-in
+                  | Ocean Plaza
+                  br
+                  small Київ, вул. Горького, 176
+              .btn__front
+                | Ocean Plaza
+                br
+                small Київ, вул. Горького, 176
+          .info__cell.info__cell3
+            .info-item
+              small.info-item__label Площадь
+              | 32 000 m2
+          .info__cell.info__cell2
+            .info-item
+              small.info-item__label Год сдачи
+              | 2014
+          .info__cell.info__cell2
+            .info-item
+              small.info-item__label Этажность
+              | 5
+          .info__cell.info__cell3
+            .info-item
+              small.info-item__label Свободная Площадь
+              |2 000 m2
+  //END catalog-content

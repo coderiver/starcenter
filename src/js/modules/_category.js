@@ -43,14 +43,6 @@ Category.prototype._initEvents = function() {
     $(that.items).bind('click', function() {
         that.options.initSlide = $(this).index();
     });
-
-    // that.wrapper.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-    //     $(slick.$slides[currentSlide]).removeClass(that.classes.active);
-    //     $(slick.$slides[nextSlide]).addClass(that.classes.active);
-    // });
-    // that.wrapper.on('afterChange', function(event, slick, currentSlide) {
-    //     $(slick.$slides[currentSlide]).addClass(that.classes.active);
-    // });
 };
 
 Category.prototype._init = function() {
@@ -59,7 +51,9 @@ Category.prototype._init = function() {
     that.clonedItems = $(that.items).clone(true).addClass('clone');
     that.wrapper.append(that.clonedItems);
     that.wrapper.slick(that.slickOptions);
-    that.wrapper.slick('slickGoTo', that.options.initSlide);
+    setTimeout(function() {
+        that.wrapper.slick('slickGoTo', that.options.initSlide);
+    }, 200);
 };
 
 Category.prototype._destroy = function() {

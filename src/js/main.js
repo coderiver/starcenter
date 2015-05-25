@@ -1,14 +1,11 @@
-// window.jQuery = window.$ = require('jquery');
 require('jquery');
 require('modernizr');
-// require('velocity-animate');
 require('../../node_modules/gsap/src/uncompressed/TweenLite.js');
 require('../../node_modules/gsap/src/uncompressed/TimelineLite.js');
 require('../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
+require('../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
 var ScrollMagic = require('scrollmagic');
-// var skrollr = require('skrollr').init();
 require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
-// require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/jquery.ScrollMagic.js');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
@@ -58,55 +55,39 @@ $(document).ready(function() {
     app.scrollmagic.controller = new ScrollMagic.Controller();
 
 
+
+
     //##### timeline scene
     app.scrollmagic.timeline = {
         el: $('#timeline'),
         trigger: $('#trigger1')[0],
-        // tween: TweenLite.to($('.timeline__inner'), 1, {x: '-=1100px', ease: Linear.easeNone}),
+        animated: false,
+        state2: false,
         scene: null
     };
     app.scrollmagic.timeline.scene = new ScrollMagic.Scene({
-        duration: 554,
+        duration: 450,
+        offset: 90,
         triggerElement: app.scrollmagic.timeline.trigger,
-        triggerHook: 'onLeave',
+        triggerHook: 'onCenter',
         loglevel: 1
     })
-        .on('enter', function(e) {
-            var el = app.scrollmagic.timeline.el;
-            el.css({
-                top: el.offset().top,
-                left: el.offset().left,
-                position: 'fixed'
-            });
-            $('.facts__text').removeClass('is-animate');
+        .on('start', function(e) {
+            app.scrollmagic.timeline.el.toggleClass('is-animate');
         })
-        .on('leave', function(e) {
-            var el = app.scrollmagic.timeline.el;
-            if ( e.progress === 0 ) {
-                el.css({
-                    position: '',
-                    top: '',
-                    left: ''
-                });
-                $('.facts__text').addClass('is-animate');
-            }
-            if ( e.progress === 1 ) {
-                el.css({
-                    position: '',
-                    top: Math.ceil(450 + 554 * e.progress),
-                    left: ''
-                });
-            }
+        .on('end', function(e) {
+            app.scrollmagic.timeline.el.toggleClass('state-2');
         })
-        // .setTween(app.scrollmagic.timeline.tween)
-        .setTween($('.timeline__inner'), 1, {x: '-=1100px', ease: Linear.easeNone})
         .addTo(app.scrollmagic.controller);
+
+
 
 
     //##### only class toggle scene
     app.scrollmagic.factsText = {
         el: $('.facts__text')[0],
         offset: -200,
+        duration: 450,
         scene: null
     };
     app.scrollmagic.factsGroup1 = {
@@ -124,16 +105,10 @@ $(document).ready(function() {
         offset: -200,
         scene: null
     };
-    app.scrollmagic.box = {
-        el: $('.box')[0],
-        duration: 940,
-        scene: null
-    };
     $([ app.scrollmagic.factsText,
         app.scrollmagic.factsGroup1,
         app.scrollmagic.factsGroup2,
-        app.scrollmagic.tabs,
-        app.scrollmagic.box
+        app.scrollmagic.tabs
         ]).each(function(index, item) {
             item.scene = new ScrollMagic.Scene({
                 duration: item.duration || 0,
@@ -146,46 +121,218 @@ $(document).ready(function() {
                 .addTo(app.scrollmagic.controller);
     });
 
-    //##### scene for box with men on background
-    app.scrollmagic.boxInner = {
-        el: $('.box__inner')[0],
-        container: $('.box__table'),
+
+
+    // ##### scene for box with men on background
+    app.scrollmagic.box = {
+        el: $('.box'),
+        trigger: $('.box-wrapper'),
         table1: $('.box .men-table'),
         table2: $('.box .partners-table'),
+        canAnimate: true,
+        stateChanged: false,
         scene: null
     };
-    app.scrollmagic.boxInner.scene = new ScrollMagic.Scene({
+    app.scrollmagic.box.scene = new ScrollMagic.Scene({
         duration: 500,
-        triggerElement: app.scrollmagic.boxInner.el,
+        offset: 285,
         triggerHook: 'onCenter',
+        triggerElement: app.scrollmagic.box.trigger[0],
         loglevel: 1
     })
-        .on('enter', function(e) {
-            var container = app.scrollmagic.boxInner.container;
-            container.css({
-                top: container.offset().top,
-                left: container.offset().left,
-                position: 'fixed'
-            });
-        })
-        .on('leave', function(e) {
-            var container = app.scrollmagic.boxInner.container;
-            if ( e.progress === 0 ) {
-                container.css({
-                    position: '',
-                    top: '',
-                    left: ''
+        .on('start', function(e) {
+            var box = app.scrollmagic.box.el;
+
+            if ( e.state === 'DURING' ) {
+                box.css({
+                    top: box.offset().top,
+                    left: box.offset().left,
+                    width: box.width(),
+                    position: 'fixed'
                 });
             }
-            if ( e.progress === 1 ) {
-                container.css({
+
+            if ( e.state === 'BEFORE' ) {
+                box.css({
+                    position: '',
+                    top: '',
+                    left: '',
+                    width: ''
+                });
+            }
+
+            app.scrollmagic.box.table1.find('.table__border').toggleClass('is-animate');
+
+            if ( e.state == 'DURING' && app.scrollmagic.box.canAnimate) {
+                app.scrollmagic.box.canAnimate = false;
+                showPeople();
+                setTimeout(function() {
+                    app.scrollmagic.box.canAnimate = true;
+                }, 2500);
+            }
+
+            if ( e.state == 'BEFORE' && app.scrollmagic.box.canAnimate) {
+                app.scrollmagic.box.canAnimate = false;
+                hidePeople();
+                setTimeout(function() {
+                    app.scrollmagic.box.canAnimate = true;
+                }, 2500);
+            }
+        })
+        .on('end', function(e) {
+            var box = app.scrollmagic.box.el;
+            if ( e.state === 'DURING' ) {
+                box.css({
+                    top: box.offset().top,
+                    left: box.offset().left,
+                    width: box.width(),
+                    position: 'fixed'
+                });
+            }
+            if ( e.state === 'AFTER' ) {
+                box.css({
                     position: '',
                     top: Math.ceil(500 * e.progress),
-                    left: ''
+                    left: '',
+                    width: ''
                 });
+            }
+        })
+        .on('progress', function(e) {
+            if ( e.progress >= 0.6 && !app.scrollmagic.box.stateChanged ) {
+                app.scrollmagic.box.stateChanged = true;
+
+                app.scrollmagic.box.table1.find('.table__border').removeClass('is-animate');
+                TweenLite.fromTo(app.scrollmagic.box.table1, 0.5, {opacity: 1}, {opacity: 0});
+
+                setTimeout(function() {
+                    app.scrollmagic.box.table2.find('.table__border').addClass('is-animate');
+                    TweenLite.fromTo(app.scrollmagic.box.table2, 0.5, {opacity: 0}, {opacity: 1});
+                }, 0.5);
+
+                app.scrollmagic.box.el.addClass('is-animate');
+            }
+
+            if ( e.progress < 0.6 && app.scrollmagic.box.stateChanged ) {
+                app.scrollmagic.box.stateChanged = false;
+
+                app.scrollmagic.box.table2.find('.table__border').removeClass('is-animate');
+                TweenLite.fromTo(app.scrollmagic.box.table2, 0.5, {opacity: 1}, {opacity: 0});
+
+                setTimeout(function() {
+                    app.scrollmagic.box.table1.find('.table__border').addClass('is-animate');
+                    TweenLite.fromTo(app.scrollmagic.box.table1, 0.5, {opacity: 0}, {opacity: 1});
+                }, 0.5);
+
+                app.scrollmagic.box.el.removeClass('is-animate');
             }
         })
         .addTo(app.scrollmagic.controller);
+
+    function showPeople(cb) {
+        var man = $('.box__bg .icon-man');
+        man.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.002 * index);
+        });
+    }
+    function hidePeople(cb) {
+        var man = $('.box__bg .icon-man');
+        man.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.002 * (man.length - index));
+        });
+    }
+
+
+
+    //##### scene for box with men on background
+    // app.scrollmagic.boxInner = {
+    //     el: $('.box__inner')[0],
+    //     container: $('.box__table'),
+    //     table1: $('.box .men-table'),
+    //     table2: $('.box .partners-table'),
+    //     stateChanged: false,
+    //     scene: null
+    // };
+    // app.scrollmagic.boxInner.scene = new ScrollMagic.Scene({
+    //     duration: 500,
+    //     triggerElement: app.scrollmagic.boxInner.el,
+    //     triggerHook: 'onCenter',
+    //     loglevel: 1
+    // })
+        // .on('enter', function(e) {
+        //     var container = app.scrollmagic.boxInner.container;
+        //     container.css({
+        //         top: container.offset().top,
+        //         left: container.offset().left,
+        //         position: 'fixed'
+        //     });
+        // })
+        // .on('leave', function(e) {
+        //     var container = app.scrollmagic.boxInner.container;
+        //     if ( e.progress === 0 ) {
+        //         container.css({
+        //             position: '',
+        //             top: '',
+        //             left: ''
+        //         });
+        //     }
+        //     if ( e.progress === 1 ) {
+        //         container.css({
+        //             position: '',
+        //             top: Math.ceil(500 * e.progress),
+        //             left: ''
+        //         });
+        //     }
+        // })
+        // .on('progress', function(e) {
+        //     if ( e.progress >= 0.4 && !app.scrollmagic.boxInner.stateChanged ) {
+        //         app.scrollmagic.boxInner.stateChanged = true;
+
+        //         app.scrollmagic.boxInner.table1.find('.table__border').removeClass('is-animate');
+        //         TweenLite.fromTo(app.scrollmagic.boxInner.table1, 0.5, {opacity: 1}, {opacity: 0});
+
+        //         setTimeout(function() {
+        //             app.scrollmagic.boxInner.table2.find('.table__border').addClass('is-animate');
+        //             TweenLite.fromTo(app.scrollmagic.boxInner.table2, 0.5, {opacity: 0}, {opacity: 1});
+        //         }, 0.5);
+
+        //         app.scrollmagic.box.el.addClass('is-animate');
+        //     }
+        //     if ( e.progress < 0.4 && app.scrollmagic.boxInner.stateChanged ) {
+        //         app.scrollmagic.boxInner.stateChanged = false;
+
+        //         app.scrollmagic.boxInner.table2.find('.table__border').removeClass('is-animate');
+        //         TweenLite.fromTo(app.scrollmagic.boxInner.table2, 0.5, {opacity: 1}, {opacity: 0});
+
+        //         setTimeout(function() {
+        //             app.scrollmagic.boxInner.table1.find('.table__border').addClass('is-animate');
+        //             TweenLite.fromTo(app.scrollmagic.boxInner.table1, 0.5, {opacity: 0}, {opacity: 1});
+        //         }, 0.5);
+
+        //         app.scrollmagic.box.el.removeClass('is-animate');
+        //     }
+        // })
+        // .addTo(app.scrollmagic.controller);
+
+
+    // ##### parallax for decorative elements
+    app.scrollmagic.deco = {
+        el: $('.deco__inner'),
+        scenes: {}
+    };
+    app.scrollmagic.deco.el.each(function(index, el) {
+        var tween = TweenLite.fromTo(el, 0.5, {y: '-50px'}, {y: '50px'});
+        app.scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
+            duration: $(window).height(),
+            triggerElement: $(el).parents('.deco')[0],
+            triggerHook: 'onEnter',
+            loglevel: 1
+        })
+            .setTween(tween)
+            .addTo(app.scrollmagic.controller);
+    });
+
+
 
     //##### scenes for all heads
     app.scrollmagic.head = {
@@ -193,27 +340,45 @@ $(document).ready(function() {
         scenes: {}
     };
     app.scrollmagic.head.elements.each(function(index, el) {
-        var tween = new TimelineLite().add([
-            TweenLite.to($(el).find('.head__img'), 1, {y: '+=30px'}),
-            TweenLite.to($(el).find('.head__text'), 1, {y: '+=60px'}),
-            TweenLite.to($(el).find('.deco'), 1, {y: '+=50px'}),
-            ]);
-        app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
-            duration: $(window).height(),
-            // offset: -200,
-            triggerElement: el,
-            triggerHook: 'onCenter',
-            loglevel: 1
-        })
-            .setTween(tween)
-            .addTo(app.scrollmagic.controller);
+        // var tween = new TimelineLite().add([
+        //     TweenLite.to($(el).find('.head__img'), 1, {y: '20%', ease: Linear.easeNone}),
+        //     TweenLite.to($(el).find('.head__text'), 1, {y: '20%', ease: Linear.easeNone}),
+        //     TweenLite.to($(el).find('.deco'), 1, {y: '20%', ease: Linear.easeNone}),
+        //     ]);
+        // app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
+        //     duration: $(window).height(),
+        //     // offset: -200,
+        //     triggerElement: el,
+        //     triggerHook: 'onCenter',
+        //     loglevel: 1
+        // })
+        //     .setTween(tween)
+        //     .addTo(app.scrollmagic.controller);
+
+        var bg   = $(el).find('.head__bg'),
+            img  = $(el).find('.head__img'),
+            text = $(el).find('.head__text');
+            // deco = $(el).find('.deco');
+        bg.mousemove(function(e) {
+            TweenLite.to(img,  0.2, {x: e.screenX / 150, y: e.screenY / 150});
+            TweenLite.to(text, 0.2, {x: e.screenX / 100,  y: e.screenY / 100});
+            // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
+        });
+        bg.mouseleave(function(e) {
+            TweenLite.to(img,  0.5, {x: 0, y: 0});
+            TweenLite.to(text, 0.5, {x: 0, y: 0});
+            // TweenLite.to(deco, 0.5, {x: 0, y: 0});
+        });
     });
 
+
+
+
+    //##### draw border table when table is in viewport
     app.scrollmagic.borders = {
         el: $('.js-border'),
         scenes: {}
     };
-
     app.scrollmagic.borders.el.each(function(index, el) {
         app.scrollmagic.borders.scenes['border' + index] = new ScrollMagic.Scene({
             offset: -100,
@@ -225,9 +390,8 @@ $(document).ready(function() {
             .addTo(app.scrollmagic.controller);
     });
 
-
     console.log(app);
-    console.log(app.scrollmagic.borders.el);
+    console.log(app.scrollmagic);
 
     // console.log(app.morph, app.category);
 
@@ -276,20 +440,42 @@ $(document).ready(function() {
     var width = getScrollBarWidth();
     console.log('Scroll bar width: ' + width + 'px');
 
-    $('.men-table').on('click', function() {
-        $(this).find('.table__border').toggleClass('is-animate');
+    // $('.men-table').on('click', function() {
+    //     $(this).find('.table__border').toggleClass('is-animate');
+    // });
+    // $('.partners-table').on('click', function() {
+    //     $(this).find('.table__border').toggleClass('is-animate');
+    // });
+    // $('.contacts-table').on('click', function() {
+    //     $(this).find('.table__border').toggleClass('is-animate');
+    // });
+    // $('.skyline').on('click', function() {
+    //     $(this).toggleClass('is-animate');
+    // });
+
+    $(function(){
+
+        var $window = $('#outer');
+        var scrollTime = 1.2;
+        var scrollDistance = 170;
+
+        $window.on("mousewheel DOMMouseScroll", function(event){
+            event.preventDefault();
+            var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
+            var scrollTop = $window.scrollTop();
+            var finalScroll = scrollTop - parseInt(delta*scrollDistance);
+
+            TweenLite.to($window, scrollTime, {
+                scrollTo : { y: finalScroll, autoKill:true },
+                    ease: Power1.easeOut,
+                    overwrite: 5
+                });
+
+        });
     });
-    $('.partners-table').on('click', function() {
-        $(this).find('.table__border').toggleClass('is-animate');
-    });
-    $('.contacts-table').on('click', function() {
-        $(this).find('.table__border').toggleClass('is-animate');
-    });
-    $('.skyline').on('click', function() {
-        $(this).toggleClass('is-animate');
-    });
+
+    // $('#outer').on('mousewheel DOMMouseScroll', function(event) {
+    //     console.log('deltaY: ' + event.originalEvent.deltaY);
+    // });
 
 });
-
-
-module.exports = app;
