@@ -469,10 +469,10 @@ textarea.input { height: 214px; resize: none; }
 
 .head__bg { position: absolute; z-index: 0; bottom: 0; left: 0; right: 0; height: 423px; background-image: -webkit-linear-gradient(bottom, #CDF0E9 0%, #42BAAD 100%); background-image: linear-gradient(to top, #CDF0E9 0%, #42BAAD 100%); }
 
-.head__img { position: absolute; z-index: 1; bottom: -10px; left: 120px; pointer-events: none; }
+.head__img { position: absolute; z-index: 1; bottom: -10px; left: 120px; pointer-events: none; -webkit-transform: translate3d(0, 300px, 0); transform: translate3d(0, 300px, 0); }
 .head__img img { display: block; }
 
-.head__text { position: absolute; z-index: 2; bottom: 73px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; pointer-events: none; }
+.head__text { position: absolute; z-index: 2; bottom: 73px; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; pointer-events: none; }
 
 .head_advantage .head__inner { height: 541px; }
 

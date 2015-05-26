@@ -255,14 +255,18 @@ $(document).ready(function() {
         scenes: {}
     };
     app.scrollmagic.deco.el.each(function(index, el) {
-        var tween = TweenLite.fromTo(el, 0.5, {y: '-50px'}, {y: '50px'});
+        // var tween = TweenLite.fromTo(el, 0.5, {y: -50}, {y: 50});
         app.scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
             duration: $(window).height(),
             triggerElement: $(el).parents('.deco')[0],
             triggerHook: 'onEnter',
             loglevel: 1
         })
-            .setTween(tween)
+            .on('progress', function(e) {
+                var progress = (50 * e.progress).toFixed(1);
+                TweenLite.to(el, 0.1, {y: progress});
+            })
+            // .setTween(tween)
             .addTo(app.scrollmagic.controller);
     });
 
@@ -274,11 +278,14 @@ $(document).ready(function() {
         scenes: {}
     };
     app.scrollmagic.head.elements.each(function(index, el) {
-        var tween = new TimelineLite().add([
-            TweenLite.to($(el).find('.head__img'),  1, {y: 30}),
-            TweenLite.to($(el).find('.head__text'), 1, {y: 50}),
-            // TweenLite.to($(el).find('.deco'),       1, {y: '40%'}),
-            ]);
+        var img  = $(el).find('.head__img'),
+            text = $(el).find('.head__text');
+
+        // var tween = new TimelineLite().add([
+        //     TweenLite.to($(el).find('.head__img'),  1, {y: 30}),
+        //     TweenLite.to($(el).find('.head__text'), 1, {y: 50}),
+        //     // TweenLite.to($(el).find('.deco'),       1, {y: '40%'}),
+        //     ]);
         app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height(),
             // offset: -200,
@@ -286,20 +293,13 @@ $(document).ready(function() {
             triggerHook: 'onCenter',
             loglevel: 1
         })
-            // .on('progress', function(e) {
-            //     var progress = (40 * e.progress).toFixed(1);
-            //     console.log(e.progress);
-            //     // $(el).find('.head__img').css({
-            //     //     transform: 'translate3d(0, ' + progress + '%, 0)'
-            //     // });
-            //     // $(el).find('.head__text').css({
-            //     //     transform: 'translate3d(0, ' + progress + '%, 0)'
-            //     // });
-            //     TweenLite.to($(el).find('.head__img'), 0.1, {y: progress, ease: Linear.easeNone});
-            //     TweenLite.to($(el).find('.head__text'), 0.1, {y: progress, ease: Linear.easeNone});
-            //     // TweenLite.to($(el).find('.deco'), 0.1, {y: progress, ease: Linear.easeNone});
-            // })
-            .setTween(tween)
+            .on('progress', function(e) {
+                var progress = (300 - 300 * e.progress).toFixed(1);
+                var progress1 = (70 - 70 * e.progress).toFixed(1);
+                TweenLite.to(img,  0.05, {y: progress, ease: Linear.easeNone});
+                TweenLite.to(text, 0.05, {y: progress1, ease: Linear.easeNone});
+            })
+            // .setTween(tween)
             .addTo(app.scrollmagic.controller);
 
         // var bg   = $(el).find('.head__bg'),
@@ -408,26 +408,26 @@ $(document).ready(function() {
     //     $(this).toggleClass('is-animate');
     // });
 
-    // $(function(){
+    $(function(){
 
-    //     var $window = $('#outer');
-    //     var scrollTime = 0.3;
-    //     var scrollDistance = 100;
+        var $window = $('#outer');
+        var scrollTime = 1;
+        var scrollDistance = 170;
 
-    //     $window.on("mousewheel DOMMouseScroll", function(event){
-    //         event.preventDefault();
-    //         var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
-    //         var scrollTop = $window.scrollTop();
-    //         var finalScroll = scrollTop - parseInt(delta*scrollDistance);
+        $window.on("mousewheel DOMMouseScroll", function(event){
+            event.preventDefault();
+            var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
+            var scrollTop = $window.scrollTop();
+            var finalScroll = scrollTop - parseInt(delta*scrollDistance);
 
-    //         TweenLite.to($window, scrollTime, {
-    //             scrollTo : { y: finalScroll, autoKill:true },
-    //                 ease: Power1.easeOut,
-    //                 overwrite: 5
-    //             });
+            TweenLite.to($window, scrollTime, {
+                scrollTo : { y: finalScroll, autoKill:true },
+                    ease: Power1.easeOut,
+                    overwrite: 5
+                });
 
-    //     });
-    // });
+        });
+    });
 
     // $('#outer').on('mousewheel DOMMouseScroll', function(event) {
     //     console.log('deltaY: ' + event.originalEvent.deltaY);
