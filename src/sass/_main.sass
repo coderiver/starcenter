@@ -965,17 +965,23 @@ textarea.input
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
-  stroke-dasharray: 1384px
-  stroke-dashoffset: 1384px
+  stroke-dasharray: 2621px
+  stroke-dashoffset: 1600px
   > svg
     display: block
     transition: stroke-dashoffset 2s ease
 
 .skyline
+  position: relative
   // stroke-dasharray: 4000px
   // stroke-dashoffset: -4000px
+  height: 272px
   > svg
     display: block
+    position: absolute
+    top: 0
+    left: 50%
+    transform: translate(-50%, 0)
     transition: stroke-dashoffset 2s ease
   &.is-animate
     stroke-dashoffset: 0
@@ -1018,7 +1024,7 @@ textarea.input
   &.is-animate
     .timeline__inner
       transform: translate3d(-470px,0,0)
-      width: 3000px
+      width: 3100px
       transition: width 4s ease, transform 1.5s ease
     .timeline__year
       opacity: 1

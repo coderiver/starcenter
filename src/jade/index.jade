@@ -5,92 +5,93 @@ block title
 
 block content
 
-  //BEGIN catalog
-  .catalog
-    .catalog__inner
+  .l-center
+    //BEGIN catalog
+    .catalog
+      .catalog__inner
 
-      //BEGIN slider
-      #slider1.main-slider
-        .main-slider__morph
-          .blue-circle
-        .main-slider__paginator
-          button(type="button").is-active 01
-          button(type="button") 02
-          button(type="button") 03
-        
-        .main-slider__slides
-          .slide
-            img.slide__img(src="img/slider/slider1.png", alt="")
-            .slide__content
-              .slide__text
-                | Наиболее выгодное предложение на рынке
-                span.price
-                  | 6 USD
-                  small.price__small
-                    | /м<sup>2</sup>
+        //BEGIN slider
+        #slider1.main-slider
+          .main-slider__morph
+            .blue-circle
+          .main-slider__paginator
+            button(type="button").is-active 01
+            button(type="button") 02
+            button(type="button") 03
+          
+          .main-slider__slides
+            .slide
+              img.slide__img(src="img/slider/slider1.png", alt="")
+              .slide__content
+                .slide__text
+                  | Наиболее выгодное предложение на рынке
+                  span.price
+                    | 6 USD
+                    small.price__small
+                      | /м<sup>2</sup>
 
-              button.details-btn(type="button")
-                span Узнать детали
-                +icon("arrow")
+                button.details-btn(type="button")
+                  span Узнать детали
+                  +icon("arrow")
 
-          .slide
-            img.slide__img(src="img/slider/slider2.png", alt="")
-            .slide__content
-              .slide__text
-                | Наиболее выгодное предложение на рынке
-                span.price
-                  | 10 USD
-                  small.price__small
-                    | /м<sup>2</sup>
+            .slide
+              img.slide__img(src="img/slider/slider2.png", alt="")
+              .slide__content
+                .slide__text
+                  | Наиболее выгодное предложение на рынке
+                  span.price
+                    | 10 USD
+                    small.price__small
+                      | /м<sup>2</sup>
 
-              button.details-btn(type="button")
-                span Узнать детали
-                +icon("arrow")
+                button.details-btn(type="button")
+                  span Узнать детали
+                  +icon("arrow")
 
-          .slide
-            img.slide__img(src="img/slider/slider3.png", alt="")
-            .slide__content
-              .slide__text
-                | Наиболее выгодное предложение на рынке
-                span.price
-                  | 20 USD
-                  small.price__small
-                    | /м<sup>2</sup>
+            .slide
+              img.slide__img(src="img/slider/slider3.png", alt="")
+              .slide__content
+                .slide__text
+                  | Наиболее выгодное предложение на рынке
+                  span.price
+                    | 20 USD
+                    small.price__small
+                      | /м<sup>2</sup>
 
-              button.details-btn(type="button")
-                span Узнать детали
-                +icon("arrow")
-      //END slider
+                button.details-btn(type="button")
+                  span Узнать детали
+                  +icon("arrow")
+        //END slider
 
-      canvas(id="morph", resize)
+        canvas(id="morph", resize)
 
-      .deco
-        .deco__inner
-          | 37" &mdash; 2'
+        .deco
+          .deco__inner
+            | 37" &mdash; 2'
 
-      ul.catalog-category
-        li.catalog-category__item
-          a.catalog-btn(href="#/rent", data-morph-state="circle")
-            .catalog-btn__hover
-              .catalog-btn__hover-in
-                span.catalog-btn__hover-text Арендовать
-            .catalog-btn__front
-              span Арендовать
-        li.catalog-category__item
-          a.catalog-btn(href="#/buy", data-morph-state="square")
-            .catalog-btn__hover
-              .catalog-btn__hover-in
-                span.catalog-btn__hover-text Купить
-            .catalog-btn__front
-              span Купить
-        li.catalog-category__item
-          a.catalog-btn(href="#/invest", data-morph-state="triangle") 
-            .catalog-btn__hover
-              .catalog-btn__hover-in
-                span.catalog-btn__hover-text Инвестировать
-            .catalog-btn__front
-              span Инвестировать
-  //END catalog
+        ul.catalog-category
+          li.catalog-category__item
+            a.catalog-btn(href="#/rent", data-morph-state="circle")
+              .catalog-btn__hover
+                .catalog-btn__hover-in
+                  span.catalog-btn__hover-text Арендовать
+              .catalog-btn__front
+                span Арендовать
+          li.catalog-category__item
+            a.catalog-btn(href="#/buy", data-morph-state="square")
+              .catalog-btn__hover
+                .catalog-btn__hover-in
+                  span.catalog-btn__hover-text Купить
+              .catalog-btn__front
+                span Купить
+          li.catalog-category__item
+            a.catalog-btn(href="#/invest", data-morph-state="triangle") 
+              .catalog-btn__hover
+                .catalog-btn__hover-in
+                  span.catalog-btn__hover-text Инвестировать
+              .catalog-btn__front
+                span Инвестировать
+    //END catalog
 
   //BEGIN timeline
   .facts

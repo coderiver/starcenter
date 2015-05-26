@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="1368px" height="192px" viewBox="0 0 1368 192" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="2601px" height="288px" viewBox="0 0 2601 288" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
     <title>curve</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <path d="M0,191.001 L1.918,191.001 C17.574,191.001 164.601,141.002 316,141.002 C466.295,141.002 707.363,41.001 887.355,41.001 C1168.553,41.001 1335.721,1.001 1365.16,1.001 L1367.999,1.001" id="curve" stroke="#333333" stroke-width="2" sketch:type="MSShapeGroup"></path>
+        <path d="M0,286.600335 C0,286.600335 405.779163,286.600335 577.11472,258.001 C748.450277,229.401665 746.30504,208.002 903.76,208.002 C1060.0668,208.002 1310.77752,108.001 1497.9692,108.001 C1790.41512,108.001 1804.31532,89.6537706 1994.8864,68.001 C2185.45748,46.3482294 2600,1.41398255 2600,1.41398255" id="curve" stroke="#333333" stroke-width="2" sketch:type="MSShapeGroup"></path>
     </g>
 </svg>

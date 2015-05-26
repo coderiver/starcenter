@@ -407,26 +407,26 @@ $(document).ready(function() {
     //     $(this).toggleClass('is-animate');
     // });
 
-    $(function(){
+    // $(function(){
 
-        var $window = $('#outer');
-        var scrollTime = 1;
-        var scrollDistance = 170;
+    //     var $window = $('#outer');
+    //     var scrollTime = 1;
+    //     var scrollDistance = 170;
 
-        $window.on("mousewheel DOMMouseScroll", function(event){
-            event.preventDefault();
-            var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
-            var scrollTop = $window.scrollTop();
-            var finalScroll = scrollTop - parseInt(delta*scrollDistance);
+    //     $window.on("mousewheel DOMMouseScroll", function(event){
+    //         event.preventDefault();
+    //         var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
+    //         var scrollTop = $window.scrollTop();
+    //         var finalScroll = scrollTop - parseInt(delta*scrollDistance);
 
-            TweenLite.to($window, scrollTime, {
-                scrollTo : { y: finalScroll, autoKill:true },
-                    ease: Power1.easeOut,
-                    overwrite: 5
-                });
+    //         TweenLite.to($window, scrollTime, {
+    //             scrollTo : { y: finalScroll, autoKill:true },
+    //                 ease: Power1.easeOut,
+    //                 overwrite: 5
+    //             });
 
-        });
-    });
+    //     });
+    // });
 
     // $('#outer').on('mousewheel DOMMouseScroll', function(event) {
     //     console.log('deltaY: ' + event.originalEvent.deltaY);

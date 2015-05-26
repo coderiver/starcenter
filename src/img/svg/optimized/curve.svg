@@ -1,6 +1,6 @@
-<svg width="1368" height="192" viewBox="0 0 1368 192" xmlns="http://www.w3.org/2000/svg">
+<svg width="2601" height="288" viewBox="0 0 2601 288" xmlns="http://www.w3.org/2000/svg">
     <title>
         curve
     </title>
-    <path d="M0 191h1.918C17.574 191 164.6 141.003 316 141.003c150.295 0 391.363-100 571.355-100 281.198 0 448.366-40 477.805-40h2.84" stroke="#333" stroke-width="2" fill="none" fill-rule="evenodd"/>
+    <path d="M0 286.6s405.78 0 577.115-28.6c171.335-28.598 169.19-49.998 326.645-49.998 156.307 0 407.018-100 594.21-100 292.445 0 306.345-18.348 496.916-40C2185.456 46.347 2600 1.413 2600 1.413" stroke="#333" stroke-width="2" fill="none" fill-rule="evenodd"/>
 </svg>
