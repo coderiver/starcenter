@@ -331,7 +331,7 @@ block content
         | мы будем рады сотрудничеству если вы:
 
       .tabs
-        header.tabs__head.table
+        header.tabs__head.table.js-table
           .table__border.js-border
             include ../img/svg/svg-borders/optimized/tabs-head.svg
           a.btn.btn_tab(href="#")
@@ -440,7 +440,7 @@ block content
           | 31’ — 5”
 
     .contacts__inner
-      .contacts-table.table
+      .contacts-table.table.js-table
         .table__border.js-border
           include ../img/svg/svg-borders/optimized/contacts-table.svg
         table
@@ -505,7 +505,7 @@ block content
   .catalog-content
     .object
       .object__pic(style="background-image:url('img/objects/object1.jpg')")
-      .info.table
+      .info.table.js-table
         .table__border.js-border
           include ../img/svg/svg-borders/optimized/info-table.svg
         .info__inner
@@ -539,7 +539,7 @@ block content
 
     .object
       .object__pic(style="background-image:url('img/objects/object2.jpg')")
-      .info.table
+      .info.table.js-table
         .table__border.js-border
           include ../img/svg/svg-borders/optimized/info-table.svg
         .info__inner
@@ -571,3 +571,77 @@ block content
               small.info-item__label Свободная Площадь
               |2 000 m2
   //END catalog-content
+
+
+  //BEGIN object-detail
+  .modal
+    .modal__inner
+        button.modal__close(type="button")
+          span
+            | свернуть объект
+            +icon("arrow-sm")
+        .l-center
+          .object-detail
+            
+            //BEGIN object-gallery
+            .object-gallery
+              .object-gallery__slider
+                .object-gallery__slide
+                  img(src="img/objects/object-slider.jpg", alt="")
+                .object-gallery__slide
+                  img(src="img/objects/object-slider.jpg", alt="")
+                
+                button.object-gallery__prev(type="button")
+                  span
+                    +icon("arrow")
+                    |  следующее фото
+                button.object-gallery__next(type="button")
+                  span
+                    | следующее фото
+                    +icon("arrow")
+            
+              .info.table
+                .table__border
+                  include ../img/svg/svg-borders/optimized/info-table.svg
+                .info__inner
+                  .info__cell.info__cell1
+                    a.btn.btn_object(href="#")
+                      .btn__hover
+                        .btn__hover-in
+                          | Ocean Plaza
+                          br
+                          small Київ, вул. Горького, 176
+                      .btn__front
+                        | Ocean Plaza
+                        br
+                        small Київ, вул. Горького, 176
+                  .info__cell.info__cell3
+                    .info-item
+                      small.info-item__label Площадь
+                      | 32 000 m2
+                  .info__cell.info__cell2
+                    .info-item
+                      small.info-item__label Год сдачи
+                      | 2014
+                  .info__cell.info__cell2
+                    .info-item
+                      small.info-item__label Этажность
+                      | 5
+                  .info__cell.info__cell3
+                    .info-item
+                      small.info-item__label Свободная Площадь
+                      |2 000 m2
+            //END object-gallery
+
+          .object-detail__inner
+            h4.heading.heading_red
+              | Выгодное предложение
+            p.
+              Сейчас действует скидка на 1-ый год аренды размером 
+              в 25% при подписании договора до начала лета
+
+            a.btn.btn_link(href="#")
+              span.btn__hover(data-hover="Скачать презентацию")
+              span Скачать презентацию
+
+  //END object-detail

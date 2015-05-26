@@ -12,7 +12,7 @@ var Catalog = require('./modules/_catalog.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var router = require('./modules/_routing.js');
-// var TWEEN = require('tween.js');
+var infoObj = require('./modules/_info.js');
 
 
 var app, catalog, morph, slider;
@@ -29,6 +29,7 @@ $(document).ready(function() {
         catalog : new Catalog('.catalog'),
         category: new Category('.catalog-category', '.catalog-category__item'),
         tabs    : new Tabs('.tabs', '.btn_tab', '.tabs__content'),
+        info    : infoObj,
         scrollmagic: {}
     };
 
@@ -52,10 +53,18 @@ $(document).ready(function() {
     app.morph.init();
     app.tabs.init();
 
+    app.info._initSlider('.object-gallery__slider');
+
+
+
+
+    /* ############################################################################# *\
+    #
+    #  Animations
+    #
+    \* ############################################################################ */
+
     app.scrollmagic.controller = new ScrollMagic.Controller();
-
-
-
 
     //##### timeline scene
     app.scrollmagic.timeline = {
@@ -82,7 +91,6 @@ $(document).ready(function() {
 
 
 
-
     //##### only class toggle scene
     app.scrollmagic.factsText = {
         el: $('.facts__text')[0],
@@ -102,7 +110,7 @@ $(document).ready(function() {
     };
     app.scrollmagic.tabs = {
         el: $('.tabs')[0],
-        offset: -200,
+        offset: -100,
         scene: null
     };
     $([ app.scrollmagic.factsText,
@@ -161,7 +169,7 @@ $(document).ready(function() {
                 });
             }
 
-            app.scrollmagic.box.table1.find('.table__border').toggleClass('is-animate');
+            app.scrollmagic.box.table1.toggleClass('is-animate');
 
             if ( e.state == 'DURING' && app.scrollmagic.box.canAnimate) {
                 app.scrollmagic.box.canAnimate = false;
@@ -202,13 +210,11 @@ $(document).ready(function() {
             if ( e.progress >= 0.6 && !app.scrollmagic.box.stateChanged ) {
                 app.scrollmagic.box.stateChanged = true;
 
-                app.scrollmagic.box.table1.find('.table__border').removeClass('is-animate');
-                TweenLite.fromTo(app.scrollmagic.box.table1, 0.5, {opacity: 1}, {opacity: 0});
+                app.scrollmagic.box.table1.removeClass('is-animate');
 
                 setTimeout(function() {
-                    app.scrollmagic.box.table2.find('.table__border').addClass('is-animate');
-                    TweenLite.fromTo(app.scrollmagic.box.table2, 0.5, {opacity: 0}, {opacity: 1});
-                }, 0.5);
+                    app.scrollmagic.box.table2.addClass('is-animate');
+                }, 500);
 
                 app.scrollmagic.box.el.addClass('is-animate');
             }
@@ -216,13 +222,11 @@ $(document).ready(function() {
             if ( e.progress < 0.6 && app.scrollmagic.box.stateChanged ) {
                 app.scrollmagic.box.stateChanged = false;
 
-                app.scrollmagic.box.table2.find('.table__border').removeClass('is-animate');
-                TweenLite.fromTo(app.scrollmagic.box.table2, 0.5, {opacity: 1}, {opacity: 0});
+                app.scrollmagic.box.table2.removeClass('is-animate');
 
                 setTimeout(function() {
-                    app.scrollmagic.box.table1.find('.table__border').addClass('is-animate');
-                    TweenLite.fromTo(app.scrollmagic.box.table1, 0.5, {opacity: 0}, {opacity: 1});
-                }, 0.5);
+                    app.scrollmagic.box.table1.addClass('is-animate');
+                }, 500);
 
                 app.scrollmagic.box.el.removeClass('is-animate');
             }
@@ -242,77 +246,6 @@ $(document).ready(function() {
         });
     }
 
-
-
-    //##### scene for box with men on background
-    // app.scrollmagic.boxInner = {
-    //     el: $('.box__inner')[0],
-    //     container: $('.box__table'),
-    //     table1: $('.box .men-table'),
-    //     table2: $('.box .partners-table'),
-    //     stateChanged: false,
-    //     scene: null
-    // };
-    // app.scrollmagic.boxInner.scene = new ScrollMagic.Scene({
-    //     duration: 500,
-    //     triggerElement: app.scrollmagic.boxInner.el,
-    //     triggerHook: 'onCenter',
-    //     loglevel: 1
-    // })
-        // .on('enter', function(e) {
-        //     var container = app.scrollmagic.boxInner.container;
-        //     container.css({
-        //         top: container.offset().top,
-        //         left: container.offset().left,
-        //         position: 'fixed'
-        //     });
-        // })
-        // .on('leave', function(e) {
-        //     var container = app.scrollmagic.boxInner.container;
-        //     if ( e.progress === 0 ) {
-        //         container.css({
-        //             position: '',
-        //             top: '',
-        //             left: ''
-        //         });
-        //     }
-        //     if ( e.progress === 1 ) {
-        //         container.css({
-        //             position: '',
-        //             top: Math.ceil(500 * e.progress),
-        //             left: ''
-        //         });
-        //     }
-        // })
-        // .on('progress', function(e) {
-        //     if ( e.progress >= 0.4 && !app.scrollmagic.boxInner.stateChanged ) {
-        //         app.scrollmagic.boxInner.stateChanged = true;
-
-        //         app.scrollmagic.boxInner.table1.find('.table__border').removeClass('is-animate');
-        //         TweenLite.fromTo(app.scrollmagic.boxInner.table1, 0.5, {opacity: 1}, {opacity: 0});
-
-        //         setTimeout(function() {
-        //             app.scrollmagic.boxInner.table2.find('.table__border').addClass('is-animate');
-        //             TweenLite.fromTo(app.scrollmagic.boxInner.table2, 0.5, {opacity: 0}, {opacity: 1});
-        //         }, 0.5);
-
-        //         app.scrollmagic.box.el.addClass('is-animate');
-        //     }
-        //     if ( e.progress < 0.4 && app.scrollmagic.boxInner.stateChanged ) {
-        //         app.scrollmagic.boxInner.stateChanged = false;
-
-        //         app.scrollmagic.boxInner.table2.find('.table__border').removeClass('is-animate');
-        //         TweenLite.fromTo(app.scrollmagic.boxInner.table2, 0.5, {opacity: 1}, {opacity: 0});
-
-        //         setTimeout(function() {
-        //             app.scrollmagic.boxInner.table1.find('.table__border').addClass('is-animate');
-        //             TweenLite.fromTo(app.scrollmagic.boxInner.table1, 0.5, {opacity: 0}, {opacity: 1});
-        //         }, 0.5);
-
-        //         app.scrollmagic.box.el.removeClass('is-animate');
-        //     }
-        // })
-        // .addTo(app.scrollmagic.controller);
 
 
     // ##### parallax for decorative elements
@@ -340,47 +273,60 @@ $(document).ready(function() {
         scenes: {}
     };
     app.scrollmagic.head.elements.each(function(index, el) {
-        // var tween = new TimelineLite().add([
-        //     TweenLite.to($(el).find('.head__img'), 1, {y: '20%', ease: Linear.easeNone}),
-        //     TweenLite.to($(el).find('.head__text'), 1, {y: '20%', ease: Linear.easeNone}),
-        //     TweenLite.to($(el).find('.deco'), 1, {y: '20%', ease: Linear.easeNone}),
-        //     ]);
-        // app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
-        //     duration: $(window).height(),
-        //     // offset: -200,
-        //     triggerElement: el,
-        //     triggerHook: 'onCenter',
-        //     loglevel: 1
-        // })
-        //     .setTween(tween)
-        //     .addTo(app.scrollmagic.controller);
+        var tween = new TimelineLite().add([
+            TweenLite.to($(el).find('.head__img'),  1, {y: 30}),
+            TweenLite.to($(el).find('.head__text'), 1, {y: 50}),
+            // TweenLite.to($(el).find('.deco'),       1, {y: '40%'}),
+            ]);
+        app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
+            duration: $(window).height(),
+            // offset: -200,
+            triggerElement: el,
+            triggerHook: 'onCenter',
+            loglevel: 1
+        })
+            // .on('progress', function(e) {
+            //     var progress = (40 * e.progress).toFixed(1);
+            //     console.log(e.progress);
+            //     // $(el).find('.head__img').css({
+            //     //     transform: 'translate3d(0, ' + progress + '%, 0)'
+            //     // });
+            //     // $(el).find('.head__text').css({
+            //     //     transform: 'translate3d(0, ' + progress + '%, 0)'
+            //     // });
+            //     TweenLite.to($(el).find('.head__img'), 0.1, {y: progress, ease: Linear.easeNone});
+            //     TweenLite.to($(el).find('.head__text'), 0.1, {y: progress, ease: Linear.easeNone});
+            //     // TweenLite.to($(el).find('.deco'), 0.1, {y: progress, ease: Linear.easeNone});
+            // })
+            .setTween(tween)
+            .addTo(app.scrollmagic.controller);
 
-        var bg   = $(el).find('.head__bg'),
-            img  = $(el).find('.head__img'),
-            text = $(el).find('.head__text');
-            // deco = $(el).find('.deco');
-        bg.mousemove(function(e) {
-            TweenLite.to(img,  0.2, {x: e.screenX / 150, y: e.screenY / 150});
-            TweenLite.to(text, 0.2, {x: e.screenX / 100,  y: e.screenY / 100});
-            // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
-        });
-        bg.mouseleave(function(e) {
-            TweenLite.to(img,  0.5, {x: 0, y: 0});
-            TweenLite.to(text, 0.5, {x: 0, y: 0});
+        // var bg   = $(el).find('.head__bg'),
+        //     img  = $(el).find('.head__img'),
+        //     text = $(el).find('.head__text');
+        //     // deco = $(el).find('.deco');
+        // bg.mousemove(function(e) {
+        //     TweenLite.to(img,  0.5, {x: e.screenX / 150, y: e.screenY / 150});
+        //     TweenLite.to(text, 0.5, {x: e.screenX / 100,  y: e.screenY / 100});
+        //     // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
+        // });
+        // bg.mouseleave(function(e) {
+        //     TweenLite.to(img,  0.5, {x: 0, y: 0});
+        //     TweenLite.to(text, 0.5, {x: 0, y: 0});
             // TweenLite.to(deco, 0.5, {x: 0, y: 0});
-        });
+        // });
     });
 
 
 
 
     //##### draw border table when table is in viewport
-    app.scrollmagic.borders = {
-        el: $('.js-border'),
+    app.scrollmagic.tables = {
+        el: $('.js-table'),
         scenes: {}
     };
-    app.scrollmagic.borders.el.each(function(index, el) {
-        app.scrollmagic.borders.scenes['border' + index] = new ScrollMagic.Scene({
+    app.scrollmagic.tables.el.each(function(index, el) {
+        app.scrollmagic.tables.scenes['table' + index] = new ScrollMagic.Scene({
             offset: -100,
             triggerElement: el,
             triggerHook: 'onCenter',
@@ -409,6 +355,14 @@ $(document).ready(function() {
     });
 
 
+
+
+
+    /* ############################################################################# *\
+    #
+    #  Common
+    #
+    \* ############################################################################ */
 
     (function() {
         var setBodyClass = function(className) {
@@ -453,29 +407,31 @@ $(document).ready(function() {
     //     $(this).toggleClass('is-animate');
     // });
 
-    $(function(){
+    // $(function(){
 
-        var $window = $('#outer');
-        var scrollTime = 1.2;
-        var scrollDistance = 170;
+    //     var $window = $('#outer');
+    //     var scrollTime = 0.3;
+    //     var scrollDistance = 100;
 
-        $window.on("mousewheel DOMMouseScroll", function(event){
-            event.preventDefault();
-            var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
-            var scrollTop = $window.scrollTop();
-            var finalScroll = scrollTop - parseInt(delta*scrollDistance);
+    //     $window.on("mousewheel DOMMouseScroll", function(event){
+    //         event.preventDefault();
+    //         var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
+    //         var scrollTop = $window.scrollTop();
+    //         var finalScroll = scrollTop - parseInt(delta*scrollDistance);
 
-            TweenLite.to($window, scrollTime, {
-                scrollTo : { y: finalScroll, autoKill:true },
-                    ease: Power1.easeOut,
-                    overwrite: 5
-                });
+    //         TweenLite.to($window, scrollTime, {
+    //             scrollTo : { y: finalScroll, autoKill:true },
+    //                 ease: Power1.easeOut,
+    //                 overwrite: 5
+    //             });
 
-        });
-    });
+    //     });
+    // });
 
     // $('#outer').on('mousewheel DOMMouseScroll', function(event) {
     //     console.log('deltaY: ' + event.originalEvent.deltaY);
     // });
+
+    window.app = app;
 
 });

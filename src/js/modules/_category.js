@@ -1,5 +1,4 @@
 require('jquery');
-require('jquery.easing');
 require('slick-carousel');
 
 function Category(wrapperSelector, itemSelector) {
