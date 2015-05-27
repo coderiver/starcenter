@@ -705,10 +705,24 @@
               <div class="btn__hover-in">Жилая недвижимость</div>
             </div></a></div>
         <div class="catalog-content">
-          <div class="object">
-            <div style="background-image:url('img/objects/object1.jpg')" class="object__pic"></div>
-            <div class="info table js-table">
-              <div class="table__border js-border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+          <div class="object-wrapper">
+            <div id="flagship" class="object js-object">
+              <div class="object__inner">
+                <div class="object-gallery">
+                  <div class="object-gallery__slider">
+                    <div class="object-gallery__slide"><img src="img/objects/object-slider.jpg" alt=""></div>
+                    <button type="button" class="object-gallery__prev"><span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg> следующее фото</span></button>
+                    <button type="button" class="object-gallery__next"><span>следующее фото
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg></span></button>
+                  </div>
+                </div>
+                <div class="info table js-table">
+                  <div class="table__border js-border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
     <title>
         info-table
     </title>
@@ -725,32 +739,36 @@
     </g>
 </svg>
 
-              </div>
-              <div class="info__inner">
-                <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
-                    <div class="btn__hover">
-                      <div class="btn__hover-in">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div>
+                  </div>
+                  <div class="info__inner">
+                    <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div>
+                        </div>
+                        <div class="btn__front">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div></a></div>
+                    <div class="info__cell info__cell3">
+                      <div class="info-item"><small class="info-item__label">Площадь</small>32 000 m2</div>
                     </div>
-                    <div class="btn__front">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div></a></div>
-                <div class="info__cell info__cell3">
-                  <div class="info-item"><small class="info-item__label">Площадь</small>32 000 m2</div>
-                </div>
-                <div class="info__cell info__cell2">
-                  <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
-                </div>
-                <div class="info__cell info__cell2">
-                  <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
-                </div>
-                <div class="info__cell info__cell3">
-                  <div class="info-item"><small class="info-item__label">Свободная Площадь</small>2 000 m2</div>
+                    <div class="info__cell info__cell2">
+                      <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
+                    </div>
+                    <div class="info__cell info__cell2">
+                      <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
+                    </div>
+                    <div class="info__cell info__cell3">
+                      <div class="info-item"><small class="info-item__label">Свободная Площадь</small>2 000 m2</div>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <div class="object__detail"></div>
             </div>
           </div>
-          <div class="object">
-            <div style="background-image:url('img/objects/object2.jpg')" class="object__pic"></div>
-            <div class="info table js-table">
-              <div class="table__border js-border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+          <div class="object-wrapper">
+            <div id="ocean-plaza" class="object js-object">
+              <div style="background-image:url('img/objects/object2.jpg')" class="object__pic"></div>
+              <div class="info table js-table">
+                <div class="table__border js-border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
     <title>
         info-table
     </title>
@@ -767,24 +785,25 @@
     </g>
 </svg>
 
-              </div>
-              <div class="info__inner">
-                <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
-                    <div class="btn__hover">
-                      <div class="btn__hover-in">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div>
-                    </div>
-                    <div class="btn__front">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div></a></div>
-                <div class="info__cell info__cell3">
-                  <div class="info-item"><small class="info-item__label">Площадь</small>32 000 m2</div>
                 </div>
-                <div class="info__cell info__cell2">
-                  <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
-                </div>
-                <div class="info__cell info__cell2">
-                  <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
-                </div>
-                <div class="info__cell info__cell3">
-                  <div class="info-item"><small class="info-item__label">Свободная Площадь</small>2 000 m2</div>
+                <div class="info__inner">
+                  <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div>
+                      </div>
+                      <div class="btn__front">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div></a></div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Площадь</small>32 000 m2</div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
+                  </div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Свободная Площадь</small>2 000 m2</div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1176,7 +1176,7 @@ textarea.input
   opacity: 0
   pointer-events: none
   visibility: hidden
-  &.is-animate
+  &.is-animate, .object.is-fixed &
     transition-delay: 0s
     opacity: 1
     visibility: visible
@@ -1580,20 +1580,42 @@ textarea.input
   align-items: center
 
 
-.object
-  position: relative
+.object-wrapper
   width: 790px
   height: 450px
+  position: relative
   margin: 130px auto
   &:first-child
     margin-top: 0
   &:last-child
     margin-bottom: 0
+
+.object
+  position: relative
+  width: 790px
+  height: 450px
+  background: #FFF
+  outline: 1px solid red
   .info
     position: absolute
-    z-index: 2
-    bottom: -20px
-    right: -30px
+    z-index: 1
+    left: 50%
+    bottom: -22px
+    margin-left: -225px
+    .table__border
+      stroke-dashoffset: 0
+  &.is-fixed
+    .object__inner
+      height: 680px
+
+.object__inner
+  position: relative
+  z-index: 0
+  width: 100%
+  max-width: 1368px
+  margin: auto
+  height: 450px
+  transition: height 1s linear
 
 .object__pic
   position: relative
@@ -1659,6 +1681,77 @@ textarea.input
   .btn__front,
   .btn__hover-in
     padding: 20px 5px 5px 40px
+
+
+.object-gallery
+  position: relative
+  z-index: 0
+  overflow: hidden
+  padding-bottom: 122px
+
+.object-gallery__slider
+  position: relative
+  height: 650px
+
+.object-gallery__slide
+  width: 100%
+  height: 680px
+  // height: 450px
+  overflow: hidden
+  > img
+    display: block
+    max-width: 100%
+
+.object-gallery__prev,
+.object-gallery__next
+  position: absolute
+  top: 0
+  bottom: 0
+  width: 50%
+  background: none
+  color: #FFF
+  +f(hb, 10, 0.2)
+  text-transform: uppercase
+  transition: opacity 0.3s linear
+  opacity: 0
+  white-space: nowrap
+  > span
+    display: inline-block
+    position: relative
+    top: 110px
+    transition: transform 0.4s ease
+  .icon-arrow
+    position: relative
+    top: 1px
+    transition: transform 0.6s ease
+    fill: #FFF
+  &:hover
+    opacity: 1
+
+.object-gallery__prev
+  left: 0
+  .icon-arrow
+    transform: translate3d(0,0,0) rotate(180deg)
+    // margin-right: 15px
+  > span
+    right: 30px
+  &:hover
+    > span
+      transform: translate3d(-50px,0,0)
+    .icon-arrow
+      transform: translate3d(-15px,0,0) rotate(180deg)
+
+.object-gallery__next
+  right: 0
+  > span
+    left: 30px
+  // .icon-arrow
+  //   margin-left: 15px
+  &:hover
+    > span
+      transform: translate3d(60px,0,0)
+    .icon-arrow
+      transform: translate3d(15px,0,0)
 
 
 //---------------------------------------------------------------------------
@@ -1746,75 +1839,6 @@ textarea.input
   .btn_link
     margin-top: 40px
 
-
-.object-gallery
-  position: relative
-  z-index: 0
-  overflow: hidden
-  padding-bottom: 122px
-
-.object-gallery__slider
-  position: relative
-  height: 650px
-
-.object-gallery__slide
-  width: 100%
-  height: 680px
-  overflow: hidden
-  > img
-    display: block
-    max-width: 100%
-
-.object-gallery__prev,
-.object-gallery__next
-  position: absolute
-  top: 0
-  bottom: 0
-  width: 50%
-  background: none
-  color: #FFF
-  +f(hb, 10, 0.2)
-  text-transform: uppercase
-  transition: opacity 0.3s linear
-  opacity: 0
-  white-space: nowrap
-  > span
-    display: inline-block
-    position: relative
-    top: 110px
-    transition: transform 0.4s ease
-  .icon-arrow
-    position: relative
-    top: 1px
-    transition: transform 0.6s ease
-    fill: #FFF
-  &:hover
-    opacity: 1
-
-.object-gallery__prev
-  left: 0
-  .icon-arrow
-    transform: translate3d(0,0,0) rotate(180deg)
-    // margin-right: 15px
-  > span
-    right: 30px
-  &:hover
-    > span
-      transform: translate3d(-50px,0,0)
-    .icon-arrow
-      transform: translate3d(-15px,0,0) rotate(180deg)
-
-.object-gallery__next
-  right: 0
-  > span
-    left: 30px
-  // .icon-arrow
-  //   margin-left: 15px
-  &:hover
-    > span
-      transform: translate3d(60px,0,0)
-    .icon-arrow
-      transform: translate3d(15px,0,0)
 //---------------------------------------------------------------------------
 //            ^^^^^  end detail  ^^^^^
 //---------------------------------------------------------------------------

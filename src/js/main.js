@@ -11,8 +11,8 @@ var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
+var Info = require('./modules/_info.js');
 var router = require('./modules/_routing.js');
-var infoObj = require('./modules/_info.js');
 var initAnimations = require('./modules/_animations.js');
 
 
@@ -27,8 +27,32 @@ $(document).ready(function() {
     app.catalog  = new Catalog('.catalog');
     app.category = new Category('.catalog-category', '.catalog-category__item');
     app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
-    app.info     = infoObj;
     app.scrollmagic = initAnimations();
+    app.rootContainer = $('#outer');
+    app.scrollDisabled = false;
+
+    app.util = {
+        toCamelCase: function(str) {
+            return str.replace(/^([A-Z])|[\s-_](\w)/g, function(match, p1, p2, offset) {
+                    if (p2) return p2.toUpperCase();
+                    return p1.toLowerCase();
+                });
+        },
+
+        prevent: function(event) {
+            event.preventDefault();
+        },
+
+        toggleScroll: function() {
+            if ( !app.scrollDisabled ) {
+                app.rootContainer.on('scroll mousewheel DOMMouseScroll', event, app.util.prevent);
+                app.scrollDisabled = true;
+            } else {
+                app.rootContainer.off('scroll mousewheel DOMMouseScroll', app.util.prevent);
+                app.scrollDisabled = false;
+            }
+        },
+    };
 
     app.openCatalog = function(state) {
         app.catalog.open();
@@ -56,6 +80,15 @@ $(document).ready(function() {
         if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
     });
 
+    app.objects = {};
+
+    $.each($('.js-object'), function(index, el) {
+
+        var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+
+        app.objects[id] = new Info();
+        app.objects[id].init(el);
+    });
 
 
 

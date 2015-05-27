@@ -518,73 +518,95 @@ block content
           | Жилая недвижимость
 
   .catalog-content
-    .object
-      .object__pic(style="background-image:url('img/objects/object1.jpg')")
-      .info.table.js-table
-        .table__border.js-border
-          include ../img/svg/svg-borders/optimized/info-table.svg
-        .info__inner
-          .info__cell.info__cell1
-            a.btn.btn_object(href="#")
-              .btn__hover
-                .btn__hover-in
-                  | БЦ Flagship
-                  br
-                  small Київ, вул. Горького, 176
-              .btn__front
-                | БЦ Flagship
-                br
-                small Київ, вул. Горького, 176
-          .info__cell.info__cell3
-            .info-item
-              small.info-item__label Площадь
-              | 32 000 m2
-          .info__cell.info__cell2
-            .info-item
-              small.info-item__label Год сдачи
-              | 2014
-          .info__cell.info__cell2
-            .info-item
-              small.info-item__label Этажность
-              | 5
-          .info__cell.info__cell3
-            .info-item
-              small.info-item__label Свободная Площадь
-              |2 000 m2
+    .object-wrapper
+      #flagship.object.js-object
+        //- .object__pic(style="background-image:url('img/objects/object1.jpg')")
 
-    .object
-      .object__pic(style="background-image:url('img/objects/object2.jpg')")
-      .info.table.js-table
-        .table__border.js-border
-          include ../img/svg/svg-borders/optimized/info-table.svg
-        .info__inner
-          .info__cell.info__cell1
-            a.btn.btn_object(href="#")
-              .btn__hover
-                .btn__hover-in
+        .object__inner
+          .object-gallery
+            .object-gallery__slider
+              .object-gallery__slide
+                img(src="img/objects/object-slider.jpg", alt="")
+              //- .object-gallery__slide
+                img(src="img/objects/object-slider.jpg", alt="")
+              
+              button.object-gallery__prev(type="button")
+                span
+                  +icon("arrow")
+                  |  следующее фото
+              button.object-gallery__next(type="button")
+                span
+                  | следующее фото
+                  +icon("arrow")
+          
+          .info.table.js-table
+            .table__border.js-border
+              include ../img/svg/svg-borders/optimized/info-table.svg
+            .info__inner
+              .info__cell.info__cell1
+                a.btn.btn_object(href="#")
+                  .btn__hover
+                    .btn__hover-in
+                      | БЦ Flagship
+                      br
+                      small Київ, вул. Горького, 176
+                  .btn__front
+                    | БЦ Flagship
+                    br
+                    small Київ, вул. Горького, 176
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Площадь
+                  | 32 000 m2
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Год сдачи
+                  | 2014
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Этажность
+                  | 5
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Свободная Площадь
+                  |2 000 m2
+
+        .object__detail
+    
+    .object-wrapper
+      #ocean-plaza.object.js-object
+        .object__pic(style="background-image:url('img/objects/object2.jpg')")
+        .info.table.js-table
+          .table__border.js-border
+            include ../img/svg/svg-borders/optimized/info-table.svg
+          .info__inner
+            .info__cell.info__cell1
+              a.btn.btn_object(href="#")
+                .btn__hover
+                  .btn__hover-in
+                    | Ocean Plaza
+                    br
+                    small Київ, вул. Горького, 176
+                .btn__front
                   | Ocean Plaza
                   br
                   small Київ, вул. Горького, 176
-              .btn__front
-                | Ocean Plaza
-                br
-                small Київ, вул. Горького, 176
-          .info__cell.info__cell3
-            .info-item
-              small.info-item__label Площадь
-              | 32 000 m2
-          .info__cell.info__cell2
-            .info-item
-              small.info-item__label Год сдачи
-              | 2014
-          .info__cell.info__cell2
-            .info-item
-              small.info-item__label Этажность
-              | 5
-          .info__cell.info__cell3
-            .info-item
-              small.info-item__label Свободная Площадь
-              |2 000 m2
+            .info__cell.info__cell3
+              .info-item
+                small.info-item__label Площадь
+                | 32 000 m2
+            .info__cell.info__cell2
+              .info-item
+                small.info-item__label Год сдачи
+                | 2014
+            .info__cell.info__cell2
+              .info-item
+                small.info-item__label Этажность
+                | 5
+            .info__cell.info__cell3
+              .info-item
+                small.info-item__label Свободная Площадь
+                |2 000 m2
   //END catalog-content
 
 
