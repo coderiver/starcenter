@@ -26,7 +26,6 @@ var info = {
 
 info._initSlider = function (element) {
     var _ = this;
-    console.log(element);
     $(element).slick(_.slickOptions);
 }.bind(info);
 

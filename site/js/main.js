@@ -14,27 +14,22 @@ var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var router = require('./modules/_routing.js');
 var infoObj = require('./modules/_info.js');
+var initAnimations = require('./modules/_animations.js');
 
 
-var app, catalog, morph, slider, mainContainer;
-
-var content = $('#content');
+var app = {};
 
 $(document).ready(function() {
 
-    mainContainer = $('#outer');
-
     router.run();
 
-    app = {
-        slider  : new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator'),
-        morph   : new Morph('#morph'),
-        catalog : new Catalog('.catalog'),
-        category: new Category('.catalog-category', '.catalog-category__item'),
-        tabs    : new Tabs('.tabs', '.btn_tab', '.tabs__content'),
-        info    : infoObj,
-        scrollmagic: {}
-    };
+    app.slider   = new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator');
+    app.morph    = new Morph('#morph');
+    app.catalog  = new Catalog('.catalog');
+    app.category = new Category('.catalog-category', '.catalog-category__item');
+    app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
+    app.info     = infoObj;
+    app.scrollmagic = initAnimations();
 
     app.openCatalog = function(state) {
         app.catalog.open();
@@ -61,312 +56,9 @@ $(document).ready(function() {
 
 
 
-    /* ############################################################################# *\
-    #
-    #  Animations
-    #
-    \* ############################################################################ */
-
-    app.scrollmagic.controller = new ScrollMagic.Controller();
-
-    //##### timeline scene
-    app.scrollmagic.timeline = {
-        el: $('#timeline'),
-        trigger: $('#trigger1')[0],
-        animated: false,
-        state2: false,
-        scene: null
-    };
-    app.scrollmagic.timeline.scene = new ScrollMagic.Scene({
-        duration: 450,
-        offset: 90,
-        triggerElement: app.scrollmagic.timeline.trigger,
-        triggerHook: 'onCenter',
-        loglevel: 1
-    })
-        .on('start', function(e) {
-            app.scrollmagic.timeline.el.toggleClass('is-animate');
-        })
-        .on('end', function(e) {
-            app.scrollmagic.timeline.el.toggleClass('state-2');
-        })
-        .addTo(app.scrollmagic.controller);
-
-
-
-    //##### only class toggle scene
-    app.scrollmagic.factsText = {
-        el: $('.facts__text')[0],
-        offset: -200,
-        duration: 450,
-        scene: null
-    };
-    app.scrollmagic.factsGroup1 = {
-        el: $('.facts-group')[0],
-        offset: -200,
-        scene: null
-    };
-    app.scrollmagic.factsGroup2 = {
-        el: $('.facts-group')[1],
-        offset: -200,
-        scene: null
-    };
-    app.scrollmagic.tabs = {
-        el: $('.tabs')[0],
-        offset: -100,
-        scene: null
-    };
-    $([ app.scrollmagic.factsText,
-        app.scrollmagic.factsGroup1,
-        app.scrollmagic.factsGroup2,
-        app.scrollmagic.tabs
-        ]).each(function(index, item) {
-            item.scene = new ScrollMagic.Scene({
-                duration: item.duration || 0,
-                offset: item.offset || 0,
-                triggerElement: item.trigger || item.el,
-                triggerHook: item.triggerHook || 'onCenter',
-                loglevel: 1
-            })
-                .setClassToggle(item.el, 'is-animate')
-                .addTo(app.scrollmagic.controller);
-    });
-
-
-
-    // ##### scene for box with men on background
-    app.scrollmagic.box = {
-        el: $('.box'),
-        trigger: $('.box-wrapper'),
-        table1: $('.box .men-table'),
-        table2: $('.box .partners-table'),
-        canAnimate: true,
-        stateChanged: false,
-        scene: null
-    };
-    // app.scrollmagic.box.scene = new ScrollMagic.Scene({
-    //     duration: 500,
-    //     offset: 285,
-    //     triggerHook: 'onCenter',
-    //     triggerElement: app.scrollmagic.box.trigger[0],
-    //     loglevel: 1
-    // })
-    //     .on('start', function(e) {
-    //         var box = app.scrollmagic.box.el;
-
-    //         if ( e.state === 'DURING' ) {
-    //             box.css({
-    //                 top: box.offset().top,
-    //                 left: box.offset().left,
-    //                 width: box.width(),
-    //                 position: 'fixed'
-    //             });
-    //         }
-
-    //         if ( e.state === 'BEFORE' ) {
-    //             box.css({
-    //                 position: '',
-    //                 top: '',
-    //                 left: '',
-    //                 width: ''
-    //             });
-    //         }
-
-    //         app.scrollmagic.box.table1.toggleClass('is-animate');
-
-    //         if ( e.state == 'DURING' && app.scrollmagic.box.canAnimate) {
-    //             app.scrollmagic.box.canAnimate = false;
-    //             showPeople();
-    //             setTimeout(function() {
-    //                 app.scrollmagic.box.canAnimate = true;
-    //             }, 2500);
-    //         }
-
-    //         if ( e.state == 'BEFORE' && app.scrollmagic.box.canAnimate) {
-    //             app.scrollmagic.box.canAnimate = false;
-    //             hidePeople();
-    //             setTimeout(function() {
-    //                 app.scrollmagic.box.canAnimate = true;
-    //             }, 2500);
-    //         }
-    //     })
-    //     .on('end', function(e) {
-    //         var box = app.scrollmagic.box.el;
-    //         if ( e.state === 'DURING' ) {
-    //             box.css({
-    //                 top: box.offset().top,
-    //                 left: box.offset().left,
-    //                 width: box.width(),
-    //                 position: 'fixed'
-    //             });
-    //         }
-    //         if ( e.state === 'AFTER' ) {
-    //             box.css({
-    //                 position: '',
-    //                 top: Math.ceil(500 * e.progress),
-    //                 left: '',
-    //                 width: ''
-    //             });
-    //         }
-    //     })
-    //     .on('progress', function(e) {
-    //         if ( e.progress >= 0.6 && !app.scrollmagic.box.stateChanged ) {
-    //             app.scrollmagic.box.stateChanged = true;
-
-    //             app.scrollmagic.box.table1.removeClass('is-animate');
-
-    //             setTimeout(function() {
-    //                 app.scrollmagic.box.table2.addClass('is-animate');
-    //             }, 500);
-
-    //             app.scrollmagic.box.el.addClass('is-animate');
-    //         }
-
-    //         if ( e.progress < 0.6 && app.scrollmagic.box.stateChanged ) {
-    //             app.scrollmagic.box.stateChanged = false;
-
-    //             app.scrollmagic.box.table2.removeClass('is-animate');
-
-    //             setTimeout(function() {
-    //                 app.scrollmagic.box.table1.addClass('is-animate');
-    //             }, 500);
-
-    //             app.scrollmagic.box.el.removeClass('is-animate');
-    //         }
-    //     })
-    //     .addTo(app.scrollmagic.controller);
-
-    function showPeople() {
-        var man = $('.box__bg-row');
-        man.each(function(index, el) {
-            TweenLite.fromTo(el, 0.2, {opacity: 0, y: -30},{opacity: 1, y: 0}).delay(0.1 * index);
-        });
-    }
-    function hidePeople() {
-        var man = $('.box__bg-row');
-        man.each(function(index, el) {
-            TweenLite.fromTo(el, 0.2, {opacity: 1, y: 0},{opacity: 0, y: -30}).delay(0.1 * (man.length - index));
-        });
-    }
-
-    app.scrollmagic.box.scene = new ScrollMagic.Scene({
-        duration: 800,
-        triggerElement: app.scrollmagic.box.el[0],
-        loglevel: 1
-    })
-        .on('start', function(e) {
-            app.scrollmagic.box.el.toggleClass('is-animate');
-            if ( e.state === 'DURING' ) showPeople();
-            if ( e.state === 'BEFORE' ) hidePeople();
-        })
-        // .setClassToggle(app.scrollmagic.box.el[0], 'is-animate')
-        .addTo(app.scrollmagic.controller);
-
-
-
-    // ##### parallax for decorative elements
-    app.scrollmagic.deco = {
-        el: $('.deco__inner'),
-        scenes: {}
-    };
-    app.scrollmagic.deco.el.each(function(index, el) {
-        // var tween = TweenLite.fromTo(el, 0.5, {y: -50}, {y: 50});
-        // app.scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
-        //     duration: $(window).height(),
-        //     triggerElement: $(el).parents('.deco')[0],
-        //     triggerHook: 'onEnter',
-        //     loglevel: 1
-        // })
-        //     .on('progress', function(e) {
-        //         var progress = (50 * e.progress).toFixed(1);
-        //         TweenLite.to(el, 0.1, {y: progress});
-        //     })
-        //     // .setTween(tween)
-        //     .addTo(app.scrollmagic.controller);
-    });
-
-    mainContainer.mousemove(function(e) {
-        // console.log(e.screenX, e.screenY);
-        app.scrollmagic.deco.el.each(function(index, el) {
-            TweenLite.to(el,  0.5, {x: e.screenX / 100, y: e.screenY / 100});
-        });
-    });
-
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
-
-
-
-    //##### scenes for all heads
-    app.scrollmagic.head = {
-        elements: $('.head:not(.head_capability)'),
-        scenes: {}
-    };
-    app.scrollmagic.head.elements.each(function(index, el) {
-        var img  = $(el).find('.head__img'),
-            text = $(el).find('.head__text');
-
-        // var tween = new TimelineLite().add([
-        //     TweenLite.fromTo(img,  1, {y: 100}, {y: -100}),
-        //     TweenLite.fromTo(text, 1, {y: 200}, {y: -200}),
-        //     ]);
-        app.scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
-            duration: $(window).height(),
-            // offset: 210,
-            triggerElement: el,
-            triggerHook: 'onEnter',
-            loglevel: 1
-        })
-            .on('progress', function(e) {
-                console.log(e);
-                // var progress = (-100 * e.progress).toFixed(1);
-                // var progress1 = (-200 * e.progress).toFixed(1);
-                // TweenLite.to(img,  0.05, {y: progress, ease: Linear.easeNone});
-                // TweenLite.to(text, 0.05, {y: progress1, ease: Linear.easeNone});
-            })
-            // .setTween(tween)
-            .addTo(app.scrollmagic.controller);
-
-        // var bg   = $(el).find('.head__bg'),
-        //     img  = $(el).find('.head__img'),
-        //     text = $(el).find('.head__text');
-        //     // deco = $(el).find('.deco');
-        // bg.mousemove(function(e) {
-        //     TweenLite.to(img,  0.5, {x: e.screenX / 150, y: e.screenY / 150});
-        //     TweenLite.to(text, 0.5, {x: e.screenX / 100,  y: e.screenY / 100});
-        //     // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
-        // });
-        // bg.mouseleave(function(e) {
-        //     TweenLite.to(img,  0.5, {x: 0, y: 0});
-        //     TweenLite.to(text, 0.5, {x: 0, y: 0});
-            // TweenLite.to(deco, 0.5, {x: 0, y: 0});
-        // });
-    });
-
-
-
-
-    //##### draw border table when table is in viewport
-    app.scrollmagic.tables = {
-        el: $('.js-table'),
-        scenes: {}
-    };
-    app.scrollmagic.tables.el.each(function(index, el) {
-        app.scrollmagic.tables.scenes['table' + index] = new ScrollMagic.Scene({
-            offset: -100,
-            triggerElement: el,
-            triggerHook: 'onCenter',
-            loglevel: 1
-        })
-            .setClassToggle(el, 'is-animate')
-            .addTo(app.scrollmagic.controller);
-    });
-
     console.log(app);
-    console.log(app.scrollmagic);
 
-    // console.log(app.morph, app.category);
+
 
     $('.catalog-btn').on('click', function(event) {
         var state = $(this).data('morph-state');
@@ -462,7 +154,7 @@ $(document).ready(function() {
     window.app = app;
 
 });
-},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_canvas.js":15,"./modules/_catalog.js":16,"./modules/_category.js":17,"./modules/_info.js":18,"./modules/_main-slider.js":19,"./modules/_routing.js":20,"./modules/_tabs.js":21,"scrollmagic":12}],2:[function(require,module,exports){
+},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_animations.js":15,"./modules/_canvas.js":16,"./modules/_catalog.js":17,"./modules/_category.js":18,"./modules/_info.js":19,"./modules/_main-slider.js":20,"./modules/_routing.js":21,"./modules/_tabs.js":22,"scrollmagic":12}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -43696,6 +43388,325 @@ TWEEN.Interpolation = {
 
 module.exports=TWEEN;
 },{}],15:[function(require,module,exports){
+require("./../../../bower_components/jquery/dist/jquery.js");
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
+
+var ScrollMagic = require('scrollmagic');
+require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
+
+module.exports = function() {
+
+    var scrollmagic = {},
+        mainContainer = $('#outer');
+
+
+    scrollmagic.controller = new ScrollMagic.Controller();
+    TweenLite.lagSmoothing(1000, 16);
+
+
+    //##### timeline scene
+    scrollmagic.timeline = {
+        el: $('#timeline'),
+        trigger: $('#trigger1')[0],
+        animated: false,
+        state2: false,
+        scene: null
+    };
+    scrollmagic.timeline.scene = new ScrollMagic.Scene({
+        duration: 450,
+        offset: 90,
+        triggerElement: scrollmagic.timeline.trigger,
+        triggerHook: 'onCenter',
+        loglevel: 1
+    })
+        .on('start', function(e) {
+            scrollmagic.timeline.el.toggleClass('is-animate');
+        })
+        .on('end', function(e) {
+            scrollmagic.timeline.el.toggleClass('state-2');
+        })
+        .addTo(scrollmagic.controller);
+
+
+
+    //##### only class toggle scene
+    scrollmagic.factsText = {
+        el: $('.facts__text')[0],
+        offset: -200,
+        duration: 450,
+        scene: null
+    };
+    scrollmagic.factsGroup1 = {
+        el: $('.facts-group')[0],
+        offset: -200,
+        scene: null
+    };
+    scrollmagic.factsGroup2 = {
+        el: $('.facts-group')[1],
+        offset: -200,
+        scene: null
+    };
+    scrollmagic.tabs = {
+        el: $('.tabs')[0],
+        offset: -100,
+        scene: null
+    };
+    $([ scrollmagic.factsText,
+        scrollmagic.factsGroup1,
+        scrollmagic.factsGroup2,
+        scrollmagic.tabs
+        ]).each(function(index, item) {
+            item.scene = new ScrollMagic.Scene({
+                duration: item.duration || 0,
+                offset: item.offset || 0,
+                triggerElement: item.trigger || item.el,
+                triggerHook: item.triggerHook || 'onCenter',
+                loglevel: 1
+            })
+                .setClassToggle(item.el, 'is-animate')
+                .addTo(scrollmagic.controller);
+    });
+
+
+
+    // ##### scene for box with men on background
+    scrollmagic.box = {
+        el: $('.box'),
+        trigger: $('.box-wrapper'),
+        table1: $('.box .men-table'),
+        table2: $('.box .partners-table'),
+        canAnimate: true,
+        stateChanged: false,
+        scene: null
+    };
+    // scrollmagic.box.scene = new ScrollMagic.Scene({
+    //     duration: 500,
+    //     offset: 285,
+    //     triggerHook: 'onCenter',
+    //     triggerElement: scrollmagic.box.trigger[0],
+    //     loglevel: 1
+    // })
+    //     .on('start', function(e) {
+    //         var box = scrollmagic.box.el;
+
+    //         if ( e.state === 'DURING' ) {
+    //             box.css({
+    //                 top: box.offset().top,
+    //                 left: box.offset().left,
+    //                 width: box.width(),
+    //                 position: 'fixed'
+    //             });
+    //         }
+
+    //         if ( e.state === 'BEFORE' ) {
+    //             box.css({
+    //                 position: '',
+    //                 top: '',
+    //                 left: '',
+    //                 width: ''
+    //             });
+    //         }
+
+    //         scrollmagic.box.table1.toggleClass('is-animate');
+
+    //         if ( e.state == 'DURING' && scrollmagic.box.canAnimate) {
+    //             scrollmagic.box.canAnimate = false;
+    //             showPeople();
+    //             setTimeout(function() {
+    //                 scrollmagic.box.canAnimate = true;
+    //             }, 2500);
+    //         }
+
+    //         if ( e.state == 'BEFORE' && scrollmagic.box.canAnimate) {
+    //             scrollmagic.box.canAnimate = false;
+    //             hidePeople();
+    //             setTimeout(function() {
+    //                 scrollmagic.box.canAnimate = true;
+    //             }, 2500);
+    //         }
+    //     })
+    //     .on('end', function(e) {
+    //         var box = scrollmagic.box.el;
+    //         if ( e.state === 'DURING' ) {
+    //             box.css({
+    //                 top: box.offset().top,
+    //                 left: box.offset().left,
+    //                 width: box.width(),
+    //                 position: 'fixed'
+    //             });
+    //         }
+    //         if ( e.state === 'AFTER' ) {
+    //             box.css({
+    //                 position: '',
+    //                 top: Math.ceil(500 * e.progress),
+    //                 left: '',
+    //                 width: ''
+    //             });
+    //         }
+    //     })
+    //     .on('progress', function(e) {
+    //         if ( e.progress >= 0.6 && !scrollmagic.box.stateChanged ) {
+    //             scrollmagic.box.stateChanged = true;
+
+    //             scrollmagic.box.table1.removeClass('is-animate');
+
+    //             setTimeout(function() {
+    //                 scrollmagic.box.table2.addClass('is-animate');
+    //             }, 500);
+
+    //             scrollmagic.box.el.addClass('is-animate');
+    //         }
+
+    //         if ( e.progress < 0.6 && scrollmagic.box.stateChanged ) {
+    //             scrollmagic.box.stateChanged = false;
+
+    //             scrollmagic.box.table2.removeClass('is-animate');
+
+    //             setTimeout(function() {
+    //                 scrollmagic.box.table1.addClass('is-animate');
+    //             }, 500);
+
+    //             scrollmagic.box.el.removeClass('is-animate');
+    //         }
+    //     })
+    //     .addTo(scrollmagic.controller);
+
+    function showPeople() {
+        var man = $('.box__bg-row');
+        man.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.1 * index);
+        });
+    }
+    function hidePeople() {
+        var man = $('.box__bg-row');
+        man.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.1 * (man.length - index));
+        });
+    }
+
+    TweenLite.set($('.box__bg-row'), {opacity: 0, y: -30});
+    scrollmagic.box.scene = new ScrollMagic.Scene({
+        duration: 800,
+        triggerElement: scrollmagic.box.el[0],
+        loglevel: 1
+    })
+        .on('start', function(e) {
+            scrollmagic.box.el.toggleClass('is-animate');
+            if ( e.state === 'DURING' ) showPeople();
+            if ( e.state === 'BEFORE' ) hidePeople();
+        })
+        .addTo(scrollmagic.controller);
+
+
+
+    // ##### parallax for decorative elements
+    scrollmagic.deco = {
+        el: $('.deco__inner'),
+        scenes: {}
+    };
+    // scrollmagic.deco.el.each(function(index, el) {
+        // var tween = TweenLite.fromTo(el, 0.5, {y: -50}, {y: 50});
+        // scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
+        //     duration: $(window).height(),
+        //     triggerElement: $(el).parents('.deco')[0],
+        //     triggerHook: 'onEnter',
+        //     loglevel: 1
+        // })
+        //     .on('progress', function(e) {
+        //         var progress = (50 * e.progress).toFixed(1);
+        //         TweenLite.to(el, 0.1, {y: progress});
+        //     })
+        //     // .setTween(tween)
+        //     .addTo(scrollmagic.controller);
+    // });
+
+    mainContainer.mousemove(function(e) {
+        // console.log(e.screenX, e.screenY);
+        scrollmagic.deco.el.each(function(index, el) {
+            TweenLite.to(el,  0.5, {x: e.screenX / 100, y: e.screenY / 100});
+        });
+    });
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+
+
+    //##### scenes for all heads
+    scrollmagic.head = {
+        elements: $('.head:not(.head_capability)'),
+        scenes: {}
+    };
+    scrollmagic.head.elements.each(function(index, el) {
+        var img  = $(el).find('.head__img'),
+            text = $(el).find('.head__text');
+
+        // TweenLite.set(img,  {y: 100});
+        // TweenLite.set(text, {y: 200});
+
+        // var tween = new TimelineLite()
+        //     .add([
+        //         TweenLite.to(img,  1, {y: -50}),
+        //         TweenLite.to(text, 1, {y: -200}),
+            // ]);
+        scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
+            duration: $(window).height() + $(el).height(),
+            offset: - $(el).height() / 2,
+            triggerElement: el,
+            triggerHook: 'onEnter',
+            loglevel: 1
+        })
+            .on('progress', function(e) {
+                var progressImg  = (200 * e.progress).toFixed(1);
+                var progressText = (500 * e.progress).toFixed(1);
+                TweenLite.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
+                TweenLite.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
+            })
+            // .setTween(tween)
+            .addTo(scrollmagic.controller);
+
+        // var bg   = $(el).find('.head__bg'),
+        //     img  = $(el).find('.head__img'),
+        //     text = $(el).find('.head__text');
+        //     // deco = $(el).find('.deco');
+        // bg.mousemove(function(e) {
+        //     TweenLite.to(img,  0.5, {x: e.screenX / 150, y: e.screenY / 150});
+        //     TweenLite.to(text, 0.5, {x: e.screenX / 100,  y: e.screenY / 100});
+        //     // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
+        // });
+        // bg.mouseleave(function(e) {
+        //     TweenLite.to(img,  0.5, {x: 0, y: 0});
+        //     TweenLite.to(text, 0.5, {x: 0, y: 0});
+            // TweenLite.to(deco, 0.5, {x: 0, y: 0});
+        // });
+    });
+
+
+
+
+    //##### draw border table when table is in viewport
+    scrollmagic.tables = {
+        el: $('.js-table'),
+        scenes: {}
+    };
+    scrollmagic.tables.el.each(function(index, el) {
+        scrollmagic.tables.scenes['table' + index] = new ScrollMagic.Scene({
+            offset: -100,
+            triggerElement: el,
+            triggerHook: 'onCenter',
+            loglevel: 1
+        })
+            .setClassToggle(el, 'is-animate')
+            .addTo(scrollmagic.controller);
+    });
+
+    return scrollmagic;
+};
+},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"scrollmagic":12}],16:[function(require,module,exports){
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
@@ -44279,17 +44290,17 @@ Morph.prototype.init = function() {
     this._calcPosition();
 };
 
-Morph.prototype.square = function() {
+Morph.prototype.toSquare = function() {
     this._changePicture('square');
     this._morph('square');
 };
 
-Morph.prototype.triangle = function() {
+Morph.prototype.toTriangle = function() {
     this._changePicture('triangle');
     this._morph('triangle');
 };
 
-Morph.prototype.circle = function() {
+Morph.prototype.toCircle = function() {
     this._changePicture('circle');
     this._morph('circle');
 };
@@ -44324,7 +44335,7 @@ Morph.prototype.deactivate = function() {
 };
 
 module.exports = Morph;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],16:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],17:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Catalog(selector) {
@@ -44367,7 +44378,7 @@ Catalog.prototype.setHeight = function() {
 };
 
 module.exports = Catalog;
-},{"./../../../bower_components/jquery/dist/jquery.js":2}],17:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2}],18:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 
@@ -44453,7 +44464,7 @@ Category.prototype.disable = function() {
 };
 
 module.exports = Category;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],18:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],19:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 
 var info = {
@@ -44482,12 +44493,11 @@ var info = {
 
 info._initSlider = function (element) {
     var _ = this;
-    console.log(element);
     $(element).slick(_.slickOptions);
 }.bind(info);
 
 module.exports = info;
-},{"./../../../bower_components/jquery/dist/jquery.js":2}],19:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 
@@ -44587,7 +44597,7 @@ MainSlider.prototype.makeVisible = function() {
 module.exports = MainSlider;
 
 
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],20:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],21:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 
@@ -44613,7 +44623,7 @@ var router = $.sammy(function() {
 });
 
 module.exports = router;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],21:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],22:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Tabs(wrapper, tabButton, tabContent) {

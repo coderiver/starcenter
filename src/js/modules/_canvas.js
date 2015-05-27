@@ -581,17 +581,17 @@ Morph.prototype.init = function() {
     this._calcPosition();
 };
 
-Morph.prototype.square = function() {
+Morph.prototype.toSquare = function() {
     this._changePicture('square');
     this._morph('square');
 };
 
-Morph.prototype.triangle = function() {
+Morph.prototype.toTriangle = function() {
     this._changePicture('triangle');
     this._morph('triangle');
 };
 
-Morph.prototype.circle = function() {
+Morph.prototype.toCircle = function() {
     this._changePicture('circle');
     this._morph('circle');
 };
