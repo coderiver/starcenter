@@ -50,7 +50,11 @@ $(document).ready(function() {
     app.morph.init();
     app.tabs.init();
 
-    app.info._initSlider('.object-gallery__slider');
+    // app.info._initSlider('.object-gallery__slider');
+
+    app.scrollmagic.tabs.scene.on('start', function(e) {
+        if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
+    });
 
 
 

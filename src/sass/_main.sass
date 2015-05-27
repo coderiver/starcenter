@@ -1172,11 +1172,15 @@ textarea.input
     box-sizing: border-box
 
 .js-table
-  transition: opacity 0.3s linear 1s
+  transition: opacity 0.3s linear 1s, visibility 0.3s linear 1s
   opacity: 0
+  pointer-events: none
+  visibility: hidden
   &.is-animate
     transition-delay: 0s
     opacity: 1
+    visibility: visible
+    pointer-events: all
     .table__border
       stroke-dashoffset: 0
       .outer-border
@@ -1334,7 +1338,7 @@ textarea.input
 .head__img
   position: absolute
   z-index: 1
-  bottom: -200px
+  bottom: 0
   // left: 120px
   left: 120px
   // pointer-events: none
@@ -1344,8 +1348,7 @@ textarea.input
 .head__text
   position: absolute
   z-index: 2
-  // bottom: 73px
-  bottom: -250px
+  bottom: 73px
   left: 70px
   +f(hb, 40, 0.8)
   line-height: 1.75
@@ -1464,7 +1467,10 @@ textarea.input
 .tabs__head
   position: relative
   z-index: 1
+  pointer-events: none
   +clr
+  &.is-animate
+    pointer-events: all
 
 .tabs__content
   position: relative

@@ -85,9 +85,9 @@ module.exports = function() {
     // ##### scene for box with men on background
     scrollmagic.box = {
         el: $('.box'),
-        trigger: $('.box-wrapper'),
-        table1: $('.box .men-table'),
-        table2: $('.box .partners-table'),
+        // trigger: $('.box-wrapper'),
+        // table1: $('.box .men-table'),
+        // table2: $('.box .partners-table'),
         canAnimate: true,
         stateChanged: false,
         scene: null
@@ -187,13 +187,13 @@ module.exports = function() {
     function showPeople() {
         var man = $('.box__bg-row');
         man.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.1 * index);
+            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.05 * index);
         });
     }
     function hidePeople() {
         var man = $('.box__bg-row');
         man.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.1 * (man.length - index));
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (man.length - index));
         });
     }
 
@@ -204,9 +204,18 @@ module.exports = function() {
         loglevel: 1
     })
         .on('start', function(e) {
-            scrollmagic.box.el.toggleClass('is-animate');
-            if ( e.state === 'DURING' ) showPeople();
-            if ( e.state === 'BEFORE' ) hidePeople();
+            if ( scrollmagic.box.canAnimate ) {
+
+                scrollmagic.box.canAnimate = false;
+
+                scrollmagic.box.el.toggleClass('is-animate');
+                if ( e.state === 'DURING' ) showPeople();
+                if ( e.state === 'BEFORE' ) hidePeople();
+
+                setTimeout(function() {
+                    scrollmagic.box.canAnimate = true;
+                }, 600);
+            }
         })
         .addTo(scrollmagic.controller);
 
@@ -255,14 +264,9 @@ module.exports = function() {
         var img  = $(el).find('.head__img'),
             text = $(el).find('.head__text');
 
-        // TweenLite.set(img,  {y: 100});
-        // TweenLite.set(text, {y: 200});
+        TweenLite.set(img,  {bottom: -200});
+        TweenLite.set(text, {bottom: -250});
 
-        // var tween = new TimelineLite()
-        //     .add([
-        //         TweenLite.to(img,  1, {y: -50}),
-        //         TweenLite.to(text, 1, {y: -200}),
-            // ]);
         scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height() + $(el).height(),
             offset: - $(el).height() / 2,
@@ -276,23 +280,7 @@ module.exports = function() {
                 TweenLite.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
                 TweenLite.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
             })
-            // .setTween(tween)
             .addTo(scrollmagic.controller);
-
-        // var bg   = $(el).find('.head__bg'),
-        //     img  = $(el).find('.head__img'),
-        //     text = $(el).find('.head__text');
-        //     // deco = $(el).find('.deco');
-        // bg.mousemove(function(e) {
-        //     TweenLite.to(img,  0.5, {x: e.screenX / 150, y: e.screenY / 150});
-        //     TweenLite.to(text, 0.5, {x: e.screenX / 100,  y: e.screenY / 100});
-        //     // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
-        // });
-        // bg.mouseleave(function(e) {
-        //     TweenLite.to(img,  0.5, {x: 0, y: 0});
-        //     TweenLite.to(text, 0.5, {x: 0, y: 0});
-            // TweenLite.to(deco, 0.5, {x: 0, y: 0});
-        // });
     });
 
 

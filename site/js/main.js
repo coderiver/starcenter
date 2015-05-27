@@ -51,7 +51,11 @@ $(document).ready(function() {
     app.morph.init();
     app.tabs.init();
 
-    app.info._initSlider('.object-gallery__slider');
+    // app.info._initSlider('.object-gallery__slider');
+
+    app.scrollmagic.tabs.scene.on('start', function(e) {
+        if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
+    });
 
 
 
@@ -43475,9 +43479,9 @@ module.exports = function() {
     // ##### scene for box with men on background
     scrollmagic.box = {
         el: $('.box'),
-        trigger: $('.box-wrapper'),
-        table1: $('.box .men-table'),
-        table2: $('.box .partners-table'),
+        // trigger: $('.box-wrapper'),
+        // table1: $('.box .men-table'),
+        // table2: $('.box .partners-table'),
         canAnimate: true,
         stateChanged: false,
         scene: null
@@ -43577,13 +43581,13 @@ module.exports = function() {
     function showPeople() {
         var man = $('.box__bg-row');
         man.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.1 * index);
+            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.05 * index);
         });
     }
     function hidePeople() {
         var man = $('.box__bg-row');
         man.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.1 * (man.length - index));
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (man.length - index));
         });
     }
 
@@ -43594,9 +43598,18 @@ module.exports = function() {
         loglevel: 1
     })
         .on('start', function(e) {
-            scrollmagic.box.el.toggleClass('is-animate');
-            if ( e.state === 'DURING' ) showPeople();
-            if ( e.state === 'BEFORE' ) hidePeople();
+            if ( scrollmagic.box.canAnimate ) {
+
+                scrollmagic.box.canAnimate = false;
+
+                scrollmagic.box.el.toggleClass('is-animate');
+                if ( e.state === 'DURING' ) showPeople();
+                if ( e.state === 'BEFORE' ) hidePeople();
+
+                setTimeout(function() {
+                    scrollmagic.box.canAnimate = true;
+                }, 600);
+            }
         })
         .addTo(scrollmagic.controller);
 
@@ -43645,14 +43658,9 @@ module.exports = function() {
         var img  = $(el).find('.head__img'),
             text = $(el).find('.head__text');
 
-        // TweenLite.set(img,  {y: 100});
-        // TweenLite.set(text, {y: 200});
+        TweenLite.set(img,  {bottom: -200});
+        TweenLite.set(text, {bottom: -250});
 
-        // var tween = new TimelineLite()
-        //     .add([
-        //         TweenLite.to(img,  1, {y: -50}),
-        //         TweenLite.to(text, 1, {y: -200}),
-            // ]);
         scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height() + $(el).height(),
             offset: - $(el).height() / 2,
@@ -43666,23 +43674,7 @@ module.exports = function() {
                 TweenLite.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
                 TweenLite.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
             })
-            // .setTween(tween)
             .addTo(scrollmagic.controller);
-
-        // var bg   = $(el).find('.head__bg'),
-        //     img  = $(el).find('.head__img'),
-        //     text = $(el).find('.head__text');
-        //     // deco = $(el).find('.deco');
-        // bg.mousemove(function(e) {
-        //     TweenLite.to(img,  0.5, {x: e.screenX / 150, y: e.screenY / 150});
-        //     TweenLite.to(text, 0.5, {x: e.screenX / 100,  y: e.screenY / 100});
-        //     // TweenLite.to(deco, 0.2, {x: e.screenX / 80,  y: e.screenY / 80});
-        // });
-        // bg.mouseleave(function(e) {
-        //     TweenLite.to(img,  0.5, {x: 0, y: 0});
-        //     TweenLite.to(text, 0.5, {x: 0, y: 0});
-            // TweenLite.to(deco, 0.5, {x: 0, y: 0});
-        // });
     });
 
 
@@ -44659,28 +44651,36 @@ Tabs.prototype._initEvents = function() {
             if ( !_.canSwitch ) return;
 
             if ( _.activeTab !== null ) {
-                _.button.removeClass(_.options.activeClass);
                 if ( index != _.activeTab ) {
+
                     setTimeout(function() {
-                        _._showContent(index);
+                        _.showContent(index);
                     }, _.options.showDelay);
+
+                    _.hideContent();
                     el.addClass(_.options.activeClass);
+                } else {
+                    _.hideContent();
                 }
-                _._hideContent();
+
             } else {
-                _._showContent(index);
-                _.button.removeClass(_.options.activeClass);
-                el.addClass(_.options.activeClass);
+                _.showContent(index);
             }
         });
     });
 };
 
-Tabs.prototype._showContent = function(tabNumber) {
-    var _ = this;
+Tabs.prototype.showContent = function(tabNumber) {
+    var _       = this,
+        button  = $(_.button[tabNumber]),
+        content = $(_.content[tabNumber]);
+
     _.activeTab = tabNumber;
     _.canSwitch = false;
-    $(_.content[tabNumber]).slideDown({
+
+    if ( !button.hasClass(_.options.activeClass) ) button.addClass(_.options.activeClass);
+
+    content.slideDown({
         duration: _.options.dur,
         start: function() {
             setTimeout(function() {
@@ -44693,11 +44693,12 @@ Tabs.prototype._showContent = function(tabNumber) {
     });
 };
 
-Tabs.prototype._hideContent = function() {
+Tabs.prototype.hideContent = function() {
     var _ = this;
     if ( _.activeTab === null ) return;
     _.canSwitch = false;
     _._toggleBorder();
+    _.button.removeClass(_.options.activeClass);
     $(_.content[_.activeTab])
         .delay(_.options.hideDelay)
         .slideUp({

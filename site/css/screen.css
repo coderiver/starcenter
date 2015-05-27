@@ -415,8 +415,8 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .table > table { width: 100%; table-layout: fixed; position: relative; z-index: 1; text-align: left; }
 .table td, .table th { box-sizing: border-box; }
 
-.js-table { -webkit-transition: opacity 0.3s linear 1s; transition: opacity 0.3s linear 1s; opacity: 0; }
-.js-table.is-animate { -webkit-transition-delay: 0s; transition-delay: 0s; opacity: 1; }
+.js-table { -webkit-transition: opacity 0.3s linear 1s, visibility 0.3s linear 1s; transition: opacity 0.3s linear 1s, visibility 0.3s linear 1s; opacity: 0; pointer-events: none; visibility: hidden; }
+.js-table.is-animate { -webkit-transition-delay: 0s; transition-delay: 0s; opacity: 1; visibility: visible; pointer-events: all; }
 .js-table.is-animate .table__border { stroke-dashoffset: 0; }
 .js-table.is-animate .table__border .outer-border { -webkit-transition-duration: 1s; transition-duration: 1s; -webkit-transition-delay: 0.3s; transition-delay: 0.3s; }
 .js-table.is-animate .table__border .inner-border { -webkit-transition-duration: 1s; transition-duration: 1s; -webkit-transition-delay: 0.6s; transition-delay: 0.6s; }
@@ -465,10 +465,10 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .head__bg { position: absolute; z-index: 0; bottom: 0; left: 0; right: 0; height: 423px; background-image: -webkit-linear-gradient(bottom, #CDF0E9 0%, #42BAAD 100%); background-image: linear-gradient(to top, #CDF0E9 0%, #42BAAD 100%); }
 
-.head__img { position: absolute; z-index: 1; bottom: -200px; left: 120px; }
+.head__img { position: absolute; z-index: 1; bottom: 0; left: 120px; }
 .head__img img { display: block; }
 
-.head__text { position: absolute; z-index: 2; bottom: -250px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; pointer-events: none; }
+.head__text { position: absolute; z-index: 2; bottom: 73px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; pointer-events: none; }
 
 .head_advantage .head__inner { height: 541px; }
 .head_advantage .head__img { left: 50%; margin-left: -560px; }
@@ -502,8 +502,9 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .tabs { margin: 35px -70px 0; }
 
-.tabs__head { position: relative; z-index: 1; *zoom: 1; }
+.tabs__head { position: relative; z-index: 1; pointer-events: none; *zoom: 1; }
 .tabs__head:after { content: " "; display: table; clear: both; }
+.tabs__head.is-animate { pointer-events: all; }
 
 .tabs__content { position: relative; z-index: 0; top: -3px; }
 
