@@ -12,7 +12,7 @@ var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
-var Info = require('./modules/_info.js');
+var Box = require('./modules/_box.js');
 var router = require('./modules/_routing.js');
 var initAnimations = require('./modules/_animations.js');
 
@@ -41,6 +41,7 @@ $(document).ready(function() {
         },
 
         prevent: function(event) {
+            console.log(event);
             event.preventDefault();
         },
 
@@ -53,6 +54,12 @@ $(document).ready(function() {
                 app.scrollDisabled = false;
             }
         },
+
+        // transform 1, 2, 3 => 01, 02, 03
+        number: function(number) {
+            if ( number.toString().length > 1 ) return number;
+            return (parseInt(number, 10) + 100).toString().substr(1);
+        }
     };
 
     app.openCatalog = function(state) {
@@ -83,11 +90,11 @@ $(document).ready(function() {
 
     app.objects = {};
 
-    $.each($('.js-object'), function(index, el) {
+    $.each($('.js-box'), function(index, el) {
 
         var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
 
-        app.objects[id] = new Info();
+        app.objects[id] = new Box();
         app.objects[id].init(el);
     });
 
@@ -191,7 +198,7 @@ $(document).ready(function() {
     window.app = app;
 
 });
-},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_animations.js":15,"./modules/_canvas.js":16,"./modules/_catalog.js":17,"./modules/_category.js":18,"./modules/_info.js":19,"./modules/_main-slider.js":20,"./modules/_routing.js":21,"./modules/_tabs.js":22,"scrollmagic":12}],2:[function(require,module,exports){
+},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_animations.js":15,"./modules/_box.js":16,"./modules/_canvas.js":17,"./modules/_catalog.js":18,"./modules/_category.js":19,"./modules/_main-slider.js":20,"./modules/_routing.js":21,"./modules/_tabs.js":22,"scrollmagic":12}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -43732,6 +43739,262 @@ module.exports = function() {
     return scrollmagic;
 };
 },{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"scrollmagic":12}],16:[function(require,module,exports){
+require("./../../../bower_components/jquery/dist/jquery.js");
+require("./../../../bower_components/slick-carousel/slick/slick.min.js");
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
+
+function Box() {
+    this.el          = {};
+    this.opened      = false;
+    this.position    = null;
+    this.slider      = null;
+
+    this.options = {
+        animDur: 0.7,
+        class: 'is-opened',
+        zIndex: 98,
+        easing: Power1.easeOut
+    };
+
+    this.slickOptions = {
+        accessibility: false,
+        autoplay: false,
+        draggable: false,
+        slide: '.object__slider',
+        dots: true,
+        swipe: false,
+        respondTo: 'slider',
+        adaptiveHeight: true,
+        arrows: true,
+        speed: 500
+        // lazyLoad: 'progressive'
+        // speed: this.dur,
+        // fade: false,
+        // centerMode: true,
+        // centerPadding: '0',
+        // focusOnSelect: true,
+        // easing: 'easeInCubic',
+        // infinite: true,
+        // initialSlide: 1,
+        // slidesToShow: 3
+    };
+}
+
+
+
+Box.prototype.init = function(box) {
+    var _ = this;
+
+    if ( box instanceof jQuery ) { _.el.box = box; }
+    else { _.el.box = $(box); }
+
+    _.el.inner       = _.el.box.find('.object__inner');
+    _.el.gallery     = _.el.box.find('.object__gallery');
+    _.el.slider      = _.el.box.find('.object__slider');
+    _.el.openButton  = _.el.box.find('.info .btn');
+    _.el.closeButton = _.el.box.find('.object__close');
+    _.el.info        = _.el.box.find('.info');
+    _.el.detail      = _.el.box.find('.object__detail');
+
+    _.slickOptions.prevArrow = _.el.box.find('.object__slider-prev');
+    _.slickOptions.nextArrow = _.el.box.find('.object__slider-next');
+
+    _._initEvents();
+};
+
+
+
+Box.prototype._initEvents = function() {
+    var _ = this;
+
+    _.el.openButton.on('click', function(e) {
+        _.open();
+    });
+
+    _.el.closeButton.on('click', function(e) {
+        // if current slide of slider is not first
+        if ( _.slider.slick('slickCurrentSlide') !== 0 ) {
+            _.slider.slick('slickGoTo', 0);
+            setTimeout(function() {
+                _.close();
+            }, _.slider.slick('slickGetOption', 'speed') || _.slickOptions.speed );
+
+        } else {
+            _.close();
+        }
+    });
+
+    _.el.box.on('scroll mousewheel DOMMouseScroll', function(e) {
+        e.stopPropagation();
+    });
+
+    $(window).on('resize', function() {
+        $(_).trigger('winResized');
+    });
+};
+
+
+
+Box.prototype._initSlider = function () {
+    var _ = this;
+
+    _.slider = _.el.slider.slick(_.slickOptions);
+};
+
+
+
+Box.prototype._destroySlider = function() {
+    var _ = this;
+
+    _.el.slider.slick('unslick');
+    _.slider = null;
+};
+
+
+
+Box.prototype._getPosition = function() {
+    var _       = this,
+        wrapper = _.el.box.parent();
+        ww      = $(window).width();
+        wh      = $(window).height();
+
+    var position = {};
+
+    position.top    =  wrapper.offset().top;
+    position.left   =  wrapper.offset().left;
+    position.width  =  wrapper.width();
+    position.height =  wrapper.height();
+    position.right  =  ww - position.width - position.left;
+    position.bottom =  wh - position.height - position.top;
+
+    _.position = position;
+
+    return position;
+
+};
+
+
+
+Box.prototype.open = function() {
+
+    if ( this.opened ) return;
+
+    var _   = this,
+        pos = _._getPosition();
+        tl  = new TimelineLite();
+
+    tl.eventCallback('onComplete', function() {
+        _.el.box.addClass(_.options.class);
+        _._initSlider();
+    });
+
+    tl.append(function() {
+
+        // app.util.toggleScroll();
+        _.opened = true;
+
+        // update initial position of box if window will be resize
+        $(_).on('winResized', _._getPosition);
+
+        _.el.box.css({
+            top: pos.top,
+            left: pos.left,
+            // width: pos.width,
+            // height: pos.height,
+            right: pos.right,
+            bottom: pos.bottom,
+            width: 'auto',
+            height: 'auto',
+            position: 'fixed',
+            zIndex: _.options.zIndex
+        });
+    });
+
+    tl.add('start', 0)
+        // animate box from initial size to fullscreen
+        .to(_.el.box, _.options.animDur, {
+            top: 0,
+            left: 0,
+            // width: '100%',
+            // height: '100%',
+            right: 0,
+            bottom: 0,
+            ease: _.options.easing
+            })
+        // play animations inside box
+        .to(_.el.gallery, _.options.animDur, {
+            height: 680,
+            ease: _.options.easing,
+            }, 'start')
+        .to(_.el.info, _.options.animDur, {
+            // top: 622,
+            y: 328,
+            ease: _.options.easing,
+            }, 'start');
+};
+
+
+
+Box.prototype.close = function() {
+
+    if ( !this.opened ) return;
+
+    var _  = this;
+        tl = new TimelineLite();
+
+    tl.append(function() {
+        _._destroySlider();
+        $(_).off('winResized');
+        _.el.box.removeClass(_.options.class);
+    });
+
+    tl.eventCallback('onComplete', function() {
+
+        _.el.box.css({
+            top: '',
+            left: '',
+            right: '',
+            bottom: '',
+            width: '',
+            height: '',
+            position: '',
+            zIndex: ''
+        });
+
+        _.opened = false;
+        // app.util.toggleScroll();
+    });
+
+    tl.add('start', 0)
+        // animate box from fullscreen to initial size
+        .to(_.el.box, _.options.animDur, {
+            top: _.position.top,
+            left: _.position.left,
+            width: _.position.width,
+            height: _.position.height,
+            ease: _.options.easing,
+            })
+        // play animations inside box in reverse mode
+        .to(_.el.gallery, _.options.animDur, {
+            height: 450,
+            ease: _.options.easing,
+            }, 'start')
+        .to(_.el.info, _.options.animDur, {
+            // top: 294,
+            y: 0,
+            ease: _.options.easing,
+            }, 'start');
+        // .to(_.el.detail, _.options.animDur, {
+
+        //     })
+};
+
+
+module.exports = Box;
+},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],17:[function(require,module,exports){
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
@@ -44360,7 +44623,7 @@ Morph.prototype.deactivate = function() {
 };
 
 module.exports = Morph;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],17:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],18:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Catalog(selector) {
@@ -44403,7 +44666,7 @@ Catalog.prototype.setHeight = function() {
 };
 
 module.exports = Catalog;
-},{"./../../../bower_components/jquery/dist/jquery.js":2}],18:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2}],19:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 
@@ -44489,173 +44752,7 @@ Category.prototype.disable = function() {
 };
 
 module.exports = Category;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],19:[function(require,module,exports){
-require("./../../../bower_components/jquery/dist/jquery.js");
-require("./../../../bower_components/slick-carousel/slick/slick.min.js");
-require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
-
-function Info() {
-    this.element     = null;
-    this.openButton  = null;
-    this.closeButton = null;
-    this.opened      = false;
-    this.position    = null;
-}
-
-
-Info.prototype.options = {
-    animDur: 1,
-    class: 'is-fixed',
-    zIndex: 110
-};
-
-
-Info.prototype.slickOptions = {
-    accessibility: false,
-    autoplay: false,
-    draggable: false,
-    prevArrow: $('.object-gallery__prev'),
-    nextArrow: $('.object-gallery__next'),
-    slide: '.object-gallery__prev',
-    dots: true,
-    swipe: false,
-    // lazyLoad: 'progressive'
-    // speed: this.dur,
-    // fade: false,
-    // centerMode: true,
-    // centerPadding: '0',
-    // focusOnSelect: true,
-    // easing: 'easeInCubic',
-    // infinite: true,
-    // initialSlide: 1,
-    // slidesToShow: 3
-};
-
-
-Info.prototype.init = function(element) {
-    var _ = this;
-
-    if ( element instanceof jQuery ) { _.element = element; }
-    else { _.element = $(element); }
-
-    _.openButton = _.element.find('.info .btn');
-
-    _._initEvents();
-};
-
-
-Info.prototype._initEvents = function() {
-    var _ = this;
-
-    _.openButton.on('click', function(e) {
-        e.stopPropagation();
-        if ( !_.opened ) _.open();
-        else _.close();
-    });
-
-    _.element.on('scroll mousewheel DOMMouseScroll', function(e) {
-        e.stopPropagation();
-    });
-
-    $(window).on('resize', function() {
-        $(_).trigger('winResized');
-    });
-};
-
-
-Info.prototype._initSlider = function () {
-    var _ = this;
-
-    _.element.slick(_.slickOptions);
-};
-
-
-Info.prototype._getPosition = function() {
-    var _       = this,
-        wrapper = _.element.parent();
-
-    var position = {
-        top: wrapper.offset().top,
-        left: wrapper.offset().left,
-        width: wrapper.width(),
-        height: wrapper.height()
-    };
-
-    _.position = position;
-
-    return position;
-
-};
-
-
-Info.prototype.open = function() {
-    var _   = this,
-        pos = _._getPosition();
-
-    _.opened = true;
-
-    app.util.toggleScroll();
-
-    $(_).on('winResized', _._getPosition);
-
-    _.element
-        .addClass(_.options.class)
-        .css({
-            top: pos.top,
-            left: pos.left,
-            width: pos.width,
-            height: pos.height,
-            position: 'fixed',
-            zIndex: _.options.zIndex
-        });
-
-    TweenLite.to(_.element, _.options.animDur, {
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        ease: Linear.easeNone
-    });
-};
-
-
-Info.prototype.close = function() {
-    var _ = this;
-
-    $(_).off('winResized');
-
-    _.element.removeClass(_.options.class);
-
-    function complete() {
-        _.element.css({
-            top: '',
-            left: '',
-            width: '',
-            height: '',
-            position: '',
-            zIndex: ''
-        });
-
-        _.opened = false;
-        app.util.toggleScroll();
-    }
-
-    TweenLite.to(_.element, _.options.animDur, {
-        top: _.position.top,
-        left: _.position.left,
-        width: _.position.width,
-        height: _.position.height,
-        ease: Linear.easeNone,
-        onComplete: complete
-    });
-};
-
-
-module.exports = Info;
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":11,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],20:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 

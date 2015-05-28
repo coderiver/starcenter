@@ -781,7 +781,7 @@ textarea.input
   // transition: all 0.3s linear
   overflow: hidden
   white-space: nowrap
-  pointer-events: all
+  pointer-events: auto
   &:hover
     .catalog-btn__hover
       width: 100%
@@ -1180,7 +1180,7 @@ textarea.input
     transition-delay: 0s
     opacity: 1
     visibility: visible
-    pointer-events: all
+    pointer-events: auto
     .table__border
       stroke-dashoffset: 0
       .outer-border
@@ -1470,7 +1470,7 @@ textarea.input
   pointer-events: none
   +clr
   &.is-animate
-    pointer-events: all
+    pointer-events: auto
 
 .tabs__content
   position: relative
@@ -1595,27 +1595,68 @@ textarea.input
   width: 790px
   height: 450px
   background: #FFF
-  outline: 1px solid red
   .info
     position: absolute
-    z-index: 1
+    z-index: 5
     left: 50%
-    bottom: -22px
+    top: 294px
     margin-left: -225px
     .table__border
       stroke-dashoffset: 0
-  &.is-fixed
+
+  .slick-dots
+    position: absolute
+    top: 100%
+    margin-top: 10px
+    left: 20px
+    width: 440px
+    font-size: 0
+    animation: slide-left 0.5s ease 1
+    li
+      display: inline-block
+      vertical-align: middle
+      button
+        width: 40px
+        height: 40px
+        background: none
+        +f(hb, 12, 0.2)
+        text-transform: uppercase
+        color: #AAA
+        +trans(color)
+      &.slick-active, &:hover
+        button
+          color: $text
+
+
+  &.is-opened
     .object__inner
+      +scroll
+    .object__buttons
+      display: block
+    .object__detail
+      position: static
+      transform: none
+      opacity: 1
+      visibility: visible
+      transition: all 0.5s ease
+    .btn_object
+      cursor: default
+      pointer-events: none
+      .btn__hover
+        transition: all 0.2s linear
+        opacity: 0
+        visibility: hidden
+    .object__slide
       height: 680px
 
+
 .object__inner
-  position: relative
+  position: absolute
   z-index: 0
-  width: 100%
-  max-width: 1368px
-  margin: auto
-  height: 450px
-  transition: height 1s linear
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
 
 .object__pic
   position: relative
@@ -1625,6 +1666,137 @@ textarea.input
   background: no-repeat center center
   background-size: cover
 
+.object__buttons
+  display: none
+  position: absolute
+  z-index: 1
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+
+.object__detail
+  position: absolute
+  top: 680px
+  width: 790px
+  margin: 160px auto 0
+  box-sizing: border-box
+  padding: 0 0 70px 210px
+  +f(bsr, 18)
+  line-height: 1.555
+  opacity: 0
+  visibility: hidden
+  transform: translate3d(0,50px,0)
+  .btn_link
+    margin-top: 40px
+
+.object__close
+  position: absolute
+  z-index: 3
+  top: 0
+  left: 50%
+  width: 500px
+  height: 170px
+  box-sizing: border-box
+  background: none
+  margin-left: -250px
+  +f(hb, 10, 0.2)
+  text-transform: uppercase
+  color: #FFF
+  opacity: 0
+  transition: opacity 0.4s linear
+  > span
+    display: inline-block
+    transform: translate3d(0,20px,0)
+    transition: transform 0.4s ease
+  .icon-arrow-sm
+    position: absolute
+    fill: #FFF
+    top: 50%
+    left: 50%
+    margin: -50px 0 0 -4px
+    transition: transform 0.6s ease
+  &:hover
+    opacity: 1
+    > span
+      transform: translate3d(0,0,0)
+    .icon-arrow-sm
+      transform: translate3d(0,-15px,0)
+
+.object__gallery
+  position: relative
+  z-index: 0
+  width: 100%
+  max-width: 1368px
+  margin: auto
+  height: 450px
+  max-height: 680px
+
+.object__slider
+  position: relative
+  height: 100%
+  overflow: hidden
+  &.slick-slider
+    overflow: visible
+
+.object__slide
+  width: 100%
+  height: 100%
+  overflow: hidden
+  background: no-repeat center center
+  background-size: cover
+  > img
+    display: block
+    max-width: 100%
+
+.object__slider-prev,
+.object__slider-next
+  position: absolute
+  z-index: 1
+  top: 0
+  bottom: 0
+  width: 50%
+  background: none
+  color: #FFF
+  +f(hb, 10, 0.2)
+  text-transform: uppercase
+  transition: opacity 0.3s linear
+  opacity: 0
+  white-space: nowrap
+  > span
+    display: inline-block
+    position: relative
+    top: 110px
+    transition: transform 0.4s ease
+  .icon-arrow
+    position: relative
+    top: 1px
+    transition: transform 0.6s ease
+    fill: #FFF
+  &:hover
+    opacity: 1
+
+.object__slider-prev
+  left: 0
+  .icon-arrow
+    transform: translate3d(0,0,0) rotate(180deg)
+  > span
+    right: 30px
+  &:hover
+    > span
+      transform: translate3d(-50px,0,0)
+    .icon-arrow
+      transform: translate3d(-15px,0,0) rotate(180deg)
+
+.object__slider-next
+  right: 0
+  > span
+    left: 30px
+  &:hover
+    > span
+      transform: translate3d(60px,0,0)
+    .icon-arrow
+      transform: translate3d(15px,0,0)
 
 .info
   width: 650px
@@ -1682,78 +1854,6 @@ textarea.input
   .btn__hover-in
     padding: 20px 5px 5px 40px
 
-
-.object-gallery
-  position: relative
-  z-index: 0
-  overflow: hidden
-  padding-bottom: 122px
-
-.object-gallery__slider
-  position: relative
-  height: 650px
-
-.object-gallery__slide
-  width: 100%
-  height: 680px
-  // height: 450px
-  overflow: hidden
-  > img
-    display: block
-    max-width: 100%
-
-.object-gallery__prev,
-.object-gallery__next
-  position: absolute
-  top: 0
-  bottom: 0
-  width: 50%
-  background: none
-  color: #FFF
-  +f(hb, 10, 0.2)
-  text-transform: uppercase
-  transition: opacity 0.3s linear
-  opacity: 0
-  white-space: nowrap
-  > span
-    display: inline-block
-    position: relative
-    top: 110px
-    transition: transform 0.4s ease
-  .icon-arrow
-    position: relative
-    top: 1px
-    transition: transform 0.6s ease
-    fill: #FFF
-  &:hover
-    opacity: 1
-
-.object-gallery__prev
-  left: 0
-  .icon-arrow
-    transform: translate3d(0,0,0) rotate(180deg)
-    // margin-right: 15px
-  > span
-    right: 30px
-  &:hover
-    > span
-      transform: translate3d(-50px,0,0)
-    .icon-arrow
-      transform: translate3d(-15px,0,0) rotate(180deg)
-
-.object-gallery__next
-  right: 0
-  > span
-    left: 30px
-  // .icon-arrow
-  //   margin-left: 15px
-  &:hover
-    > span
-      transform: translate3d(60px,0,0)
-    .icon-arrow
-      transform: translate3d(15px,0,0)
-
-
 //---------------------------------------------------------------------------
 //            ^^^^^  end catalog-content  ^^^^^
 //---------------------------------------------------------------------------
@@ -1783,38 +1883,7 @@ textarea.input
   bottom: 0
   +scroll
 
-.modal__close
-  position: absolute
-  z-index: 3
-  top: 0
-  left: 50%
-  width: 500px
-  height: 170px
-  box-sizing: border-box
-  background: none
-  margin-left: -250px
-  +f(hb, 10, 0.2)
-  text-transform: uppercase
-  color: #FFF
-  opacity: 0
-  transition: opacity 0.4s linear
-  > span
-    display: inline-block
-    transform: translate3d(0,20px,0)
-    transition: transform 0.4s ease
-  .icon-arrow-sm
-    position: absolute
-    fill: #FFF
-    top: 50%
-    left: 50%
-    margin: -50px 0 0 -4px
-    transition: transform 0.6s ease
-  &:hover
-    opacity: 1
-    > span
-      transform: translate3d(0,0,0)
-    .icon-arrow-sm
-      transform: translate3d(0,-15px,0)
+
 
 
 .object-detail

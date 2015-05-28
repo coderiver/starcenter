@@ -11,7 +11,7 @@ var Morph   = require('./modules/_canvas.js');
 var Catalog = require('./modules/_catalog.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
-var Info = require('./modules/_info.js');
+var Box = require('./modules/_box.js');
 var router = require('./modules/_routing.js');
 var initAnimations = require('./modules/_animations.js');
 
@@ -40,6 +40,7 @@ $(document).ready(function() {
         },
 
         prevent: function(event) {
+            console.log(event);
             event.preventDefault();
         },
 
@@ -52,6 +53,12 @@ $(document).ready(function() {
                 app.scrollDisabled = false;
             }
         },
+
+        // transform 1, 2, 3 => 01, 02, 03
+        number: function(number) {
+            if ( number.toString().length > 1 ) return number;
+            return (parseInt(number, 10) + 100).toString().substr(1);
+        }
     };
 
     app.openCatalog = function(state) {
@@ -82,11 +89,11 @@ $(document).ready(function() {
 
     app.objects = {};
 
-    $.each($('.js-object'), function(index, el) {
+    $.each($('.js-box'), function(index, el) {
 
         var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
 
-        app.objects[id] = new Info();
+        app.objects[id] = new Box();
         app.objects[id].init(el);
     });
 
