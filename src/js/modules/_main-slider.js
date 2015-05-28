@@ -14,7 +14,7 @@ function MainSlider(wrapper, slider, paginator) {
             arrows: false,
             draggable: false,
             slide: '.slide',
-            speed: 300,
+            speed: 700,
             swipe: false,
             fade: true,
             useCSS: true,

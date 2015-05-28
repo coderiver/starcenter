@@ -55,10 +55,18 @@ $(document).ready(function() {
         },
 
         // transform 1, 2, 3 => 01, 02, 03
-        number: function(number) {
+        transformNumber: function(number) {
             if ( number.toString().length > 1 ) return number;
             return (parseInt(number, 10) + 100).toString().substr(1);
+        },
+
+        getScrollBarWidth: function() {
+            var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
+                widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
+            $outer.remove();
+            return 100 - widthWithScroll;
         }
+
     };
 
     app.openCatalog = function(state) {
@@ -117,15 +125,6 @@ $(document).ready(function() {
     });
 
 
-
-
-
-    /* ############################################################################# *\
-    #
-    #  Common
-    #
-    \* ############################################################################ */
-
     (function() {
         var setBodyClass = function(className) {
             $('html').addClass(className);
@@ -146,28 +145,9 @@ $(document).ready(function() {
 
     })();
 
-    function getScrollBarWidth() {
-        var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
-            widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
-        $outer.remove();
-        return 100 - widthWithScroll;
-    }
+    var scrollbarWidth = app.util.getScrollBarWidth();
+    console.log('Scroll bar width: ' + scrollbarWidth + 'px');
 
-    var width = getScrollBarWidth();
-    console.log('Scroll bar width: ' + width + 'px');
-
-    // $('.men-table').on('click', function() {
-    //     $(this).find('.table__border').toggleClass('is-animate');
-    // });
-    // $('.partners-table').on('click', function() {
-    //     $(this).find('.table__border').toggleClass('is-animate');
-    // });
-    // $('.contacts-table').on('click', function() {
-    //     $(this).find('.table__border').toggleClass('is-animate');
-    // });
-    // $('.skyline').on('click', function() {
-    //     $(this).toggleClass('is-animate');
-    // });
 
     // $(function(){
 
