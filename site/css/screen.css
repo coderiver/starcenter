@@ -578,7 +578,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .object__close:hover > span { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 .object__close:hover .icon-arrow-sm { -webkit-transform: translate3d(0, -15px, 0); transform: translate3d(0, -15px, 0); }
 
-.object__gallery { position: relative; z-index: 0; width: 100%; max-width: 1368px; margin: auto; height: 450px; max-height: 680px; }
+.object__gallery { position: relative; z-index: 0; margin: auto; height: 450px; max-height: 680px; }
 
 .object__slider { position: relative; height: 100%; overflow: hidden; }
 .object__slider.slick-slider { overflow: visible; }
