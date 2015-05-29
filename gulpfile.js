@@ -1,7 +1,8 @@
 var gulp = require('./gulp')([
-    // connect your tasks here
+    // connect tasks here
     'server',
     'browserify',
+    'scripts',
     'jade',
     'jade-all',
     'sass',
@@ -17,7 +18,7 @@ gulp.task('build', [
     'sprite',
     'sass',
     'jade-all',
-    'browserify'
+    'scripts'
     ]);
 
 gulp.task('default', [
