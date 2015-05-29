@@ -14,7 +14,7 @@ var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
 var router = require('./modules/_routing.js');
-var initAnimations = require('./modules/_animations.js');
+var initScenes = require('./modules/_animations.js');
 
 
 var app = {};
@@ -23,12 +23,13 @@ $(document).ready(function() {
 
     router.run();
 
-    app.slider   = new Slider('#slider1', '.main-slider__slides', '.main-slider__paginator');
+    app.slider   = new Slider('#slider1');
     app.morph    = new Morph('#morph');
     app.catalog  = new Catalog('.catalog');
     app.category = new Category('.catalog-category', '.catalog-category__item');
     app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
-    app.scrollmagic = initAnimations();
+    app.toparea  = {};
+    app.scrollmagic = initScenes();
     app.rootContainer = $('#outer');
     app.scrollDisabled = false;
 
@@ -71,17 +72,50 @@ $(document).ready(function() {
     };
 
     app.openCatalog = function(state) {
-        app.catalog.open();
-        app.slider.makeHidden();
-        app.category.enable();
+        // app.catalog.open();
+        app.slider.rollUp();
+        // app.category.enable();
+        app.category.open();
         setTimeout(function() { app.morph.activate(state); }, 300 );
     };
 
     app.closeCatalog = function() {
-        app.catalog.close();
-        app.slider.makeVisible();
+        // app.catalog.close();
+        app.slider.rollDown();
         app.morph.deactivate();
-        app.category.disable();
+        // app.category.disable();
+        app.category.close();
+    };
+
+
+    // app toparea
+    app.toparea.transformed = false;
+    app.toparea.inProgress = false;
+    app.toparea.defaultDur = 1000;
+
+    app.toparea.transform = function(dur) {
+        if ( app.toparea.inProgress ) return;
+        var duration = dur || app.toparea.defaultDur;
+        app.slider.rollUp(duration);
+        app.morph.moveDown(duration);
+        app.toparea.transformed = true;
+        console.log('down');
+    };
+
+    app.toparea.transformBack = function(dur) {
+        if ( app.toparea.inProgress ) return;
+        var duration = dur || app.toparea.defaultDur;
+        app.slider.rollDown(duration);
+        app.morph.moveBack(duration);
+        app.toparea.transformed = false;
+    };
+
+    app.toparea.toggle = function(dur) {
+        if ( !app.toparea.transformed ) {
+            app.toparea.transform(dur);
+        } else {
+            app.toparea.transformBack(dur);
+        }
     };
 
 
@@ -89,8 +123,6 @@ $(document).ready(function() {
     app.slider.init();
     app.morph.init();
     app.tabs.init();
-
-    // app.info._initSlider('.object-gallery__slider');
 
     app.scrollmagic.tabs.scene.on('start', function(e) {
         if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
@@ -148,6 +180,20 @@ $(document).ready(function() {
 
     var scrollbarWidth = app.util.getScrollBarWidth();
     console.log('Scroll bar width: ' + scrollbarWidth + 'px');
+
+    var flag = false;
+
+
+    $('#trigger1').on('click', function(event) {
+        if (!flag) {
+            app.moveMorphDown();
+            flag = true;
+        }
+        else {
+            app.moveMorphBack();
+            flag = false;
+        }
+    });
 
 
     // $(function(){
@@ -43426,9 +43472,29 @@ module.exports = function() {
     var scrollmagic = {},
         mainContainer = $('#outer');
 
-
+    // init ScrollMagic controller
     scrollmagic.controller = new ScrollMagic.Controller();
     TweenLite.lagSmoothing(1000, 16);
+
+
+
+    //##### timeline toparea
+    scrollmagic.toparea = {
+        el: $('.catalog'),
+        scene: null,
+    };
+    scrollmagic.toparea.scene = new ScrollMagic.Scene({
+        duration: 300,
+        // offset: 300,
+        triggerElement: scrollmagic.toparea.el[0],
+        triggerHook: 'onLeave',
+        loglevel: 1
+    })
+        .on('end', function(e) {
+            app.toparea.toggle();
+        })
+        .addTo(scrollmagic.controller);
+
 
 
     //##### timeline scene
@@ -43499,119 +43565,24 @@ module.exports = function() {
     // ##### scene for box with men on background
     scrollmagic.box = {
         el: $('.box'),
-        // trigger: $('.box-wrapper'),
-        // table1: $('.box .men-table'),
-        // table2: $('.box .partners-table'),
+        manRow: $('.box__bg-row'),
         canAnimate: true,
         stateChanged: false,
         scene: null
     };
-    // scrollmagic.box.scene = new ScrollMagic.Scene({
-    //     duration: 500,
-    //     offset: 285,
-    //     triggerHook: 'onCenter',
-    //     triggerElement: scrollmagic.box.trigger[0],
-    //     loglevel: 1
-    // })
-    //     .on('start', function(e) {
-    //         var box = scrollmagic.box.el;
-
-    //         if ( e.state === 'DURING' ) {
-    //             box.css({
-    //                 top: box.offset().top,
-    //                 left: box.offset().left,
-    //                 width: box.width(),
-    //                 position: 'fixed'
-    //             });
-    //         }
-
-    //         if ( e.state === 'BEFORE' ) {
-    //             box.css({
-    //                 position: '',
-    //                 top: '',
-    //                 left: '',
-    //                 width: ''
-    //             });
-    //         }
-
-    //         scrollmagic.box.table1.toggleClass('is-animate');
-
-    //         if ( e.state == 'DURING' && scrollmagic.box.canAnimate) {
-    //             scrollmagic.box.canAnimate = false;
-    //             showPeople();
-    //             setTimeout(function() {
-    //                 scrollmagic.box.canAnimate = true;
-    //             }, 2500);
-    //         }
-
-    //         if ( e.state == 'BEFORE' && scrollmagic.box.canAnimate) {
-    //             scrollmagic.box.canAnimate = false;
-    //             hidePeople();
-    //             setTimeout(function() {
-    //                 scrollmagic.box.canAnimate = true;
-    //             }, 2500);
-    //         }
-    //     })
-    //     .on('end', function(e) {
-    //         var box = scrollmagic.box.el;
-    //         if ( e.state === 'DURING' ) {
-    //             box.css({
-    //                 top: box.offset().top,
-    //                 left: box.offset().left,
-    //                 width: box.width(),
-    //                 position: 'fixed'
-    //             });
-    //         }
-    //         if ( e.state === 'AFTER' ) {
-    //             box.css({
-    //                 position: '',
-    //                 top: Math.ceil(500 * e.progress),
-    //                 left: '',
-    //                 width: ''
-    //             });
-    //         }
-    //     })
-    //     .on('progress', function(e) {
-    //         if ( e.progress >= 0.6 && !scrollmagic.box.stateChanged ) {
-    //             scrollmagic.box.stateChanged = true;
-
-    //             scrollmagic.box.table1.removeClass('is-animate');
-
-    //             setTimeout(function() {
-    //                 scrollmagic.box.table2.addClass('is-animate');
-    //             }, 500);
-
-    //             scrollmagic.box.el.addClass('is-animate');
-    //         }
-
-    //         if ( e.progress < 0.6 && scrollmagic.box.stateChanged ) {
-    //             scrollmagic.box.stateChanged = false;
-
-    //             scrollmagic.box.table2.removeClass('is-animate');
-
-    //             setTimeout(function() {
-    //                 scrollmagic.box.table1.addClass('is-animate');
-    //             }, 500);
-
-    //             scrollmagic.box.el.removeClass('is-animate');
-    //         }
-    //     })
-    //     .addTo(scrollmagic.controller);
 
     function showPeople() {
-        var man = $('.box__bg-row');
-        man.each(function(index, el) {
+        scrollmagic.box.manRow.each(function(index, el) {
             TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.05 * index);
         });
     }
     function hidePeople() {
-        var man = $('.box__bg-row');
-        man.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (man.length - index));
+        scrollmagic.box.manRow.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (scrollmagic.box.manRow.length - index));
         });
     }
 
-    TweenLite.set($('.box__bg-row'), {opacity: 0, y: -30});
+    TweenLite.set(scrollmagic.box.manRow, {opacity: 0, y: -30});
     scrollmagic.box.scene = new ScrollMagic.Scene({
         duration: 800,
         triggerElement: scrollmagic.box.el[0],
@@ -44002,11 +43973,14 @@ module.exports = Box;
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
 
 var Morph = function(selector) {
 
-    this.canvas = $(selector)[0];
+    this.canvas = $(selector);
     this.dur    = 500;
     this.state  = {
         active: false,
@@ -44014,10 +43988,13 @@ var Morph = function(selector) {
         rectangle: 'small' // small, big or wide
     };
     this.sizes  = {
-        circle  : 510,
-        square  : 450,
-        triangle: 580
+        circle    : 510,
+        square    : 450,
+        triangle  : 580,
+        smTriangle: 290
     };
+    this.shiftY = 680;
+    // max of this.sizes
     this.morphSize = {
         x: 580,
         y: 580
@@ -44031,7 +44008,7 @@ Morph.prototype._initContent = function() {
         state = this.state;
         morphSize = this.morphSize;
 
-    paper.setup(this.canvas);
+    paper.setup(this.canvas[0]);
 
     this.backGroup  = new paper.Group();
     this.frontGroup = new paper.Group();
@@ -44217,42 +44194,49 @@ Morph.prototype._morphRectangle = function(state) {
 };
 
 Morph.prototype._calcPosition = function() {
-    var c = this.sizes.circle,
-        s = this.sizes.square,
-        t = this.sizes.triangle,
+    var c   = this.sizes.circle,
+        s   = this.sizes.square,
+        t   = this.sizes.triangle,
+        smt = this.sizes.smTriangle,
         point;
 
     // coordinates of vertexes for each morph state relative to view.center
     point = {
         circle: [
-            {x: -c/2, y:    0, handle: {x:    0, y:  140}},
-            {x:    0, y: -c/2, handle: {x: -140, y:    0}},
-            {x:  c/2, y:    0, handle: {x:    0, y: -140}},
-            {x:    0, y:  c/2, handle: {x:  140, y:    0}}
+            {point: 1, x: -c/2, y:    0, handle: {x:    0, y:  140}},
+            {point: 2, x:    0, y: -c/2, handle: {x: -140, y:    0}},
+            {point: 3, x:  c/2, y:    0, handle: {x:    0, y: -140}},
+            {point: 4, x:    0, y:  c/2, handle: {x:  140, y:    0}}
             // {x: -255, y:    0},
             // {x:    0, y: -255},
             // {x:  255, y:    0},
             // {x:    0, y:  255},
         ],
         square: [
-            {x: -s/2, y: -s/2, handle: {x: 0, y: 0}},
-            {x:  s/2, y: -s/2, handle: {x: 0, y: 0}},
-            {x:  s/2, y:  s/2, handle: {x: 0, y: 0}},
-            {x: -s/2, y:  s/2, handle: {x: 0, y: 0}}
+            {point: 1, x: -s/2, y: -s/2, handle: {x: 0, y: 0}},
+            {point: 2, x:  s/2, y: -s/2, handle: {x: 0, y: 0}},
+            {point: 3, x:  s/2, y:  s/2, handle: {x: 0, y: 0}},
+            {point: 4, x: -s/2, y:  s/2, handle: {x: 0, y: 0}}
             // {x: -225, y: -225},
             // {x:  225, y: -225},
             // {x:  225, y:  225},
             // {x: -225, y:  225},
         ],
         triangle: [
-            {x: -0.36207 * t/2, y: 0.58621 * t/2, handle: {x: 0, y: 0}},
-            {x:           -t/2, y: 0.39310 * t/2, handle: {x: 0, y: 0}},
-            {x:  0.53448 * t/2, y:          -t/2, handle: {x: 0, y: 0}},
-            {x:            t/2, y:           t/2, handle: {x: 0, y: 0}}
+            {point: 1, x: -0.36207 * t/2, y: 0.58621 * t/2, handle: {x: 0, y: 0}},
+            {point: 2, x:           -t/2, y: 0.39310 * t/2, handle: {x: 0, y: 0}},
+            {point: 3, x:  0.53448 * t/2, y:          -t/2, handle: {x: 0, y: 0}},
+            {point: 4, x:            t/2, y:           t/2, handle: {x: 0, y: 0}}
             // {x: -105, y:  170},
             // {x: -290, y:  114},
             // {x:  155, y: -290},
             // {x:  290, y:  290},
+        ],
+        smTriangle: [
+            {point: 1, x: -0.36207 * smt/2, y: 0.58621 * smt/2, handle: {x: 0, y: 0}},
+            {point: 2, x:           -smt/2, y: 0.39310 * smt/2, handle: {x: 0, y: 0}},
+            {point: 3, x:  0.53448 * smt/2, y:          -smt/2, handle: {x: 0, y: 0}},
+            {point: 4, x:            smt/2, y:           smt/2, handle: {x: 0, y: 0}},
         ]
     };
 
@@ -44261,9 +44245,10 @@ Morph.prototype._calcPosition = function() {
             circle:   this._translateCoordinates(point.circle),
             square:   this._translateCoordinates(point.square),
             triangle: this._translateCoordinates(point.triangle),
+            smTriangle: this._translateCoordinates(point.smTriangle)
         },
         rectangle: {
-            small: {
+            initial: {
                 center: new paper.Point(paper.view.center.x, paper.view.size.height - 64),
                 size: new paper.Size(513, 47)
             },
@@ -44274,6 +44259,10 @@ Morph.prototype._calcPosition = function() {
             wide: {
                 center: paper.view.center,
                 size: new paper.Size(1220, 160)
+            },
+            hidden: {
+                center: new paper.Point(paper.view.center.x, paper.view.size.height + 100),
+                size: new paper.Size(513, 47)
             }
         }
     };
@@ -44511,14 +44500,13 @@ Morph.prototype._togglePicture = function(state) {
 
 };
 
-Morph.prototype._morph = function(state) {
+Morph.prototype._morph = function(state, dur) {
 
     var currentState  = this._getState('morph');
 
     if ( state == currentState ) return;
 
-    var duration   = this.dur,
-        callCount  = duration * 60 / 1000, // morph anim duration * frame per second
+    var duration   = dur || this.dur,
         easing     = TWEEN.Easing.Cubic.Out,
         morphPath  = this.objects.paths.morph,
         segments   = morphPath.segments,
@@ -44621,13 +44609,46 @@ Morph.prototype.deactivate = function() {
 
     this._togglePicture();
     this._morph('circle');
-    this._morphRectangle('small');
+    this._morphRectangle('initial');
 
     this._updateState('active', false);
 };
 
+Morph.prototype.moveDown = function(dur) {
+    var that     = this,
+        timeline = new TimelineLite();
+
+    timeline
+        .add(function() {
+            that.canvas.addClass('is-visible');
+            that.objects.other.rectangle.visible = false;
+            })
+        .fromTo(that.canvas, 0.2, {opacity: 0}, {opacity: 1})
+        .add(function() {
+            that._morph('smTriangle', dur);
+            })
+        .to(that.canvas, 1, {y: that.shiftY});
+};
+
+Morph.prototype.moveBack = function(dur) {
+    var that     = this,
+        timeline = new TimelineLite();
+
+    timeline.eventCallback('onComplete', function() {
+        that.canvas
+            .removeClass('is-visible')
+            .css('opacity', '');
+        that.objects.other.rectangle.visible = true;
+    });
+
+    timeline
+        .to(that.canvas, 1, {y: 0})
+        .add(function() { that._morph('circle', dur); }, 0)
+        .to(that.canvas, 0.2, {opacity: 0});
+};
+
 module.exports = Morph;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],18:[function(require,module,exports){
+},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"tween.js":14}],18:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Catalog(selector) {
@@ -44673,20 +44694,27 @@ module.exports = Catalog;
 },{"./../../../bower_components/jquery/dist/jquery.js":2}],19:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
 function Category(wrapperSelector, itemSelector) {
     this.wrapper   = $(wrapperSelector);
     this.items     = this.wrapper.find(itemSelector).toArray();
     this.active    = false;
+    this.opened    = false;
     this.wasActive = false;
+    this.timeline  = null;
     this.classes   = {
         prev: 'is-prev',
         active: 'is-active',
         next: 'is-next'
     };
     this.options = {
-        duration: 500,
-        easing: 'easeInCubic',
+        duration: 1,
+        shiftY: -274,
+        targetWidth: 1600,
+        easing: Power1.easeNone,
         initSlide: 0,
         delayBeforeInit: 900,
     };
@@ -44710,21 +44738,21 @@ function Category(wrapperSelector, itemSelector) {
 }
 
 Category.prototype._initEvents = function() {
-    var that = this;
+    var _ = this;
 
-    $(that.items).bind('click', function() {
-        that.options.initSlide = $(this).index();
+    $(_.items).bind('click', function() {
+        _.options.initSlide = $(this).index();
     });
 };
 
 Category.prototype._init = function() {
-    var that = this;
+    var _ = this;
 
-    that.clonedItems = $(that.items).clone(true).addClass('clone');
-    that.wrapper.append(that.clonedItems);
-    that.wrapper.slick(that.slickOptions);
+    _.clonedItems = $(_.items).clone(true).addClass('clone');
+    _.wrapper.append(_.clonedItems);
+    _.wrapper.slick(_.slickOptions);
     setTimeout(function() {
-        that.wrapper.slick('slickGoTo', that.options.initSlide);
+        _.wrapper.slick('slickGoTo', _.options.initSlide);
     }, 200);
 };
 
@@ -44735,17 +44763,17 @@ Category.prototype._destroy = function() {
 };
 
 Category.prototype.enable = function() {
-    var that = this;
-    if ( !that.wasActive ) {
-        that._initEvents();
-        that.wasActive = true;
+    var _ = this;
+    if ( !_.wasActive ) {
+        _._initEvents();
     }
 
-    that.active = true;
+    _.active = true;
+    _.wasActive = true;
 
     setTimeout(function() {
-        that._init();
-    }, that.options.delayBeforeInit);
+        _._init();
+    }, _.options.delayBeforeInit);
 };
 
 Category.prototype.disable = function() {
@@ -44755,16 +44783,66 @@ Category.prototype.disable = function() {
     this._destroy();
 };
 
+Category.prototype.open = function() {
+    if ( this.opened ) return;
+
+    var _  = this;
+
+    _.opened = true;
+
+    _.timeline = new TimelineLite();
+
+    _.timeline.eventCallback('onComplete', function(e) {
+        // _._init();
+        console.log('complete');
+    });
+
+    _.timeline.set(_.wrapper, {x: '-50%', marginLeft: 0});
+    _.timeline.set(_.items, {width: ''});
+    _.timeline.set(_.items, {width: '33.3333%'});
+
+    _.timeline
+        .to(_.wrapper, _.options.duration, {
+            y: _.options.shiftY,
+            width: _.options.targetWidth,
+            ease: _.options.easing
+            });
+
+};
+
+Category.prototype.close = function() {
+    if ( !this.opened ) return;
+
+    var _ = this;
+
+    // _.timeline.eventCallback('onComplete', function(e) {
+    //     // _.timeline = null;
+    //     console.log(e);
+    // });
+
+    _.timeline
+        .reversed(true);
+
+    _.opened = false;
+
+};
+
+
 module.exports = Category;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],20:[function(require,module,exports){
+},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
-function MainSlider(wrapper, slider, paginator) {
+function MainSlider(wrapper) {
 
         this.wrapper  = $(wrapper);
-        this.slider   = this.wrapper.find(slider);
-        this.pagiBtns = this.wrapper.find(paginator).find('button');
+        this.slider   = this.wrapper.find('.main-slider__slides');
+        this.pagiBtns = this.wrapper.find('.main-slider__paginator').find('button');
+        this.circle   = this.wrapper.find('.main-slider__morph');
+        this.overlay  = this.wrapper.find('.main-slider__overlay');
         this.currentSlide = 0;
         this.slickOptions = {
             accessibility: false,
@@ -44779,8 +44857,9 @@ function MainSlider(wrapper, slider, paginator) {
             useCSS: true,
             pauseOnHover: true
         };
-        this.animDur = 500;
+        this.animDur = 0.8;
         this.animDelay = 300;
+        this.easing = Power1.easeNone;
 
     }
 
@@ -44796,14 +44875,11 @@ MainSlider.prototype.init = function() {
     });
 
     that.slider.slick(that.slickOptions);
-    // that.slickSlider = that.slider.slick('getSlick');
-    // console.log(that.slickSlider.__proto__);
 };
 
 MainSlider.prototype.toSlide = function(slideIndex) {
     var that = this;
     that.slider.slick('slickGoTo', slideIndex);
-    // that.currentSlide = slideIndex;
 };
 
 MainSlider.prototype.pagination = function() {
@@ -44812,7 +44888,6 @@ MainSlider.prototype.pagination = function() {
         event.preventDefault();
         var index = $(this).index();
         that.toSlide(index);
-        // that.updatePagiBtns(index);
     });
 };
 
@@ -44836,27 +44911,53 @@ MainSlider.prototype.makeHidden = function() {
     setTimeout(function() {
         that.wrapper.addClass('is-hidden');
     }, that.animDelay);
-    // setTimeout(function() {
-    //     that.wrapper.css('display', 'none');
-    // }, 800);
 };
 
 MainSlider.prototype.makeVisible = function() {
     var that = this;
-    // that.wrapper.css('display', '');
     that.wrapper.removeClass('is-hidden');
-    // setTimeout(function() {
-        // that.wrapper.removeClass('is-init');
-    // }, that.animDelay);
     setTimeout(function() {
         that.play();
     }, that.animDur);
 };
 
+MainSlider.prototype.rollUp = function(duration) {
+    var that = this,
+        dur  = duration/1000 || that.animDur,
+        tl   = new TimelineLite();
+
+    tl.eventCallback('onStart', function() {
+        that.overlay.show();
+        that.pause();
+    });
+
+    tl
+        .fromTo(that.overlay, dur, {y: '100%'}, {y: '0%', ease: that.easing})
+        .to(that.slider, dur, {scale: 0.8, opacity: 0, ease: that.easing}, 0)
+        .to(that.circle, 0.2, {opacity: 0, ease: that.easing}, 0);
+};
+
+MainSlider.prototype.rollDown = function(duration) {
+    var that = this,
+        dur  = duration/1000 || that.animDur,
+        tl   = new TimelineLite();
+
+    tl.eventCallback('onComplete', function() {
+        that.overlay.hide();
+        that.play();
+    });
+
+    tl
+        .to(that.overlay, dur, {y: '100%', ease: that.easing})
+        .to(that.slider, dur, {scale: 1, opacity: 1,  ease: that.easing}, 0)
+        .to(that.circle, 0.2, {opacity: 1, ease: that.easing}, '+=0.1');
+
+};
+
 module.exports = MainSlider;
 
 
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],21:[function(require,module,exports){
+},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/gsap/src/uncompressed/TweenLite.js":8,"../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js":10,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6}],21:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 

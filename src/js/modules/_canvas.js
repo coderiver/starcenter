@@ -1,11 +1,14 @@
 var paper = require('paper');
 var $     = require('jquery');
 var TWEEN = require('tween.js');
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
 
 var Morph = function(selector) {
 
-    this.canvas = $(selector)[0];
+    this.canvas = $(selector);
     this.dur    = 500;
     this.state  = {
         active: false,
@@ -13,10 +16,13 @@ var Morph = function(selector) {
         rectangle: 'small' // small, big or wide
     };
     this.sizes  = {
-        circle  : 510,
-        square  : 450,
-        triangle: 580
+        circle    : 510,
+        square    : 450,
+        triangle  : 580,
+        smTriangle: 290
     };
+    this.shiftY = 680;
+    // max of this.sizes
     this.morphSize = {
         x: 580,
         y: 580
@@ -30,7 +36,7 @@ Morph.prototype._initContent = function() {
         state = this.state;
         morphSize = this.morphSize;
 
-    paper.setup(this.canvas);
+    paper.setup(this.canvas[0]);
 
     this.backGroup  = new paper.Group();
     this.frontGroup = new paper.Group();
@@ -216,42 +222,49 @@ Morph.prototype._morphRectangle = function(state) {
 };
 
 Morph.prototype._calcPosition = function() {
-    var c = this.sizes.circle,
-        s = this.sizes.square,
-        t = this.sizes.triangle,
+    var c   = this.sizes.circle,
+        s   = this.sizes.square,
+        t   = this.sizes.triangle,
+        smt = this.sizes.smTriangle,
         point;
 
     // coordinates of vertexes for each morph state relative to view.center
     point = {
         circle: [
-            {x: -c/2, y:    0, handle: {x:    0, y:  140}},
-            {x:    0, y: -c/2, handle: {x: -140, y:    0}},
-            {x:  c/2, y:    0, handle: {x:    0, y: -140}},
-            {x:    0, y:  c/2, handle: {x:  140, y:    0}}
+            {point: 1, x: -c/2, y:    0, handle: {x:    0, y:  140}},
+            {point: 2, x:    0, y: -c/2, handle: {x: -140, y:    0}},
+            {point: 3, x:  c/2, y:    0, handle: {x:    0, y: -140}},
+            {point: 4, x:    0, y:  c/2, handle: {x:  140, y:    0}}
             // {x: -255, y:    0},
             // {x:    0, y: -255},
             // {x:  255, y:    0},
             // {x:    0, y:  255},
         ],
         square: [
-            {x: -s/2, y: -s/2, handle: {x: 0, y: 0}},
-            {x:  s/2, y: -s/2, handle: {x: 0, y: 0}},
-            {x:  s/2, y:  s/2, handle: {x: 0, y: 0}},
-            {x: -s/2, y:  s/2, handle: {x: 0, y: 0}}
+            {point: 1, x: -s/2, y: -s/2, handle: {x: 0, y: 0}},
+            {point: 2, x:  s/2, y: -s/2, handle: {x: 0, y: 0}},
+            {point: 3, x:  s/2, y:  s/2, handle: {x: 0, y: 0}},
+            {point: 4, x: -s/2, y:  s/2, handle: {x: 0, y: 0}}
             // {x: -225, y: -225},
             // {x:  225, y: -225},
             // {x:  225, y:  225},
             // {x: -225, y:  225},
         ],
         triangle: [
-            {x: -0.36207 * t/2, y: 0.58621 * t/2, handle: {x: 0, y: 0}},
-            {x:           -t/2, y: 0.39310 * t/2, handle: {x: 0, y: 0}},
-            {x:  0.53448 * t/2, y:          -t/2, handle: {x: 0, y: 0}},
-            {x:            t/2, y:           t/2, handle: {x: 0, y: 0}}
+            {point: 1, x: -0.36207 * t/2, y: 0.58621 * t/2, handle: {x: 0, y: 0}},
+            {point: 2, x:           -t/2, y: 0.39310 * t/2, handle: {x: 0, y: 0}},
+            {point: 3, x:  0.53448 * t/2, y:          -t/2, handle: {x: 0, y: 0}},
+            {point: 4, x:            t/2, y:           t/2, handle: {x: 0, y: 0}}
             // {x: -105, y:  170},
             // {x: -290, y:  114},
             // {x:  155, y: -290},
             // {x:  290, y:  290},
+        ],
+        smTriangle: [
+            {point: 1, x: -0.36207 * smt/2, y: 0.58621 * smt/2, handle: {x: 0, y: 0}},
+            {point: 2, x:           -smt/2, y: 0.39310 * smt/2, handle: {x: 0, y: 0}},
+            {point: 3, x:  0.53448 * smt/2, y:          -smt/2, handle: {x: 0, y: 0}},
+            {point: 4, x:            smt/2, y:           smt/2, handle: {x: 0, y: 0}},
         ]
     };
 
@@ -260,9 +273,10 @@ Morph.prototype._calcPosition = function() {
             circle:   this._translateCoordinates(point.circle),
             square:   this._translateCoordinates(point.square),
             triangle: this._translateCoordinates(point.triangle),
+            smTriangle: this._translateCoordinates(point.smTriangle)
         },
         rectangle: {
-            small: {
+            initial: {
                 center: new paper.Point(paper.view.center.x, paper.view.size.height - 64),
                 size: new paper.Size(513, 47)
             },
@@ -273,6 +287,10 @@ Morph.prototype._calcPosition = function() {
             wide: {
                 center: paper.view.center,
                 size: new paper.Size(1220, 160)
+            },
+            hidden: {
+                center: new paper.Point(paper.view.center.x, paper.view.size.height + 100),
+                size: new paper.Size(513, 47)
             }
         }
     };
@@ -510,14 +528,13 @@ Morph.prototype._togglePicture = function(state) {
 
 };
 
-Morph.prototype._morph = function(state) {
+Morph.prototype._morph = function(state, dur) {
 
     var currentState  = this._getState('morph');
 
     if ( state == currentState ) return;
 
-    var duration   = this.dur,
-        callCount  = duration * 60 / 1000, // morph anim duration * frame per second
+    var duration   = dur || this.dur,
         easing     = TWEEN.Easing.Cubic.Out,
         morphPath  = this.objects.paths.morph,
         segments   = morphPath.segments,
@@ -620,9 +637,42 @@ Morph.prototype.deactivate = function() {
 
     this._togglePicture();
     this._morph('circle');
-    this._morphRectangle('small');
+    this._morphRectangle('initial');
 
     this._updateState('active', false);
+};
+
+Morph.prototype.moveDown = function(dur) {
+    var that     = this,
+        timeline = new TimelineLite();
+
+    timeline
+        .add(function() {
+            that.canvas.addClass('is-visible');
+            that.objects.other.rectangle.visible = false;
+            })
+        .fromTo(that.canvas, 0.2, {opacity: 0}, {opacity: 1})
+        .add(function() {
+            that._morph('smTriangle', dur);
+            })
+        .to(that.canvas, 1, {y: that.shiftY});
+};
+
+Morph.prototype.moveBack = function(dur) {
+    var that     = this,
+        timeline = new TimelineLite();
+
+    timeline.eventCallback('onComplete', function() {
+        that.canvas
+            .removeClass('is-visible')
+            .css('opacity', '');
+        that.objects.other.rectangle.visible = true;
+    });
+
+    timeline
+        .to(that.canvas, 1, {y: 0})
+        .add(function() { that._morph('circle', dur); }, 0)
+        .to(that.canvas, 0.2, {opacity: 0});
 };
 
 module.exports = Morph;

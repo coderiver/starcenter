@@ -1,11 +1,16 @@
 require('jquery');
 require('slick-carousel');
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
-function MainSlider(wrapper, slider, paginator) {
+function MainSlider(wrapper) {
 
         this.wrapper  = $(wrapper);
-        this.slider   = this.wrapper.find(slider);
-        this.pagiBtns = this.wrapper.find(paginator).find('button');
+        this.slider   = this.wrapper.find('.main-slider__slides');
+        this.pagiBtns = this.wrapper.find('.main-slider__paginator').find('button');
+        this.circle   = this.wrapper.find('.main-slider__morph');
+        this.overlay  = this.wrapper.find('.main-slider__overlay');
         this.currentSlide = 0;
         this.slickOptions = {
             accessibility: false,
@@ -20,8 +25,9 @@ function MainSlider(wrapper, slider, paginator) {
             useCSS: true,
             pauseOnHover: true
         };
-        this.animDur = 500;
+        this.animDur = 0.8;
         this.animDelay = 300;
+        this.easing = Power1.easeNone;
 
     }
 
@@ -37,14 +43,11 @@ MainSlider.prototype.init = function() {
     });
 
     that.slider.slick(that.slickOptions);
-    // that.slickSlider = that.slider.slick('getSlick');
-    // console.log(that.slickSlider.__proto__);
 };
 
 MainSlider.prototype.toSlide = function(slideIndex) {
     var that = this;
     that.slider.slick('slickGoTo', slideIndex);
-    // that.currentSlide = slideIndex;
 };
 
 MainSlider.prototype.pagination = function() {
@@ -53,7 +56,6 @@ MainSlider.prototype.pagination = function() {
         event.preventDefault();
         var index = $(this).index();
         that.toSlide(index);
-        // that.updatePagiBtns(index);
     });
 };
 
@@ -77,21 +79,47 @@ MainSlider.prototype.makeHidden = function() {
     setTimeout(function() {
         that.wrapper.addClass('is-hidden');
     }, that.animDelay);
-    // setTimeout(function() {
-    //     that.wrapper.css('display', 'none');
-    // }, 800);
 };
 
 MainSlider.prototype.makeVisible = function() {
     var that = this;
-    // that.wrapper.css('display', '');
     that.wrapper.removeClass('is-hidden');
-    // setTimeout(function() {
-        // that.wrapper.removeClass('is-init');
-    // }, that.animDelay);
     setTimeout(function() {
         that.play();
     }, that.animDur);
+};
+
+MainSlider.prototype.rollUp = function(duration) {
+    var that = this,
+        dur  = duration/1000 || that.animDur,
+        tl   = new TimelineLite();
+
+    tl.eventCallback('onStart', function() {
+        that.overlay.show();
+        that.pause();
+    });
+
+    tl
+        .fromTo(that.overlay, dur, {y: '100%'}, {y: '0%', ease: that.easing})
+        .to(that.slider, dur, {scale: 0.8, opacity: 0, ease: that.easing}, 0)
+        .to(that.circle, 0.2, {opacity: 0, ease: that.easing}, 0);
+};
+
+MainSlider.prototype.rollDown = function(duration) {
+    var that = this,
+        dur  = duration/1000 || that.animDur,
+        tl   = new TimelineLite();
+
+    tl.eventCallback('onComplete', function() {
+        that.overlay.hide();
+        that.play();
+    });
+
+    tl
+        .to(that.overlay, dur, {y: '100%', ease: that.easing})
+        .to(that.slider, dur, {scale: 1, opacity: 1,  ease: that.easing}, 0)
+        .to(that.circle, 0.2, {opacity: 1, ease: that.easing}, '+=0.1');
+
 };
 
 module.exports = MainSlider;

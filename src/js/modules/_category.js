@@ -1,19 +1,26 @@
 require('jquery');
 require('slick-carousel');
+require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
 function Category(wrapperSelector, itemSelector) {
     this.wrapper   = $(wrapperSelector);
     this.items     = this.wrapper.find(itemSelector).toArray();
     this.active    = false;
+    this.opened    = false;
     this.wasActive = false;
+    this.timeline  = null;
     this.classes   = {
         prev: 'is-prev',
         active: 'is-active',
         next: 'is-next'
     };
     this.options = {
-        duration: 500,
-        easing: 'easeInCubic',
+        duration: 1,
+        shiftY: -274,
+        targetWidth: 1600,
+        easing: Power1.easeNone,
         initSlide: 0,
         delayBeforeInit: 900,
     };
@@ -37,21 +44,21 @@ function Category(wrapperSelector, itemSelector) {
 }
 
 Category.prototype._initEvents = function() {
-    var that = this;
+    var _ = this;
 
-    $(that.items).bind('click', function() {
-        that.options.initSlide = $(this).index();
+    $(_.items).bind('click', function() {
+        _.options.initSlide = $(this).index();
     });
 };
 
 Category.prototype._init = function() {
-    var that = this;
+    var _ = this;
 
-    that.clonedItems = $(that.items).clone(true).addClass('clone');
-    that.wrapper.append(that.clonedItems);
-    that.wrapper.slick(that.slickOptions);
+    _.clonedItems = $(_.items).clone(true).addClass('clone');
+    _.wrapper.append(_.clonedItems);
+    _.wrapper.slick(_.slickOptions);
     setTimeout(function() {
-        that.wrapper.slick('slickGoTo', that.options.initSlide);
+        _.wrapper.slick('slickGoTo', _.options.initSlide);
     }, 200);
 };
 
@@ -62,17 +69,17 @@ Category.prototype._destroy = function() {
 };
 
 Category.prototype.enable = function() {
-    var that = this;
-    if ( !that.wasActive ) {
-        that._initEvents();
-        that.wasActive = true;
+    var _ = this;
+    if ( !_.wasActive ) {
+        _._initEvents();
     }
 
-    that.active = true;
+    _.active = true;
+    _.wasActive = true;
 
     setTimeout(function() {
-        that._init();
-    }, that.options.delayBeforeInit);
+        _._init();
+    }, _.options.delayBeforeInit);
 };
 
 Category.prototype.disable = function() {
@@ -81,5 +88,50 @@ Category.prototype.disable = function() {
     this.active = false;
     this._destroy();
 };
+
+Category.prototype.open = function() {
+    if ( this.opened ) return;
+
+    var _  = this;
+
+    _.opened = true;
+
+    _.timeline = new TimelineLite();
+
+    _.timeline.eventCallback('onComplete', function(e) {
+        // _._init();
+        console.log('complete');
+    });
+
+    _.timeline.set(_.wrapper, {x: '-50%', marginLeft: 0});
+    _.timeline.set(_.items, {width: ''});
+    _.timeline.set(_.items, {width: '33.3333%'});
+
+    _.timeline
+        .to(_.wrapper, _.options.duration, {
+            y: _.options.shiftY,
+            width: _.options.targetWidth,
+            ease: _.options.easing
+            });
+
+};
+
+Category.prototype.close = function() {
+    if ( !this.opened ) return;
+
+    var _ = this;
+
+    // _.timeline.eventCallback('onComplete', function(e) {
+    //     // _.timeline = null;
+    //     console.log(e);
+    // });
+
+    _.timeline
+        .reversed(true);
+
+    _.opened = false;
+
+};
+
 
 module.exports = Category;

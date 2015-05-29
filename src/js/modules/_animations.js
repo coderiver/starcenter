@@ -12,9 +12,29 @@ module.exports = function() {
     var scrollmagic = {},
         mainContainer = $('#outer');
 
-
+    // init ScrollMagic controller
     scrollmagic.controller = new ScrollMagic.Controller();
     TweenLite.lagSmoothing(1000, 16);
+
+
+
+    //##### timeline toparea
+    scrollmagic.toparea = {
+        el: $('.catalog'),
+        scene: null,
+    };
+    scrollmagic.toparea.scene = new ScrollMagic.Scene({
+        duration: 300,
+        // offset: 300,
+        triggerElement: scrollmagic.toparea.el[0],
+        triggerHook: 'onLeave',
+        loglevel: 1
+    })
+        .on('end', function(e) {
+            app.toparea.toggle();
+        })
+        .addTo(scrollmagic.controller);
+
 
 
     //##### timeline scene
@@ -85,119 +105,24 @@ module.exports = function() {
     // ##### scene for box with men on background
     scrollmagic.box = {
         el: $('.box'),
-        // trigger: $('.box-wrapper'),
-        // table1: $('.box .men-table'),
-        // table2: $('.box .partners-table'),
+        manRow: $('.box__bg-row'),
         canAnimate: true,
         stateChanged: false,
         scene: null
     };
-    // scrollmagic.box.scene = new ScrollMagic.Scene({
-    //     duration: 500,
-    //     offset: 285,
-    //     triggerHook: 'onCenter',
-    //     triggerElement: scrollmagic.box.trigger[0],
-    //     loglevel: 1
-    // })
-    //     .on('start', function(e) {
-    //         var box = scrollmagic.box.el;
-
-    //         if ( e.state === 'DURING' ) {
-    //             box.css({
-    //                 top: box.offset().top,
-    //                 left: box.offset().left,
-    //                 width: box.width(),
-    //                 position: 'fixed'
-    //             });
-    //         }
-
-    //         if ( e.state === 'BEFORE' ) {
-    //             box.css({
-    //                 position: '',
-    //                 top: '',
-    //                 left: '',
-    //                 width: ''
-    //             });
-    //         }
-
-    //         scrollmagic.box.table1.toggleClass('is-animate');
-
-    //         if ( e.state == 'DURING' && scrollmagic.box.canAnimate) {
-    //             scrollmagic.box.canAnimate = false;
-    //             showPeople();
-    //             setTimeout(function() {
-    //                 scrollmagic.box.canAnimate = true;
-    //             }, 2500);
-    //         }
-
-    //         if ( e.state == 'BEFORE' && scrollmagic.box.canAnimate) {
-    //             scrollmagic.box.canAnimate = false;
-    //             hidePeople();
-    //             setTimeout(function() {
-    //                 scrollmagic.box.canAnimate = true;
-    //             }, 2500);
-    //         }
-    //     })
-    //     .on('end', function(e) {
-    //         var box = scrollmagic.box.el;
-    //         if ( e.state === 'DURING' ) {
-    //             box.css({
-    //                 top: box.offset().top,
-    //                 left: box.offset().left,
-    //                 width: box.width(),
-    //                 position: 'fixed'
-    //             });
-    //         }
-    //         if ( e.state === 'AFTER' ) {
-    //             box.css({
-    //                 position: '',
-    //                 top: Math.ceil(500 * e.progress),
-    //                 left: '',
-    //                 width: ''
-    //             });
-    //         }
-    //     })
-    //     .on('progress', function(e) {
-    //         if ( e.progress >= 0.6 && !scrollmagic.box.stateChanged ) {
-    //             scrollmagic.box.stateChanged = true;
-
-    //             scrollmagic.box.table1.removeClass('is-animate');
-
-    //             setTimeout(function() {
-    //                 scrollmagic.box.table2.addClass('is-animate');
-    //             }, 500);
-
-    //             scrollmagic.box.el.addClass('is-animate');
-    //         }
-
-    //         if ( e.progress < 0.6 && scrollmagic.box.stateChanged ) {
-    //             scrollmagic.box.stateChanged = false;
-
-    //             scrollmagic.box.table2.removeClass('is-animate');
-
-    //             setTimeout(function() {
-    //                 scrollmagic.box.table1.addClass('is-animate');
-    //             }, 500);
-
-    //             scrollmagic.box.el.removeClass('is-animate');
-    //         }
-    //     })
-    //     .addTo(scrollmagic.controller);
 
     function showPeople() {
-        var man = $('.box__bg-row');
-        man.each(function(index, el) {
+        scrollmagic.box.manRow.each(function(index, el) {
             TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.05 * index);
         });
     }
     function hidePeople() {
-        var man = $('.box__bg-row');
-        man.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (man.length - index));
+        scrollmagic.box.manRow.each(function(index, el) {
+            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (scrollmagic.box.manRow.length - index));
         });
     }
 
-    TweenLite.set($('.box__bg-row'), {opacity: 0, y: -30});
+    TweenLite.set(scrollmagic.box.manRow, {opacity: 0, y: -30});
     scrollmagic.box.scene = new ScrollMagic.Scene({
         duration: 800,
         triggerElement: scrollmagic.box.el[0],

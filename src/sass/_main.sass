@@ -519,17 +519,17 @@ textarea.input
   overflow: hidden
   transition: background-color 0.5s linear
   background-color: none
-  &:after
-    content: ""
-    position: absolute
-    z-index: 5
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    transition: transform 0.5s linear
-    transform: translate3d(0, 100%, 0)
-    background: #FFF
+  // &:after
+  //   content: ""
+  //   position: absolute
+  //   z-index: 5
+  //   top: 0
+  //   left: 0
+  //   width: 100%
+  //   height: 100%
+  //   transition: transform 0.5s linear
+  //   transform: translate3d(0, 100%, 0)
+  //   background: #FFF
   &.is-hidden
     // background-color: #ccc
     &:after
@@ -544,7 +544,7 @@ textarea.input
   transform-origin: top center
   position: relative
   z-index: 2
-  transition: transform 0.5s linear
+  // transition: transform 0.5s linear
 
 .main-slider__morph
   position: absolute
@@ -553,8 +553,20 @@ textarea.input
   width: 510px
   height: 510px
   margin-left: -255px
-  transition: opacity 0.01s linear
-  transition-delay: 0.3s
+  // transition: opacity 0.01s linear
+  // transition-delay: 0.3s
+
+.main-slider__overlay
+  display: none
+  position: absolute
+  z-index: 5
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  // transition: transform 0.5s linear
+  // transform: translate3d(0, 100%, 0)
+  background: #FFF
 
 .main-slider__paginator
   position: absolute
@@ -628,11 +640,11 @@ textarea.input
   height: $content-height
   position: relative
   z-index: 0
-  overflow: hidden
-  +wos
   #morph
     opacity: 0
     transition: opacity 0.3s linear
+    &.is-visible
+      z-index: 3
   .deco
     position: absolute
     top: 145px
@@ -715,7 +727,8 @@ textarea.input
   width: 510px
   margin-left: -255px
   box-sizing: border-box
-  transition: all 0.5s linear
+  // transform: translate(-50%, 0)
+  // transition: all 0.5s linear
   font-size: 0
   &:before
     content: ""

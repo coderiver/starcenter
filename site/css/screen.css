@@ -255,14 +255,15 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .sold-badge { display: inline-block; white-space: nowrap; color: #ED1D24; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.5em; text-transform: uppercase; border: #ED1D24; line-height: 34px; border: 3px solid; padding: 0 20px; min-width: 200px; text-align: center; box-sizing: border-box; -webkit-transform: rotate(-12deg); -ms-transform: rotate(-12deg); transform: rotate(-12deg); }
 
 .main-slider { position: relative; z-index: 1; height: 656px; overflow: hidden; -webkit-transition: background-color 0.5s linear; transition: background-color 0.5s linear; background-color: none; }
-.main-slider:after { content: ""; position: absolute; z-index: 5; top: 0; left: 0; width: 100%; height: 100%; -webkit-transition: -webkit-transform 0.5s linear; transition: transform 0.5s linear; -webkit-transform: translate3d(0, 100%, 0); transform: translate3d(0, 100%, 0); background: #FFF; }
 .main-slider.is-hidden:after { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 .main-slider.is-hidden .main-slider__slides { -webkit-transform: scale(0.8); -ms-transform: scale(0.8); transform: scale(0.8); }
 .main-slider.is-hidden .main-slider__morph { opacity: 0; -webkit-transition-delay: 0s; transition-delay: 0s; }
 
-.main-slider__slides { -webkit-transform-origin: top center; -ms-transform-origin: top center; transform-origin: top center; position: relative; z-index: 2; -webkit-transition: -webkit-transform 0.5s linear; transition: transform 0.5s linear; }
+.main-slider__slides { -webkit-transform-origin: top center; -ms-transform-origin: top center; transform-origin: top center; position: relative; z-index: 2; }
 
-.main-slider__morph { position: absolute; top: 100px; left: 50%; width: 510px; height: 510px; margin-left: -255px; -webkit-transition: opacity 0.01s linear; transition: opacity 0.01s linear; -webkit-transition-delay: 0.3s; transition-delay: 0.3s; }
+.main-slider__morph { position: absolute; top: 100px; left: 50%; width: 510px; height: 510px; margin-left: -255px; }
+
+.main-slider__overlay { display: none; position: absolute; z-index: 5; top: 0; left: 0; width: 100%; height: 100%; background: #FFF; }
 
 .main-slider__paginator { position: absolute; z-index: 3; top: 175px; left: 50%; width: 40px; margin-left: -20px; text-align: center; }
 .main-slider__paginator button { display: block; margin-bottom: 5px; width: 40px; height: 40px; text-align: center; color: #333; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.25em; line-height: 2; background: none; opacity: 0.3; -webkit-transition: opacity 0.3s linear; transition: opacity 0.3s linear; }
@@ -278,8 +279,9 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .slide__content { position: absolute; z-index: 1; top: 180px; left: 54.09357%; width: 500px; font-size: 36px; line-height: 1.2; letter-spacing: 0.05em; }
 .slick-slide .slide__content { -webkit-animation: content-slide-out 0.8s ease; animation: content-slide-out 0.8s ease; }
 
-.catalog { height: 680px; position: relative; z-index: 0; overflow: hidden; -webkit-overflow-scrolling: touch; }
+.catalog { height: 680px; position: relative; z-index: 0; }
 .catalog #morph { opacity: 0; -webkit-transition: opacity 0.3s linear; transition: opacity 0.3s linear; }
+.catalog #morph.is-visible { z-index: 3; }
 .catalog .deco { position: absolute; top: 145px; right: 125px; opacity: 0; visibility: hidden; -webkit-transform: translateY(30px); -ms-transform: translateY(30px); transform: translateY(30px); -webkit-transition: all 0.2s linear; transition: all 0.2s linear; }
 .catalog.is-init #morph { z-index: 1; }
 .catalog.is-init .main-slider { z-index: 0; }
@@ -297,7 +299,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .catalog__inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
 
-.catalog-category { position: absolute; z-index: 2; top: 609px; left: 50%; height: 44px; width: 510px; margin-left: -255px; box-sizing: border-box; -webkit-transition: all 0.5s linear; transition: all 0.5s linear; font-size: 0; }
+.catalog-category { position: absolute; z-index: 2; top: 609px; left: 50%; height: 44px; width: 510px; margin-left: -255px; box-sizing: border-box; font-size: 0; }
 .catalog-category:before { content: ""; position: absolute; z-index: 0; top: 0; left: 0; right: 0; width: 510px; height: 100%; margin: auto; background: #FFF; box-shadow: 0 0 0 3px #333, 0 0 0 13px #FFF; -webkit-transition: all 0.2s linear; transition: all 0.2s linear; visibility: visible; opacity: 1; }
 
 .catalog-category__item { position: relative; z-index: 1; display: inline-block; vertical-align: middle; width: 170px; height: 100%; text-align: center; overflow: hidden; pointer-events: none; }
