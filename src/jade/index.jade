@@ -571,7 +571,7 @@ block content
                 .info__cell.info__cell3
                   .info-item
                     small.info-item__label Площадь
-                    | 32 000 m2
+                    | 32 000 М<sup>2</sup>
                 .info__cell.info__cell2
                   .info-item
                     small.info-item__label Год сдачи
@@ -583,7 +583,7 @@ block content
                 .info__cell.info__cell3
                   .info-item
                     small.info-item__label Свободная Площадь
-                    |2 000 m2
+                    | 2 000 М<sup>2</sup>
 
           .object__detail
             h4.heading.heading_red
@@ -599,6 +599,9 @@ block content
 
     //BEGIN flagship
     .object-wrapper
+      span.object-label
+        | Уже <br> про <br> дано
+      
       #oceanPlaza.object.js-box
         .object__inner
           
@@ -643,7 +646,7 @@ block content
                 .info__cell.info__cell3
                   .info-item
                     small.info-item__label Площадь
-                    | 32 000 m2
+                    | 32 000 М<sup>2</sup>
                 .info__cell.info__cell2
                   .info-item
                     small.info-item__label Год сдачи
@@ -653,9 +656,10 @@ block content
                     small.info-item__label Этажность
                     | 5
                 .info__cell.info__cell3
-                  .info-item
+                  .info-item.is-sold
+                    span.sold-badge продано
                     small.info-item__label Свободная Площадь
-                    |2 000 m2
+                    | 0 М<sup>2</sup>
 
           .object__detail
             h4.heading.heading_red

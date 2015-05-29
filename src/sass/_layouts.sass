@@ -1,17 +1,9 @@
 body
   min-width: $content-width
-  // max-width: 1368px
   min-height: 600px
   height: 100%
   overflow: hidden
   position: relative
-  // +scroll
-  // +r(1200)
-  //   overflow-x: auto
-  //   overflow-y: hidden
-  // +rh(680)
-  //   overflow-x: hidden
-  //   overflow-y: auto
 
 .center-wrap
   max-width: 1368px
@@ -22,13 +14,11 @@ body
   height: 100%
 
 #outer
-  // min-width: $content-width
-  // min-height: $content-height
   position: absolute
   top: 0
   left: 0
   right: 0
-  height: 100%
+  bottom: 0
   z-index: 1
   overflow: hidden
   +scroll
@@ -38,24 +28,11 @@ body
   z-index: 2
   margin-bottom: 510px
   background: #FFF
-  // position: absolute
-  // // padding-top: $content-height
-  // top: 0
-  // left: 0
-  // right: -16px
-  // bottom: 0
-  // +scroll
 
 .l-center
-  width: 1368px
+  min-width: 1200px
+  max-width: 1368px
   margin: auto
-
-.inner-wrapper
-  position: relative
-  z-index: 1
-  background: #FFF
-  padding-bottom: 510px
-
 
 #header
   position: absolute

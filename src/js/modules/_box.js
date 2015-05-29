@@ -14,7 +14,8 @@ function Box() {
 
     this.options = {
         animDur: 0.7,
-        class: 'is-opened',
+        class: 'is-opened', // add to box when opened
+        wrapperClass: 'is-animate', // add to wrapper when start transforming to fullscren mode
         zIndex: 98,
         easing: Power1.easeOut,
         breakpoint: 800,
@@ -48,6 +49,7 @@ Box.prototype.init = function(box) {
     if ( box instanceof jQuery ) { _.el.box = box; }
     else { _.el.box = $(box); }
 
+    _.wrapper        = _.el.box.parent();
     _.el.inner       = _.el.box.find('.object__inner');
     _.el.slider      = _.el.box.find('.object__slider');
     _.el.openButton  = _.el.box.find('.info .btn');
@@ -129,13 +131,12 @@ Box.prototype._updateOnResize = function() {
 
 
 Box.prototype._getPosition = function() {
-    var _       = this,
-        wrapper = _.el.box.parent();
+    var _       = this;
 
-    _.position.top    =  wrapper.offset().top;
-    _.position.left   =  wrapper.offset().left;
-    _.position.width  =  wrapper.width();
-    _.position.height =  wrapper.height();
+    _.position.top    =  _.wrapper.offset().top;
+    _.position.left   =  _.wrapper.offset().left;
+    _.position.width  =  _.wrapper.width();
+    _.position.height =  _.wrapper.height();
     _.position.right  =  _.win.W - _.position.width - _.position.left;
     _.position.bottom =  _.win.H - _.position.height - _.position.top;
 
@@ -162,6 +163,8 @@ Box.prototype._toFullscreen = function() {
 
         // update initial position of box if window will be resize
         $(_).on('winResized', _._getPosition);
+
+        _.wrapper.addClass(_.options.wrapperClass);
 
         _.el.box.css({
             top: pos.top,
@@ -219,6 +222,8 @@ Box.prototype._toInitState = function() {
         });
 
         _.opened = false;
+
+        _.wrapper.removeClass(_.options.wrapperClass);
         // app.util.toggleScroll();
     });
 

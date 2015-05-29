@@ -485,6 +485,22 @@ textarea.input
   resize: none
   margin: 0
 
+
+.sold-badge
+  display: inline-block
+  white-space: nowrap
+  color: #ED1D24
+  +f(hb, 12, 0.5)
+  text-transform: uppercase
+  border: #ED1D24
+  line-height: 34px
+  border: 3px solid
+  padding: 0 20px
+  min-width: 200px
+  text-align: center
+  box-sizing: border-box
+  transform: rotate(-12deg)
+
 //---------------------------------------------------------------------------
 //            ^^^^^  end common blocks  ^^^^^
 //---------------------------------------------------------------------------
@@ -1340,9 +1356,7 @@ textarea.input
   position: absolute
   z-index: 1
   bottom: 0
-  // left: 120px
   left: 120px
-  // pointer-events: none
   img
     display: block
 
@@ -1394,9 +1408,6 @@ textarea.input
   .head__img
     left: 50%
     margin-left: -560px
-  // .head__text
-  //   bottom: 108px
-  //   bottom: 258px
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end head  ^^^^^
@@ -1590,6 +1601,23 @@ textarea.input
     margin-top: 0
   &:last-child
     margin-bottom: 0
+  &.is-animate
+    .object-label
+      opacity: 0
+      visibility: hidden
+
+.object-label
+  display: block
+  position: absolute
+  z-index: 1
+  top: -55px
+  left: -65px
+  +f(hb, 24, 1)
+  line-height: 1.333
+  text-transform: uppercase
+  transition: all 0.2s linear
+  opacity: 1
+  visibility: visible
 
 .object
   position: relative
@@ -1600,8 +1628,7 @@ textarea.input
     position: absolute
     z-index: 5
     left: 50%
-    // top: 294px
-    bottom: -20px
+    bottom: -22px
     margin-left: -225px
     .table__border
       stroke-dashoffset: 0
@@ -1629,18 +1656,13 @@ textarea.input
         button
           color: $text
 
-
   &.is-opened
     .object__inner
       +scroll
     .object__buttons
       display: block
     .object__detail
-      position: static
-      transform: none
-      opacity: 1
-      visibility: visible
-      transition: all 0.5s ease
+      display: block
     .btn_object
       cursor: default
       pointer-events: none
@@ -1648,8 +1670,9 @@ textarea.input
         transition: all 0.2s linear
         opacity: 0
         visibility: hidden
-    // .object__slide
-    //   height: 680px
+    .object__slide
+      transition: none
+      transform: none
 
 
 .object__inner
@@ -1678,17 +1701,14 @@ textarea.input
   bottom: 0
 
 .object__detail
-  position: absolute
-  top: 680px
+  display: none
   width: 790px
   margin: 160px auto 0
   box-sizing: border-box
   padding: 0 0 70px 210px
   +f(bsr, 18)
   line-height: 1.555
-  opacity: 0
-  visibility: hidden
-  transform: translate3d(0,50px,0)
+  animation: detail 0.5s ease
   .btn_link
     margin-top: 40px
 
@@ -1747,9 +1767,14 @@ textarea.input
   overflow: hidden
   background: no-repeat center center
   background-size: cover
+  transition: transform 0.3s linear
   > img
     display: block
     max-width: 100%
+  &:hover
+    transform: scale(1.1)
+    transition-duration: 2s
+    transition-timing-function: ease-out
 
 .object__slider-prev,
 .object__slider-next
@@ -1786,7 +1811,7 @@ textarea.input
   > span
     right: 30px
   &:hover
-    // cursor: url('../img/svg/prev.svg'), pointer
+    cursor: url('../img/prev.png'), pointer
     > span
       transform: translate3d(-50px,0,0)
     .icon-arrow
@@ -1797,9 +1822,7 @@ textarea.input
   > span
     left: 30px
   &:hover
-    // cursor: url('../img/svg/next.svg'), pointer
-    // cursor: url('../img/next.png'), pointer
-    // cursor: url('http://www.javascriptkit.com/dhtmltutors/cursor-hand.gif'), auto
+    cursor: url('../img/next.png'), pointer
     > span
       transform: translate3d(60px,0,0)
     .icon-arrow
@@ -1836,6 +1859,16 @@ textarea.input
 .info-item
   +f(hr, 24, 0.2)
   line-height: 1.25
+  position: relative
+  sup
+    vertical-align: super
+    font-size: 12px
+  .sold-badge
+    position: absolute
+    top: 0
+    left: -15px
+  &.is-sold
+    color: #AAA
 
 .info-item__label
   display: block
@@ -1863,58 +1896,4 @@ textarea.input
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end catalog-content  ^^^^^
-//---------------------------------------------------------------------------
-
-
-
-//---------------------------------------------------------------------------
-//            ##### begin detail #####
-//---------------------------------------------------------------------------
-
-.modal
-  display: none
-  position: fixed
-  z-index: 110
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  background: #FFF
-  overflow: hidden
-
-.modal__inner
-  position: absolute
-  padding-bottom: 70px
-  top: 0
-  left: 0
-  bottom: 0
-  +scroll
-
-
-
-
-.object-detail
-  position: relative
-  z-index: 0
-  .info
-    position: absolute
-    z-index: 1
-    left: 50%
-    bottom: 0
-    margin-left: -225px
-    .table__border
-      stroke-dashoffset: 0
-
-.object-detail__inner
-  width: 790px
-  margin: 40px auto 0
-  box-sizing: border-box
-  padding-left: 210px
-  +f(bsr, 18)
-  line-height: 1.555
-  .btn_link
-    margin-top: 40px
-
-//---------------------------------------------------------------------------
-//            ^^^^^  end detail  ^^^^^
 //---------------------------------------------------------------------------
