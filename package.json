@@ -28,6 +28,7 @@
     "browser-sync": "^2.7.1",
     "browserify": "^10.0.0",
     "browserify-shim": "^3.8.6",
+    "compression": "^1.4.4",
     "debowerify": "^1.2.1",
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
@@ -52,6 +53,7 @@
   },
   "dependencies": {
     "gsap": "^1.16.1",
+    "jquery-mousewheel": "^3.1.12",
     "ramjet": "^0.4.5",
     "scrollmagic": "^2.0.5",
     "tween.js": "^0.14.0"

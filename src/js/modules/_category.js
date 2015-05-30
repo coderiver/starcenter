@@ -1,27 +1,26 @@
 require('jquery');
 require('slick-carousel');
-require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('gsap');
 require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
-function Category(wrapperSelector, itemSelector) {
-    this.wrapper   = $(wrapperSelector);
-    this.items     = this.wrapper.find(itemSelector).toArray();
+function Category(element, itemSelector) {
+    this.element   = $(element);
+    this.items     = this.element.find(itemSelector).toArray();
     this.active    = false;
-    this.opened    = false;
-    this.wasActive = false;
-    this.timeline  = null;
+    this.hidden    = false;
+    this.inProgress= false;
+    this.initSlide = 0;
     this.classes   = {
-        prev: 'is-prev',
-        active: 'is-active',
-        next: 'is-next'
+        animate: 'is-animate',
+        active: 'is-active'
     };
     this.options = {
-        duration: 1,
+        duration: 800, // animation duration
+        delay: 200, // deley before open
         shiftY: -274,
+        initWidth: this.element.outerWidth(),
         targetWidth: 1600,
         easing: Power1.easeNone,
-        initSlide: 0,
         delayBeforeInit: 900,
     };
     this.slickOptions = {
@@ -30,7 +29,7 @@ function Category(wrapperSelector, itemSelector) {
         arrows: false,
         draggable: false,
         slide: itemSelector,
-        speed: this.dur,
+        speed: 800,
         swipe: false,
         fade: false,
         centerMode: true,
@@ -41,97 +40,128 @@ function Category(wrapperSelector, itemSelector) {
         initialSlide: 1,
         slidesToShow: 3
     };
+    this._initEvents();
 }
+
+
 
 Category.prototype._initEvents = function() {
     var _ = this;
 
     $(_.items).bind('click', function() {
-        _.options.initSlide = $(this).index();
+        _.initSlide = $(this).index();
     });
 };
+
+
 
 Category.prototype._init = function() {
     var _ = this;
 
     _.clonedItems = $(_.items).clone(true).addClass('clone');
-    _.wrapper.append(_.clonedItems);
-    _.wrapper.slick(_.slickOptions);
+    _.element.append(_.clonedItems);
+    _.element.slick(_.slickOptions);
     setTimeout(function() {
-        _.wrapper.slick('slickGoTo', _.options.initSlide);
+        _.element.slick('slickGoTo', _.initSlide);
     }, 200);
 };
 
+
+
 Category.prototype._destroy = function() {
-    this.wrapper.slick('unslick');
+    this.element.slick('unslick');
     $(this.clonedItems).remove();
     $(this.items).removeClass(this.classes.active);
 };
 
-Category.prototype.enable = function() {
-    var _ = this;
-    if ( !_.wasActive ) {
-        _._initEvents();
-    }
 
-    _.active = true;
-    _.wasActive = true;
 
-    setTimeout(function() {
-        _._init();
-    }, _.options.delayBeforeInit);
-};
+Category.prototype.open = function(duration, delay) {
+    if ( this.active || this.inProgress ) return;
 
-Category.prototype.disable = function() {
-    if ( !this.active ) return;
+    var _   = this;
+        dur = duration / 1000 || _.options.duration / 1000;
+        del = delay / 1000 || _.options.delay / 1000;
+        tl  = new TimelineLite();
 
-    this.active = false;
-    this._destroy();
-};
+    tl.set(_.element, {x: '-50%', marginLeft: 0});
+    tl.set(_.items, {width: '33.3333%'});
 
-Category.prototype.open = function() {
-    if ( this.opened ) return;
-
-    var _  = this;
-
-    _.opened = true;
-
-    _.timeline = new TimelineLite();
-
-    _.timeline.eventCallback('onComplete', function(e) {
-        // _._init();
-        console.log('complete');
-    });
-
-    _.timeline.set(_.wrapper, {x: '-50%', marginLeft: 0});
-    _.timeline.set(_.items, {width: ''});
-    _.timeline.set(_.items, {width: '33.3333%'});
-
-    _.timeline
-        .to(_.wrapper, _.options.duration, {
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .delay(del)
+        .add(function() {
+            _.element.addClass(_.classes.animate);
+            })
+        .to(_.element, dur, {
             y: _.options.shiftY,
             width: _.options.targetWidth,
             ease: _.options.easing
+            })
+        .add(function() {
+            _._init();
+            _.element.addClass(_.classes.active);
+            _.inProgress = false;
+            _.active = true;
             });
+};
+
+
+
+Category.prototype.close = function(duration, delay) {
+    if ( !this.active || this.inProgress ) return;
+
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000;
+        del = delay / 1000 || _.options.delay / 1000;
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .delay(del)
+        .add(function() {
+            _.element.removeClass(_.classes.active);
+            _._destroy();
+            })
+        .to(_.element, dur, {
+            y: 0,
+            width: _.options.initWidth,
+            ease: _.options.easing,
+            clearProps: 'all'
+            })
+        .add(function() {
+            _.element.removeClass(_.classes.animate);
+            _.inProgress = false;
+            _.active = false;
+            })
+        .set(_.items, {clearProps: 'all'});
+};
+
+
+Category.prototype.toggleHidden = function() {
+    var _  = this;
+        // tl = new TimelineLite();
+
+    if ( _.hidden ) {
+        TweenMax.fromTo(_.element, 0.5,
+            {autoAlpha: 0, y: 50},
+            {autoAlpha: 1, y:  0, clearProps: 'all', ease: _.options.easing, delay: 0.5}
+            );
+        _.hidden = false;
+    } else {
+        TweenMax.fromTo(_.element, 0.5,
+            {autoAlpha: 1, y:  0},
+            {autoAlpha: 0, y: 50, ease: _.options.easing}
+            );
+        _.hidden = true;
+    }
 
 };
 
-Category.prototype.close = function() {
-    if ( !this.opened ) return;
-
-    var _ = this;
-
-    // _.timeline.eventCallback('onComplete', function(e) {
-    //     // _.timeline = null;
-    //     console.log(e);
-    // });
-
-    _.timeline
-        .reversed(true);
-
-    _.opened = false;
-
-};
 
 
 module.exports = Category;

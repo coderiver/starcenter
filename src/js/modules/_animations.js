@@ -1,8 +1,6 @@
 require('jquery');
-require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('gsap');
 require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
 
 var ScrollMagic = require('scrollmagic');
 require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
@@ -14,7 +12,7 @@ module.exports = function() {
 
     // init ScrollMagic controller
     scrollmagic.controller = new ScrollMagic.Controller();
-    TweenLite.lagSmoothing(1000, 16);
+    TweenMax.lagSmoothing(1000, 16);
 
 
 
@@ -113,16 +111,16 @@ module.exports = function() {
 
     function showPeople() {
         scrollmagic.box.manRow.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 1, y: 0}).delay(0.05 * index);
+            TweenMax.to(el, 0.2, {opacity: 1, y: 0}).delay(0.05 * index);
         });
     }
     function hidePeople() {
         scrollmagic.box.manRow.each(function(index, el) {
-            TweenLite.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (scrollmagic.box.manRow.length - index));
+            TweenMax.to(el, 0.2, {opacity: 0, y: -30}).delay(0.05 * (scrollmagic.box.manRow.length - index));
         });
     }
 
-    TweenLite.set(scrollmagic.box.manRow, {opacity: 0, y: -30});
+    TweenMax.set(scrollmagic.box.manRow, {opacity: 0, y: -30});
     scrollmagic.box.scene = new ScrollMagic.Scene({
         duration: 800,
         triggerElement: scrollmagic.box.el[0],
@@ -152,7 +150,7 @@ module.exports = function() {
         scenes: {}
     };
     // scrollmagic.deco.el.each(function(index, el) {
-        // var tween = TweenLite.fromTo(el, 0.5, {y: -50}, {y: 50});
+        // var tween = TweenMax.fromTo(el, 0.5, {y: -50}, {y: 50});
         // scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
         //     duration: $(window).height(),
         //     triggerElement: $(el).parents('.deco')[0],
@@ -161,7 +159,7 @@ module.exports = function() {
         // })
         //     .on('progress', function(e) {
         //         var progress = (50 * e.progress).toFixed(1);
-        //         TweenLite.to(el, 0.1, {y: progress});
+        //         TweenMax.to(el, 0.1, {y: progress});
         //     })
         //     // .setTween(tween)
         //     .addTo(scrollmagic.controller);
@@ -170,7 +168,7 @@ module.exports = function() {
     mainContainer.mousemove(function(e) {
         // console.log(e.screenX, e.screenY);
         scrollmagic.deco.el.each(function(index, el) {
-            TweenLite.to(el,  0.5, {x: e.screenX / 100, y: e.screenY / 100});
+            TweenMax.to(el,  0.5, {x: e.screenX / 100, y: e.screenY / 100});
         });
     });
 
@@ -189,8 +187,13 @@ module.exports = function() {
         var img  = $(el).find('.head__img'),
             text = $(el).find('.head__text');
 
-        TweenLite.set(img,  {bottom: -200});
-        TweenLite.set(text, {bottom: -250});
+        // var tween = new TimelineLite().add([
+        //     TweenMax.fromTo(img,  1, {y: 200}, {y: 0,  ease: Linear.easeNone}),
+        //     TweenMax.fromTo(text, 1, {y: 250}, {y: -250,  ease: Linear.easeNone})
+        //     ]);
+
+        TweenMax.set(img,  {bottom: -200});
+        TweenMax.set(text, {bottom: -250});
 
         scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height() + $(el).height(),
@@ -199,11 +202,12 @@ module.exports = function() {
             triggerHook: 'onEnter',
             loglevel: 1
         })
+            // .setTween(tween)
             .on('progress', function(e) {
                 var progressImg  = (200 * e.progress).toFixed(1);
                 var progressText = (500 * e.progress).toFixed(1);
-                TweenLite.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
-                TweenLite.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
+                TweenMax.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
+                TweenMax.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
             })
             .addTo(scrollmagic.controller);
     });

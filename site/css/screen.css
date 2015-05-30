@@ -255,9 +255,6 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .sold-badge { display: inline-block; white-space: nowrap; color: #ED1D24; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.5em; text-transform: uppercase; border: #ED1D24; line-height: 34px; border: 3px solid; padding: 0 20px; min-width: 200px; text-align: center; box-sizing: border-box; -webkit-transform: rotate(-12deg); -ms-transform: rotate(-12deg); transform: rotate(-12deg); }
 
 .main-slider { position: relative; z-index: 1; height: 656px; overflow: hidden; -webkit-transition: background-color 0.5s linear; transition: background-color 0.5s linear; background-color: none; }
-.main-slider.is-hidden:after { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
-.main-slider.is-hidden .main-slider__slides { -webkit-transform: scale(0.8); -ms-transform: scale(0.8); transform: scale(0.8); }
-.main-slider.is-hidden .main-slider__morph { opacity: 0; -webkit-transition-delay: 0s; transition-delay: 0s; }
 
 .main-slider__slides { -webkit-transform-origin: top center; -ms-transform-origin: top center; transform-origin: top center; position: relative; z-index: 2; }
 
@@ -280,7 +277,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .slick-slide .slide__content { -webkit-animation: content-slide-out 0.8s ease; animation: content-slide-out 0.8s ease; }
 
 .catalog { height: 680px; position: relative; z-index: 0; }
-.catalog #morph { opacity: 0; -webkit-transition: opacity 0.3s linear; transition: opacity 0.3s linear; }
+.catalog #morph { opacity: 0; }
 .catalog #morph.is-visible { z-index: 3; }
 .catalog .deco { position: absolute; top: 145px; right: 125px; opacity: 0; visibility: hidden; -webkit-transform: translateY(30px); -ms-transform: translateY(30px); transform: translateY(30px); -webkit-transition: all 0.2s linear; transition: all 0.2s linear; }
 .catalog.is-init #morph { z-index: 1; }
@@ -301,6 +298,14 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .catalog-category { position: absolute; z-index: 2; top: 609px; left: 50%; height: 44px; width: 510px; margin-left: -255px; box-sizing: border-box; font-size: 0; }
 .catalog-category:before { content: ""; position: absolute; z-index: 0; top: 0; left: 0; right: 0; width: 510px; height: 100%; margin: auto; background: #FFF; box-shadow: 0 0 0 3px #333, 0 0 0 13px #FFF; -webkit-transition: all 0.2s linear; transition: all 0.2s linear; visibility: visible; opacity: 1; }
+.catalog-category.is-animate { z-index: 4; }
+.catalog-category.is-animate:before { opacity: 0; visibility: hidden; }
+.catalog-category.is-animate .catalog-category__item { width: 33.3333%; }
+.catalog-category.is-animate .catalog-category__item:before { opacity: 0; visibility: hidden; }
+.catalog-category.is-animate .catalog-btn { color: #AAA; letter-spacing: 0.5em; width: auto; }
+.catalog-category.is-animate .catalog-btn__hover { background: none; color: #333; box-shadow: none; }
+.catalog-category.is-animate .catalog-btn__hover-in { width: auto; }
+.catalog-category.is-animate .catalog-btn__hover-text:before { content: ""; position: absolute; top: 100%; left: 0; right: 0.33333em; height: 3px; background: #333; }
 
 .catalog-category__item { position: relative; z-index: 1; display: inline-block; vertical-align: middle; width: 170px; height: 100%; text-align: center; overflow: hidden; pointer-events: none; }
 .catalog-category__item:before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 1px; background: #333; -webkit-transition: all 0.3s linear; transition: all 0.3s linear; opacity: 1; visibility: visible; }
@@ -313,8 +318,6 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .catalog-btn { display: inline-block; position: relative; z-index: 1; height: 44px; width: 170px; line-height: 44px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.2em; color: #333; text-transform: uppercase; text-decoration: none; text-align: center; overflow: hidden; white-space: nowrap; pointer-events: auto; }
 .catalog-btn:hover .catalog-btn__hover { width: 100%; }
-
-.catalog-btn__front { -webkit-transition: all 0.3s linear; transition: all 0.3s linear; }
 
 .catalog-btn__hover { position: absolute; z-index: 1; top: 0; left: 0; width: 0; height: 100%; overflow: hidden; -webkit-transition: width 0.2s linear; transition: width 0.2s linear; background: #333; color: #FFF; box-shadow: -2px 0 0 0 #333; }
 

@@ -1,9 +1,7 @@
 require('jquery');
 require('slick-carousel');
-require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('gsap');
 require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
 
 function Box() {
     this.el          = {};

@@ -530,15 +530,15 @@ textarea.input
   //   transition: transform 0.5s linear
   //   transform: translate3d(0, 100%, 0)
   //   background: #FFF
-  &.is-hidden
-    // background-color: #ccc
-    &:after
-      transform: translate3d(0, 0, 0)
-    .main-slider__slides
-      transform: scale(0.8)
-    .main-slider__morph
-      opacity: 0
-      transition-delay: 0s
+  // &.is-hidden
+  //   // background-color: #ccc
+  //   &:after
+  //     transform: translate3d(0, 0, 0)
+  //   .main-slider__slides
+  //     transform: scale(0.8)
+  //   .main-slider__morph
+  //     opacity: 0
+  //     transition-delay: 0s
 
 .main-slider__slides
   transform-origin: top center
@@ -642,7 +642,8 @@ textarea.input
   z-index: 0
   #morph
     opacity: 0
-    transition: opacity 0.3s linear
+    // visibility: hidden
+    // transition: opacity 0.3s linear
     &.is-visible
       z-index: 3
   .deco
@@ -745,6 +746,37 @@ textarea.input
     transition: all 0.2s linear
     visibility: visible
     opacity: 1
+  &.is-animate
+    z-index: 4
+    &:before
+      opacity: 0
+      // transition-delay: 0.2s
+      visibility: hidden
+    .catalog-category__item
+      width: 33.3333%
+      &:before
+        opacity: 0
+        visibility: hidden
+    .catalog-btn
+      color: #AAA
+      letter-spacing: 0.5em
+      width: auto
+    .catalog-btn__hover
+      background: none
+      color: $text
+      box-shadow: none
+    .catalog-btn__hover-in
+      width: auto
+    .catalog-btn__hover-text
+      &:before
+        content: ""
+        position: absolute
+        top: 100%
+        left: 0
+        right: em(4,12)
+        height: 3px
+        background: $text
+
 
 .catalog-category__item
   position: relative
@@ -778,10 +810,7 @@ textarea.input
   &.is-active, &.slick-center
     .catalog-btn
       transform: scale(1.3)
-      // font-size: 18px
   &.slick-center
-    // .catalog-btn
-    //   font-size: 18px
     .catalog-btn__hover
       width: 100%
 
@@ -790,10 +819,10 @@ textarea.input
     .catalog-btn__front,
     .catalog-btm__hover
       transition-duration: 0.3s
-  &.slick-center
-    .catalog-btn__hover-text,
-    .catalog-btn__front,
-    .catalog-btm__hover
+  // &.slick-center
+  //   .catalog-btn__hover-text,
+  //   .catalog-btn__front,
+  //   .catalog-btm__hover
       // transition-delay: 0.3s
 
 .catalog-btn
@@ -808,7 +837,6 @@ textarea.input
   text-transform: uppercase
   text-decoration: none
   text-align: center
-  // transition: all 0.3s linear
   overflow: hidden
   white-space: nowrap
   pointer-events: auto
@@ -816,8 +844,8 @@ textarea.input
     .catalog-btn__hover
       width: 100%
 
-.catalog-btn__front
-  transition: all 0.3s linear
+// .catalog-btn__front
+  // transition: all 0.1s linear
 
 .catalog-btn__hover
   position: absolute

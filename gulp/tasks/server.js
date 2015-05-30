@@ -1,8 +1,9 @@
 module.exports = function() {
 
-    var gulp         = require('gulp'),
-        browserSync  = require('browser-sync'),
-        config       = require('./../config');
+    var gulp        = require('gulp'),
+        browserSync = require('browser-sync'),
+        compression = require('compression'),
+        config      = require('./../config');
 
 
     // gulp.task('server', function() {
@@ -10,8 +11,7 @@ module.exports = function() {
         browserSync({
             server: {
                 baseDir: config.dest.root,
-                // directory: true,
-                // index: 'index.html'
+                middleware: [compression()]
             },
             files: [
                 config.dest.html + '/*.html',

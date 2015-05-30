@@ -1,9 +1,9 @@
 require('jquery');
 require('modernizr');
-require('../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('gsap');
 require('../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 require('../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
+require('jquery-mousewheel')($);
 var ScrollMagic = require('scrollmagic');
 require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
 var Slider  = require('./modules/_main-slider.js');
@@ -75,7 +75,8 @@ $(document).ready(function() {
         app.slider.rollUp();
         // app.category.enable();
         app.category.open();
-        setTimeout(function() { app.morph.activate(state); }, 300 );
+        app.morph.activate(state);
+        // setTimeout(function() { app.morph.activate(state); }, 300 );
     };
 
     app.closeCatalog = function() {
@@ -107,6 +108,7 @@ $(document).ready(function() {
         app.slider.rollDown(duration);
         app.morph.moveBack(duration);
         app.toparea.transformed = false;
+        console.log('up');
     };
 
     app.toparea.toggle = function(dur) {
@@ -115,6 +117,7 @@ $(document).ready(function() {
         } else {
             app.toparea.transformBack(dur);
         }
+        app.category.toggleHidden();
     };
 
 
@@ -155,6 +158,10 @@ $(document).ready(function() {
     $('#header .logo').on('click', function(event) {
         app.closeCatalog();
     });
+
+    // app.rootContainer.on('mousewheel', function(event) {
+    //     console.log(event.deltaY, event.deltaFactor);
+    // });
 
 
     (function() {
@@ -207,7 +214,7 @@ $(document).ready(function() {
     //         var scrollTop = $window.scrollTop();
     //         var finalScroll = scrollTop - parseInt(delta*scrollDistance);
 
-    //         TweenLite.to($window, scrollTime, {
+    //         TweenMax.to($window, scrollTime, {
     //             scrollTo : { y: finalScroll, autoKill:true },
     //                 ease: Power1.easeOut,
     //                 overwrite: 5
@@ -220,6 +227,6 @@ $(document).ready(function() {
     //     console.log('deltaY: ' + event.originalEvent.deltaY);
     // });
 
-    window.app = app;
+    global.app = app;
 
 });

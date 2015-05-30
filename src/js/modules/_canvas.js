@@ -1,19 +1,19 @@
 var paper = require('paper');
 var $     = require('jquery');
 var TWEEN = require('tween.js');
-require('../../../node_modules/gsap/src/uncompressed/TweenLite.js');
+require('gsap');
 require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../../node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js');
 
 
 var Morph = function(selector) {
 
     this.canvas = $(selector);
-    this.dur    = 500;
     this.state  = {
+        visible: false,
         active: false,
-        morph: 'circle', // circle, square or triangle
-        rectangle: 'small' // small, big or wide
+        inProgress: false,
+        morph: 'circle', // circle, square, triangle or smTriangle
+        rectangle: 'small' // small, big, wide or hidden
     };
     this.sizes  = {
         circle    : 510,
@@ -21,12 +21,16 @@ var Morph = function(selector) {
         triangle  : 580,
         smTriangle: 290
     };
-    this.shiftY = 680;
-    // max of this.sizes
+    // max of sizes
     this.morphSize = {
         x: 580,
         y: 580
     };
+    this.dur         = 800; // morph animation duration
+    this.fadeDur     = 200;
+    this.shiftY      = 680;
+    this.visibleClass = 'is-visible';
+    this.activeClass = 'is-active';
 
 };
 
@@ -157,28 +161,11 @@ Morph.prototype._initContent = function() {
 };
 
 Morph.prototype._initEvents = function() {
-    var that = this;
+    var _ = this;
 
     paper.view.onFrame = function(event) {
         TWEEN.update();
     };
-
-    // var clickCount = 0;
-    // this.frontGroup.onClick = function() {
-    //     if ( clickCount === 0 ) {
-    //         that.square();
-    //         // that.activate('square');
-    //     }
-    //     if ( clickCount === 1 ) {
-    //         that.triangle();
-    //     }
-    //     if ( clickCount === 2 ) {
-    //         that.circle();
-    //         clickCount = 0;
-    //         return;
-    //     }
-    //     clickCount++;
-    // };
 };
 
 Morph.prototype._render = function() {
@@ -270,9 +257,9 @@ Morph.prototype._calcPosition = function() {
 
     this.pathPosition = {
         morph: {
-            circle:   this._translateCoordinates(point.circle),
-            square:   this._translateCoordinates(point.square),
-            triangle: this._translateCoordinates(point.triangle),
+            circle:     this._translateCoordinates(point.circle),
+            square:     this._translateCoordinates(point.square),
+            triangle:   this._translateCoordinates(point.triangle),
             smTriangle: this._translateCoordinates(point.smTriangle)
         },
         rectangle: {
@@ -296,12 +283,29 @@ Morph.prototype._calcPosition = function() {
     };
 };
 
+Morph.prototype._toggleContentVisibility = function(value, onlyPictures) {
+    // show or hide content (pictures and rectangle)
+    // value = true/false ==> content visible/invisible
+    var _   = this,
+        val = value || !_.objects.raster.circle.pic.visible; // true or false
+
+    $.each(_.objects.raster, function(index, item) {
+        item.pic.visible    = val;
+        item.altPic.visible = val;
+    });
+
+    if ( !onlyPictures ) {
+        _.objects.other.rectangle.visible = val;
+    }
+};
+
 Morph.prototype._changePicture = function(state) {
     var currentState = this._getState('morph');
 
     if (state == currentState) return;
 
-    var easing = TWEEN.Easing.Cubic.In,
+    var easeInner = TWEEN.Easing.Cubic.In,
+        easeOuter = TWEEN.Easing.Cubic.In,
         dur    = this.dur,
         altDur = this.dur,
         delay  = altDur - dur,
@@ -382,7 +386,7 @@ Morph.prototype._changePicture = function(state) {
     $.each(pics, function(index, item) {
         new TWEEN.Tween(item.inner.pic.position)
             .to({x: item.inner.pos.x}, dur)
-            .easing(easing)
+            .easing(easeInner)
             .onUpdate(function() {
                 item.inner.pic.position.x = this.x;
             })
@@ -391,7 +395,7 @@ Morph.prototype._changePicture = function(state) {
 
         new TWEEN.Tween(item.outer.pic.position)
             .to({x: item.outer.pos.x}, altDur)
-            // .easing(easing)
+            .easing(easeOuter)
             .onUpdate(function() {
                 item.outer.pic.position.x = this.x;
             })
@@ -400,7 +404,7 @@ Morph.prototype._changePicture = function(state) {
 
         new TWEEN.Tween(item.outer.pic)
             .to({opacity: item.outer.opacity}, dur)
-            // .easing(easing)
+            .easing(easeOuter)
             .onUpdate(function() {
                 item.outer.pic.opacity = this.opacity;
             })
@@ -534,12 +538,15 @@ Morph.prototype._morph = function(state, dur) {
 
     if ( state == currentState ) return;
 
-    var duration   = dur || this.dur,
+    var _          = this,
+        duration   = dur || _.dur,
         easing     = TWEEN.Easing.Cubic.Out,
-        morphPath  = this.objects.paths.morph,
+        morphPath  = _.objects.paths.morph,
         segments   = morphPath.segments,
-        prevPoints = this.pathPosition.morph[currentState],
-        points     = this.pathPosition.morph[state];
+        prevPoints = _.pathPosition.morph[currentState],
+        points     = _.pathPosition.morph[state];
+
+    _._updateState('inProgress', true);
 
     $.each(segments, function(index, segment) {
         new TWEEN.Tween(segment.point)
@@ -565,7 +572,11 @@ Morph.prototype._morph = function(state, dur) {
         }
     });
 
-    this._updateState('morph', state);
+    _._updateState('morph', state);
+
+    setTimeout(function() {
+        _._updateState('inProgress', false);
+    }, duration);
 
     console.log('%c' + 'State change: ' + currentState + ' => ' + state, 'background:yellow');
 };
@@ -589,6 +600,24 @@ Morph.prototype._translateCoordinates = function(pointsArray) {
         value.y += paper.view.center.y;
     });
     return arr;
+};
+
+Morph.prototype._fade = function(duration, callback) {
+    var _     = this,
+        visible = _._getState('visible'),
+        tl      = new TimelineLite();
+        dur     = duration / 1000 || _.fadeDur / 1000;
+
+    tl
+        .addLabel('beginFade')
+        .to(_.canvas, dur, {opacity: visible ? 0 : 1, ease: Power1.easeNone})
+        .addLabel('endFade')
+        .add(function() {
+            _.canvas.toggleClass(_.visibleClass);
+            }, visible ? 'endFade' : 'beginFade')
+        .add(function() {
+            _._updateState('opacity', !visible);
+            });
 };
 
 Morph.prototype.init = function() {
@@ -618,16 +647,22 @@ Morph.prototype.changeState = function(state) {
     this._morph(state);
 };
 
-Morph.prototype.activate = function(state) {
+Morph.prototype.activate = function(state, delay) {
     var active = this._getState('active');
 
     if ( active ) return;
 
-    this._togglePicture(state);
-    this._morph(state);
-    this._morphRectangle('big');
+    var _    = this,
+        timeout = delay || _.fadeDur; // delay between visible state and activating
 
-    this._updateState('active', true);
+    _._fade();
+
+    setTimeout(function() {
+        _._togglePicture(state);
+        _._morph(state);
+        _._morphRectangle('big');
+        _._updateState('active', true);
+    }, timeout);
 };
 
 Morph.prototype.deactivate = function() {
@@ -635,44 +670,50 @@ Morph.prototype.deactivate = function() {
 
     if ( !active ) return;
 
-    this._togglePicture();
-    this._morph('circle');
-    this._morphRectangle('initial');
+    var _ = this;
 
-    this._updateState('active', false);
+    _._togglePicture();
+    _._morph('circle');
+    _._morphRectangle('initial');
+
+    setTimeout(function() {
+        _._fade();
+    }, _.dur);
+
+    _._updateState('active', false);
 };
 
-Morph.prototype.moveDown = function(dur) {
-    var that     = this,
-        timeline = new TimelineLite();
+Morph.prototype.moveDown = function(duration) {
+    var _   = this,
+        tl  = new TimelineLite(),
+        dur = duration || _.dur;
 
-    timeline
+    tl
         .add(function() {
-            that.canvas.addClass('is-visible');
-            that.objects.other.rectangle.visible = false;
-            })
-        .fromTo(that.canvas, 0.2, {opacity: 0}, {opacity: 1})
+            _._fade();
+        })
+        .delay(_.fadeDur / 1000)
         .add(function() {
-            that._morph('smTriangle', dur);
+            _._toggleContentVisibility(false);
+            _._morph('smTriangle', dur);
             })
-        .to(that.canvas, 1, {y: that.shiftY});
+        .to(_.canvas, dur / 1000, {y: _.shiftY});
 };
 
-Morph.prototype.moveBack = function(dur) {
-    var that     = this,
-        timeline = new TimelineLite();
+Morph.prototype.moveBack = function(duration) {
+    var _   = this,
+        tl  = new TimelineLite(),
+        dur = duration || _.dur;
 
-    timeline.eventCallback('onComplete', function() {
-        that.canvas
-            .removeClass('is-visible')
-            .css('opacity', '');
-        that.objects.other.rectangle.visible = true;
-    });
-
-    timeline
-        .to(that.canvas, 1, {y: 0})
-        .add(function() { that._morph('circle', dur); }, 0)
-        .to(that.canvas, 0.2, {opacity: 0});
+    tl
+        .add(function() {
+            _._morph('circle', dur);
+            })
+        .to(_.canvas, dur / 1000, {y: 0})
+        .add(function() {
+            _._fade();
+            _._toggleContentVisibility(true);
+            });
 };
 
 module.exports = Morph;
