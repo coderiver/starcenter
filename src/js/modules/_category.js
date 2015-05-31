@@ -16,12 +16,11 @@ function Category(element, itemSelector) {
     };
     this.options = {
         duration: 800, // animation duration
-        delay: 200, // deley before open
+        delay: 300, // deley before open
         shiftY: -274,
         initWidth: this.element.outerWidth(),
         targetWidth: 1600,
-        easing: Power1.easeNone,
-        delayBeforeInit: 900,
+        easing: Power2.easeOut
     };
     this.slickOptions = {
         accessibility: false,
@@ -84,17 +83,16 @@ Category.prototype.open = function(duration, delay) {
         del = delay / 1000 || _.options.delay / 1000;
         tl  = new TimelineLite();
 
-    tl.set(_.element, {x: '-50%', marginLeft: 0});
-    tl.set(_.items, {width: '33.3333%'});
-
     tl
         .add(function() {
             _.inProgress = true;
             })
         .delay(del)
+        .addLabel('afterDelay')
         .add(function() {
             _.element.addClass(_.classes.animate);
-            })
+            }, 'afterDelay')
+        .to(_.element, 0, {x: '-50%', marginLeft: 0}, 'afterDelay')
         .to(_.element, dur, {
             y: _.options.shiftY,
             width: _.options.targetWidth,
@@ -115,7 +113,7 @@ Category.prototype.close = function(duration, delay) {
 
     var _   = this,
         dur = duration / 1000 || _.options.duration / 1000;
-        del = delay / 1000 || _.options.delay / 1000;
+        del = delay / 1000 || 0;
         tl  = new TimelineLite();
 
     tl
@@ -137,19 +135,17 @@ Category.prototype.close = function(duration, delay) {
             _.element.removeClass(_.classes.animate);
             _.inProgress = false;
             _.active = false;
-            })
-        .set(_.items, {clearProps: 'all'});
+            });
 };
 
 
 Category.prototype.toggleHidden = function() {
     var _  = this;
-        // tl = new TimelineLite();
 
     if ( _.hidden ) {
         TweenMax.fromTo(_.element, 0.5,
             {autoAlpha: 0, y: 50},
-            {autoAlpha: 1, y:  0, clearProps: 'all', ease: _.options.easing, delay: 0.5}
+            {autoAlpha: 1, y:  0, clearProps: 'all', ease: _.options.easing, delay: _.options.duration / 1000}
             );
         _.hidden = false;
     } else {

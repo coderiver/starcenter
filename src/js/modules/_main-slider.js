@@ -25,9 +25,9 @@ function MainSlider(wrapper) {
         useCSS: true,
         pauseOnHover: true
     };
-    this.animDur = 0.8;
-    this.circleFade = 0.2; // seconds, duration for circle fade animation in
-    this.easing = Power1.easeNone;
+    this.animDur = 800;
+    this.circleFade = 300; // seconds, duration for circle fade animation in
+    this.easing = Linear.easeNone;
 
 }
 
@@ -89,18 +89,17 @@ MainSlider.prototype.pause = function() {
 
 MainSlider.prototype.rollUp = function(duration, delay) {
     var _    = this,
-        dur  = duration / 1000 || _.animDur,
-        del  = delay / 1000 || 0,
+        dur  = duration / 1000 || _.animDur / 1000,
+        del  = delay / 1000 || _.circleFade / 1000,
         tl   = new TimelineLite();
 
     tl
-        .delay(del)
         .add(function() {
             _.pause();
             _.overlay.show();
             _.wrapper.addClass(_.hiddenClass);
         })
-        .fromTo(_.circle, _.circleFade, {autoAlpha: 1}, {autoAlpha: 0, ease: _.easing})
+        .to(_.circle, 0, {autoAlpha: 0, ease: _.easing, delay: del})
         .addLabel('circleFade')
         .fromTo(_.overlay, dur, {y: '100%'}, {y: '0%', ease: _.easing}, 'circleFade')
         .to(_.slider, dur, {scale: 0.8, autoAlpha: 0, ease: _.easing}, 'circleFade');
@@ -108,18 +107,16 @@ MainSlider.prototype.rollUp = function(duration, delay) {
 
 
 
-MainSlider.prototype.rollDown = function(duration, delay) {
+MainSlider.prototype.rollDown = function(duration) {
     var _    = this,
-        dur  = duration / 1000 || _.animDur,
-        del  = delay / 1000 || 0,
+        dur  = duration / 1000 || _.animDur / 1000,
         tl   = new TimelineLite();
 
     tl
-        .delay(del)
         .addLabel('start')
         .to(_.overlay, dur, {y: '100%', clearProps: 'all', ease: _.easing}, 'start')
         .to(_.slider, dur, {scale: 1, autoAlpha: 1, clearProps: 'all', ease: _.easing}, 'start')
-        .to(_.circle, _.circleFade, {autoAlpha: 1, clearProps: 'all', ease: _.easing})
+        .to(_.circle, 0, {autoAlpha: 1, clearProps: 'all', ease: _.easing})
         .add(function() {
             _.wrapper.removeClass(_.hiddenClass);
             _.overlay.hide();

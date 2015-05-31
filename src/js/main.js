@@ -91,7 +91,7 @@ $(document).ready(function() {
     // app toparea
     app.toparea.transformed = false;
     app.toparea.inProgress = false;
-    app.toparea.defaultDur = 1000;
+    app.toparea.defaultDur = null;
 
     app.toparea.transform = function(dur) {
         if ( app.toparea.inProgress ) return;
