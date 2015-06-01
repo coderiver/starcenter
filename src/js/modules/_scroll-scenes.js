@@ -11,7 +11,7 @@ module.exports = function() {
         mainContainer = $('#outer');
 
     // init ScrollMagic controller
-    scrollmagic.controller = new ScrollMagic.Controller();
+    scrollmagic.controller = new ScrollMagic.Controller({container: mainContainer[0]});
     TweenMax.lagSmoothing(1000, 16);
 
 
@@ -29,7 +29,9 @@ module.exports = function() {
         loglevel: 1
     })
         .on('end', function(e) {
-            app.toparea.toggle();
+            if ( !app.catalog.opened ) {
+                app.toparea.toggle();
+            }
         })
         .addTo(scrollmagic.controller);
 
@@ -45,7 +47,7 @@ module.exports = function() {
     };
     scrollmagic.timeline.scene = new ScrollMagic.Scene({
         duration: 450,
-        offset: 90,
+        offset: 15,
         triggerElement: scrollmagic.timeline.trigger,
         triggerHook: 'onCenter',
         loglevel: 1
@@ -64,7 +66,7 @@ module.exports = function() {
     scrollmagic.factsText = {
         el: $('.facts__text')[0],
         offset: -200,
-        duration: 450,
+        duration: 400,
         scene: null
     };
     scrollmagic.factsGroup1 = {
@@ -149,21 +151,6 @@ module.exports = function() {
         el: $('.deco__inner'),
         scenes: {}
     };
-    // scrollmagic.deco.el.each(function(index, el) {
-        // var tween = TweenMax.fromTo(el, 0.5, {y: -50}, {y: 50});
-        // scrollmagic.deco.scenes['deco-' + index] = new ScrollMagic.Scene({
-        //     duration: $(window).height(),
-        //     triggerElement: $(el).parents('.deco')[0],
-        //     triggerHook: 'onEnter',
-        //     loglevel: 1
-        // })
-        //     .on('progress', function(e) {
-        //         var progress = (50 * e.progress).toFixed(1);
-        //         TweenMax.to(el, 0.1, {y: progress});
-        //     })
-        //     // .setTween(tween)
-        //     .addTo(scrollmagic.controller);
-    // });
 
     mainContainer.mousemove(function(e) {
         // console.log(e.screenX, e.screenY);
@@ -192,8 +179,8 @@ module.exports = function() {
         //     TweenMax.fromTo(text, 1, {y: 250}, {y: -250,  ease: Linear.easeNone})
         //     ]);
 
-        TweenMax.set(img,  {bottom: -200});
-        TweenMax.set(text, {bottom: -250});
+        TweenMax.set(img,  {bottom: -100});
+        TweenMax.set(text, {bottom: -150});
 
         scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height() + $(el).height(),
@@ -204,8 +191,8 @@ module.exports = function() {
         })
             // .setTween(tween)
             .on('progress', function(e) {
-                var progressImg  = (200 * e.progress).toFixed(1);
-                var progressText = (500 * e.progress).toFixed(1);
+                var progressImg  = (100 * e.progress).toFixed(1);
+                var progressText = (300 * e.progress).toFixed(1);
                 TweenMax.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
                 TweenMax.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
             })

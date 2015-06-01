@@ -130,7 +130,8 @@
   align-items: flex-end
   align-content: center
   height: 33px
-  width: 100%
+  // width: 100%
+  width: 100vh
   padding: 6px 30px 0 50px
   box-sizing: border-box
   > li
@@ -161,7 +162,7 @@
   width: 100%
   overflow: hidden
   pointer-events: none
-  transition: width 0.1s linear
+  // transition: width 0.1s linear
   .nav__list
     color: $text
     &:before
@@ -539,6 +540,36 @@ textarea.input
   //   .main-slider__morph
   //     opacity: 0
   //     transition-delay: 0s
+  .slick-dots
+    position: absolute
+    z-index: 3
+    top: 175px
+    left: 50%
+    width: 40px
+    margin-left: -20px
+    text-align: center
+    animation: slide-left 0.5s ease 1
+    li
+      padding: 0
+      margin: 0
+    button
+      display: block
+      margin-bottom: 5px
+      width: 40px
+      height: 40px
+      text-align: center
+      color: $text
+      +f(hb, 12, 0.25)
+      line-height: 2
+      background: none
+      opacity: 0.3
+      +trans(opacity)
+      &:hover,
+        opacity: 1
+    .slick-active
+      button
+        opacity: 1
+
 
 .main-slider__slides
   transform-origin: top center
@@ -646,8 +677,14 @@ textarea.input
     visibility: hidden
     &.is-visible
       z-index: 2
+      & ~ .deco
+        opacity: 1
+        visibility: visible
+        transform: none
+        transition-delay: 1s
   .deco
     position: absolute
+    z-index: 4
     top: 145px
     right: 125px
     opacity: 0
@@ -717,6 +754,9 @@ textarea.input
   left: 0
   right: 0
   bottom: 0
+  width: 100%
+  max-width: $content-width
+  margin: auto
   // +scroll
 
 .catalog-category
@@ -885,8 +925,7 @@ textarea.input
 
 .facts
   position: relative
-  padding-top: 360px
-  margin-bottom: 265px
+  padding: 360px 0 265px
   box-sizing: border-box
   > .heading
     text-align: center
@@ -1361,6 +1400,8 @@ textarea.input
   position: relative
   margin-bottom: 90px
   height: 423px
+  &.last-schild
+    margin-bottom: 0
   .deco
     position: absolute
     z-index: 3
@@ -1487,7 +1528,7 @@ textarea.input
 //---------------------------------------------------------------------------
 
 .partners
-  margin-bottom: 235px
+  padding-bottom: 235px
 
 .partners__inner
   position: relative
@@ -1528,6 +1569,7 @@ textarea.input
 
 .tabs__footer
   margin-top: 35px
+  transform: translate3d(0,0,0)
   +clr
 
 .tabs__footer-cell

@@ -28,7 +28,7 @@ var Morph = function(selector) {
         y: 580
     };
     this.dur = 800; // morph animation duration
-    this.fadeDur = 300;
+    this.fadeDur = 200;
     this.shiftY = 680;
     this.visibleClass = 'is-visible';
     this.activeClass = 'is-active';
@@ -683,6 +683,7 @@ Morph.prototype.deactivate = function() {
 };
 
 Morph.prototype.moveDown = function(duration) {
+    if ( this._getState('active') ) return;
     var _   = this,
         tl  = new TimelineLite(),
         dur = duration || _.dur; // seconds
@@ -700,6 +701,7 @@ Morph.prototype.moveDown = function(duration) {
 };
 
 Morph.prototype.moveBack = function(duration) {
+    if ( this._getState('active') ) return;
     var _   = this,
         tl  = new TimelineLite(),
         dur = duration || _.dur; // seconds

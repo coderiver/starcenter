@@ -17,7 +17,7 @@ function Box() {
         zIndex: 98,
         easing: Power1.easeOut,
         breakpoint: 800,
-        height1: 540, // gallery height for viewport height <= breakpoint
+        height1: 580, // gallery height for viewport height <= breakpoint
         height2: 680, // gallery height for viewport height > breakpoint
         initSliderHeight: 450, // gallery height before fullscreen mode
         sliderHeight: null,  // gallery height in fullscreen mode
@@ -37,6 +37,8 @@ function Box() {
         arrows: true,
         speed: 500
     };
+
+    return this;
 }
 
 
@@ -154,7 +156,7 @@ Box.prototype._toFullscreen = function() {
         _._initSlider();
     });
 
-    tl.append(function() {
+    tl.add(function() {
 
         // app.util.toggleScroll();
         _.opened = true;
@@ -200,12 +202,6 @@ Box.prototype._toInitState = function() {
     var _  = this;
         tl = new TimelineLite();
 
-    tl.append(function() {
-        _._destroySlider();
-        $(_).off('winResized');
-        _.el.box.removeClass(_.options.class);
-    });
-
     tl.eventCallback('onComplete', function() {
 
         _.el.box.css({
@@ -225,7 +221,13 @@ Box.prototype._toInitState = function() {
         // app.util.toggleScroll();
     });
 
-    tl.add('start', 0)
+    tl
+        .add('start', 0)
+        .add(function() {
+            _._destroySlider();
+            $(_).off('winResized');
+            _.el.box.removeClass(_.options.class);
+            })
         .to(_.el.box, _.options.animDur, {
             top: _.position.top,
             left: _.position.left,

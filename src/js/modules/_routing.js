@@ -1,6 +1,7 @@
 require('jquery');
 require('sammy');
 
+
 var router = $.sammy(function() {
     this.get('/', function() {
         console.log('#HOME');

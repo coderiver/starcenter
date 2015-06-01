@@ -16,7 +16,7 @@ function Category(element, itemSelector) {
     };
     this.options = {
         duration: 800, // animation duration
-        delay: 300, // deley before open
+        delay: 200, // deley before open
         shiftY: -274,
         initWidth: this.element.outerWidth(),
         targetWidth: 1600,
@@ -155,7 +155,6 @@ Category.prototype.toggleHidden = function() {
             );
         _.hidden = true;
     }
-
 };
 
 
