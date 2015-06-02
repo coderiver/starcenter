@@ -130,8 +130,9 @@
   align-items: flex-end
   align-content: center
   height: 33px
-  // width: 100%
+  width: 100%
   width: 100vh
+  min-width: $content-height
   padding: 6px 30px 0 50px
   box-sizing: border-box
   > li
@@ -668,7 +669,10 @@ textarea.input
 //---------------------------------------------------------------------------
 
 .catalog
-  height: $content-height
+  height: 680px
+  // height: 100vh
+  // max-height: 900px
+  // min-height: 680px
   position: relative
   z-index: 0
   #morph
@@ -692,62 +696,6 @@ textarea.input
     transform: translateY(30px)
     transition: all 0.2s linear
 
-  &.is-init
-    // height: 100vh
-    // z-index: 95
-    #morph
-      z-index: 1
-    .main-slider
-      z-index: 0
-
-  &.is-animate
-    #morph
-      opacity: 1
-    .catalog-category
-      &:before
-        opacity: 0
-        transition-delay: 0.2s
-        visibility: hidden
-    .catalog-category__item
-      width: 33.3333%
-      &:before
-        opacity: 0
-        visibility: hidden
-    .catalog-btn
-      &:before
-        opacity: 0
-        visibility: hidden
-
-  &.is-done
-    .catalog-category
-      top: 335px
-      width: 1600px
-      margin-left: -800px
-    .catalog-btn
-      color: #AAA
-      letter-spacing: 0.5em
-      width: auto
-    .catalog-btn__hover
-      background: none
-      color: $text
-      box-shadow: none
-    .catalog-btn__hover-in
-      width: auto
-    .catalog-btn__hover-text
-      &:before
-        content: ""
-        position: absolute
-        top: 100%
-        left: 0
-        right: em(4,12)
-        height: 3px
-        background: $text
-    .deco
-      opacity: 1
-      visibility: visible
-      transform: none
-      transition-delay: 0.3s
-
 .catalog__inner
   position: absolute
   top: 0
@@ -757,7 +705,6 @@ textarea.input
   width: 100%
   max-width: $content-width
   margin: auto
-  // +scroll
 
 .catalog-category
   position: absolute
@@ -1448,14 +1395,14 @@ textarea.input
   text-transform: uppercase
   pointer-events: none
 
-.head_advantage
+.head_advantages
   .head__inner
     height: 541px
   .head__img
     left: 50%
     margin-left: -560px
 
-.head_capability
+.head_capabilities
   .deco-1
     top: 180px
     right: 458px
@@ -1494,12 +1441,12 @@ textarea.input
 
 
 //---------------------------------------------------------------------------
-//            ##### begin section advantage #####
+//            ##### begin section advantages #####
 //---------------------------------------------------------------------------
 
-// .advantage
+// .advantages
 
-.advantage__inner
+.advantages__inner
   max-width: 900px
   margin: auto
   padding-left: 150px
@@ -1509,7 +1456,7 @@ textarea.input
   color: $text-light
   line-height: 1.57
 
-.advantage__column
+.advantages__column
   float: left
   width: 33.3333%
   box-sizing: border-box
@@ -1518,7 +1465,7 @@ textarea.input
     margin-bottom: 25px
 
 //---------------------------------------------------------------------------
-//            ^^^^^  end section advantage  ^^^^^
+//            ^^^^^  end section advantages  ^^^^^
 //---------------------------------------------------------------------------
 
 

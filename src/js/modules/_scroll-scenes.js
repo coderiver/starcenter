@@ -81,6 +81,7 @@ module.exports = function() {
     };
     scrollmagic.tabs = {
         el: $('.tabs')[0],
+        duration: 800,
         offset: -100,
         scene: null
     };

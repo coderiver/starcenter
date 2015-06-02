@@ -1,9 +1,13 @@
 body
   min-width: $content-width
-  min-height: 600px
+  min-height: $content-height
+  width: 100%
   height: 100%
   overflow: hidden
   position: relative
+  +r(1200)
+    overflow-x: auto
+    overflow-y: hidden
 
 .center-wrap
   max-width: 1368px
@@ -22,6 +26,7 @@ body
   z-index: 1
   overflow: hidden
   +scroll
+  +wos
 
 #inner
   position: relative

@@ -114,7 +114,7 @@ $.each($('.js-box'), function(index, el) {
 
     var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
 
-    app.objects[id] = new Box().init(el);
+    app.objects[ id ] = new Box().init(el);
 });
 
 var scrollbarWidth = app.util.getScrollBarWidth();
@@ -190,32 +190,19 @@ app.toparea.toggle = function() {
 
 
 
-
-
-
-
-
-//------------------------------------------------------------------------------
-//
-//    #scrollbar
-//
-//------------------------------------------------------------------------------
-
-
-
-
-
-
-
 //------------------------------------------------------------------------------
 //
 //    #events
 //
 //------------------------------------------------------------------------------
 
-// app.scrollmagic.tabs.scene.on('start', function(e) {
-//     if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
-// });
+app.scrollmagic.tabs.scene.on('start end', function(e) {
+    if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
+});
+
+$('#partners').on('resize', function(e) {
+    console.log(e);
+});
 
 
 $('.catalog-btn').on('click', function(event) {
@@ -41299,6 +41286,8 @@ Box.prototype.init = function(box) {
     _.slickOptions.nextArrow = _.el.box.find('.object__slider-next');
 
     _._initEvents();
+
+    return this;
 };
 
 
@@ -42644,6 +42633,7 @@ module.exports = function() {
     };
     scrollmagic.tabs = {
         el: $('.tabs')[0],
+        duration: 800,
         offset: -100,
         scene: null
     };
@@ -42793,20 +42783,15 @@ require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/anim
 function Scrollbar(selector) {
 
     this.element        = $(selector || '#nav');
-    this.back           = this.element.find('.nav__back');
     this.front          = this.element.find('.nav__front');
     this.sections       = $('.js-section');
-    this.sectionsHeight = [];
-    this.buttonsHeight  = [];
-    this.percentageHight = [];
-    this.root           = app.rootContainer;
-    this.scrollable     = $('#inner');
-    this.scrollhight    = null;
-    this.height         = 0;
-    this.buttons        = this.front.find('li');
+    this.buttons        = this.element.find('.nav__back .nav__link');
     this.winHeigh       = $(window).height();
-
-    // this._initEvents();
+    this.sectionsHeight = []; // height of each section
+    this.buttonsHeight  = []; // height of each button/.nav__link
+    this.buttonsTop     = []; // offset top of each button/.nav__link
+    this.height         = 0; // will be changed after scrolling of each section
+    this.activeSection  = null;
 
 }
 
@@ -42814,29 +42799,32 @@ function Scrollbar(selector) {
 Scrollbar.prototype._initEvents = function() {
     var _ = this;
 
-    app.rootContainer.on('mousewheel DOMMouseScroll', function(e) {
-        // e.preventDefault();
-        // console.log(e);
-        console.log(event.deltaY, event.deltaFactor);
+    $(window).on('resize', function(e) {
+        _.reinit();
+        console.log(_.buttonsHeight, '\n', _.buttonsTop);
+    });
+    $(app.rootContainer).on('resize', function(e) {
+        console.log(e);
+    });
+
+};
+
+
+Scrollbar.prototype._calcButtonsParam = function() {
+    var _ = this;
+
+    $.each(_.buttons, function(index, el) {
+        var width     = $(el).outerWidth(),
+            offsetTop = $(el).offset().top;
+
+        _.buttonsHeight[ index ] = width;
+        _.buttonsTop[ index ] = offsetTop;
     });
 };
 
 
-Scrollbar.prototype._calcScrollHeight = function() {
-    var _            = this;
-        marginBottom = parseInt(_.scrollable.css('margin-bottom'));
-
-    _.scrollhight = _.scrollable.outerHeight() + marginBottom - _.winHeigh;
-
-    return _.scrollhight;
-};
-
-
-Scrollbar.prototype.init = function() {
+Scrollbar.prototype._buildScenes = function() {
     var _ = this;
-
-    _._calcScrollHeight();
-    _._calcButtonsHeight();
 
     //##### scrollmagic scene for scrollbar
     app.scrollmagic.scrollbar = {
@@ -42844,32 +42832,36 @@ Scrollbar.prototype.init = function() {
     };
 
     $.each(_.sections, function(index, el) {
-        var id            = 'section' + index,
+        var id = el.id ? app.util.toCamelCase(el.id) : 'section' + index,
             sectionHeight = $(el).outerHeight();
 
         _.sectionsHeight[ index ] = sectionHeight;
 
-        app.scrollmagic.scrollbar.scenes[id] = new ScrollMagic.Scene({
+        app.scrollmagic.scrollbar.scenes[ id ] = new ScrollMagic.Scene({
             duration: sectionHeight,
             triggerElement: el,
             triggerHook: 'onCenter',
             loglevel: 1
         })
             .on('start', function(e) {
-                if (e.scrollDirection == 'REVERSE') {
-                    var i = index;
-                    _.height -= _.percentageHight[ --i ];
+                _.activeSection = id;
+                if ( e.scrollDirection == 'FORWARD' ) {
+                    _.height = ( _.buttonsTop[ index ] );
                     _.update();
                 }
             })
             .on('progress', function(e) {
-                var delta = _.percentageHight[ index ] * e.progress;
-                console.log(_.height);
+                var delta = _.buttonsHeight[ index ] * e.progress;
                 _.update(delta);
             })
             .on('end', function(e) {
-                if (e.scrollDirection == 'FORWARD') {
-                    _.height += _.percentageHight[ index ];
+                if (e.scrollDirection == 'REVERSE') {
+                    _.height = ( _.buttonsTop[ index ] );
+                    _.update();
+                }
+                // on end of last section
+                if (e.scrollDirection == 'FORWARD' && index === _.sections.length - 1) {
+                    _.height = _.winHeigh;
                     _.update();
                 }
             })
@@ -42878,38 +42870,30 @@ Scrollbar.prototype.init = function() {
 };
 
 
+Scrollbar.prototype.init = function() {
+    var _ = this;
 
-Scrollbar.prototype._calcButtonsHeight = function() {
-    var _ = this,
-        buttonsHeight = [],
-        allButtonsHeight = 0,
-        space;
+    _._calcButtonsParam();
+    _.height = _.buttonsTop[ 0 ];
+    _._buildScenes();
+    _._initEvents();
+};
 
 
-    $.each(_.buttons, function(index, el) {
-        var width = $(el).outerWidth();
-        allButtonsHeight += width;
-        buttonsHeight[ index ] = width;
-        if ( index == _.buttons.length - 1) {
-            console.log(allButtonsHeight);
-        }
-    });
+Scrollbar.prototype.reinit = function() {
+    var _ = this;
 
-    space = (_.winHeigh - allButtonsHeight) / _.buttons.length;
-
-    _.percentageHight = buttonsHeight.map(function(val, index) {
-        return ( (val + space) / _.winHeigh * 100 );
-    });
-    console.log(buttonsHeight, _.percentageHight);
+    _._calcButtonsParam();
+    // _.update();
+    // _._buildScenes();
 };
 
 
 Scrollbar.prototype.update = function(scrollDelta) {
     var _     = this;
         delta = scrollDelta || 0;
-
-    // var percent = ((_.height + delta) / _.scrollhight * 100 ).toFixed(2) + '%';
-    var percent = ( _.height + delta ).toFixed(2) + '%';
+    // translate pixels(number) to percents(string), relative to window height
+    var percent = ((_.height + delta) / _.winHeigh * 100 ).toFixed(2) + '%';
     TweenMax.to(_.front, 0.2, {width: percent, overwrite: 'all', ease: Linear.easeNone});
 };
 

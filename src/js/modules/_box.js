@@ -66,6 +66,8 @@ Box.prototype.init = function(box) {
     _.slickOptions.nextArrow = _.el.box.find('.object__slider-next');
 
     _._initEvents();
+
+    return this;
 };
 
 

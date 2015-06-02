@@ -6,7 +6,7 @@ block title
 block content
 
   //BEGIN catalog
-  section.js-section.catalog
+  section#home.js-section.catalog
     .catalog__inner
 
       //BEGIN slider
@@ -63,7 +63,7 @@ block content
                 +icon("arrow")
       //END slider
 
-      canvas(id="morph", resize)
+      canvas(id="morph")
 
       .deco
         .deco__inner
@@ -94,7 +94,7 @@ block content
   //END catalog
 
   //BEGIN timeline
-  section.js-section.facts
+  section#facts.js-section.facts
     .facts__heading#trigger1
       h2.heading.heading_large Мы на рынке более 10 лет
     
@@ -251,9 +251,9 @@ block content
         | мы открыты к новым предложениям
   //END timeline
 
-  //BEGIN advantage
-  section.js-section.advantage
-    .head.head_advantage
+  //BEGIN advantages
+  section#advantages.js-section.advantages
+    .head.head_advantages
       .head__inner
         .head__bg
         .head__img
@@ -273,31 +273,31 @@ block content
         .deco__inner
           | 11’ — 7”
 
-    ul.advantage__inner
-      li.advantage__column
+    ul.advantages__inner
+      li.advantages__column
         h3.heading.heading_border.heading_large
           span.heading__small-text 01
           | Иностранный <br> капитал
         p 50% Украина
         p 50% Вьетнам
-      li.advantage__column
+      li.advantages__column
         h3.heading.heading_border.heading_large
           span.heading__small-text 02
           | Скорость <br> работы
         p.
           Мы быстро принимаем решение, т.к структура компании 
           легкая не нужно проходить через 5-10 этапов согласования
-      li.advantage__column
+      li.advantages__column
         h3.heading.heading_border.heading_large
           span.heading__small-text 03
           | Качество <br> материалов
         p.
           Типо средняя цена, а качество выше среднего, т.е мы ищем оптимум
-  //END advantage
+  //END advantages
 
-  //BEGIN capability
-  section.js-section.capability
-    .head.head_capability
+  //BEGIN capabilities
+  section#capabilities.js-section.capabilities
+    .head.head_capabilities
       .head__text
         | Воз
         br
@@ -311,10 +311,10 @@ block content
           +icon("polygon")
           span W6
     p Возможности
-  //END capability
+  //END capabilities
 
   //BEGIN partners
-  section.js-section.partners
+  section#partners.js-section.partners
     .head.head_partners
       .head__inner
         .head__bg
@@ -434,7 +434,7 @@ block content
   //END partners
 
   //BEGIN contacts
-  section.js-section.contacts
+  section#contacts.js-section.contacts
     .head.head_contacts
       .head__inner
         .head__bg

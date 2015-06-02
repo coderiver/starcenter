@@ -112,7 +112,7 @@ $.each($('.js-box'), function(index, el) {
 
     var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
 
-    app.objects[id] = new Box().init(el);
+    app.objects[ id ] = new Box().init(el);
 });
 
 var scrollbarWidth = app.util.getScrollBarWidth();
@@ -188,32 +188,19 @@ app.toparea.toggle = function() {
 
 
 
-
-
-
-
-
-//------------------------------------------------------------------------------
-//
-//    #scrollbar
-//
-//------------------------------------------------------------------------------
-
-
-
-
-
-
-
 //------------------------------------------------------------------------------
 //
 //    #events
 //
 //------------------------------------------------------------------------------
 
-// app.scrollmagic.tabs.scene.on('start', function(e) {
-//     if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
-// });
+app.scrollmagic.tabs.scene.on('start end', function(e) {
+    if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
+});
+
+$('#partners').on('resize', function(e) {
+    console.log(e);
+});
 
 
 $('.catalog-btn').on('click', function(event) {
