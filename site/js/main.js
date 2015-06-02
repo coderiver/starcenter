@@ -14,7 +14,7 @@ var Morph   = require('./modules/_canvas.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
-var Scrollbar = require('./modules/_scrollbar.js');
+var Navbar = require('./modules/_navbar.js');
 // var router = require('./modules/_routing.js');
 var initScenes = require('./modules/_scroll-scenes.js');
 
@@ -23,8 +23,6 @@ global.app = {};
 app.router = require('./modules/_routing.js');
 
 $(document).ready(function() {
-
-app.router.run();
 
 app.scrollDisabled = false;
 app.toparea  = {};
@@ -37,7 +35,7 @@ app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
 app.scrollmagic = initScenes();
-app.scrollbar = new Scrollbar();
+app.navbar = new Navbar();
 
 app.util = {
     toCamelCase: function(str) {
@@ -235,7 +233,8 @@ $('#header .logo').on('click', function(event) {
 //    #common
 //
 //------------------------------------------------------------------------------
-app.scrollbar.init();
+app.navbar.init();
+app.router.run('#/');
 console.log(app);
 
 
@@ -269,7 +268,7 @@ console.log(app);
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":10,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_box.js":15,"./modules/_canvas.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_routing.js":19,"./modules/_scroll-scenes.js":20,"./modules/_scrollbar.js":21,"./modules/_tabs.js":22,"gsap":9,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
+},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":10,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_box.js":15,"./modules/_canvas.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_navbar.js":19,"./modules/_routing.js":20,"./modules/_scroll-scenes.js":21,"./modules/_tabs.js":22,"gsap":9,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -42523,13 +42522,188 @@ module.exports = MainSlider;
 
 
 },{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"gsap":9}],19:[function(require,module,exports){
+var $ = require("./../../../bower_components/jquery/dist/jquery.js");
+// require('jquery-mousewheel')($);
+require('gsap');
+var ScrollMagic = require('scrollmagic');
+require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
+
+function Navbar(selector) {
+
+    this.element         = $(selector || '#nav');
+    this.front           = this.element.find('.nav__front');
+    this.sections        = $('.js-section');
+    this.buttons         = this.element.find('.nav__back .nav__link');
+    this.winHeigh        = $(window).height();
+    this.sectionsHeight  = []; // height of each section
+    this.buttonsHeight   = []; // height of each button/.nav__link
+    this.buttonsTop      = []; // offset top of each button/.nav__link
+    this.height          = 0; // will be changed after scrolling of each section
+    this.activeSection   = null;
+    this.sectionProgress = 0; // progress of current section
+    this.duration        = 0.5; // seconds
+    this.scrollToDur     = 0.8; // seconds, scroll to section duration
+
+
+}
+
+
+Navbar.prototype._initEvents = function() {
+    var _ = this;
+
+    $(window).on('resize', function(e) {
+        _.reinit();
+        console.log(_.buttonsHeight, '\n', _.buttonsTop);
+    });
+
+    $.each(_.buttons, function(index, button) {
+        $(button).on('mouseover', function(e) {
+            var delta = _.buttonsTop[ index ] + _.buttonsHeight[ index ] - _.height;
+            _.update(delta, 0.3);
+        });
+        $(button).on('mouseleave', function(e) {
+            _.update(null, 0.3);
+        });
+        // $(button).on('click', function(e) {
+        //     e.preventDefault();
+        //     var sectionId = '#' + ($(this).attr('href')).slice(2);
+        //     console.log(sectionId);
+            // _.scrollToSection(sectionId);
+        // });
+    });
+
+};
+
+
+Navbar.prototype._calcButtonsParam = function() {
+    var _ = this;
+
+    $.each(_.buttons, function(index, button) {
+        var width     = $(button).outerWidth(),
+            offsetTop = $(button).offset().top;
+
+        _.buttonsHeight[ index ] = width;
+        _.buttonsTop[ index ] = offsetTop;
+    });
+};
+
+
+Navbar.prototype._buildScenes = function() {
+    var _ = this;
+
+    //##### scrollmagic scene for navbar
+    app.scrollmagic.navbar = {
+        scenes: {}
+    };
+
+    $.each(_.sections, function(index, el) {
+        var id = el.id ? app.util.toCamelCase(el.id) : 'section' + index,
+            sectionHeight = $(el).outerHeight();
+
+        _.sectionsHeight[ index ] = sectionHeight;
+
+        app.scrollmagic.navbar.scenes[ id ] = new ScrollMagic.Scene({
+            duration: sectionHeight,
+            triggerElement: el,
+            triggerHook: 'onCenter',
+            loglevel: 1
+        })
+            .on('start', function(e) {
+                _.activeSection = id;
+                if ( e.scrollDirection == 'FORWARD' ) {
+                    _.height = ( _.buttonsTop[ index ] );
+                    _.update();
+                }
+            })
+            .on('progress', function(e) {
+                _.height = _.buttonsTop[ index ] + ( _.buttonsHeight[ index ] * e.progress );
+                _.update();
+            })
+            .on('end', function(e) {
+                if (e.scrollDirection == 'REVERSE') {
+                    _.height = ( _.buttonsTop[ index ] );
+                    _.update();
+                }
+                // on end of last section
+                if (e.scrollDirection == 'FORWARD' && index === _.sections.length - 1) {
+                    _.height = _.winHeigh;
+                    _.update();
+                }
+            })
+            .addTo(app.scrollmagic.controller);
+    });
+};
+
+
+Navbar.prototype.init = function() {
+    var _ = this;
+
+    _._calcButtonsParam();
+    _.height = _.buttonsTop[ 0 ];
+    _._buildScenes();
+    _._initEvents();
+};
+
+
+Navbar.prototype.reinit = function() {
+    var _ = this;
+
+    _._calcButtonsParam();
+};
+
+
+Navbar.prototype.update = function(scrollDelta, scrollDur) {
+    var _     = this,
+        delta = scrollDelta || 0,
+        dur   = scrollDur || _.duration;
+    // translate pixels(number) to percents(string), relative to window height
+    var percent = ((_.height + delta) / _.winHeigh * 100 ).toFixed(2) + '%';
+    TweenMax.to(_.front, dur, {width: percent, overwrite: 'all', ease: Linear.easeNone});
+};
+
+
+Navbar.prototype.scrollToSection = function(sectionId) {
+    var _ = this;
+
+    var scrollPos = $(sectionId).position().top;
+    console.log(scrollPos);
+
+    TweenMax.to(app.rootContainer, _.scrollToDur, {
+        scrollTo : { y: scrollPos, autoKill:true },
+            ease: Power1.easeOut,
+            overwrite: 5
+        });
+
+};
+
+
+module.exports = Navbar;
+},{"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":10,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":12}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 
+var sections = [
+    'home',
+    'facts',
+    'advantages',
+    'capabilities',
+    'partners',
+    'contacts'
+];
 
-var router = $.sammy(function() {
+
+var router = $.sammy(function(router) {
+
+    this.helpers({
+        pathToId: function(str) {
+            var id = '#' + str.slice(3);
+            return id;
+        }
+    });
+
     this.get('/', function() {
         console.log('#HOME');
+        console.log(this);
     });
 
     this.get('#/rent', function() {
@@ -42546,10 +42720,18 @@ var router = $.sammy(function() {
         console.log('#INVEST');
         // content.html('content');
     });
+
+    $.each(sections, function(index, val) {
+        router.get('#/' + val, function() {
+            var id = this.pathToId(this.path);
+            app.navbar.scrollToSection(id);
+        });
+    });
+
 });
 
 module.exports = router;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],20:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],21:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require('gsap');
 require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
@@ -42773,133 +42955,7 @@ module.exports = function() {
 
     return scrollmagic;
 };
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":12}],21:[function(require,module,exports){
-var $ = require("./../../../bower_components/jquery/dist/jquery.js");
-// require('jquery-mousewheel')($);
-require('gsap');
-var ScrollMagic = require('scrollmagic');
-require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
-
-function Scrollbar(selector) {
-
-    this.element        = $(selector || '#nav');
-    this.front          = this.element.find('.nav__front');
-    this.sections       = $('.js-section');
-    this.buttons        = this.element.find('.nav__back .nav__link');
-    this.winHeigh       = $(window).height();
-    this.sectionsHeight = []; // height of each section
-    this.buttonsHeight  = []; // height of each button/.nav__link
-    this.buttonsTop     = []; // offset top of each button/.nav__link
-    this.height         = 0; // will be changed after scrolling of each section
-    this.activeSection  = null;
-
-}
-
-
-Scrollbar.prototype._initEvents = function() {
-    var _ = this;
-
-    $(window).on('resize', function(e) {
-        _.reinit();
-        console.log(_.buttonsHeight, '\n', _.buttonsTop);
-    });
-    $(app.rootContainer).on('resize', function(e) {
-        console.log(e);
-    });
-
-};
-
-
-Scrollbar.prototype._calcButtonsParam = function() {
-    var _ = this;
-
-    $.each(_.buttons, function(index, el) {
-        var width     = $(el).outerWidth(),
-            offsetTop = $(el).offset().top;
-
-        _.buttonsHeight[ index ] = width;
-        _.buttonsTop[ index ] = offsetTop;
-    });
-};
-
-
-Scrollbar.prototype._buildScenes = function() {
-    var _ = this;
-
-    //##### scrollmagic scene for scrollbar
-    app.scrollmagic.scrollbar = {
-        scenes: {}
-    };
-
-    $.each(_.sections, function(index, el) {
-        var id = el.id ? app.util.toCamelCase(el.id) : 'section' + index,
-            sectionHeight = $(el).outerHeight();
-
-        _.sectionsHeight[ index ] = sectionHeight;
-
-        app.scrollmagic.scrollbar.scenes[ id ] = new ScrollMagic.Scene({
-            duration: sectionHeight,
-            triggerElement: el,
-            triggerHook: 'onCenter',
-            loglevel: 1
-        })
-            .on('start', function(e) {
-                _.activeSection = id;
-                if ( e.scrollDirection == 'FORWARD' ) {
-                    _.height = ( _.buttonsTop[ index ] );
-                    _.update();
-                }
-            })
-            .on('progress', function(e) {
-                var delta = _.buttonsHeight[ index ] * e.progress;
-                _.update(delta);
-            })
-            .on('end', function(e) {
-                if (e.scrollDirection == 'REVERSE') {
-                    _.height = ( _.buttonsTop[ index ] );
-                    _.update();
-                }
-                // on end of last section
-                if (e.scrollDirection == 'FORWARD' && index === _.sections.length - 1) {
-                    _.height = _.winHeigh;
-                    _.update();
-                }
-            })
-            .addTo(app.scrollmagic.controller);
-    });
-};
-
-
-Scrollbar.prototype.init = function() {
-    var _ = this;
-
-    _._calcButtonsParam();
-    _.height = _.buttonsTop[ 0 ];
-    _._buildScenes();
-    _._initEvents();
-};
-
-
-Scrollbar.prototype.reinit = function() {
-    var _ = this;
-
-    _._calcButtonsParam();
-    // _.update();
-    // _._buildScenes();
-};
-
-
-Scrollbar.prototype.update = function(scrollDelta) {
-    var _     = this;
-        delta = scrollDelta || 0;
-    // translate pixels(number) to percents(string), relative to window height
-    var percent = ((_.height + delta) / _.winHeigh * 100 ).toFixed(2) + '%';
-    TweenMax.to(_.front, 0.2, {width: percent, overwrite: 'all', ease: Linear.easeNone});
-};
-
-
-module.exports = Scrollbar;
-},{"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":12}],22:[function(require,module,exports){
+},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":12}],22:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Tabs(wrapper, tabButton, tabContent) {

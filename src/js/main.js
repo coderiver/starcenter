@@ -12,7 +12,7 @@ var Morph   = require('./modules/_canvas.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
-var Scrollbar = require('./modules/_scrollbar.js');
+var Navbar = require('./modules/_navbar.js');
 // var router = require('./modules/_routing.js');
 var initScenes = require('./modules/_scroll-scenes.js');
 
@@ -21,8 +21,6 @@ global.app = {};
 app.router = require('./modules/_routing.js');
 
 $(document).ready(function() {
-
-app.router.run();
 
 app.scrollDisabled = false;
 app.toparea  = {};
@@ -35,7 +33,7 @@ app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
 app.scrollmagic = initScenes();
-app.scrollbar = new Scrollbar();
+app.navbar = new Navbar();
 
 app.util = {
     toCamelCase: function(str) {
@@ -233,7 +231,8 @@ $('#header .logo').on('click', function(event) {
 //    #common
 //
 //------------------------------------------------------------------------------
-app.scrollbar.init();
+app.navbar.init();
+app.router.run('#/');
 console.log(app);
 
 

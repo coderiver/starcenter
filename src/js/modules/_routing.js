@@ -1,10 +1,28 @@
 require('jquery');
 require('sammy');
 
+var sections = [
+    'home',
+    'facts',
+    'advantages',
+    'capabilities',
+    'partners',
+    'contacts'
+];
 
-var router = $.sammy(function() {
+
+var router = $.sammy(function(router) {
+
+    this.helpers({
+        pathToId: function(str) {
+            var id = '#' + str.slice(3);
+            return id;
+        }
+    });
+
     this.get('/', function() {
         console.log('#HOME');
+        console.log(this);
     });
 
     this.get('#/rent', function() {
@@ -21,6 +39,14 @@ var router = $.sammy(function() {
         console.log('#INVEST');
         // content.html('content');
     });
+
+    $.each(sections, function(index, val) {
+        router.get('#/' + val, function() {
+            var id = this.pathToId(this.path);
+            app.navbar.scrollToSection(id);
+        });
+    });
+
 });
 
 module.exports = router;
