@@ -18,8 +18,8 @@ function Navbar(selector) {
     this.activeSection   = null;
     this.sectionProgress = 0; // progress of current section
     this.duration        = 0.5; // seconds
-    this.scrollToDur     = 0.8; // seconds, scroll to section duration
-
+    this.scrollToDur     = 1; // seconds, scroll to section duration
+    this.inProggres      = false;
 
 }
 
@@ -29,7 +29,6 @@ Navbar.prototype._initEvents = function() {
 
     $(window).on('resize', function(e) {
         _.reinit();
-        console.log(_.buttonsHeight, '\n', _.buttonsTop);
     });
 
     $.each(_.buttons, function(index, button) {
@@ -41,9 +40,9 @@ Navbar.prototype._initEvents = function() {
             _.update(null, 0.3);
         });
         // $(button).on('click', function(e) {
-        //     e.preventDefault();
-        //     var sectionId = '#' + ($(this).attr('href')).slice(2);
-        //     console.log(sectionId);
+            // _.height = _.buttonsTop[ index ] - _.height;
+            // var sectionId = '#' + ($(this).attr('href')).slice(2);
+            // console.log(sectionId);
             // _.scrollToSection(sectionId);
         // });
     });
@@ -125,6 +124,7 @@ Navbar.prototype.reinit = function() {
     var _ = this;
 
     _._calcButtonsParam();
+    // _._buildScenes();
 };
 
 
@@ -141,13 +141,21 @@ Navbar.prototype.update = function(scrollDelta, scrollDur) {
 Navbar.prototype.scrollToSection = function(sectionId) {
     var _ = this;
 
+    // if ( _.inProggres ) return;
+
     var scrollPos = $(sectionId).position().top;
     console.log(scrollPos);
 
     TweenMax.to(app.rootContainer, _.scrollToDur, {
         scrollTo : { y: scrollPos, autoKill:true },
-            ease: Power1.easeOut,
-            overwrite: 5
+            ease: Power3.easeOut,
+            overwrite: 5,
+            onStart: function() {
+                _.inProggres = true;
+            },
+            onComplete: function() {
+                _.inProggres = false;
+            }
         });
 
 };

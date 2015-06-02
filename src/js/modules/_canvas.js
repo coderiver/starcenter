@@ -234,7 +234,7 @@ Morph.prototype._calcPosition = function() {
             },
             big: {
                 center: paper.view.center,
-                size: new paper.Size(790, 260)
+                size: new paper.Size(791, 261)
             },
             wide: {
                 center: paper.view.center,

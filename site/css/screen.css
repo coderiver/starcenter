@@ -288,7 +288,11 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .catalog #morph.is-visible ~ .deco { opacity: 1; visibility: visible; -webkit-transform: none; -ms-transform: none; transform: none; -webkit-transition-delay: 1s; transition-delay: 1s; }
 .catalog .deco { position: absolute; z-index: 4; top: 145px; right: 125px; opacity: 0; visibility: hidden; -webkit-transform: translateY(30px); -ms-transform: translateY(30px); transform: translateY(30px); -webkit-transition: all 0.2s linear; transition: all 0.2s linear; }
 
-.catalog__inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; max-width: 1200px; margin: auto; }
+.catalog__modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 680px; }
+
+.catalog__inner { position: relative; width: 100%; max-width: 1368px; margin: auto; }
+
+.catalog__toparea { position: relative; height: 680px; }
 
 .catalog-category { position: absolute; z-index: 3; top: 609px; left: 50%; height: 44px; width: 510px; margin-left: -255px; box-sizing: border-box; font-size: 0; }
 .catalog-category:before { content: ""; position: absolute; z-index: 0; top: 0; left: 0; right: 0; width: 510px; height: 100%; margin: auto; background: #FFF; box-shadow: 0 0 0 3px #333, 0 0 0 13px #FFF; -webkit-transition: all 0.2s ease; transition: all 0.2s ease; visibility: visible; opacity: 1; }

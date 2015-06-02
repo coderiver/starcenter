@@ -44,7 +44,7 @@ app.util = {
     },
 
     prevent: function(event) {
-        console.log(event);
+        // console.log(event);
         event.preventDefault();
     },
 
@@ -233,8 +233,6 @@ $('#header .logo').on('click', function(event) {
 //------------------------------------------------------------------------------
 app.navbar.init();
 app.router.run('#/');
-console.log(app);
-
 
 
 // $(function(){

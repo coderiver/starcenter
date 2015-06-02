@@ -46,7 +46,7 @@ app.util = {
     },
 
     prevent: function(event) {
-        console.log(event);
+        // console.log(event);
         event.preventDefault();
     },
 
@@ -235,8 +235,6 @@ $('#header .logo').on('click', function(event) {
 //------------------------------------------------------------------------------
 app.navbar.init();
 app.router.run('#/');
-console.log(app);
-
 
 
 // $(function(){
@@ -41735,7 +41733,7 @@ Morph.prototype._calcPosition = function() {
             },
             big: {
                 center: paper.view.center,
-                size: new paper.Size(790, 260)
+                size: new paper.Size(791, 261)
             },
             wide: {
                 center: paper.view.center,
@@ -42542,8 +42540,8 @@ function Navbar(selector) {
     this.activeSection   = null;
     this.sectionProgress = 0; // progress of current section
     this.duration        = 0.5; // seconds
-    this.scrollToDur     = 0.8; // seconds, scroll to section duration
-
+    this.scrollToDur     = 1; // seconds, scroll to section duration
+    this.inProggres      = false;
 
 }
 
@@ -42553,7 +42551,6 @@ Navbar.prototype._initEvents = function() {
 
     $(window).on('resize', function(e) {
         _.reinit();
-        console.log(_.buttonsHeight, '\n', _.buttonsTop);
     });
 
     $.each(_.buttons, function(index, button) {
@@ -42565,9 +42562,9 @@ Navbar.prototype._initEvents = function() {
             _.update(null, 0.3);
         });
         // $(button).on('click', function(e) {
-        //     e.preventDefault();
-        //     var sectionId = '#' + ($(this).attr('href')).slice(2);
-        //     console.log(sectionId);
+            // _.height = _.buttonsTop[ index ] - _.height;
+            // var sectionId = '#' + ($(this).attr('href')).slice(2);
+            // console.log(sectionId);
             // _.scrollToSection(sectionId);
         // });
     });
@@ -42649,6 +42646,7 @@ Navbar.prototype.reinit = function() {
     var _ = this;
 
     _._calcButtonsParam();
+    // _._buildScenes();
 };
 
 
@@ -42665,13 +42663,21 @@ Navbar.prototype.update = function(scrollDelta, scrollDur) {
 Navbar.prototype.scrollToSection = function(sectionId) {
     var _ = this;
 
+    // if ( _.inProggres ) return;
+
     var scrollPos = $(sectionId).position().top;
     console.log(scrollPos);
 
     TweenMax.to(app.rootContainer, _.scrollToDur, {
         scrollTo : { y: scrollPos, autoKill:true },
-            ease: Power1.easeOut,
-            overwrite: 5
+            ease: Power3.easeOut,
+            overwrite: 5,
+            onStart: function() {
+                _.inProggres = true;
+            },
+            onComplete: function() {
+                _.inProggres = false;
+            }
         });
 
 };
@@ -42694,12 +42700,20 @@ var sections = [
 
 var router = $.sammy(function(router) {
 
+    this.element_selector = '#outer';
+    this.debug = true;
+    this.raise_errors = true;
+
     this.helpers({
         pathToId: function(str) {
             var id = '#' + str.slice(3);
             return id;
         }
     });
+
+    this.notFound = function() {
+        console.log('404. Not Found');
+    };
 
     this.get('/', function() {
         console.log('#HOME');
@@ -42723,8 +42737,10 @@ var router = $.sammy(function(router) {
 
     $.each(sections, function(index, val) {
         router.get('#/' + val, function() {
+            console.log(this);
             var id = this.pathToId(this.path);
             app.navbar.scrollToSection(id);
+
         });
     });
 

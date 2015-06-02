@@ -13,12 +13,20 @@ var sections = [
 
 var router = $.sammy(function(router) {
 
+    this.element_selector = '#outer';
+    this.debug = true;
+    this.raise_errors = true;
+
     this.helpers({
         pathToId: function(str) {
             var id = '#' + str.slice(3);
             return id;
         }
     });
+
+    this.notFound = function() {
+        console.log('404. Not Found');
+    };
 
     this.get('/', function() {
         console.log('#HOME');
@@ -42,8 +50,10 @@ var router = $.sammy(function(router) {
 
     $.each(sections, function(index, val) {
         router.get('#/' + val, function() {
+            console.log(this);
             var id = this.pathToId(this.path);
             app.navbar.scrollToSection(id);
+
         });
     });
 

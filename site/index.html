@@ -2,7 +2,7 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>Home</title>
+    <title>Star Centre || Development Group</title>
     <meta name="viewport" content="width=1368">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" media="all" href="css/screen.css"><!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
@@ -59,7 +59,7 @@
     <!--END nav-->
     <!--BEGIN header-->
     <header id="header" class="header">
-      <div class="header__left"><a href="#/home" class="logo">
+      <div class="header__left"><a href="#/" class="logo">
           <svg class="icon icon-star-centre">
             <use xlink:href="#icon-star-centre"></use>
           </svg>Star Centre</a><span>development group</span></div>
@@ -73,68 +73,73 @@
       <div id="inner">
         <!--BEGIN catalog-->
         <section id="home" class="js-section catalog">
-          <div class="catalog__inner">
-            <!--BEGIN slider-->
-            <div id="slider1" class="main-slider">
-              <div class="main-slider__morph">
-                <div class="blue-circle"></div>
+          <div class="catalog__modal">
+            <div class="catalog__inner">
+              <div class="catalog__toparea">
+                <!--BEGIN slider-->
+                <div id="slider1" class="main-slider">
+                  <div class="main-slider__morph">
+                    <div class="blue-circle"></div>
+                  </div>
+                  <div class="main-slider__overlay"></div>
+                  <div class="main-slider__slides">
+                    <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
+                      <div class="slide__content">
+                        <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                        <button type="button" class="details-btn"><span>Узнать детали</span>
+                          <svg class="icon icon-arrow">
+                            <use xlink:href="#icon-arrow"></use>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
+                      <div class="slide__content">
+                        <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                        <button type="button" class="details-btn"><span>Узнать детали</span>
+                          <svg class="icon icon-arrow">
+                            <use xlink:href="#icon-arrow"></use>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
+                      <div class="slide__content">
+                        <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                        <button type="button" class="details-btn"><span>Узнать детали</span>
+                          <svg class="icon icon-arrow">
+                            <use xlink:href="#icon-arrow"></use>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--END slider-->
+                <canvas id="morph"></canvas>
+                <div class="deco">
+                  <div class="deco__inner">37" &mdash; 2'</div>
+                </div>
+                <ul class="catalog-category">
+                  <li class="catalog-category__item"><a href="#/rent" data-morph-state="circle" class="catalog-btn">
+                      <div class="catalog-btn__hover">
+                        <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Арендовать</span></div>
+                      </div>
+                      <div class="catalog-btn__front"><span>Арендовать</span></div></a></li>
+                  <li class="catalog-category__item"><a href="#/buy" data-morph-state="square" class="catalog-btn">
+                      <div class="catalog-btn__hover">
+                        <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Купить</span></div>
+                      </div>
+                      <div class="catalog-btn__front"><span>Купить</span></div></a></li>
+                  <li class="catalog-category__item"><a href="#/invest" data-morph-state="triangle" class="catalog-btn"> 
+                      <div class="catalog-btn__hover">
+                        <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Инвестировать</span></div>
+                      </div>
+                      <div class="catalog-btn__front"><span>Инвестировать</span></div></a></li>
+                </ul>
               </div>
-              <div class="main-slider__overlay"></div>
-              <div class="main-slider__slides">
-                <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
-                  <div class="slide__content">
-                    <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                    <button type="button" class="details-btn"><span>Узнать детали</span>
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
-                  <div class="slide__content">
-                    <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                    <button type="button" class="details-btn"><span>Узнать детали</span>
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
-                  <div class="slide__content">
-                    <div class="slide__text">Наиболее выгодное предложение на рынке<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
-                    <button type="button" class="details-btn"><span>Узнать детали</span>
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <div class="catalog__content"></div>
             </div>
-            <!--END slider-->
-            <canvas id="morph"></canvas>
-            <div class="deco">
-              <div class="deco__inner">37" &mdash; 2'</div>
-            </div>
-            <ul class="catalog-category">
-              <li class="catalog-category__item"><a href="#/rent" data-morph-state="circle" class="catalog-btn">
-                  <div class="catalog-btn__hover">
-                    <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Арендовать</span></div>
-                  </div>
-                  <div class="catalog-btn__front"><span>Арендовать</span></div></a></li>
-              <li class="catalog-category__item"><a href="#/buy" data-morph-state="square" class="catalog-btn">
-                  <div class="catalog-btn__hover">
-                    <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Купить</span></div>
-                  </div>
-                  <div class="catalog-btn__front"><span>Купить</span></div></a></li>
-              <li class="catalog-category__item"><a href="#/invest" data-morph-state="triangle" class="catalog-btn"> 
-                  <div class="catalog-btn__hover">
-                    <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Инвестировать</span></div>
-                  </div>
-                  <div class="catalog-btn__front"><span>Инвестировать</span></div></a></li>
-            </ul>
           </div>
         </section>
         <!--END catalog-->
