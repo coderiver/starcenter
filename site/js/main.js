@@ -3,14 +3,13 @@
 require("./../../bower_components/jquery/dist/jquery.js");
 require("./../../bower_components/modernizr/modernizr.js");
 require('gsap');
-require('../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
-require('jquery-mousewheel')($);
+require('TimelineLite');
+require('gsap-scrollToPlugin');
+// require('jquery-mousewheel')($);
 var ScrollMagic = require('scrollmagic');
-require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
-// var Catalog = require('./modules/_catalog.js');
+var Modal = require('./modules/_modal.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
@@ -30,7 +29,7 @@ app.objects  = {};
 app.catalog = {};
 app.slider   = new Slider('#slider1');
 app.morph    = new Morph('#morph');
-// app.catalog  = new Catalog('.catalog');
+app.topareaModal = new Modal('#catalog');
 app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
@@ -133,20 +132,22 @@ app.catalog.opened = false;
 
 app.catalog.open = function(state) {
     if ( app.catalog.opened ) return;
+    app.topareaModal.open();
     app.slider.rollUp();
     app.category.open();
     app.morph.activate(state);
-    app.catalog.opened = true;
     app.util.toggleScroll();
+    app.catalog.opened = true;
 };
 
 app.catalog.close = function() {
     if ( !app.catalog.opened ) return;
+    app.topareaModal.close();
     app.slider.rollDown();
     app.morph.deactivate();
     app.category.close();
-    app.catalog.opened = false;
     app.util.toggleScroll();
+    app.catalog.opened = false;
 };
 
 
@@ -266,7 +267,7 @@ app.router.run('#/');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":10,"../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_box.js":15,"./modules/_canvas.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_navbar.js":19,"./modules/_routing.js":20,"./modules/_scroll-scenes.js":21,"./modules/_tabs.js":22,"gsap":9,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
+},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_box.js":14,"./modules/_canvas.js":15,"./modules/_category.js":16,"./modules/_main-slider.js":17,"./modules/_modal.js":18,"./modules/_navbar.js":19,"./modules/_routing.js":20,"./modules/_scroll-scenes.js":21,"./modules/_tabs.js":22,"TimelineLite":7,"gsap":9,"gsap-scrollToPlugin":10,"scrollmagic":11}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -37142,229 +37143,6 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
 },{}],11:[function(require,module,exports){
-/*! Copyright (c) 2013 Brandon Aaron (http://brandon.aaron.sh)
- * Licensed under the MIT License (LICENSE.txt).
- *
- * Version: 3.1.12
- *
- * Requires: jQuery 1.2.2+
- */
-
-(function (factory) {
-    if ( typeof define === 'function' && define.amd ) {
-        // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    } else if (typeof exports === 'object') {
-        // Node/CommonJS style for Browserify
-        module.exports = factory;
-    } else {
-        // Browser globals
-        factory(jQuery);
-    }
-}(function ($) {
-
-    var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
-        toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
-                    ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
-        slice  = Array.prototype.slice,
-        nullLowestDeltaTimeout, lowestDelta;
-
-    if ( $.event.fixHooks ) {
-        for ( var i = toFix.length; i; ) {
-            $.event.fixHooks[ toFix[--i] ] = $.event.mouseHooks;
-        }
-    }
-
-    var special = $.event.special.mousewheel = {
-        version: '3.1.12',
-
-        setup: function() {
-            if ( this.addEventListener ) {
-                for ( var i = toBind.length; i; ) {
-                    this.addEventListener( toBind[--i], handler, false );
-                }
-            } else {
-                this.onmousewheel = handler;
-            }
-            // Store the line height and page height for this particular element
-            $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
-            $.data(this, 'mousewheel-page-height', special.getPageHeight(this));
-        },
-
-        teardown: function() {
-            if ( this.removeEventListener ) {
-                for ( var i = toBind.length; i; ) {
-                    this.removeEventListener( toBind[--i], handler, false );
-                }
-            } else {
-                this.onmousewheel = null;
-            }
-            // Clean up the data we added to the element
-            $.removeData(this, 'mousewheel-line-height');
-            $.removeData(this, 'mousewheel-page-height');
-        },
-
-        getLineHeight: function(elem) {
-            var $elem = $(elem),
-                $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
-            if (!$parent.length) {
-                $parent = $('body');
-            }
-            return parseInt($parent.css('fontSize'), 10) || parseInt($elem.css('fontSize'), 10) || 16;
-        },
-
-        getPageHeight: function(elem) {
-            return $(elem).height();
-        },
-
-        settings: {
-            adjustOldDeltas: true, // see shouldAdjustOldDeltas() below
-            normalizeOffset: true  // calls getBoundingClientRect for each event
-        }
-    };
-
-    $.fn.extend({
-        mousewheel: function(fn) {
-            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
-        },
-
-        unmousewheel: function(fn) {
-            return this.unbind('mousewheel', fn);
-        }
-    });
-
-
-    function handler(event) {
-        var orgEvent   = event || window.event,
-            args       = slice.call(arguments, 1),
-            delta      = 0,
-            deltaX     = 0,
-            deltaY     = 0,
-            absDelta   = 0,
-            offsetX    = 0,
-            offsetY    = 0;
-        event = $.event.fix(orgEvent);
-        event.type = 'mousewheel';
-
-        // Old school scrollwheel delta
-        if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1;      }
-        if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta;       }
-        if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY;      }
-        if ( 'wheelDeltaX' in orgEvent ) { deltaX = orgEvent.wheelDeltaX * -1; }
-
-        // Firefox < 17 horizontal scrolling related to DOMMouseScroll event
-        if ( 'axis' in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
-            deltaX = deltaY * -1;
-            deltaY = 0;
-        }
-
-        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
-        delta = deltaY === 0 ? deltaX : deltaY;
-
-        // New school wheel delta (wheel event)
-        if ( 'deltaY' in orgEvent ) {
-            deltaY = orgEvent.deltaY * -1;
-            delta  = deltaY;
-        }
-        if ( 'deltaX' in orgEvent ) {
-            deltaX = orgEvent.deltaX;
-            if ( deltaY === 0 ) { delta  = deltaX * -1; }
-        }
-
-        // No change actually happened, no reason to go any further
-        if ( deltaY === 0 && deltaX === 0 ) { return; }
-
-        // Need to convert lines and pages to pixels if we aren't already in pixels
-        // There are three delta modes:
-        //   * deltaMode 0 is by pixels, nothing to do
-        //   * deltaMode 1 is by lines
-        //   * deltaMode 2 is by pages
-        if ( orgEvent.deltaMode === 1 ) {
-            var lineHeight = $.data(this, 'mousewheel-line-height');
-            delta  *= lineHeight;
-            deltaY *= lineHeight;
-            deltaX *= lineHeight;
-        } else if ( orgEvent.deltaMode === 2 ) {
-            var pageHeight = $.data(this, 'mousewheel-page-height');
-            delta  *= pageHeight;
-            deltaY *= pageHeight;
-            deltaX *= pageHeight;
-        }
-
-        // Store lowest absolute delta to normalize the delta values
-        absDelta = Math.max( Math.abs(deltaY), Math.abs(deltaX) );
-
-        if ( !lowestDelta || absDelta < lowestDelta ) {
-            lowestDelta = absDelta;
-
-            // Adjust older deltas if necessary
-            if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
-                lowestDelta /= 40;
-            }
-        }
-
-        // Adjust older deltas if necessary
-        if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
-            // Divide all the things by 40!
-            delta  /= 40;
-            deltaX /= 40;
-            deltaY /= 40;
-        }
-
-        // Get a whole, normalized value for the deltas
-        delta  = Math[ delta  >= 1 ? 'floor' : 'ceil' ](delta  / lowestDelta);
-        deltaX = Math[ deltaX >= 1 ? 'floor' : 'ceil' ](deltaX / lowestDelta);
-        deltaY = Math[ deltaY >= 1 ? 'floor' : 'ceil' ](deltaY / lowestDelta);
-
-        // Normalise offsetX and offsetY properties
-        if ( special.settings.normalizeOffset && this.getBoundingClientRect ) {
-            var boundingRect = this.getBoundingClientRect();
-            offsetX = event.clientX - boundingRect.left;
-            offsetY = event.clientY - boundingRect.top;
-        }
-
-        // Add information to the event object
-        event.deltaX = deltaX;
-        event.deltaY = deltaY;
-        event.deltaFactor = lowestDelta;
-        event.offsetX = offsetX;
-        event.offsetY = offsetY;
-        // Go ahead and set deltaMode to 0 since we converted to pixels
-        // Although this is a little odd since we overwrite the deltaX/Y
-        // properties with normalized deltas.
-        event.deltaMode = 0;
-
-        // Add event and delta to the front of the arguments
-        args.unshift(event, delta, deltaX, deltaY);
-
-        // Clearout lowestDelta after sometime to better
-        // handle multiple device types that give different
-        // a different lowestDelta
-        // Ex: trackpad = 3 and mouse wheel = 120
-        if (nullLowestDeltaTimeout) { clearTimeout(nullLowestDeltaTimeout); }
-        nullLowestDeltaTimeout = setTimeout(nullLowestDelta, 200);
-
-        return ($.event.dispatch || $.event.handle).apply(this, args);
-    }
-
-    function nullLowestDelta() {
-        lowestDelta = null;
-    }
-
-    function shouldAdjustOldDeltas(orgEvent, absDelta) {
-        // If this is an older event and the delta is divisable by 120,
-        // then we are assuming that the browser is treating this as an
-        // older mouse wheel event and that we should divide the deltas
-        // by 40 to try and get a more usable deltaFactor.
-        // Side note, this actually impacts the reported scroll distance
-        // in older browsers and can cause scrolling to be slower than native.
-        // Turn this off by setting $.event.special.mousewheel.settings.adjustOldDeltas to false.
-        return special.settings.adjustOldDeltas && orgEvent.type === 'mousewheel' && absDelta % 120 === 0;
-    }
-
-}));
-
-},{}],12:[function(require,module,exports){
 /*!
  * ScrollMagic v2.0.5 (2015-04-29)
  * The javascript library for magical scroll interactions.
@@ -40145,7 +39923,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 
 	return ScrollMagic;
 }));
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*!
  * ScrollMagic v2.0.5 (2015-04-29)
  * The javascript library for magical scroll interactions.
@@ -40456,7 +40234,7 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 
 	});
 }));
-},{"gsap":9,"scrollmagic":12}],14:[function(require,module,exports){
+},{"gsap":9,"scrollmagic":11}],13:[function(require,module,exports){
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/sole/tween.js
@@ -41214,14 +40992,14 @@ TWEEN.Interpolation = {
 };
 
 module.exports=TWEEN;
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 function Box() {
-    this.el          = {};
+    this.elements    = {};
     this.opened      = false;
     this.position    = {}; // box position before fullscreen mode
     this.slider      = null;
@@ -41263,24 +41041,24 @@ function Box() {
 Box.prototype.init = function(box) {
     var _ = this;
 
-    if ( box instanceof jQuery ) { _.el.box = box; }
-    else { _.el.box = $(box); }
+    if ( box instanceof jQuery ) { _.elements.box = box; }
+    else { _.elements.box = $(box); }
 
-    _.wrapper        = _.el.box.parent();
-    _.el.inner       = _.el.box.find('.object__inner');
-    _.el.slider      = _.el.box.find('.object__slider');
-    _.el.openButton  = _.el.box.find('.info .btn');
-    _.el.closeButton = _.el.box.find('.object__close');
-    _.el.info        = _.el.box.find('.info');
-    _.el.detail      = _.el.box.find('.object__detail');
+    _.wrapper        = _.elements.box.parent();
+    _.elements.inner       = _.elements.box.find('.object__inner');
+    _.elements.slider      = _.elements.box.find('.object__slider');
+    _.elements.openButton  = _.elements.box.find('.info .btn');
+    _.elements.closeButton = _.elements.box.find('.object__close');
+    _.elements.info        = _.elements.box.find('.info');
+    _.elements.detail      = _.elements.box.find('.object__detail');
 
     _.win.W = $(window).width();
     _.win.H = $(window).height();
 
     // update options
     _.options.sliderHeight   = _.win.H <= _.options.breakpoint ? _.options.height1 : _.options.height2;
-    _.slickOptions.prevArrow = _.el.box.find('.object__slider-prev');
-    _.slickOptions.nextArrow = _.el.box.find('.object__slider-next');
+    _.slickOptions.prevArrow = _.elements.box.find('.object__slider-prev');
+    _.slickOptions.nextArrow = _.elements.box.find('.object__slider-next');
 
     _._initEvents();
 
@@ -41292,15 +41070,15 @@ Box.prototype.init = function(box) {
 Box.prototype._initEvents = function() {
     var _ = this;
 
-    _.el.openButton.on('click', function(e) {
+    _.elements.openButton.on('click', function(e) {
         _.open();
     });
 
-    _.el.closeButton.on('click', function(e) {
+    _.elements.closeButton.on('click', function(e) {
         _.close();
     });
 
-    _.el.box.on('scroll mousewheel DOMMouseScroll', function(e) {
+    _.elements.box.on('scroll mousewheel DOMMouseScroll', function(e) {
         e.stopPropagation();
     });
 
@@ -41315,7 +41093,7 @@ Box.prototype._initEvents = function() {
 Box.prototype._initSlider = function () {
     var _ = this;
 
-    _.el.slider.on('init', function(e, slick) {
+    _.elements.slider.on('init', function(e, slick) {
         // transform 1,2,3 to 01,02,03
         button = slick.$dots.find('button');
         $.each(button, function(index, el) {
@@ -41324,7 +41102,7 @@ Box.prototype._initSlider = function () {
         });
     });
 
-    _.slider = _.el.slider.slick(_.slickOptions);
+    _.slider = _.elements.slider.slick(_.slickOptions);
 };
 
 
@@ -41332,7 +41110,7 @@ Box.prototype._initSlider = function () {
 Box.prototype._destroySlider = function() {
     var _ = this;
 
-    _.el.slider.slick('unslick');
+    _.elements.slider.slick('unslick');
     _.slider = null;
 };
 
@@ -41371,7 +41149,7 @@ Box.prototype._toFullscreen = function() {
         tl  = new TimelineLite();
 
     tl.eventCallback('onComplete', function() {
-        _.el.box.addClass(_.options.class);
+        _.elements.box.addClass(_.options.class);
         _._initSlider();
     });
 
@@ -41385,7 +41163,7 @@ Box.prototype._toFullscreen = function() {
 
         _.wrapper.addClass(_.options.wrapperClass);
 
-        _.el.box.css({
+        _.elements.box.css({
             top: pos.top,
             left: pos.left,
             right: pos.right,
@@ -41398,18 +41176,18 @@ Box.prototype._toFullscreen = function() {
     });
 
     tl.add('start', 0)
-        .to(_.el.box, _.options.animDur, {
+        .to(_.elements.box, _.options.animDur, {
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
             ease: _.options.easing
             })
-        .to(_.el.slider, _.options.animDur, {
+        .to(_.elements.slider, _.options.animDur, {
             height: _.options.sliderHeight,
             ease: _.options.easing,
             }, 'start')
-        .to(_.el.info, _.options.animDur, {
+        .to(_.elements.info, _.options.animDur, {
             y: _.options.infoTop,
             ease: _.options.easing,
             }, 'start');
@@ -41423,7 +41201,7 @@ Box.prototype._toInitState = function() {
 
     tl.eventCallback('onComplete', function() {
 
-        _.el.box.css({
+        _.elements.box.css({
             top: '',
             left: '',
             right: '',
@@ -41445,20 +41223,20 @@ Box.prototype._toInitState = function() {
         .add(function() {
             _._destroySlider();
             $(_).off('winResized');
-            _.el.box.removeClass(_.options.class);
+            _.elements.box.removeClass(_.options.class);
             })
-        .to(_.el.box, _.options.animDur, {
+        .to(_.elements.box, _.options.animDur, {
             top: _.position.top,
             left: _.position.left,
             width: _.position.width,
             height: _.position.height,
             ease: _.options.easing,
             })
-        .to(_.el.slider, _.options.animDur, {
+        .to(_.elements.slider, _.options.animDur, {
             height: _.options.initSliderHeight,
             ease: _.options.easing,
             }, 'start')
-        .to(_.el.info, _.options.animDur, {
+        .to(_.elements.info, _.options.animDur, {
             y: 0,
             ease: _.options.easing,
             }, 'start');
@@ -41496,12 +41274,12 @@ Box.prototype.close = function() {
 
 
 module.exports = Box;
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"gsap":9}],16:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],15:[function(require,module,exports){
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 
 var Morph = function(selector) {
@@ -42217,11 +41995,11 @@ Morph.prototype.moveBack = function(duration) {
 };
 
 module.exports = Morph;
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"gsap":9,"tween.js":14}],17:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"TimelineLite":7,"gsap":9,"tween.js":13}],16:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 function Category(element, itemSelector) {
     this.element   = $(element);
@@ -42380,11 +42158,11 @@ Category.prototype.toggleHidden = function() {
 
 
 module.exports = Category;
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"gsap":9}],18:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],17:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 function MainSlider(wrapper) {
 
@@ -42519,7 +42297,109 @@ MainSlider.prototype.rollDown = function(duration) {
 module.exports = MainSlider;
 
 
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"gsap":9}],19:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],18:[function(require,module,exports){
+var $ = require("./../../../bower_components/jquery/dist/jquery.js");
+require('gsap');
+require('TimelineLite');
+
+function Modal(selector) {
+    this.el        = $(selector);
+    this.wrapper   = this.el.parent();
+    this.positions = {};
+    this.winHeight = $(window).height();
+    this.opened    = false;
+    this.inProgress = false;
+    this.options = {
+        zIndex: 98,
+        duration: 800,
+        delay: 300
+    };
+}
+
+Modal.prototype._getPositions = function() {
+    var _ = this;
+
+    _.positions.top    = _.wrapper.offset().top;
+    _.positions.height = _.wrapper.height();
+    _.positions.bottom = _.positions.top - _.positions.height - _.winHeight;
+
+    return _.positions;
+};
+
+
+Modal.prototype._toFullscreen = function(animDur, animDelay) {
+    var _   = this,
+        dur = animDur / 1000   || _.options.duration / 1000,
+        del = animDelay / 1000 || _.options.delay / 1000,
+        pos = _._getPositions(),
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .to(_.el, 0, {
+            top: pos.top,
+            left: 0,
+            right: 0,
+            height: pos.height,
+            position: 'fixed',
+            zIndex: _.options.zIndex
+            })
+        .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone, delay: del})
+        .to(_.el, 0, {height: '100%'})
+        .add(function() {
+            _.inProgress = false;
+            _.opened = true;
+            });
+
+};
+
+Modal.prototype._toInitState = function(animDur, animDelay) {
+    var _   = this,
+        dur = animDur / 1000   || _.options.duration / 1000,
+        del = animDelay / 1000 || _.options.delay / 1000,
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .to(_.el, dur, {
+            top: _.positions.top,
+            height: _.positions.height,
+            clearProps: 'all',
+            ease: Linear.easeNone,
+            delay: del})
+        .add(function() {
+            _.inProgress = false;
+            _.opened = false;
+            });
+
+
+};
+
+
+Modal.prototype.open = function() {
+    if ( this.opened ) return;
+
+    var _ = this;
+
+    _._toFullscreen();
+};
+
+
+Modal.prototype.close = function() {
+    if ( !this.opened ) return;
+
+    var _ = this;
+
+    _._toInitState();
+};
+
+
+module.exports = Modal;
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9}],19:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 // require('jquery-mousewheel')($);
 require('gsap');
@@ -42684,7 +42564,7 @@ Navbar.prototype.scrollToSection = function(sectionId) {
 
 
 module.exports = Navbar;
-},{"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":10,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":12}],20:[function(require,module,exports){
+},{"../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js":10,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":11}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 
@@ -42717,7 +42597,6 @@ var router = $.sammy(function(router) {
 
     this.get('/', function() {
         console.log('#HOME');
-        console.log(this);
     });
 
     this.get('#/rent', function() {
@@ -42750,7 +42629,7 @@ module.exports = router;
 },{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5}],21:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 var ScrollMagic = require('scrollmagic');
 require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
@@ -42971,7 +42850,7 @@ module.exports = function() {
 
     return scrollmagic;
 };
-},{"../../../node_modules/gsap/src/uncompressed/TimelineLite.js":7,"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"scrollmagic":12}],22:[function(require,module,exports){
+},{"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":12,"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"scrollmagic":11}],22:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Tabs(wrapper, tabButton, tabContent) {

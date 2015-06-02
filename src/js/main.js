@@ -1,14 +1,13 @@
 require('jquery');
 require('modernizr');
 require('gsap');
-require('../../node_modules/gsap/src/uncompressed/TimelineLite.js');
-require('../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
-require('jquery-mousewheel')($);
+require('TimelineLite');
+require('gsap-scrollToPlugin');
+// require('jquery-mousewheel')($);
 var ScrollMagic = require('scrollmagic');
-require('../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
-// var Catalog = require('./modules/_catalog.js');
+var Modal = require('./modules/_modal.js');
 var Category = require('./modules/_category.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
@@ -28,7 +27,7 @@ app.objects  = {};
 app.catalog = {};
 app.slider   = new Slider('#slider1');
 app.morph    = new Morph('#morph');
-// app.catalog  = new Catalog('.catalog');
+app.topareaModal = new Modal('#catalog');
 app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
@@ -131,20 +130,22 @@ app.catalog.opened = false;
 
 app.catalog.open = function(state) {
     if ( app.catalog.opened ) return;
+    app.topareaModal.open();
     app.slider.rollUp();
     app.category.open();
     app.morph.activate(state);
-    app.catalog.opened = true;
     app.util.toggleScroll();
+    app.catalog.opened = true;
 };
 
 app.catalog.close = function() {
     if ( !app.catalog.opened ) return;
+    app.topareaModal.close();
     app.slider.rollDown();
     app.morph.deactivate();
     app.category.close();
-    app.catalog.opened = false;
     app.util.toggleScroll();
+    app.catalog.opened = false;
 };
 
 

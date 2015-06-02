@@ -11,7 +11,9 @@
   "license": "ISC",
   "browser": {
     "jquery": "./bower_components/jquery/dist/jquery.js",
-    "modernizr": "./bower_components/modernizr/modernizr.js"
+    "modernizr": "./bower_components/modernizr/modernizr.js",
+    "TimelineLite": "./node_modules/gsap/src/uncompressed/TimelineLite.js",
+    "gsap-scrollToPlugin": "./node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js"
   },
   "browserify-shim": {
     "jquery": "$",

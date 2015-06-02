@@ -1,7 +1,7 @@
 require('jquery');
 require('slick-carousel');
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 function Category(element, itemSelector) {
     this.element   = $(element);

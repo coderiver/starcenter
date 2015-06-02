@@ -23,7 +23,7 @@ module.exports = function() {
             notify: false,
             ghostMode: false,
             online: false,
-            // tunnel: 'site',
+            // tunnel: 'starcentre',
             open: false
         });
 

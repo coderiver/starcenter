@@ -30,7 +30,6 @@ var router = $.sammy(function(router) {
 
     this.get('/', function() {
         console.log('#HOME');
-        console.log(this);
     });
 
     this.get('#/rent', function() {

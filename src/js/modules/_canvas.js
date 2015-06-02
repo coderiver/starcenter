@@ -2,7 +2,7 @@ var paper = require('paper');
 var $     = require('jquery');
 var TWEEN = require('tween.js');
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 
 var Morph = function(selector) {

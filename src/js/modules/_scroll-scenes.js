@@ -1,6 +1,6 @@
 require('jquery');
 require('gsap');
-require('../../../node_modules/gsap/src/uncompressed/TimelineLite.js');
+require('TimelineLite');
 
 var ScrollMagic = require('scrollmagic');
 require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
