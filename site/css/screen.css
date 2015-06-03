@@ -54,7 +54,7 @@ table { border-spacing: 0; border-collapse: collapse; width: 100%; }
 body { font-size: 16px; line-height: 1.4; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; color: #333; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
 body { min-width: 1200px; min-height: 630px; width: 100%; height: 100%; overflow: hidden; position: relative; }
-@media only screen and (max-width: 1200px) { body { overflow-x: auto; overflow-y: hidden; } }
+@media only screen and (max-width: 1199px) { body { overflow-x: auto; overflow-y: hidden; } }
 
 .center-wrap { max-width: 1368px; margin: 0 auto; position: relative; z-index: 0; overflow: hidden; height: 100%; }
 
@@ -255,7 +255,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .sold-badge { display: inline-block; white-space: nowrap; color: #ED1D24; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.5em; text-transform: uppercase; border: #ED1D24; line-height: 34px; border: 3px solid; padding: 0 20px; min-width: 200px; text-align: center; box-sizing: border-box; -webkit-transform: rotate(-12deg); -ms-transform: rotate(-12deg); transform: rotate(-12deg); }
 
-.main-slider { position: relative; z-index: 1; height: 656px; overflow: hidden; }
+.main-slider { position: relative; z-index: 1; height: 656px; max-width: 1368px; margin: auto; overflow: hidden; }
 .main-slider .slick-dots { position: absolute; z-index: 3; top: 175px; left: 50%; width: 40px; margin-left: -20px; text-align: center; -webkit-animation: slide-left 0.5s ease 1; animation: slide-left 0.5s ease 1; }
 .main-slider .slick-dots li { padding: 0; margin: 0; }
 .main-slider .slick-dots button { display: block; margin-bottom: 5px; width: 40px; height: 40px; text-align: center; color: #333; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.25em; line-height: 2; background: none; opacity: 0.3; -webkit-transition: opacity 0.3s linear; transition: opacity 0.3s linear; }
@@ -294,7 +294,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .catalog__modal-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
 
-.catalog__inner { position: relative; width: 100%; max-width: 1368px; margin: auto; }
+.catalog__inner { position: relative; width: 100%; margin: auto; }
 
 .catalog__toparea { position: relative; height: 680px; }
 
@@ -560,23 +560,28 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .object-wrapper:first-child { margin-top: 0; }
 .object-wrapper:last-child { margin-bottom: 0; }
 .object-wrapper.is-animate .object-label { opacity: 0; visibility: hidden; }
+.object-wrapper.is-slider { width: 100%; height: auto; -webkit-transition: height 0.5s linear; transition: height 0.5s linear; }
+.object-wrapper.is-slider .object-label { opacity: 0; visibility: hidden; }
+.object-wrapper.is-slider .object { height: auto; }
+.object-wrapper.is-slider .object__inner { position: relative; }
+.object-wrapper.is-slider .object__detail { padding-bottom: 0; -webkit-animation: none; animation: none; }
 
 .object-label { display: block; position: absolute; z-index: 1; top: -55px; left: -65px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 24px; letter-spacing: 1em; line-height: 1.333; text-transform: uppercase; -webkit-transition: all 0.2s linear; transition: all 0.2s linear; opacity: 1; visibility: visible; }
 
 .object { position: relative; width: 790px; height: 450px; background: #FFF; }
 .object .info { position: absolute; z-index: 5; left: 50%; bottom: -22px; margin-left: -225px; }
 .object .info .table__border { stroke-dashoffset: 0; }
-.object .slick-dots { position: absolute; top: 100%; margin-top: 10px; left: 20px; width: 440px; font-size: 0; -webkit-animation: slide-left 0.5s ease 1; animation: slide-left 0.5s ease 1; }
+.object .slick-dots { position: absolute; top: 100%; margin-top: 10px; left: 20px; right: 50%; padding-right: 235px; font-size: 0; -webkit-animation: slide-left 0.5s ease 1; animation: slide-left 0.5s ease 1; }
 .object .slick-dots li { display: inline-block; vertical-align: middle; }
 .object .slick-dots li button { width: 40px; height: 40px; background: none; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #AAA; -webkit-transition: color 0.3s linear; transition: color 0.3s linear; }
 .object .slick-dots li.slick-active button, .object .slick-dots li:hover button { color: #333; }
+.object.is-opened .object__buttons, .object.is-slider .object__buttons { display: block; }
+.object.is-opened .btn_object, .object.is-slider .btn_object { cursor: default; pointer-events: none; }
+.object.is-opened .btn_object .btn__hover, .object.is-slider .btn_object .btn__hover { -webkit-transition: all 0.2s linear; transition: all 0.2s linear; opacity: 0; visibility: hidden; }
+.object.is-opened .object__slide, .object.is-slider .object__slide { -webkit-transition: none; transition: none; -webkit-transform: none; -ms-transform: none; transform: none; }
 .object.is-opened .object__inner { overflow-x: hidden; overflow-y: scroll; right: -17px; }
 .mac-os .object.is-opened .object__inner { right: -15px; }
-.object.is-opened .object__buttons { display: block; }
 .object.is-opened .object__detail { display: block; }
-.object.is-opened .btn_object { cursor: default; pointer-events: none; }
-.object.is-opened .btn_object .btn__hover { -webkit-transition: all 0.2s linear; transition: all 0.2s linear; opacity: 0; visibility: hidden; }
-.object.is-opened .object__slide { -webkit-transition: none; transition: none; -webkit-transform: none; -ms-transform: none; transform: none; }
 
 .object__inner { position: absolute; z-index: 0; top: 0; left: 0; right: 0; bottom: 0; }
 

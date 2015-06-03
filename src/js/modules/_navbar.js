@@ -20,6 +20,7 @@ function Navbar(selector) {
     this.duration        = 0.5; // seconds
     this.scrollToDur     = 1; // seconds, scroll to section duration
     this.inProggres      = false;
+    this.isHidden          = false;
 
 }
 
@@ -155,11 +156,11 @@ Navbar.prototype.scrollToSection = function(sectionId) {
                 _.inProggres = false;
             }
         });
-
 };
 
 
 Navbar.prototype.hidden = function(animDur, animDelay) {
+    if ( this.isHidden ) return;
     var _  = this,
         dur = animDur / 1000 || _.duration,
         del = animDelay / 1000 || 0;
@@ -167,11 +168,15 @@ Navbar.prototype.hidden = function(animDur, animDelay) {
     TweenMax.fromTo(_.element, dur, {xPercent: 0}, {
         xPercent: 100,
         ease: Power2.easeIn,
-        delay: del
+        delay: del,
+        onComplete: function() {
+            _.isHidden = true;
+        }
         });
 };
 
 Navbar.prototype.visible = function(animDur, animDelay) {
+    if ( !this.isHidden ) return;
     var _  = this,
         dur = animDur / 1000 || _.duration,
         del = animDelay / 1000 || 0;
@@ -180,7 +185,10 @@ Navbar.prototype.visible = function(animDur, animDelay) {
         xPercent: 0,
         ease: Power2.easeOut,
         clearProps: 'all',
-        delay: del
+        delay: del,
+        onComplete: function() {
+            _.isHidden = false;
+        }
         });
 };
 

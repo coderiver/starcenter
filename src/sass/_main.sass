@@ -519,6 +519,8 @@ textarea.input
   position: relative
   z-index: 1
   height: 656px
+  max-width: 1368px
+  margin: auto
   overflow: hidden
   // &:after
   //   content: ""
@@ -718,7 +720,6 @@ textarea.input
 .catalog__inner
   position: relative
   width: 100%
-  max-width: 1368px
   margin: auto
 
 .catalog__toparea
@@ -1657,6 +1658,21 @@ textarea.input
     .object-label
       opacity: 0
       visibility: hidden
+  &.is-slider
+    width: 100%
+    height: auto
+    transition: height 0.5s linear
+    .object-label
+      opacity: 0
+      visibility: hidden
+    .object
+      height: auto
+    .object__inner
+      position: relative
+    .object__detail
+      padding-bottom: 0
+      animation: none
+
 
 .object-label
   display: block
@@ -1690,7 +1706,8 @@ textarea.input
     top: 100%
     margin-top: 10px
     left: 20px
-    width: 440px
+    right: 50%
+    padding-right: 235px
     font-size: 0
     animation: slide-left 0.5s ease 1
     li
@@ -1708,12 +1725,9 @@ textarea.input
         button
           color: $text
 
-  &.is-opened
-    .object__inner
-      +scroll
+  &.is-opened,
+  &.is-slider
     .object__buttons
-      display: block
-    .object__detail
       display: block
     .btn_object
       cursor: default
@@ -1725,6 +1739,11 @@ textarea.input
     .object__slide
       transition: none
       transform: none
+  &.is-opened
+    .object__inner
+      +scroll
+    .object__detail
+      display: block
 
 
 .object__inner

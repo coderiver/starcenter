@@ -9,11 +9,12 @@ function Box() {
     this.position    = {}; // box position before fullscreen mode
     this.slider      = null;
     this.win         = {};
+    this.mode        = 'slider'; // can be 'slider' (default) or 'modal',
 
     this.options = {
         animDur: 0.7,
-        class: 'is-opened', // add to box when opened
-        wrapperClass: 'is-animate', // add to wrapper when start transforming to fullscren mode
+        class: '', // add to box when opened, look in init
+        wrapperClass: '', // add to wrapper when start transforming, look in init
         zIndex: 98,
         easing: Power1.easeOut,
         breakpoint: 800,
@@ -43,13 +44,14 @@ function Box() {
 
 
 
-Box.prototype.init = function(box) {
-    var _ = this;
+Box.prototype.init = function(box, mode) {
+    var _  = this,
+        modeAttr;
 
     if ( box instanceof jQuery ) { _.elements.box = box; }
     else { _.elements.box = $(box); }
 
-    _.wrapper        = _.elements.box.parent();
+    _.elements.wrapper     = _.elements.box.parents('.object-wrapper');
     _.elements.inner       = _.elements.box.find('.object__inner');
     _.elements.slider      = _.elements.box.find('.object__slider');
     _.elements.openButton  = _.elements.box.find('.info .btn');
@@ -65,6 +67,14 @@ Box.prototype.init = function(box) {
     _.slickOptions.prevArrow = _.elements.box.find('.object__slider-prev');
     _.slickOptions.nextArrow = _.elements.box.find('.object__slider-next');
 
+    // update options
+    modeAttr = _.elements.box.data('mode');
+    if ( mode ) _.mode = mode;
+    else if ( modeAttr) _.mode = modeAttr;
+    _.options.class        = _.mode == 'slider' ? 'is-slider': 'is-opened';
+    _.options.wrapperClass = _.mode == 'slider' ? 'is-slider' : 'is-animate';
+
+    _._getPosition();
     _._initEvents();
 
     return this;
@@ -135,15 +145,14 @@ Box.prototype._updateOnResize = function() {
 Box.prototype._getPosition = function() {
     var _       = this;
 
-    _.position.top    =  _.wrapper.offset().top;
-    _.position.left   =  _.wrapper.offset().left;
-    _.position.width  =  _.wrapper.width();
-    _.position.height =  _.wrapper.height();
+    _.position.top    =  _.elements.wrapper.offset().top;
+    _.position.left   =  _.elements.wrapper.offset().left;
+    _.position.width  =  _.elements.wrapper.width();
+    _.position.height =  _.elements.wrapper.height();
     _.position.right  =  _.win.W - _.position.width - _.position.left;
     _.position.bottom =  _.win.H - _.position.height - _.position.top;
 
     return _.position;
-
 };
 
 
@@ -163,7 +172,7 @@ Box.prototype._toFullscreen = function() {
             // update initial position of box if window will be resize
             $(_).on('winResized', _._getPosition);
 
-            _.wrapper.addClass(_.options.wrapperClass);
+            _.elements.wrapper.addClass(_.options.wrapperClass);
 
             _.elements.box.css({
                 top: pos.top,
@@ -199,7 +208,7 @@ Box.prototype._toFullscreen = function() {
 
 
 
-Box.prototype._toInitState = function(callback) {
+Box.prototype._toInitState = function() {
     var _  = this;
         tl = new TimelineLite();
 
@@ -239,9 +248,77 @@ Box.prototype._toInitState = function(callback) {
 
             _.opened = false;
 
-            _.wrapper.removeClass(_.options.wrapperClass);
+            _.elements.wrapper.removeClass(_.options.wrapperClass);
             // app.util.toggleScroll();
             app.navbar.visible();
+            });
+};
+
+
+
+Box.prototype._toFullSize = function() {
+    var _  = this,
+        tl = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.opened = true;
+            _.elements.wrapper.addClass(_.options.wrapperClass);
+            _.elements.detail.slideDown();
+            })
+        .to(_.elements.wrapper, 0, {height: 'auto'})
+        .to(_.elements.box, 0, {width: '100%'})
+        .addLabel('beginAnimations')
+        .fromTo(_.elements.wrapper, _.options.animDur, {width: _.position.width}, {
+            width: _.win.W,
+            ease: Linear.easeNone
+            }, 'beginAnimations')
+        .to(_.elements.wrapper, 0, {
+            width: '100%'
+            })
+        .to(_.elements.slider, _.options.animDur, {
+            height: _.options.sliderHeight,
+            ease: _.options.easing,
+            }, 'beginAnimations')
+        .to(_.elements.info, _.options.animDur, {
+            y: _.options.infoTop,
+            ease: _.options.easing,
+            }, 'beginAnimations')
+        .add(function() {
+            _.elements.box.addClass(_.options.class);
+            _._initSlider();
+            });
+};
+
+Box.prototype._toInitSize = function() {
+    var _  = this,
+        tl = new TimelineLite();
+
+    tl
+        .add(function() {
+            _._destroySlider();
+            _.elements.box.removeClass(_.options.class);
+            _.elements.detail.slideUp();
+            })
+        .addLabel('beginAnimations')
+        .to(_.elements.slider, _.options.animDur, {
+            height: _.options.initSliderHeight,
+            ease: _.options.easing,
+            }, 'beginAnimations')
+        .to(_.elements.info, _.options.animDur, {
+            y: 0,
+            ease: _.options.easing,
+            }, 'beginAnimations')
+        .to(_.elements.wrapper, _.options.animDur, {
+            width: _.position.width,
+            ease: _.options.easing,
+            }, 'beginAnimations')
+        .to([_.elements.box, _.elements.wrapper, _.elements.info, _.elements.slider], 0, {
+            clearProps: 'all'
+            })
+        .add(function() {
+            _.opened = false;
+            _.elements.wrapper.removeClass(_.options.wrapperClass);
             });
 };
 
@@ -252,26 +329,30 @@ Box.prototype.open = function() {
 
     var _ = this;
 
-    _._toFullscreen();
+    if ( _.mode == 'slider' ) _._toFullSize();
+    if ( _.mode == 'modal' ) _._toFullscreen();
 };
-
 
 
 
 Box.prototype.close = function() {
     if ( !this.opened ) return;
 
-    var _ = this;
+    var _    = this,
+        func = null;
+
+    if ( _.mode == 'slider' ) func = _._toInitSize.bind(_);
+    if ( _.mode == 'modal' ) func = _._toInitState.bind(_);
 
     // if current slide of slider is not first
     if ( _.slider.slick('slickCurrentSlide') !== 0 ) {
         _.slider.slick('slickGoTo', 0);
         setTimeout(function() {
-            _._toInitState();
+            func();
         }, _.slider.slick('slickGetOption', 'speed') || _.slickOptions.speed );
 
     } else {
-        _._toInitState();
+        func();
     }
 };
 

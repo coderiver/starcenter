@@ -226,6 +226,9 @@ $('#header .logo').on('click', function(e) {
     // console.log(e.deltaY, e.deltaFactor);
 // });
 
+$('#map').on('mousewheel', function() {
+    app.rootContainer.trigger('mousewheel');
+});
 
 
 

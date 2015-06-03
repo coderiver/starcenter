@@ -1,11 +1,13 @@
 var $ = require('jquery');
 require('gsap');
 require('TimelineLite');
+require('gsap-scrollToPlugin');
 
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);
     this.wrapper   = this.el.parent();
     this.content   = this.el.find(contentSelector);
+    this.scrollable= this.el.children().first();
     this.positions = {};
     this.winHeight = $(window).height();
     this.opened    = false;
@@ -64,7 +66,7 @@ Modal.prototype._toInitState = function(animDur, animDelay) {
     var _   = this,
         dur = animDur / 1000   || _.options.duration / 1000,
         del = animDelay / 1000 || _.options.delay / 1000,
-        tl  = new TimelineLite();
+        tl  = new TimelineLite().pause();
 
     tl
         .add(function() {
@@ -84,6 +86,13 @@ Modal.prototype._toInitState = function(animDur, animDelay) {
             _.opened = false;
             });
 
+    if ( _.scrollable.scrollTop() > 0 ) {
+        _.scrollable.animate({scrollTop: 0}, 500, function() {
+            tl.play();
+        });
+    } else {
+        tl.play();
+    }
 
 };
 
