@@ -42,12 +42,12 @@ Navbar.prototype._initEvents = function() {
         $(button).on('mouseleave', function(e) {
             _.update(null, 0.3);
         });
-        // $(button).on('click', function(e) {
+        $(button).on('click', function(e) {
             // _.height = _.buttonsTop[ index ] - _.height;
-            // var sectionId = '#' + ($(this).attr('href')).slice(2);
-            // console.log(sectionId);
-            // _.scrollToSection(sectionId);
-        // });
+            var sectionId = '#' + ($(this).attr('href')).slice(2);
+            console.log(sectionId);
+            _.scrollToSection(sectionId);
+        });
     });
 
 };
