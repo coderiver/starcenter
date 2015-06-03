@@ -68,21 +68,21 @@ block content
 
             ul.catalog-category
               li.catalog-category__item
-                a.catalog-btn(href="#/rent", data-morph-state="circle")
+                a.catalog-btn(href="#/objects/rent", data-morph-state="circle", data-content-index="0")
                   .catalog-btn__hover
                     .catalog-btn__hover-in
                       span.catalog-btn__hover-text Арендовать
                   .catalog-btn__front
                     span Арендовать
               li.catalog-category__item
-                a.catalog-btn(href="#/buy", data-morph-state="square")
+                a.catalog-btn(href="#/objects/buy", data-morph-state="square", data-content-index="1")
                   .catalog-btn__hover
                     .catalog-btn__hover-in
                       span.catalog-btn__hover-text Купить
                   .catalog-btn__front
                     span Купить
               li.catalog-category__item
-                a.catalog-btn(href="#/invest", data-morph-state="triangle") 
+                a.catalog-btn(href="#/objects/invest", data-morph-state="triangle", data-content-index="2") 
                   .catalog-btn__hover
                     .catalog-btn__hover-in
                       span.catalog-btn__hover-text Инвестировать
@@ -90,6 +90,10 @@ block content
                     span Инвестировать
           .catalog__content
             include _objects
+          .catalog__content
+            include _objects2
+          .catalog__content
+            include _objects3
   //END catalog
 
   //BEGIN timeline

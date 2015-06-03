@@ -288,7 +288,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .catalog #morph.is-visible ~ .deco { opacity: 1; visibility: visible; -webkit-transform: none; -ms-transform: none; transform: none; -webkit-transition-delay: 1s; transition-delay: 1s; }
 .catalog .deco { position: absolute; z-index: 4; top: 145px; right: 125px; opacity: 0; visibility: hidden; -webkit-transform: translateY(30px); -ms-transform: translateY(30px); transform: translateY(30px); -webkit-transition: all 0.2s linear; transition: all 0.2s linear; }
 
-.catalog__modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 680px; background: #FFF; }
+.catalog__modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 680px; min-width: 1200px; background: #FFF; }
 .catalog__modal.is-opened .catalog__modal-container { overflow-x: hidden; overflow-y: scroll; right: -17px; -webkit-overflow-scrolling: touch; }
 .mac-os .catalog__modal.is-opened .catalog__modal-container { right: -15px; }
 

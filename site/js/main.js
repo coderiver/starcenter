@@ -133,9 +133,9 @@ console.log('Scroll bar width: ' + scrollbarWidth + 'px');
 
 app.catalog.opened = false;
 
-app.catalog.open = function(state) {
+app.catalog.open = function(state, contentIndex) {
     if ( app.catalog.opened ) return;
-    app.topareaModal.open();
+    app.topareaModal.open(contentIndex);
     app.slider.rollUp();
     app.category.open();
     app.morph.activate(state);
@@ -154,7 +154,6 @@ app.catalog.close = function() {
     // app.util.toggleScroll();
     app.catalog.opened = false;
 };
-
 
 
 
@@ -206,11 +205,13 @@ app.scrollmagic.tabs.scene.on('start end', function(e) {
 
 
 $('.catalog-btn').on('click', function(e) {
-    var state = $(this).data('morph-state');
+    var state = $(this).data('morph-state'),
+        contentIndex = $(this).data('content-index');
     if ( !app.catalog.opened ) {
-        app.catalog.open(state);
+        app.catalog.open(state, contentIndex);
     } else {
         app.morph.changeState(state);
+        app.topareaModal.switchContent(contentIndex);
     }
 });
 
@@ -227,10 +228,6 @@ $('#header .logo').on('click', function(e) {
     // console.log(e);
     // console.log(e.deltaY, e.deltaFactor);
 // });
-
-$('#map').on('mousewheel', function() {
-    app.rootContainer.trigger('mousewheel');
-});
 
 
 
@@ -42623,6 +42620,7 @@ function Modal(modalSelector, contentSelector) {
     this.winHeight = $(window).height();
     this.opened    = false;
     this.inProgress = false;
+    this.activeContentIndex = 0;
     this.options = {
         zIndex: 97,
         duration: 800,
@@ -42642,12 +42640,13 @@ Modal.prototype._getPositions = function() {
 };
 
 
-Modal.prototype._toFullscreen = function(animDur, animDelay) {
-    var _   = this,
-        dur = animDur / 1000   || _.options.duration / 1000,
-        del = animDelay / 1000 || _.options.delay / 1000,
-        pos = _._getPositions(),
-        tl  = new TimelineLite();
+Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
+    var _       = this,
+        dur     = animDur / 1000   || _.options.duration / 1000,
+        del     = animDelay / 1000 || _.options.delay / 1000,
+        content = _.content.eq( contentIndex ),
+        pos     = _._getPositions(),
+        tl      = new TimelineLite();
 
     tl
         .add(function() {
@@ -42664,8 +42663,8 @@ Modal.prototype._toFullscreen = function(animDur, animDelay) {
             })
         .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone, delay: del})
         .to(_.el, 0, {height: '100%'})
-        .to(_.content, 0, {display: 'block'})
-        .fromTo(_.content, dur / 2, {opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
+        .to(content, 0, {display: 'block'})
+        .fromTo(content, dur / 2, {opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
         .add(function() {
             _.inProgress = false;
             _.el.addClass(_.options.class);
@@ -42708,21 +42707,41 @@ Modal.prototype._toInitState = function(animDur, animDelay) {
 };
 
 
-Modal.prototype.open = function() {
+Modal.prototype.open = function(contentIndex, animDur, animDelay) {
     if ( this.opened ) return;
 
     var _ = this;
 
-    _._toFullscreen();
+    _._toFullscreen(contentIndex, animDur, animDelay);
 };
 
 
-Modal.prototype.close = function() {
+Modal.prototype.close = function(animDur, animDelay) {
     if ( !this.opened ) return;
 
     var _ = this;
 
-    _._toInitState();
+    _._toInitState(animDur, animDelay);
+};
+
+
+Modal.prototype.switchContent = function(contentIndex, animDur) {
+    if ( !this.opened || this.activeContentIndex == contentIndex ) return;
+
+    var _           = this,
+        dur         = animDur / 1000 || _.options.duration / 1000 * 0.5;
+        prevContent = _.content.eq( _.activeContentIndex );
+        nextContent = _.content.eq( contentIndex );
+        tl          = new TimelineLite();
+
+    tl
+        .to(prevContent, dur, {y: 100, opacity: 0})
+        .to(prevContent, 0, {display: 'none'})
+        .to(nextContent, 0, {display: 'block'})
+        .fromTo(nextContent, dur, {y: 100, opacity: 0}, {y: 0, opacity: 1})
+        .add(function() {
+            _.activeContentIndex = contentIndex;
+            });
 };
 
 
@@ -42955,12 +42974,12 @@ var router = $.sammy(function(router) {
         console.log('404. Not Found');
     };
 
-    this.get('/', function() {
+    this.get('#/', function() {
         console.log('#HOME');
     });
 
-    this.get('#/rent', function() {
-        console.log('#RENT');
+    this.get('#/objects/:category', function() {
+        console.log(this.params.category);
         // content.html('content');
     });
 

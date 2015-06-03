@@ -28,12 +28,12 @@ var router = $.sammy(function(router) {
         console.log('404. Not Found');
     };
 
-    this.get('/', function() {
+    this.get('#/', function() {
         console.log('#HOME');
     });
 
-    this.get('#/rent', function() {
-        console.log('#RENT');
+    this.get('#/objects/:category', function() {
+        console.log(this.params.category);
         // content.html('content');
     });
 

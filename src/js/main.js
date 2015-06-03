@@ -131,9 +131,9 @@ console.log('Scroll bar width: ' + scrollbarWidth + 'px');
 
 app.catalog.opened = false;
 
-app.catalog.open = function(state) {
+app.catalog.open = function(state, contentIndex) {
     if ( app.catalog.opened ) return;
-    app.topareaModal.open();
+    app.topareaModal.open(contentIndex);
     app.slider.rollUp();
     app.category.open();
     app.morph.activate(state);
@@ -152,7 +152,6 @@ app.catalog.close = function() {
     // app.util.toggleScroll();
     app.catalog.opened = false;
 };
-
 
 
 
@@ -204,11 +203,13 @@ app.scrollmagic.tabs.scene.on('start end', function(e) {
 
 
 $('.catalog-btn').on('click', function(e) {
-    var state = $(this).data('morph-state');
+    var state = $(this).data('morph-state'),
+        contentIndex = $(this).data('content-index');
     if ( !app.catalog.opened ) {
-        app.catalog.open(state);
+        app.catalog.open(state, contentIndex);
     } else {
         app.morph.changeState(state);
+        app.topareaModal.switchContent(contentIndex);
     }
 });
 
@@ -225,10 +226,6 @@ $('#header .logo').on('click', function(e) {
     // console.log(e);
     // console.log(e.deltaY, e.deltaFactor);
 // });
-
-$('#map').on('mousewheel', function() {
-    app.rootContainer.trigger('mousewheel');
-});
 
 
 
