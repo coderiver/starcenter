@@ -13,7 +13,8 @@
     "jquery": "./bower_components/jquery/dist/jquery.js",
     "modernizr": "./bower_components/modernizr/modernizr.js",
     "TimelineLite": "./node_modules/gsap/src/uncompressed/TimelineLite.js",
-    "gsap-scrollToPlugin": "./node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js"
+    "gsap-scrollToPlugin": "./node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js",
+    "nanoscroller": "./node_modules/nanoscroller/bin/javascripts/jquery.nanoscroller.js"
   },
   "browserify-shim": {
     "jquery": "$",
@@ -56,6 +57,7 @@
   "dependencies": {
     "gsap": "^1.16.1",
     "jquery-mousewheel": "^3.1.12",
+    "nanoscroller": "^0.8.7",
     "ramjet": "^0.4.5",
     "scrollmagic": "^2.0.5",
     "tween.js": "^0.14.0"

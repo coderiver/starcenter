@@ -1,8 +1,8 @@
 var $ = require('jquery');
 // require('jquery-mousewheel')($);
 require('gsap');
+require('gsap-scrollToPlugin');
 var ScrollMagic = require('scrollmagic');
-require('../../../node_modules/gsap/src/uncompressed/plugins/ScrollToPlugin.js');
 
 function Navbar(selector) {
 
@@ -28,7 +28,9 @@ Navbar.prototype._initEvents = function() {
     var _ = this;
 
     $(window).on('resize', function(e) {
-        _.reinit();
+        var prevWinHeight = _.winHeigh;
+        _.winHeigh = $(window).height();
+        if ( _.winHeigh != prevWinHeight )  _.reinit();
     });
 
     $.each(_.buttons, function(index, button) {
@@ -124,7 +126,6 @@ Navbar.prototype.reinit = function() {
     var _ = this;
 
     _._calcButtonsParam();
-    // _._buildScenes();
 };
 
 
@@ -141,10 +142,7 @@ Navbar.prototype.update = function(scrollDelta, scrollDur) {
 Navbar.prototype.scrollToSection = function(sectionId) {
     var _ = this;
 
-    // if ( _.inProggres ) return;
-
     var scrollPos = $(sectionId).position().top;
-    console.log(scrollPos);
 
     TweenMax.to(app.rootContainer, _.scrollToDur, {
         scrollTo : { y: scrollPos, autoKill:true },
@@ -158,6 +156,32 @@ Navbar.prototype.scrollToSection = function(sectionId) {
             }
         });
 
+};
+
+
+Navbar.prototype.hidden = function(animDur, animDelay) {
+    var _  = this,
+        dur = animDur / 1000 || _.duration,
+        del = animDelay / 1000 || 0;
+
+    TweenMax.fromTo(_.element, dur, {xPercent: 0}, {
+        xPercent: 100,
+        ease: Power2.easeIn,
+        delay: del
+        });
+};
+
+Navbar.prototype.visible = function(animDur, animDelay) {
+    var _  = this,
+        dur = animDur / 1000 || _.duration,
+        del = animDelay / 1000 || 0;
+
+    TweenMax.fromTo(_.element, dur, {xPercent: 100}, {
+        xPercent: 0,
+        ease: Power2.easeOut,
+        clearProps: 'all',
+        delay: del
+        });
 };
 
 

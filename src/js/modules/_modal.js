@@ -2,17 +2,19 @@ var $ = require('jquery');
 require('gsap');
 require('TimelineLite');
 
-function Modal(selector) {
-    this.el        = $(selector);
+function Modal(modalSelector, contentSelector) {
+    this.el        = $(modalSelector);
     this.wrapper   = this.el.parent();
+    this.content   = this.el.find(contentSelector);
     this.positions = {};
     this.winHeight = $(window).height();
     this.opened    = false;
     this.inProgress = false;
     this.options = {
-        zIndex: 98,
+        zIndex: 97,
         duration: 800,
-        delay: 300
+        delay: 300,
+        class: 'is-opened'
     };
 }
 
@@ -37,6 +39,7 @@ Modal.prototype._toFullscreen = function(animDur, animDelay) {
     tl
         .add(function() {
             _.inProgress = true;
+            _.opened = true;
             })
         .to(_.el, 0, {
             top: pos.top,
@@ -48,9 +51,11 @@ Modal.prototype._toFullscreen = function(animDur, animDelay) {
             })
         .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone, delay: del})
         .to(_.el, 0, {height: '100%'})
+        .to(_.content, 0, {display: 'block'})
+        .fromTo(_.content, dur / 2, {opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
         .add(function() {
             _.inProgress = false;
-            _.opened = true;
+            _.el.addClass(_.options.class);
             });
 
 };
@@ -64,7 +69,10 @@ Modal.prototype._toInitState = function(animDur, animDelay) {
     tl
         .add(function() {
             _.inProgress = true;
+            _.el.removeClass(_.options.class);
             })
+        .to(_.content, dur / 2, {y: 100, opacity: 0, ease: Linear.easeNone})
+        .to(_.content, 0, {display: 'none'})
         .to(_.el, dur, {
             top: _.positions.top,
             height: _.positions.height,

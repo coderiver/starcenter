@@ -703,6 +703,17 @@ textarea.input
   bottom: 0
   height: 680px
   background: #FFF
+  &.is-opened
+    .catalog__modal-container
+      +scroll
+      +wos
+
+.catalog__modal-container
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
 
 .catalog__inner
   position: relative
@@ -713,6 +724,10 @@ textarea.input
 .catalog__toparea
   position: relative
   height: 680px
+
+.catalog__content
+  display: none
+  padding-bottom: 70px
 
 .catalog-category
   position: absolute
@@ -903,6 +918,8 @@ textarea.input
 
 .facts__heading
   text-align: center
+  position: relative
+  z-index: 3
   .heading
     display: inline-block
     text-align: left
@@ -1072,6 +1089,7 @@ textarea.input
 
 .timeline
   position: absolute
+  z-index: 3
   top: 450px
   left: 50%
   height: 1px

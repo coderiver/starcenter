@@ -1,9 +1,10 @@
-require('jquery');
+var $ = require('jquery');
+require('jquery-mousewheel')($);
+// require('nanoscroller');
 require('modernizr');
 require('gsap');
-require('TimelineLite');
 require('gsap-scrollToPlugin');
-// require('jquery-mousewheel')($);
+require('TimelineLite');
 var ScrollMagic = require('scrollmagic');
 var Slider  = require('./modules/_main-slider.js');
 var Morph   = require('./modules/_canvas.js');
@@ -25,9 +26,9 @@ app.scrollDisabled = false;
 app.toparea  = {};
 app.objects  = {};
 app.catalog = {};
-app.slider   = new Slider('#slider1');
+app.slider   = new Slider('#main-slider');
 app.morph    = new Morph('#morph');
-app.topareaModal = new Modal('#catalog');
+app.topareaModal = new Modal('#catalog', '.catalog__content');
 app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
@@ -120,6 +121,8 @@ console.log('Scroll bar width: ' + scrollbarWidth + 'px');
 
 
 
+
+
 //------------------------------------------------------------------------------
 //
 //    #catalog
@@ -134,7 +137,8 @@ app.catalog.open = function(state) {
     app.slider.rollUp();
     app.category.open();
     app.morph.activate(state);
-    app.util.toggleScroll();
+    app.navbar.hidden();
+    // app.util.toggleScroll();
     app.catalog.opened = true;
 };
 
@@ -144,7 +148,8 @@ app.catalog.close = function() {
     app.slider.rollDown();
     app.morph.deactivate();
     app.category.close();
-    app.util.toggleScroll();
+    app.navbar.visible(null, 800);
+    // app.util.toggleScroll();
     app.catalog.opened = false;
 };
 
@@ -197,12 +202,8 @@ app.scrollmagic.tabs.scene.on('start end', function(e) {
     if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
 });
 
-$('#partners').on('resize', function(e) {
-    console.log(e);
-});
 
-
-$('.catalog-btn').on('click', function(event) {
+$('.catalog-btn').on('click', function(e) {
     var state = $(this).data('morph-state');
     if ( !app.catalog.opened ) {
         app.catalog.open(state);
@@ -211,13 +212,18 @@ $('.catalog-btn').on('click', function(event) {
     }
 });
 
-$('#header .logo').on('click', function(event) {
+
+$('#header .logo').on('click', function(e) {
     app.catalog.close();
 });
 
-// app.rootContainer.on('mousewheel', function(event) {
-//     // console.log(event.deltaY, event.deltaFactor);
-//     app.scrollbar.update(event.deltaY);
+
+// $('.nano').nanoScroller();
+
+
+// app.rootContainer.on('mousewheel', function(e) {
+    // console.log(e);
+    // console.log(e.deltaY, e.deltaFactor);
 // });
 
 

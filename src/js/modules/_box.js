@@ -153,41 +153,36 @@ Box.prototype._toFullscreen = function() {
         pos = _._getPosition();
         tl  = new TimelineLite();
 
-    tl.eventCallback('onComplete', function() {
-        _.elements.box.addClass(_.options.class);
-        _._initSlider();
-    });
+    tl
+        .add('start', 0)
+        .add(function() {
+            // app.util.toggleScroll();
+            _.opened = true;
+            app.navbar.hidden();
 
-    tl.add(function() {
+            // update initial position of box if window will be resize
+            $(_).on('winResized', _._getPosition);
 
-        // app.util.toggleScroll();
-        _.opened = true;
+            _.wrapper.addClass(_.options.wrapperClass);
 
-        // update initial position of box if window will be resize
-        $(_).on('winResized', _._getPosition);
-
-        _.wrapper.addClass(_.options.wrapperClass);
-
-        _.elements.box.css({
-            top: pos.top,
-            left: pos.left,
-            right: pos.right,
-            bottom: pos.bottom,
-            width: 'auto',
-            height: 'auto',
-            position: 'fixed',
-            zIndex: _.options.zIndex
-        });
-    });
-
-    tl.add('start', 0)
+            _.elements.box.css({
+                top: pos.top,
+                left: pos.left,
+                right: pos.right,
+                bottom: pos.bottom,
+                width: 'auto',
+                height: 'auto',
+                position: 'fixed',
+                zIndex: _.options.zIndex
+            });
+            })
         .to(_.elements.box, _.options.animDur, {
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
             ease: _.options.easing
-            })
+            }, 'start')
         .to(_.elements.slider, _.options.animDur, {
             height: _.options.sliderHeight,
             ease: _.options.easing,
@@ -195,33 +190,18 @@ Box.prototype._toFullscreen = function() {
         .to(_.elements.info, _.options.animDur, {
             y: _.options.infoTop,
             ease: _.options.easing,
-            }, 'start');
+            }, 'start')
+        .add(function() {
+            _.elements.box.addClass(_.options.class);
+            _._initSlider();
+            });
 };
 
 
 
-Box.prototype._toInitState = function() {
+Box.prototype._toInitState = function(callback) {
     var _  = this;
         tl = new TimelineLite();
-
-    tl.eventCallback('onComplete', function() {
-
-        _.elements.box.css({
-            top: '',
-            left: '',
-            right: '',
-            bottom: '',
-            width: '',
-            height: '',
-            position: '',
-            zIndex: ''
-        });
-
-        _.opened = false;
-
-        _.wrapper.removeClass(_.options.wrapperClass);
-        // app.util.toggleScroll();
-    });
 
     tl
         .add('start', 0)
@@ -244,7 +224,25 @@ Box.prototype._toInitState = function() {
         .to(_.elements.info, _.options.animDur, {
             y: 0,
             ease: _.options.easing,
-            }, 'start');
+            }, 'start')
+        .add(function() {
+            _.elements.box.css({
+                top: '',
+                left: '',
+                right: '',
+                bottom: '',
+                width: '',
+                height: '',
+                position: '',
+                zIndex: ''
+            });
+
+            _.opened = false;
+
+            _.wrapper.removeClass(_.options.wrapperClass);
+            // app.util.toggleScroll();
+            app.navbar.visible();
+            });
 };
 
 
