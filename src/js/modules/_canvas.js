@@ -264,10 +264,10 @@ Morph.prototype._toggleContentVisibility = function(value, onlyPictures) {
     }
 };
 
-Morph.prototype._changePicture = function(state) {
+Morph.prototype._changePicture = function(state, direction) {
     var currentState = this._getState('morph');
 
-    if (state == currentState) return;
+    if ( state == currentState ) return;
 
     var _ = this,
         prevState = _._getState('prevMorph'),
@@ -335,7 +335,7 @@ Morph.prototype._changePicture = function(state) {
 
     pics = props;
 
-    if ( state == prevState ) {
+    if ( direction == 'REVERSE' ) {
         pics.current.inner.pos.x  = paper.view.center.x + _.morphSize.x;
         pics.current.outer.pos.x  = paper.view.center.x + _.morphSize.x / 2;
         pics.next.inner.initPos.x = paper.view.center.x - _.morphSize.x;
@@ -639,8 +639,8 @@ Morph.prototype.toCircle = function() {
     this._morph('circle');
 };
 
-Morph.prototype.changeState = function(state) {
-    this._changePicture(state);
+Morph.prototype.changeState = function(state, direction) {
+    this._changePicture(state, direction);
     this._morph(state);
 };
 

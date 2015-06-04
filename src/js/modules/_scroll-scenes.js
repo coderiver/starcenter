@@ -168,7 +168,7 @@ module.exports = function() {
 
     //##### scenes for all heads
     scrollmagic.head = {
-        elements: $('.head:not(.head_capability)'),
+        elements: $('.head:not(.head_capabilities)'),
         scenes: {}
     };
     scrollmagic.head.elements.each(function(index, el) {

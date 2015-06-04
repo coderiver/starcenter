@@ -5,6 +5,7 @@ var gulp = require('./gulp')([
     'scripts',
     'jade',
     'jade-all',
+    'jade-partials',
     'sass',
     'svg-sprite',
     'svgo',

@@ -9,9 +9,9 @@ require('gsap-scrollToPlugin');
 require('TimelineLite');
 var ScrollMagic = require('scrollmagic');
 var Slider  = require('./modules/_main-slider.js');
-var Morph   = require('./modules/_canvas.js');
-var Modal = require('./modules/_modal.js');
 var Category = require('./modules/_category.js');
+var Morph = require('./modules/_canvas.js');
+var Modal = require('./modules/_modal.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
 var Navbar = require('./modules/_navbar.js');
@@ -29,9 +29,9 @@ app.toparea  = {};
 app.objects  = {};
 app.catalog = {};
 app.slider   = new Slider('#main-slider');
+app.category = new Category('.catalog-category', '.catalog-category__item');
 app.morph    = new Morph('#morph');
 app.topareaModal = new Modal('#catalog', '.catalog__content');
-app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
 app.scrollmagic = initScenes();
@@ -207,11 +207,15 @@ app.scrollmagic.tabs.scene.on('start end', function(e) {
 $('.catalog-btn').on('click', function(e) {
     var state = $(this).data('morph-state'),
         contentIndex = $(this).data('content-index');
+
     if ( !app.catalog.opened ) {
         app.catalog.open(state, contentIndex);
-    } else {
-        app.morph.changeState(state);
-        app.topareaModal.switchContent(contentIndex);
+    }
+    else {
+        setTimeout(function() {
+            app.morph.changeState(state, app.category.direction);
+            app.topareaModal.switchContent(contentIndex);
+        }, 0);
     }
 });
 
@@ -41849,10 +41853,10 @@ Morph.prototype._toggleContentVisibility = function(value, onlyPictures) {
     }
 };
 
-Morph.prototype._changePicture = function(state) {
+Morph.prototype._changePicture = function(state, direction) {
     var currentState = this._getState('morph');
 
-    if (state == currentState) return;
+    if ( state == currentState ) return;
 
     var _ = this,
         prevState = _._getState('prevMorph'),
@@ -41920,7 +41924,7 @@ Morph.prototype._changePicture = function(state) {
 
     pics = props;
 
-    if ( state == prevState ) {
+    if ( direction == 'REVERSE' ) {
         pics.current.inner.pos.x  = paper.view.center.x + _.morphSize.x;
         pics.current.outer.pos.x  = paper.view.center.x + _.morphSize.x / 2;
         pics.next.inner.initPos.x = paper.view.center.x - _.morphSize.x;
@@ -42224,8 +42228,8 @@ Morph.prototype.toCircle = function() {
     this._morph('circle');
 };
 
-Morph.prototype.changeState = function(state) {
-    this._changePicture(state);
+Morph.prototype.changeState = function(state, direction) {
+    this._changePicture(state, direction);
     this._morph(state);
 };
 
@@ -42316,6 +42320,7 @@ function Category(element, itemSelector) {
     this.hidden    = false;
     this.inProgress= false;
     this.initSlide = 0;
+    this.direction = null;
     this.classes   = {
         animate: 'is-animate',
         active: 'is-active'
@@ -42356,6 +42361,24 @@ Category.prototype._initEvents = function() {
     $(_.items).bind('click', function() {
         _.initSlide = $(this).index();
     });
+
+    _.element.on('beforeChange', function(e, slick, currentSlide, nextSlide) {
+        if ( currentSlide == slick.slideCount - 1 &&  nextSlide == 0 ) {
+            _.direction = 'FORWARD';
+        }
+        else if ( currentSlide == 0 &&  nextSlide == slick.slideCount - 1 ) {
+            _.direction = 'REVERSE';
+        }
+        else if ( nextSlide > currentSlide ) {
+            _.direction = 'FORWARD';
+        }
+        else if ( nextSlide < currentSlide ) {
+            _.direction = 'REVERSE';
+        }
+        else {
+            _.direction = null;
+        }
+    });
 };
 
 
@@ -42374,9 +42397,12 @@ Category.prototype._init = function() {
 
 
 Category.prototype._destroy = function() {
-    this.element.slick('unslick');
-    $(this.clonedItems).remove();
-    $(this.items).removeClass(this.classes.active);
+    var _ = this;
+
+    _.element.slick('unslick');
+    $(_.clonedItems).remove();
+    $(_.items).removeClass(_.classes.active);
+    _.direction = null;
 };
 
 
@@ -42614,7 +42640,7 @@ require('gsap-scrollToPlugin');
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);
     this.wrapper   = this.el.parent();
-    this.content   = this.el.find(contentSelector);
+    this.content   = this.el.find(contentSelector).toArray();
     this.scrollable= this.el.children().first();
     this.positions = {};
     this.winHeight = $(window).height();
@@ -42644,7 +42670,7 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
     var _       = this,
         dur     = animDur / 1000   || _.options.duration / 1000,
         del     = animDelay / 1000 || _.options.delay / 1000,
-        content = _.content.eq( contentIndex ),
+        content = _.content[ contentIndex ],
         pos     = _._getPositions(),
         tl      = new TimelineLite();
 
@@ -42661,10 +42687,10 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
             position: 'fixed',
             zIndex: _.options.zIndex
             })
-        .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone, delay: del})
+        .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone})
         .to(_.el, 0, {height: '100%'})
-        .to(content, 0, {display: 'block'})
-        .fromTo(content, dur / 2, {opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
+        .delay(del)
+        .fromTo(content, dur / 2, {display: 'block', opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
         .add(function() {
             _.inProgress = false;
             _.el.addClass(_.options.class);
@@ -42728,13 +42754,16 @@ Modal.prototype.close = function(animDur, animDelay) {
 Modal.prototype.switchContent = function(contentIndex, animDur) {
     if ( !this.opened || this.activeContentIndex == contentIndex ) return;
 
+    console.log('ContentIndex :', contentIndex);
+
     var _           = this,
         dur         = animDur / 1000 || _.options.duration / 1000 * 0.5;
-        prevContent = _.content.eq( _.activeContentIndex );
-        nextContent = _.content.eq( contentIndex );
+        prevContent = _.content[ _.activeContentIndex ];
+        nextContent = _.content[ contentIndex ];
         tl          = new TimelineLite();
 
     tl
+        .delay(dur)
         .to(prevContent, dur, {y: 100, opacity: 0})
         .to(prevContent, 0, {display: 'none'})
         .to(nextContent, 0, {display: 'block'})
@@ -42959,9 +42988,9 @@ var sections = [
 
 var router = $.sammy(function(router) {
 
-    this.element_selector = '#outer';
-    this.debug = true;
-    this.raise_errors = true;
+    router.element_selector = '#outer';
+    router.debug = false;
+    router.raise_errors = true;
 
     this.helpers({
         pathToId: function(str) {
@@ -42971,26 +43000,22 @@ var router = $.sammy(function(router) {
     });
 
     this.notFound = function() {
-        console.log('404. Not Found');
+        router.log('404. Not Found');
+        // console.log();
     };
 
     this.get('#/', function() {
         console.log('#HOME');
     });
 
-    this.get('#/objects/:category', function() {
-        console.log(this.params.category);
-        // content.html('content');
-    });
-
-    this.get('#/buy', function() {
-        console.log('#BUY');
-        // content.html('content');
-    });
-
-    this.get('#/invest', function() {
-        console.log('#INVEST');
-        // content.html('content');
+    this.get('#/objects/:category', function(context) {
+        var category = this.params.category,
+            container = $('#objects-' + category);
+        context.load('partials/' + category + '.html')
+            .then(function(content) {
+                container.html(content);
+                console.log(category, container);
+            });
     });
 
     $.each(sections, function(index, val) {
@@ -43176,7 +43201,7 @@ module.exports = function() {
 
     //##### scenes for all heads
     scrollmagic.head = {
-        elements: $('.head:not(.head_capability)'),
+        elements: $('.head:not(.head_capabilities)'),
         scenes: {}
     };
     scrollmagic.head.elements.each(function(index, el) {

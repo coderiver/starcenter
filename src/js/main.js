@@ -7,9 +7,9 @@ require('gsap-scrollToPlugin');
 require('TimelineLite');
 var ScrollMagic = require('scrollmagic');
 var Slider  = require('./modules/_main-slider.js');
-var Morph   = require('./modules/_canvas.js');
-var Modal = require('./modules/_modal.js');
 var Category = require('./modules/_category.js');
+var Morph = require('./modules/_canvas.js');
+var Modal = require('./modules/_modal.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
 var Navbar = require('./modules/_navbar.js');
@@ -27,9 +27,9 @@ app.toparea  = {};
 app.objects  = {};
 app.catalog = {};
 app.slider   = new Slider('#main-slider');
+app.category = new Category('.catalog-category', '.catalog-category__item');
 app.morph    = new Morph('#morph');
 app.topareaModal = new Modal('#catalog', '.catalog__content');
-app.category = new Category('.catalog-category', '.catalog-category__item');
 app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
 app.rootContainer = $('#outer');
 app.scrollmagic = initScenes();
@@ -205,11 +205,15 @@ app.scrollmagic.tabs.scene.on('start end', function(e) {
 $('.catalog-btn').on('click', function(e) {
     var state = $(this).data('morph-state'),
         contentIndex = $(this).data('content-index');
+
     if ( !app.catalog.opened ) {
         app.catalog.open(state, contentIndex);
-    } else {
-        app.morph.changeState(state);
-        app.topareaModal.switchContent(contentIndex);
+    }
+    else {
+        setTimeout(function() {
+            app.morph.changeState(state, app.category.direction);
+            app.topareaModal.switchContent(contentIndex);
+        }, 0);
     }
 });
 

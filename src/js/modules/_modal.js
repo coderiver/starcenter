@@ -6,7 +6,7 @@ require('gsap-scrollToPlugin');
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);
     this.wrapper   = this.el.parent();
-    this.content   = this.el.find(contentSelector);
+    this.content   = this.el.find(contentSelector).toArray();
     this.scrollable= this.el.children().first();
     this.positions = {};
     this.winHeight = $(window).height();
@@ -36,7 +36,7 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
     var _       = this,
         dur     = animDur / 1000   || _.options.duration / 1000,
         del     = animDelay / 1000 || _.options.delay / 1000,
-        content = _.content.eq( contentIndex ),
+        content = _.content[ contentIndex ],
         pos     = _._getPositions(),
         tl      = new TimelineLite();
 
@@ -53,10 +53,10 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
             position: 'fixed',
             zIndex: _.options.zIndex
             })
-        .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone, delay: del})
+        .to(_.el, dur, {top: 0, height: _.winHeight, ease: Linear.easeNone})
         .to(_.el, 0, {height: '100%'})
-        .to(content, 0, {display: 'block'})
-        .fromTo(content, dur / 2, {opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
+        .delay(del)
+        .fromTo(content, dur / 2, {display: 'block', opacity: 0, y: 100}, {opacity: 1, y: 0, ease: Linear.easeNone})
         .add(function() {
             _.inProgress = false;
             _.el.addClass(_.options.class);
@@ -120,13 +120,16 @@ Modal.prototype.close = function(animDur, animDelay) {
 Modal.prototype.switchContent = function(contentIndex, animDur) {
     if ( !this.opened || this.activeContentIndex == contentIndex ) return;
 
+    console.log('ContentIndex :', contentIndex);
+
     var _           = this,
         dur         = animDur / 1000 || _.options.duration / 1000 * 0.5;
-        prevContent = _.content.eq( _.activeContentIndex );
-        nextContent = _.content.eq( contentIndex );
+        prevContent = _.content[ _.activeContentIndex ];
+        nextContent = _.content[ contentIndex ];
         tl          = new TimelineLite();
 
     tl
+        .delay(dur)
         .to(prevContent, dur, {y: 100, opacity: 0})
         .to(prevContent, 0, {display: 'none'})
         .to(nextContent, 0, {display: 'block'})

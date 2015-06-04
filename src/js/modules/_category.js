@@ -10,6 +10,7 @@ function Category(element, itemSelector) {
     this.hidden    = false;
     this.inProgress= false;
     this.initSlide = 0;
+    this.direction = null;
     this.classes   = {
         animate: 'is-animate',
         active: 'is-active'
@@ -50,6 +51,24 @@ Category.prototype._initEvents = function() {
     $(_.items).bind('click', function() {
         _.initSlide = $(this).index();
     });
+
+    _.element.on('beforeChange', function(e, slick, currentSlide, nextSlide) {
+        if ( currentSlide == slick.slideCount - 1 &&  nextSlide == 0 ) {
+            _.direction = 'FORWARD';
+        }
+        else if ( currentSlide == 0 &&  nextSlide == slick.slideCount - 1 ) {
+            _.direction = 'REVERSE';
+        }
+        else if ( nextSlide > currentSlide ) {
+            _.direction = 'FORWARD';
+        }
+        else if ( nextSlide < currentSlide ) {
+            _.direction = 'REVERSE';
+        }
+        else {
+            _.direction = null;
+        }
+    });
 };
 
 
@@ -68,9 +87,12 @@ Category.prototype._init = function() {
 
 
 Category.prototype._destroy = function() {
-    this.element.slick('unslick');
-    $(this.clonedItems).remove();
-    $(this.items).removeClass(this.classes.active);
+    var _ = this;
+
+    _.element.slick('unslick');
+    $(_.clonedItems).remove();
+    $(_.items).removeClass(_.classes.active);
+    _.direction = null;
 };
 
 

@@ -13,9 +13,9 @@ var sections = [
 
 var router = $.sammy(function(router) {
 
-    this.element_selector = '#outer';
-    this.debug = true;
-    this.raise_errors = true;
+    router.element_selector = '#outer';
+    router.debug = false;
+    router.raise_errors = true;
 
     this.helpers({
         pathToId: function(str) {
@@ -25,26 +25,22 @@ var router = $.sammy(function(router) {
     });
 
     this.notFound = function() {
-        console.log('404. Not Found');
+        router.log('404. Not Found');
+        // console.log();
     };
 
     this.get('#/', function() {
         console.log('#HOME');
     });
 
-    this.get('#/objects/:category', function() {
-        console.log(this.params.category);
-        // content.html('content');
-    });
-
-    this.get('#/buy', function() {
-        console.log('#BUY');
-        // content.html('content');
-    });
-
-    this.get('#/invest', function() {
-        console.log('#INVEST');
-        // content.html('content');
+    this.get('#/objects/:category', function(context) {
+        var category = this.params.category,
+            container = $('#objects-' + category);
+        context.load('partials/' + category + '.html')
+            .then(function(content) {
+                container.html(content);
+                console.log(category, container);
+            });
     });
 
     $.each(sections, function(index, val) {
