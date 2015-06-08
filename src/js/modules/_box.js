@@ -86,10 +86,16 @@ Box.prototype._initEvents = function() {
     var _ = this;
 
     _.elements.openButton.on('click', function(e) {
+        e.preventDefault();
+        _.open();
+    });
+
+     _.elements.slider.on('click', function() {
         _.open();
     });
 
     _.elements.closeButton.on('click', function(e) {
+        e.preventDefault();
         _.close();
     });
 
@@ -101,21 +107,20 @@ Box.prototype._initEvents = function() {
         $(_).trigger('winResized');
         _._updateOnResize();
     });
-};
-
-
-
-Box.prototype._initSlider = function () {
-    var _ = this;
 
     _.elements.slider.on('init', function(e, slick) {
         // transform 1,2,3 to 01,02,03
-        button = slick.$dots.find('button');
+        var button = slick.$dots.find('button');
         $.each(button, function(index, el) {
             var number = $(el).text();
             $(el).text(app.util.transformNumber(number));
         });
     });
+};
+
+
+Box.prototype._initSlider = function () {
+    var _ = this;
 
     _.slider = _.elements.slider.slick(_.slickOptions);
 };

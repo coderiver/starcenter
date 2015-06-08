@@ -1,5 +1,5 @@
 include ../_mixins
-.filter
+//- .filter
   a.btn.btn_transparent.is-active(href="#")
     .btn__front
       | Вся недвижимость
@@ -19,8 +19,7 @@ include ../_mixins
       .btn__hover-in
         | Жилая недвижимость
 
-.catalog-content
-  h1 Buy
+//- .catalog-content
   //BEGIN flagship
   .object-wrapper
     #flagship1.object.js-box
@@ -175,3 +174,108 @@ include ../_mixins
             span.btn__hover(data-hover="Скачать презентацию")
             span Скачать презентацию
   //END flagship
+
+.invest
+  .text-block
+    h3.heading
+      | Мы честно <br> заявляем
+    p.
+      Раньше мы не практиковали строительство <br> за деньги инвесторов
+  .text-block
+    h3.heading
+      | И мы понимаем
+    p.
+      Для Вас это будет выгодно, <br> мы же в свою очередь быстрее все сдадим
+
+  h3.heading
+    | Варианты <br> инвестирования
+
+  #invest-variants.tabs.tabs_mod
+    header.tabs__head.table.js-table
+      .table__border.js-border
+        include ../../img/svg/svg-borders/optimized/tabs-head-mod.svg
+      a.btn.btn_tab.btn_tab-mod(href="#")
+        .btn__hover
+          .btn__hover-in
+            strong.heading
+              small.heading__small-text 01
+              | Жилая <br> недвижимость
+        .btn__front
+          strong.heading
+            small.heading__small-text 01
+            | Жилая <br> недвижимость
+      a.btn.btn_tab.btn_tab-mod(href="#")
+        .btn__hover
+          .btn__hover-in
+            strong.heading
+              small.heading__small-text 02
+              | Офисная <br> недвижимость
+        .btn__front
+          strong.heading
+            small.heading__small-text 02
+            | Офисная <br> недвижимость
+      a.btn.btn_tab.btn_tab-mod(href="#")
+        .btn__hover
+          .btn__hover-in
+            strong.heading
+              small.heading__small-text 03
+              | ТРЦ и <br> выставочные <br> комплексы
+        .btn__front
+          strong.heading
+            small.heading__small-text 03
+            | ТРЦ и <br> выставочные <br> комплексы
+    //- .tabs__content
+      form.form.table(name="COMPANY")
+        .table__border
+          include ../../img/svg/svg-borders/optimized/tabs-form-mod.svg
+        input.input(type="text", name="NAME", placeholder="Ваше имя")
+        input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+        textarea.input(name="MESSAGE", placeholder="Сообщение")
+        button.btn.btn_submit(type="submit")
+          .btn__hover
+            .btn__hover-in
+              | Отправить
+              +icon("arrow")
+          .btn__front
+            | Отправить
+            +icon("arrow")
+    //- .tabs__content
+      form.form.table(name="PROVIDER")
+        .table__border
+          include ../../img/svg/svg-borders/optimized/tabs-form-mod.svg
+        input.input(type="text", name="NAME", placeholder="Ваше имя")
+        input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+        textarea.input(name="MESSAGE", placeholder="Сообщение")
+        button.btn.btn_submit(type="submit")
+          .btn__hover
+            .btn__hover-in
+              | Отправить
+              +icon("arrow")
+          .btn__front
+            | Отправить
+            +icon("arrow")
+    //- .tabs__content
+      form.form.table(name="INVESTOR")
+        .table__border
+          include ../../img/svg/svg-borders/optimized/tabs-form-mod.svg
+        input.input(type="text", name="NAME", placeholder="Ваше имя")
+        input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+        textarea.input(name="MESSAGE", placeholder="Сообщение")
+        button.btn.btn_submit(type="submit")
+          .btn__hover
+            .btn__hover-in
+              | Отправить
+              +icon("arrow")
+          .btn__front
+            | Отправить
+            +icon("arrow")
+
+    footer.tabs__footer
+      .tabs__footer-cell
+        p Будем строить жилые дома <br> и котежди
+      .tabs__footer-cell
+        p Разработаем концепцию и <br> доведем работу до конца
+      .tabs__footer-cell
+        p.
+          Будем развивать торговлю в Украине, 
+          создавать торговые площадки, то в чем у наших руководителей есть опыт

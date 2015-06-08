@@ -15,6 +15,7 @@ module.exports = function() {
             },
             files: [
                 config.dest.html + '/*.html',
+                config.dest.root + '/partials/*.html',
                 config.dest.css + '/*.css',
                 config.dest.js + '/*.js'
             ],

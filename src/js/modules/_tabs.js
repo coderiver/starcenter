@@ -47,6 +47,7 @@ Tabs.prototype._initEvents = function() {
 
             } else {
                 _.showContent(index);
+                console.log('click');
             }
         });
     });

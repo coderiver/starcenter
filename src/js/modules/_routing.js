@@ -1,5 +1,8 @@
 require('jquery');
 require('sammy');
+var Box = require('./_box.js');
+var Tabs = require('./_tabs.js');
+var ScrollMagic = require('scrollmagic');
 
 var sections = [
     'home',
@@ -12,6 +15,12 @@ var sections = [
 
 
 var router = $.sammy(function(router) {
+
+    var loaded = {
+        rent : false,
+        buy: false,
+        invest: false
+    };
 
     router.element_selector = '#outer';
     router.debug = false;
@@ -34,13 +43,58 @@ var router = $.sammy(function(router) {
     });
 
     this.get('#/objects/:category', function(context) {
-        var category = this.params.category,
+        var category  = this.params.category,
             container = $('#objects-' + category);
-        context.load('partials/' + category + '.html')
-            .then(function(content) {
-                container.html(content);
-                console.log(category, container);
-            });
+
+        if ( !loaded[ category ] ) {
+            context.load('partials/' + category + '.html')
+                .then(function(content) {
+                    container.html(content);
+
+                    var box = container.find('.js-box');
+                    var tabs2 = container.find('#invest-variants');
+
+                    box.each(function(index, el) {
+                        var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+                        app.objects[ id ] = new Box().init(el);
+                    });
+
+                    if ( tabs2.length ) {
+                        app.tabs2 = new Tabs('#invest-variants', '.btn_tab', '.tabs__content');
+
+                        app.scrollmagic.tabs2 = {
+                            el: tabs2,
+                            borders: tabs2.find('.js-table'),
+                            duration: 800,
+                            offset: -100,
+                            scene: null
+                        };
+                        app.scrollmagic.tabs2.scene = new ScrollMagic.Scene({
+                            // duration: 800,
+                            offset: -100,
+                            triggerElement: app.scrollmagic.tabs2.el[0],
+                            triggerHook: 'onCenter',
+                            loglevel: 1
+                        })
+                            .on('start', function(e) {
+                                if ( app.catalog.opened ) {
+                                    $.each([app.scrollmagic.tabs2.el, app.scrollmagic.tabs2.borders], function() {
+                                        $(this).toggleClass('is-animate');
+                                    });
+                                }
+                            })
+                            .addTo(app.scrollmagic.controller);
+                    }
+
+                    loaded[ category ] = true;
+                    console.log(loaded);
+
+                });
+        }
+        else {
+            this.log('content is loaded');
+        }
+
     });
 
     $.each(sections, function(index, val) {

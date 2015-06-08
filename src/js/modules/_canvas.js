@@ -413,7 +413,7 @@ Morph.prototype._togglePicture = function(state) {
             }
         };
 
-        console.log('%c' + 'Hide picture:' + ' => ' + state, 'background:lightblue');
+        // console.log('%c' + 'Hide picture:' + ' => ' + state, 'background:lightblue');
 
     } else {
 
@@ -438,7 +438,7 @@ Morph.prototype._togglePicture = function(state) {
             }
         };
 
-        console.log('%c' + 'Show picture:' + ' => ' + state, 'background:lightblue');
+        // console.log('%c' + 'Show picture:' + ' => ' + state, 'background:lightblue');
 
     }
 
@@ -539,7 +539,7 @@ Morph.prototype._morph = function(state, dur) {
         _._updateState('inProgress', false);
     }, duration);
 
-    console.log('%c' + 'State change: ' + currentState + ' => ' + state, 'background:yellow');
+    // console.log('%c' + 'State change: ' + currentState + ' => ' + state, 'background:yellow');
 };
 
 Morph.prototype._morphRectangle = function(state) {

@@ -120,8 +120,6 @@ Modal.prototype.close = function(animDur, animDelay) {
 Modal.prototype.switchContent = function(contentIndex, animDur) {
     if ( !this.opened || this.activeContentIndex == contentIndex ) return;
 
-    console.log('ContentIndex :', contentIndex);
-
     var _           = this,
         dur         = animDur / 1000 || _.options.duration / 1000 * 0.5;
         prevContent = _.content[ _.activeContentIndex ];

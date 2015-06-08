@@ -338,7 +338,7 @@ block content
     .partners__inner
       .deco.deco_circle
         .deco__inner D2
-      .partners__heading
+      .text-block
         h3.heading
           | Мы <br> верим
         p
@@ -347,7 +347,7 @@ block content
       h3.heading.heading__center
         | мы будем рады сотрудничеству если вы:
 
-      .tabs
+      #forms.tabs
         header.tabs__head.table.js-table
           .table__border.js-border
             include ../img/svg/svg-borders/optimized/tabs-head.svg
@@ -500,7 +500,7 @@ block content
 
 
     .object-wrapper
-      #flagship2.object.js-box(data-mode='modal')
+      #flagship3.object.js-box(data-mode='modal')
         .object__inner
     
           .object__gallery
@@ -575,4 +575,10 @@ block content
             a.btn.btn_link(href="#")
               span.btn__hover(data-hover="Скачать презентацию")
               span Скачать презентацию
+
+    //- include partials/invest
+
+    include partials/404
   //END contacts
+
+  //- include _footer

@@ -36,7 +36,7 @@
 
 .footer
   position: fixed
-  z-index: 1
+  z-index: 0
   bottom: 0
   left: 0
   right: 0
@@ -222,10 +222,10 @@
     vertical-align: middle
   .icon-arrow
     vertical-align: middle
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   &:hover
     .icon-arrow
-      transform: translateX(30px)
+      transform: translateX(20px)
 
 
 .section
@@ -428,13 +428,13 @@
     top: 1px
     margin-left: 10px
     fill: currentColor
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   .btn__hover-in,
   .btn__front
     padding: 0 0 0 70px
   &:hover
     .icon-arrow
-      transform: translate(50px, 0)
+      transform: translate(20px, 0)
 
 
 .btn_transparent
@@ -503,6 +503,28 @@ textarea.input
   text-align: center
   box-sizing: border-box
   transform: rotate(-12deg)
+
+
+.btn-back
+  display: inline-block
+  background: none
+  +f(hb, 10, 0.5)
+  text-transform: uppercase
+  text-decoration: none
+  color: inherit
+  line-height: 40px
+  > span
+    display: inline-block
+    vertical-align: middle
+  .icon-arrow
+    vertical-align: middle
+    margin-right: 20px
+    transform: rotate(180deg)
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  &:hover
+    .icon-arrow
+      transform: translateX(-20px) rotate(180deg)
+
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end common blocks  ^^^^^
@@ -1519,9 +1541,10 @@ textarea.input
     top: 40px
     right: 140px
 
-.partners__heading
+.text-block
   margin-bottom: 70px
   font-size: 16px
+  color: $text-light
   .heading
     margin-bottom: 25px
 
@@ -1837,9 +1860,10 @@ textarea.input
   width: 100%
   height: 100%
   overflow: hidden
-  background: no-repeat center center
+  background: #F0F0F0 no-repeat center center
   background-size: cover
   transition: transform 0.3s linear
+  cursor: pointer
   > img
     display: block
     max-width: 100%
@@ -1969,3 +1993,104 @@ textarea.input
 //---------------------------------------------------------------------------
 //            ^^^^^  end catalog-content  ^^^^^
 //---------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------
+//            ##### begin invest #####
+//---------------------------------------------------------------------------
+
+.invest
+  width: 100%
+  max-width: 790px
+  margin: auto
+
+.btn_tab.btn_tab-mod
+  width: 290px
+  height: 160px
+  .btn__hover-in,
+  .btn__front
+    padding: 30px 0 0 40px
+
+.tabs_mod
+  margin-left: -40px
+  margin-right: -40px
+  .tabs__footer-cell
+    padding-left: 40px
+    color: $text-light
+    font-size: 14px
+
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end invest  ^^^^^
+//---------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------
+//            ##### begin not-found #####
+//---------------------------------------------------------------------------
+
+.not-found
+  width: 790px
+  margin: 210px auto 200px
+  box-sizing: border-box
+  border: 3px solid $text
+  height: 260px
+  position: relative
+
+  .btn-back
+    position: absolute
+    z-index: 2
+    bottom: 100%
+    left: 0
+    margin-bottom: 10px
+
+  .deco
+    position: absolute
+    z-index: 2
+    top: 100%
+    right: 25px
+    margin-top: 20px
+
+
+.not-found__triangle
+  position: absolute
+  z-index: 0
+  top: 50%
+  left: 50%
+  margin: -311px 0 0 -317px
+
+.not-found__img
+  position: absolute
+  z-index: 1
+  top: 50%
+  left: 50%
+  margin: -145px 0 0 -255px
+
+.not-found__title
+  position: absolute
+  z-index: 3
+  top: 100px
+  left: 255px
+  width: 195px
+  +f(hb, 12, 0.2)
+  text-transform: uppercase
+  line-height: 1.5
+  > span
+    font-size: 18px
+    display: block
+    padding-bottom: 11px
+    margin-bottom: 14px
+    border-bottom: 4px solid
+    letter-spacing: 0.5em
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end not-found  ^^^^^
+//---------------------------------------------------------------------------
+
+
+
+// .gmnoprint
+  // display: none

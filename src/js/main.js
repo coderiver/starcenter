@@ -26,14 +26,7 @@ app.scrollDisabled = false;
 app.toparea  = {};
 app.objects  = {};
 app.catalog = {};
-app.slider   = new Slider('#main-slider');
-app.category = new Category('.catalog-category', '.catalog-category__item');
-app.morph    = new Morph('#morph');
-app.topareaModal = new Modal('#catalog', '.catalog__content');
-app.tabs     = new Tabs('.tabs', '.btn_tab', '.tabs__content');
-app.rootContainer = $('#outer');
-app.scrollmagic = initScenes();
-app.navbar = new Navbar();
+app.initMap = require('./modules/_map.js');
 
 app.util = {
     toCamelCase: function(str) {
@@ -91,6 +84,38 @@ app.util = {
     }
 };
 
+app.init = function() {
+
+    app.slider   = new Slider('#main-slider');
+    app.category = new Category('.catalog-category', '.catalog-category__item');
+    app.morph    = new Morph('#morph');
+    app.topareaModal = new Modal('#catalog', '.catalog__content');
+    app.tabs     = new Tabs('#forms', '.btn_tab', '.tabs__content');
+    app.rootContainer = $('#outer');
+    app.scrollmagic = initScenes();
+    app.navbar = new Navbar();
+
+    app.slider.init();
+    app.morph.init();
+    app.tabs.init();
+    app.initBoxes();
+
+};
+
+app.initBoxes = function() {
+    $.each($('.js-box'), function(index, el) {
+        var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+        app.objects[ id ] = new Box().init(el);
+    });
+};
+
+app.reinit = function() {
+    app.init();
+};
+
+
+
+
 
 
 
@@ -100,18 +125,9 @@ app.util = {
 //
 //------------------------------------------------------------------------------
 
-app.slider.init();
-app.morph.init();
-app.tabs.init();
 app.util.getPlatform();
 
-
-$.each($('.js-box'), function(index, el) {
-
-    var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-
-    app.objects[ id ] = new Box().init(el);
-});
+app.init();
 
 var scrollbarWidth = app.util.getScrollBarWidth();
 console.log('Scroll bar width: ' + scrollbarWidth + 'px');
