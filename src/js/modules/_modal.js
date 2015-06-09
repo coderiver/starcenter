@@ -1,7 +1,6 @@
 var $ = require('jquery');
 require('gsap');
 require('TimelineLite');
-require('gsap-scrollToPlugin');
 
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);

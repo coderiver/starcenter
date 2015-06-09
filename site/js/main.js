@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 var $ = require("./../../bower_components/jquery/dist/jquery.js");
+require("./../../bower_components/sammy/lib/sammy.js");
 require('jquery-mousewheel')($);
 // require('nanoscroller');
 require("./../../bower_components/modernizr/modernizr.js");
@@ -15,20 +16,18 @@ var Modal = require('./modules/_modal.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
 var Navbar = require('./modules/_navbar.js');
-// var router = require('./modules/_routing.js');
 var initScenes = require('./modules/_scroll-scenes.js');
 
 
 global.app = {};
 app.router = require('./modules/_routing.js');
 
-$(document).ready(function() {
-
 app.scrollDisabled = false;
+app.openedPopup = null;
 app.toparea  = {};
 app.objects  = {};
 app.catalog = {};
-app.initMap = require('./modules/_map.js');
+// app.initMap = require('./modules/_map.js');
 
 app.util = {
     toCamelCase: function(str) {
@@ -83,12 +82,26 @@ app.util = {
         else if ( navigator.appVersion.indexOf("Linux") != -1 ) {
             setBodyClass('linux-os');
         }
+    },
+
+    openPopup: function(popupId) {
+        app.openedPopup = popupId;
+        $(app.openedPopup).addClass('is-opened');
+        app.navbar.hidden();
+        app.mainSlider.pause();
+    },
+
+    closePopup: function(popupId) {
+        $(app.openedPopup).removeClass('is-opened');
+        app.navbar.visible();
+        app.mainSlider.play();
+        app.openedPopup = null;
     }
 };
 
 app.init = function() {
 
-    app.slider   = new Slider('#main-slider');
+    app.mainSlider   = new Slider('#main-slider');
     app.category = new Category('.catalog-category', '.catalog-category__item');
     app.morph    = new Morph('#morph');
     app.topareaModal = new Modal('#catalog', '.catalog__content');
@@ -97,10 +110,14 @@ app.init = function() {
     app.scrollmagic = initScenes();
     app.navbar = new Navbar();
 
-    app.slider.init();
+    app.mainSlider.init();
     app.morph.init();
     app.tabs.init();
     app.initBoxes();
+    app.initPopups();
+    app.initPopupSlider();
+
+    app.navbar.init();
 
 };
 
@@ -111,28 +128,50 @@ app.initBoxes = function() {
     });
 };
 
-app.reinit = function() {
-    app.init();
+app.initPopups = function() {
+    $('[data-open-popup]').each(function(index, el) {
+        var $this = $(this);
+
+        $this.on('click', function(e) {
+            e.preventDefault();
+
+            var popupId = $this.data('open-popup');
+
+            app.util.openPopup(popupId);
+        });
+    });
 };
 
+app.initPopupSlider = function() {
+    $('.popup .object__slider').each(function(index, el) {
 
+        var slider =  $(el);
 
+        slider.on('init', function(e, slick) {
+            // transform 1,2,3 to 01,02,03
+            var button = slick.$dots.find('button');
+            $.each(button, function(index, el) {
+                var number = $(el).text();
+                $(el).text(app.util.transformNumber(number));
+            });
+        });
 
+        slider.slick({
+            accessibility: false,
+            autoplay: false,
+            draggable: false,
+            slide: '.object__slide',
+            prevArrow: slider.parent().find('.object__slider-prev'),
+            nextArrow: slider.parent().find('.object__slider-next'),
+            dots: true,
+            swipe: false,
+            respondTo: 'slider',
+            arrows: true,
+            speed: 500
+        });
 
-
-
-//------------------------------------------------------------------------------
-//
-//    #init
-//
-//------------------------------------------------------------------------------
-
-app.util.getPlatform();
-
-app.init();
-
-var scrollbarWidth = app.util.getScrollBarWidth();
-console.log('Scroll bar width: ' + scrollbarWidth + 'px');
+    });
+};
 
 
 
@@ -152,7 +191,7 @@ app.catalog.opened = false;
 app.catalog.open = function(state, contentIndex) {
     if ( app.catalog.opened ) return;
     app.topareaModal.open(contentIndex);
-    app.slider.rollUp();
+    app.mainSlider.rollUp();
     app.category.open();
     app.morph.activate(state);
     app.navbar.hidden();
@@ -163,7 +202,7 @@ app.catalog.open = function(state, contentIndex) {
 app.catalog.close = function() {
     if ( !app.catalog.opened ) return;
     app.topareaModal.close();
-    app.slider.rollDown();
+    app.mainSlider.rollDown();
     app.morph.deactivate();
     app.category.close();
     app.navbar.visible(null, 800);
@@ -187,14 +226,14 @@ app.toparea.inProgress = false;
 
 app.toparea.transform = function() {
     if ( app.toparea.inProgress ) return;
-    app.slider.rollUp();
+    app.mainSlider.rollUp();
     app.morph.moveDown();
     app.toparea.transformed = true;
 };
 
 app.toparea.transformBack = function() {
     if ( app.toparea.inProgress ) return;
-    app.slider.rollDown();
+    app.mainSlider.rollDown();
     app.morph.moveBack();
     app.toparea.transformed = false;
 };
@@ -215,41 +254,34 @@ app.toparea.toggle = function() {
 //
 //------------------------------------------------------------------------------
 
-app.scrollmagic.tabs.scene.on('start end', function(e) {
-    if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
-});
+app.initEvents = function() {
+
+    app.scrollmagic.tabs.scene.on('start end', function(e) {
+        if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
+    });
 
 
-$('.catalog-btn').on('click', function(e) {
-    var state = $(this).data('morph-state'),
-        contentIndex = $(this).data('content-index');
+    $('.catalog-btn').on('click', function(e) {
+        var state = $(this).data('morph-state'),
+            contentIndex = $(this).data('content-index');
 
-    if ( !app.catalog.opened ) {
-        app.catalog.open(state, contentIndex);
-    }
-    else {
-        setTimeout(function() {
-            app.morph.changeState(state, app.category.direction);
-            app.topareaModal.switchContent(contentIndex);
-        }, 0);
-    }
-});
-
-
-$('#header .logo').on('click', function(e) {
-    app.catalog.close();
-});
+        if ( !app.catalog.opened ) {
+            app.catalog.open(state, contentIndex);
+        }
+        else {
+            setTimeout(function() {
+                app.morph.changeState(state, app.category.direction);
+                app.topareaModal.switchContent(contentIndex);
+            }, 0);
+        }
+    });
 
 
-// $('.nano').nanoScroller();
-
-
-// app.rootContainer.on('mousewheel', function(e) {
-    // console.log(e);
-    // console.log(e.deltaY, e.deltaFactor);
-// });
-
-
+    $('#header .logo').on('click', function(e) {
+        if ( app.catalog.opened ) app.catalog.close();
+        if ( app.openedPopup ) app.util.closePopup();
+    });
+};
 
 
 
@@ -257,10 +289,18 @@ $('#header .logo').on('click', function(e) {
 
 //------------------------------------------------------------------------------
 //
-//    #common
+//    #app inin and common
 //
 //------------------------------------------------------------------------------
-app.navbar.init();
+$(document).ready(function() {
+
+app.util.getPlatform();
+app.init();
+app.initEvents();
+
+var scrollbarWidth = app.util.getScrollBarWidth();
+console.log('Scroll bar width: ' + scrollbarWidth + 'px');
+
 app.router.run('#/');
 
 
@@ -290,10 +330,18 @@ app.router.run('#/');
 // });
 
 
+// $('.nano').nanoScroller();
+
+
+// app.rootContainer.on('mousewheel', function(e) {
+    // console.log(e);
+    // console.log(e.deltaY, e.deltaFactor);
+// });
+
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./modules/_box.js":15,"./modules/_canvas.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_map.js":19,"./modules/_modal.js":20,"./modules/_navbar.js":21,"./modules/_routing.js":22,"./modules/_scroll-scenes.js":23,"./modules/_tabs.js":24,"TimelineLite":7,"gsap":9,"gsap-scrollToPlugin":10,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
+},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./../../bower_components/sammy/lib/sammy.js":5,"./modules/_box.js":15,"./modules/_canvas.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_modal.js":19,"./modules/_navbar.js":20,"./modules/_routing.js":21,"./modules/_scroll-scenes.js":22,"./modules/_tabs.js":23,"TimelineLite":7,"gsap":9,"gsap-scrollToPlugin":10,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -41273,7 +41321,7 @@ function Box() {
         accessibility: false,
         autoplay: false,
         draggable: false,
-        slide: '.object__slider',
+        slide: '.object__slide',
         prevArrow: null,
         nextArrow: null,
         dots: true,
@@ -42653,121 +42701,9 @@ module.exports = MainSlider;
 
 
 },{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],19:[function(require,module,exports){
-var map, pointsOnMap, mapStyle;
-
-mapStyle = [{"featureType":"water","elementType":"geometry.fill","stylers":[{"color":"#d3d3d3"}]},{"featureType":"transit","stylers":[{"color":"#808080"},{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#b3b3b3"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"weight":1.8}]},{"featureType":"road.local","elementType":"geometry.stroke","stylers":[{"color":"#d7d7d7"}]},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#ebebeb"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"color":"#a7a7a7"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#efefef"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#696969"}]},{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"visibility":"on"},{"color":"#737373"}]},{"featureType":"poi","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"color":"#d6d6d6"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{},{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#dadada"}]}];
-
-pointsOnMap = [
-        [50.4189765, 30.473812, 1, {
-            'head'    : 'First point',
-            'address' : 'address 1',
-            'tel'     : '0800-800-800',
-            'open'    : '8:30AM - 5:00PM',
-            'common'  : 'some text'
-        }],
-    ];
-
-// Function return array of markers that was create from "locations" and added to "map"
-function setMarkers(map, locations) {
-        var markers = [];
-        var image = new google.maps.MarkerImage('img/map-marker.png', null, null, null, new google.maps.Size(28,42));
-        for (var i = 0; i < locations.length; i++) {
-            var point    = locations[i];
-            var myLatlng = new google.maps.LatLng(point[0], point[1]);
-            var marker   = new google.maps.Marker({
-                position : myLatlng,
-                map      : map,
-                icon     : image,
-                title    : point[3].head,
-                zIndex   : point[2]
-            });
-            marker.infoContent = point[3];
-            markers.push(marker);
-        }
-        return markers;
-    }
-
-// After function is complete all marker in array will contain object with info for infowindow
-function setInfoWindowContent(arrayOfMarkers, infoWindow) {
-        for (var i = 0; i < arrayOfMarkers.length; i++) {
-            google.maps.event.addListener(arrayOfMarkers[i], 'click', function() {
-                var content = composeInfoWindowContent(this.infoContent);
-                infoWindow.setContent(content);
-                infoWindow.open(map, this);
-            });
-        }
-    }
-
-function composeInfoWindowContent(data) {
-    return '<ul class="marker-info">' +
-                '<li class="marker-info__head">'     + data.head    + '</li>' +
-                '<li class="marker-info__address">'  + data.address + '</li>' +
-                '<li class="marker-info__tel">'      + data.tel     + '</li>' +
-                '<li class="marker-info__open">'     + data.open    + '</li>' +
-                '<li class="marker-info__common">'   + data.common  + '</li>' +
-            '</ul>';
-    }
-
-function initMap() {
-    var mapOptions = {
-            zoom: 17,
-            disableDefaultUI: false,
-            scrollwheel: false,
-            center: new google.maps.LatLng(50.4189765, 30.473812),
-            styles: mapStyle,
-
-            mapTypeControl: true,
-            mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.DEFAULT,
-                position: google.maps.ControlPosition.TOP_CENTER
-            },
-            zoomControl: true,
-            zoomControlOptions: {
-                style: google.maps.ZoomControlStyle.LARGE,
-                position: google.maps.ControlPosition.LEFT_CENTER
-            },
-            scaleControl: true,
-            scaleControlOptions: {},
-
-            treetViewControl: true,
-            streetViewControlOptions: {
-                position: google.maps.ControlPosition.LEFT_TOP
-            },
-
-            overviewMapControl: false,
-            overviewMapControlOptions: {},
-
-            panControl: false,
-            panControlOptions: {},
-        };
-
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    var mapMarkers = setMarkers(map, pointsOnMap);
-
-    // var mapInfoWindow = new google.maps.InfoWindow();
-
-    // setInfoWindowContent(mapMarkers, mapInfoWindow);
-}
-
-function loadScript() {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://maps.googleapis.com/maps/api/js?v=3' +
-      '&signed_in=false&callback=app.initMap';
-    document.body.appendChild(script);
-}
-
-window.onload = loadScript;
-
-// google.maps.event.addDomListener(window, 'load', initMap);
-
-module.exports = initMap;
-},{}],20:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 require('gsap');
 require('TimelineLite');
-require('gsap-scrollToPlugin');
 
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);
@@ -42905,7 +42841,7 @@ Modal.prototype.switchContent = function(contentIndex, animDur) {
 
 
 module.exports = Modal;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"gsap-scrollToPlugin":10}],21:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9}],20:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 // require('jquery-mousewheel')($);
 require('gsap');
@@ -43102,7 +43038,7 @@ Navbar.prototype.visible = function(animDur, animDelay) {
 
 
 module.exports = Navbar;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"gsap-scrollToPlugin":10,"scrollmagic":12}],22:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"gsap-scrollToPlugin":10,"scrollmagic":12}],21:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 var Box = require('./_box.js');
@@ -43145,60 +43081,15 @@ var router = $.sammy(function(router) {
 
     this.get('#/', function() {
         console.log('#HOME');
+        // this.partial('partials/main.html', function() {
+            // app.init();
+            // app.initEvents();
+        // });
     });
 
-    this.get('#/objects/:category', function(context) {
-        var category  = this.params.category,
-            container = $('#objects-' + category);
+    this.get('#/objects/:category', function() {
 
-        if ( !loaded[ category ] ) {
-            context.load('partials/' + category + '.html')
-                .then(function(content) {
-                    container.html(content);
-
-                    var box = container.find('.js-box');
-                    var tabs2 = container.find('#invest-variants');
-
-                    box.each(function(index, el) {
-                        var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-                        app.objects[ id ] = new Box().init(el);
-                    });
-
-                    if ( tabs2.length ) {
-                        app.tabs2 = new Tabs('#invest-variants', '.btn_tab', '.tabs__content');
-
-                        app.scrollmagic.tabs2 = {
-                            el: tabs2,
-                            borders: tabs2.find('.js-table'),
-                            duration: 800,
-                            offset: -100,
-                            scene: null
-                        };
-                        app.scrollmagic.tabs2.scene = new ScrollMagic.Scene({
-                            // duration: 800,
-                            offset: -100,
-                            triggerElement: app.scrollmagic.tabs2.el[0],
-                            triggerHook: 'onCenter',
-                            loglevel: 1
-                        })
-                            .on('start', function(e) {
-                                if ( app.catalog.opened ) {
-                                    $.each([app.scrollmagic.tabs2.el, app.scrollmagic.tabs2.borders], function() {
-                                        $(this).toggleClass('is-animate');
-                                    });
-                                }
-                            })
-                            .addTo(app.scrollmagic.controller);
-                    }
-
-                    loaded[ category ] = true;
-                    console.log(loaded);
-
-                });
-        }
-        else {
-            this.log('content is loaded');
-        }
+        catalogCategoryController(this, loaded);
 
     });
 
@@ -43213,8 +43104,67 @@ var router = $.sammy(function(router) {
 
 });
 
+
+function catalogCategoryController(context, loaded) {
+
+    var category = context.params.category;
+    var container = $('#objects-' + category);
+
+    if ( !loaded[ category ] ) {
+
+
+        context.load('partials/' + category + '.html')
+            .then(function(content) {
+
+                container.html(content);
+
+                var box = container.find('.js-box');
+                var tabs2 = container.find('#invest-variants');
+
+                box.each(function(index, el) {
+                    var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+                    app.objects[ id ] = new Box().init(el);
+                });
+
+                if ( tabs2.length ) {
+                    app.tabs2 = new Tabs('#invest-variants', '.btn_tab', '.tabs__content').init();
+
+                    app.scrollmagic.tabs2 = {
+                        el: tabs2,
+                        borders: tabs2.find('.js-table'),
+                        duration: 800,
+                        offset: -100,
+                        scene: null
+                    };
+                    app.scrollmagic.tabs2.scene = new ScrollMagic.Scene({
+                        // duration: 800,
+                        offset: -100,
+                        triggerElement: app.scrollmagic.tabs2.el[0],
+                        triggerHook: 'onCenter',
+                        loglevel: 1
+                    })
+                        .on('start', function(e) {
+                            if ( app.catalog.opened ) {
+                                $.each([app.scrollmagic.tabs2.el, app.scrollmagic.tabs2.borders], function() {
+                                    $(this).addClass('is-animate');
+                                });
+                            }
+                        })
+                        .addTo(app.scrollmagic.controller);
+                }
+
+                loaded[ category ] = true;
+                console.log(loaded);
+            });
+    }
+    else {
+        context.log('content is loaded');
+    }
+}
+
+
 module.exports = router;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5,"./_box.js":15,"./_tabs.js":24,"scrollmagic":12}],23:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5,"./_box.js":15,"./_tabs.js":23,"scrollmagic":12}],22:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require('gsap');
 require('TimelineLite');
@@ -43438,7 +43388,7 @@ module.exports = function() {
 
     return scrollmagic;
 };
-},{"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"scrollmagic":12}],24:[function(require,module,exports){
+},{"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"scrollmagic":12}],23:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Tabs(wrapper, tabButton, tabContent) {
@@ -43454,6 +43404,8 @@ function Tabs(wrapper, tabButton, tabContent) {
         animClass: 'is-animate',
         activeClass: 'is-active'
     };
+
+    return this;
 }
 
 Tabs.prototype._initEvents = function() {
@@ -43488,7 +43440,6 @@ Tabs.prototype._initEvents = function() {
 
             } else {
                 _.showContent(index);
-                console.log('click');
             }
         });
     });
@@ -43543,6 +43494,8 @@ Tabs.prototype._toggleBorder = function() {
 Tabs.prototype.init = function() {
     var _ = this;
     _._initEvents();
+
+    return this;
 };
 
 

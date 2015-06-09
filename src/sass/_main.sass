@@ -457,6 +457,22 @@
       background: $text
 
 
+
+// .form
+
+.form__contact
+  height: 184px
+  padding: 35px 0 0 40px
+  +f(bsp, 16, 0.05)
+  color: $text-light
+  box-sizing: border-box
+  > p
+    margin: 10px 0
+    color: $text
+    text-transform: uppercase
+    +f(hr, 14, 0.1)
+
+
 .input
   display: block
   width: 100%
@@ -474,7 +490,7 @@
   +placeholder
     color: $text-light
     line-height: normal
-    +trans
+    transition: all 0.5s ease
   &:hover
     +placeholder
       color: $text
@@ -482,6 +498,7 @@
     +placeholder
       color: $text
       transform: translate(50px, 0)
+      opacity: 0
 
 textarea.input
   height: 214px
@@ -1561,6 +1578,7 @@ textarea.input
     pointer-events: auto
 
 .tabs__content
+  display: none
   position: relative
   z-index: 0
   top: -3px
@@ -1710,6 +1728,7 @@ textarea.input
   transition: all 0.2s linear
   opacity: 1
   visibility: visible
+
 
 .object
   position: relative
@@ -1924,6 +1943,32 @@ textarea.input
     .icon-arrow
       transform: translate3d(15px,0,0)
 
+
+.object_wide
+  width: auto
+  height: 680px
+  .info
+    bottom: -122px
+  .object__gallery
+    height: 100%
+  .object__slider
+    height: 100%
+  .object__detail
+    display: block
+  .object__buttons
+    display: block
+  .btn_object
+    cursor: default
+    pointer-events: none
+    .btn__hover
+      transition: all 0.2s linear
+      opacity: 0
+      visibility: hidden
+  +rh(800)
+    height: 580px
+
+
+
 .info
   width: 650px
   height: 180px
@@ -2020,6 +2065,14 @@ textarea.input
     padding-left: 40px
     color: $text-light
     font-size: 14px
+  .input
+    padding-left: 40px
+  .btn_submit
+    .btn__hover-in
+      padding-left: 40px
+    .btn__front
+      padding-left: 40px
+
 
 
 //---------------------------------------------------------------------------
@@ -2092,5 +2145,25 @@ textarea.input
 
 
 
-// .gmnoprint
-  // display: none
+
+
+//---------------------------------------------------------------------------
+//            ##### begin popup #####
+//---------------------------------------------------------------------------
+.popup
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background: #FFF
+  z-index: 97
+  transform: translate3d(0,100%,0)
+  transition: transform 0.8s ease
+  &.is-opened
+    transform: translate3d(0,0,0)
+    +scroll
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end popup  ^^^^^
+//---------------------------------------------------------------------------

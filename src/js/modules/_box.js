@@ -29,7 +29,7 @@ function Box() {
         accessibility: false,
         autoplay: false,
         draggable: false,
-        slide: '.object__slider',
+        slide: '.object__slide',
         prevArrow: null,
         nextArrow: null,
         dots: true,

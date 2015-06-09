@@ -13,6 +13,8 @@ function Tabs(wrapper, tabButton, tabContent) {
         animClass: 'is-animate',
         activeClass: 'is-active'
     };
+
+    return this;
 }
 
 Tabs.prototype._initEvents = function() {
@@ -47,7 +49,6 @@ Tabs.prototype._initEvents = function() {
 
             } else {
                 _.showContent(index);
-                console.log('click');
             }
         });
     });
@@ -102,6 +103,8 @@ Tabs.prototype._toggleBorder = function() {
 Tabs.prototype.init = function() {
     var _ = this;
     _._initEvents();
+
+    return this;
 };
 
 
