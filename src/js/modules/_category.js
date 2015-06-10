@@ -1,4 +1,4 @@
-require('jquery');
+var $ = require('jquery');
 require('slick-carousel');
 require('gsap');
 require('TimelineLite');
@@ -73,14 +73,15 @@ Category.prototype._initEvents = function() {
 
 
 
-Category.prototype._init = function() {
-    var _ = this;
+Category.prototype._init = function(initSlide) {
+    var _ = this,
+        slideIndex = $.isNumeric(initSlide) ? initSlide : _.initSlide;
 
     _.clonedItems = $(_.items).clone(true).addClass('clone');
     _.element.append(_.clonedItems);
     _.element.slick(_.slickOptions);
     setTimeout(function() {
-        _.element.slick('slickGoTo', _.initSlide);
+        _.element.slick('slickGoTo', slideIndex);
     }, 200);
 };
 
@@ -93,6 +94,14 @@ Category.prototype._destroy = function() {
     $(_.clonedItems).remove();
     $(_.items).removeClass(_.classes.active);
     _.direction = null;
+};
+
+
+
+Category.prototype.initSlider = function(initSlideIndex) {
+    var _  = this;
+
+    _._init(initSlideIndex);
 };
 
 

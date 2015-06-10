@@ -18,10 +18,10 @@ include ../_mixins
               span
                 | следующее фото
                 +icon("arrow")
-            //- button.object__close(type="button")
-            //-   span
-            //-     | свернуть объект
-            //-     +icon("arrow-sm")
+            button.object__close(type="button")
+              span
+                | свернуть объект
+                +icon("arrow-sm")
             
           .object__slider
             .object__slide(style="background-image:url('https://placeimg.com/1600/800/any')")
@@ -43,11 +43,11 @@ include ../_mixins
                 a.btn.btn_object(href="#")
                   .btn__hover
                     .btn__hover-in
-                      | Besr Offer 3
+                      | Best Offer 3
                       br
                       small Київ, вул. Горького, 176
                   .btn__front
-                    | Besr Offer 3
+                    | Best Offer 3
                     br
                     small Київ, вул. Горького, 176
               .info__cell.info__cell3

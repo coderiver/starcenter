@@ -184,12 +184,8 @@ block content
           p.fact__text.
             в разные виды недвижимости
     
-    //- .box-wrapper
     .box
       .box__bg
-        //- - var man = 1
-        //- while man <= 744
-          //- div(class='icon-man icon-man-' + man++)
         .box__bg-row
         .box__bg-row
         .box__bg-row
@@ -203,7 +199,6 @@ block content
         .box__bg-row
         .box__bg-row
       .box__inner
-        //- .box__table
         .table.men-table.js-table
           .table__border
             include ../img/svg/svg-borders/optimized/men-table.svg
@@ -313,7 +308,35 @@ block content
         .deco__inner
           +icon("polygon")
           span W6
-    p Возможности
+
+    .capabilities__inner
+      canvas(id="morph2")
+
+      ul.category.category
+        li.category__item
+          a.btn.btn_category(href="#/", data-morph-state="circle", data-content-index="0")
+            .btn__hover
+              .btn__hover-in
+                span.btn__hover-text Арендовать
+            .btn__front
+              span Арендовать
+            .btn__bg.btn__bg1
+        li.category__item
+          a.btn.btn_category(href="#/", data-morph-state="square", data-content-index="1")
+            .btn__hover
+              .btn__hover-in
+                span.btn__hover-text Купить
+            .btn__front
+              span Купить
+            .btn__bg.btn__bg2
+        li.category__item
+          a.btn.btn_category(href="#/", data-morph-state="triangle", data-content-index="2") 
+            .btn__hover
+              .btn__hover-in
+                span.btn__hover-text Инвестировать
+            .btn__front
+              span Инвестировать
+            .btn__bg.btn__bg3
   //END capabilities
 
   //BEGIN partners

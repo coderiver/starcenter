@@ -26,7 +26,8 @@ app.scrollDisabled = false;
 app.openedPopup = null;
 app.toparea  = {};
 app.objects  = {};
-app.catalog = {};
+app.catalog  = {};
+app.catalog2 = {};
 // app.initMap = require('./modules/_map.js');
 
 app.util = {
@@ -102,22 +103,25 @@ app.util = {
 app.init = function() {
 
     app.mainSlider   = new Slider('#main-slider');
-    app.category = new Category('.catalog-category', '.catalog-category__item');
-    app.morph    = new Morph('#morph');
+    app.category     = new Category('.catalog-category', '.catalog-category__item');
+    app.category2    = new Category('.category', '.category__item');
+    app.morph        = new Morph('#morph');
+    app.morph2       = new Morph('#morph2');
     app.topareaModal = new Modal('#catalog', '.catalog__content');
-    app.tabs     = new Tabs('#forms', '.btn_tab', '.tabs__content');
-    app.rootContainer = $('#outer');
-    app.scrollmagic = initScenes();
-    app.navbar = new Navbar();
+    app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
+    app.rootContainer= $('#outer');
+    app.scrollmagic  = initScenes();
+    app.navbar       = new Navbar();
 
     app.mainSlider.init();
     app.morph.init();
     app.tabs.init();
     app.initBoxes();
-    app.initPopups();
+    app.initPopupEvents();
     app.initPopupSlider();
-
     app.navbar.init();
+    app.category2.initSlider(1);
+    app.morph2.init().initStandBy('square');
 
 };
 
@@ -128,7 +132,7 @@ app.initBoxes = function() {
     });
 };
 
-app.initPopups = function() {
+app.initPopupEvents = function() {
     $('[data-open-popup]').each(function(index, el) {
         var $this = $(this);
 
@@ -139,6 +143,10 @@ app.initPopups = function() {
 
             app.util.openPopup(popupId);
         });
+    });
+
+    $('.popup .object__close').on('click', function() {
+        app.util.closePopup();
     });
 };
 
@@ -188,12 +196,12 @@ app.initPopupSlider = function() {
 
 app.catalog.opened = false;
 
-app.catalog.open = function(state, contentIndex) {
+app.catalog.open = function(morphState, contentIndex) {
     if ( app.catalog.opened ) return;
     app.topareaModal.open(contentIndex);
     app.mainSlider.rollUp();
     app.category.open();
-    app.morph.activate(state);
+    app.morph.activate(morphState);
     app.navbar.hidden();
     // app.util.toggleScroll();
     app.catalog.opened = true;
@@ -209,6 +217,20 @@ app.catalog.close = function() {
     // app.util.toggleScroll();
     app.catalog.opened = false;
 };
+
+
+
+app.catalog2.opened = false;
+
+app.catalog2.open = function(morphState, contentIndex) {
+    // app.morph2.initStandBy('morphState');
+    app.catalog2.opened = true;
+};
+
+app.catalog2.close = function() {
+    app.catalog2.opened = false;
+};
+
 
 
 
@@ -280,6 +302,30 @@ app.initEvents = function() {
     $('#header .logo').on('click', function(e) {
         if ( app.catalog.opened ) app.catalog.close();
         if ( app.openedPopup ) app.util.closePopup();
+    });
+
+
+    $('.head_capabilities').on('click', function(e) {
+        app.morph2.toStandBy();
+    });
+
+
+    $('.btn_category').on('click', function(e) {
+        var state = $(this).data('morph-state'),
+            contentIndex = $(this).data('content-index');
+
+        if ( !app.morph2.state.active ) {
+            setTimeout(function() {
+                app.morph2.changeState(state, null, 0);
+                // app.morph2._reduce(0);
+                app.morph2.fromStandBy();
+            }, 0);
+        }
+        else {
+            setTimeout(function() {
+                app.morph2.changeState(state, app.category2.direction);
+            }, 0);
+        }
     });
 };
 
@@ -41304,7 +41350,7 @@ function Box() {
     this.mode        = 'slider'; // can be 'slider' (default) or 'modal',
 
     this.options = {
-        animDur: 0.7,
+        animDur: 0.5,
         class: '', // add to box when opened, look in init
         wrapperClass: '', // add to wrapper when start transforming, look in init
         zIndex: 98,
@@ -41666,6 +41712,7 @@ require('TimelineLite');
 var Morph = function(selector) {
 
     this.canvas = $(selector);
+    this.paper  = new paper.PaperScope();
     this.state  = {
         visible: false,
         active: false,
@@ -41691,129 +41738,128 @@ var Morph = function(selector) {
     this.visibleClass = 'is-visible';
     this.activeClass = 'is-active';
 
+    return this;
+
 };
 
 Morph.prototype._initContent = function() {
-    var front = [],
+    var _     = this,
+        front = [],
         back  = [];
-        state = this.state;
-        morphSize = this.morphSize;
+        state = _.state;
+        morphSize = _.morphSize;
 
-    paper.setup(this.canvas[0]);
+    _.paper.setup(_.canvas[0]);
 
-    this.backGroup  = new paper.Group();
-    this.frontGroup = new paper.Group();
+    _.backGroup  = new _.paper.Group();
+    _.frontGroup = new _.paper.Group();
 
-    this.objects = {
+    _.objects = {
         paths: {
-            morph: new paper.Path.Circle({
-                center: [paper.view.center.x, paper.view.center.y],
-                radius: this.sizes.circle / 2
+            morph: new _.paper.Path.Circle({
+                center: [_.paper.view.center.x, _.paper.view.center.y],
+                radius: _.sizes.circle / 2
             }),
-            fill: new paper.Path.Rectangle({
-                center: paper.view.center,
-                size: [paper.view.viewSize.width, paper.view.viewSize.height],
+            fill: new _.paper.Path.Rectangle({
+                center: _.paper.view.center,
+                size: [_.paper.view.viewSize.width, _.paper.view.viewSize.height],
                 fillColor: {
                     gradient: {
                         stops: ['#2B92A5', '#CDF0E9']
                     },
-                    origin: [paper.view.center.x, paper.view.center.y - this.sizes.circle / 2],
-                    destination: [paper.view.center.x, paper.view.center.y + this.sizes.circle / 2]
+                    origin: [_.paper.view.center.x, _.paper.view.center.y - _.sizes.circle / 2],
+                    destination: [_.paper.view.center.x, _.paper.view.center.y + _.sizes.circle / 2]
                 }
             })
         },
         raster: {
             circle: {
-                // shift: {x: 111, y: 92},
-                pic: new paper.Raster({
+                pic: new _.paper.Raster({
                     source: 'img/canvas1.png',
-                    position: paper.view.center
+                    position: _.paper.view.center
                 }),
-                altPic: new paper.Raster({
+                altPic: new _.paper.Raster({
                     source: 'img/canvas1.png',
-                    position: paper.view.center,
+                    position: _.paper.view.center,
                     opacity: 0
                 }),
                 position: {
-                    x: paper.view.center.x + 111,
-                    y: paper.view.center.y + 92
+                    x: _.paper.view.center.x + 111,
+                    y: _.paper.view.center.y + 92
                 }
             },
             square: {
-                // shift: {x: 50, y: 131},
-                pic: new paper.Raster({
+                pic: new _.paper.Raster({
                     source: 'img/canvas2.png',
-                    position: paper.view.center
+                    position: _.paper.view.center
                 }),
-                altPic: new paper.Raster({
+                altPic: new _.paper.Raster({
                     source: 'img/canvas2.png',
-                    position: paper.view.center,
+                    position: _.paper.view.center,
                     opacity: 0
                 }),
                 position: {
-                    x: paper.view.center.x + 29,
-                    y: paper.view.center.y + 102
+                    x: _.paper.view.center.x + 29,
+                    y: _.paper.view.center.y + 102
                 }
             },
             triangle: {
-                // shift: {x: 45, y: 90},
-                pic: new paper.Raster({
+                pic: new _.paper.Raster({
                     source: 'img/canvas3.png',
-                    position: paper.view.center,
+                    position: _.paper.view.center,
                     visible: true,
                 }),
-                altPic: new paper.Raster({
+                altPic: new _.paper.Raster({
                     source: 'img/canvas3-1.png',
-                    position: paper.view.center,
+                    position: _.paper.view.center,
                     opacity: 0
                 }),
                 position: {
-                    x: paper.view.center.x + 45,
-                    y: paper.view.center.y + 90
+                    x: _.paper.view.center.x + 45,
+                    y: _.paper.view.center.y + 90
                 }
             }
         },
         other: {
-            rectangle: new paper.Path.Rectangle({
+            rectangle: new _.paper.Path.Rectangle({
                 point: [0, 0],
                 size: [513, 47],
                 strokeWidth: 3,
-                // strokeScaling: false,
                 strokeColor: '#333',
             })
         }
     };
 
     //setup rectange
-    this.objects.other.rectangle.bounds.center = new paper.Point(paper.view.center.x, paper.view.size.height - 64);
+    _.objects.other.rectangle.bounds.center = new _.paper.Point(_.paper.view.center.x, _.paper.view.size.height - 64);
 
-    $.each(this.objects.paths, function(index, path) {
+    $.each(_.objects.paths, function(index, path) {
         front.push(path);
     });
 
-    $.each(this.objects.other, function(index, path) {
+    $.each(_.objects.other, function(index, path) {
         back.push(path);
     });
 
-    // set positioning for raster objects after their load
-    $.each(this.objects.raster, function(index, raster) {
-        raster.pic.onLoad = function() {
+    // set positioning for raster objects
+    $.each(_.objects.raster, function(index, raster) {
+        // raster.pic.onLoad = function() {
             raster.pic.position.x = raster.position.x + morphSize.x;
             raster.pic.position.y = raster.position.y;
-        };
-        raster.altPic.onLoad = function() {
+        // };
+        // raster.altPic.onLoad = function() {
             raster.altPic.position.x = raster.position.x + morphSize.x / 2;
             raster.altPic.position.y = raster.position.y;
-        };
+        // };
         front.push(raster.pic);
         back.push(raster.altPic);
     });
 
-    this.backGroup.set({
+    _.backGroup.set({
         children: back
     });
 
-    this.frontGroup.set({
+    _.frontGroup.set({
         children: front,
         clipped: true
     });
@@ -41822,20 +41868,22 @@ Morph.prototype._initContent = function() {
 Morph.prototype._initEvents = function() {
     var _ = this;
 
-    paper.view.onFrame = function(event) {
+    _.paper.view.onFrame = function(event) {
         TWEEN.update();
     };
 };
 
 Morph.prototype._render = function() {
-    paper.view.draw();
+    var _ = this;
+    _.paper.view.draw();
 };
 
 Morph.prototype._calcPosition = function() {
-    var c   = this.sizes.circle,
-        s   = this.sizes.square,
-        t   = this.sizes.triangle,
-        smt = this.sizes.smTriangle,
+    var _   = this,
+        c   = _.sizes.circle,
+        s   = _.sizes.square,
+        t   = _.sizes.triangle,
+        smt = _.sizes.smTriangle,
         point;
 
     // coordinates of vertexes for each morph state relative to view.center
@@ -41878,29 +41926,29 @@ Morph.prototype._calcPosition = function() {
         ]
     };
 
-    this.pathPosition = {
+    _.pathPosition = {
         morph: {
-            circle:     this._translateCoordinates(point.circle),
-            square:     this._translateCoordinates(point.square),
-            triangle:   this._translateCoordinates(point.triangle),
-            smTriangle: this._translateCoordinates(point.smTriangle)
+            circle:     _._translateCoordinates(point.circle),
+            square:     _._translateCoordinates(point.square),
+            triangle:   _._translateCoordinates(point.triangle),
+            smTriangle: _._translateCoordinates(point.smTriangle)
         },
         rectangle: {
             initial: {
-                center: new paper.Point(paper.view.center.x, paper.view.size.height - 64),
-                size: new paper.Size(513, 47)
+                center: new _.paper.Point(_.paper.view.center.x, _.paper.view.size.height - 64),
+                size: new _.paper.Size(513, 47)
             },
             big: {
-                center: paper.view.center,
-                size: new paper.Size(791, 261)
+                center: _.paper.view.center,
+                size: new _.paper.Size(791, 261)
             },
             wide: {
-                center: paper.view.center,
-                size: new paper.Size(1220, 160)
+                center: _.paper.view.center,
+                size: new _.paper.Size(1221, 161)
             },
             hidden: {
-                center: new paper.Point(paper.view.center.x, paper.view.size.height + 100),
-                size: new paper.Size(513, 47)
+                center: new _.paper.Point(_.paper.view.center.x, _.paper.view.size.height + 100),
+                size: new _.paper.Size(513, 47)
             }
         }
     };
@@ -41922,13 +41970,14 @@ Morph.prototype._toggleContentVisibility = function(value, onlyPictures) {
     }
 };
 
-Morph.prototype._changePicture = function(state, direction) {
+Morph.prototype._changePicture = function(state, direction, duration) {
     var currentState = this._getState('morph');
 
     if ( state == currentState ) return;
 
     var _ = this,
         prevState = _._getState('prevMorph'),
+        dur       = $.isNumeric(duration) ? duration : _.dur,
         props,
         pics;
 
@@ -41938,7 +41987,7 @@ Morph.prototype._changePicture = function(state, direction) {
     # initPos              - position of pic before animation, relative to canvas center;
     # pos                  - position of pic/altPic after animation end, relative to canvas center;
     # opacity              - opacity for pic after animation end;
-    # delay                - delay between start animation for inner in outer;
+    # delay                - delay before start animation;
     ###*/
     props = {
         // current picture
@@ -41947,21 +41996,21 @@ Morph.prototype._changePicture = function(state, direction) {
                 pic: _.objects.raster[currentState].pic,
                 initPos: _.objects.raster[currentState].position,
                 pos: {
-                    x: paper.view.center.x - _.morphSize.x,
+                    x: _.paper.view.center.x - _.morphSize.x,
                     y: _.objects.raster[currentState].position.y
                 },
-                duration: _.dur / 2,
-                delay   : _.dur * 0.2, // ~ 150ms
+                duration: dur / 2,
+                delay   : dur * 0.2, // ~ 150ms
                 easing  : TWEEN.Easing.Cubic.In,
             },
             outer: {
                 pic: _.objects.raster[currentState].altPic,
                 initPos: _.objects.raster[currentState].position,
                 pos: {
-                    x: paper.view.center.x - _.morphSize.x / 2,
+                    x: _.paper.view.center.x - _.morphSize.x / 2,
                     y: _.objects.raster[currentState].position.y
                 },
-                duration: _.dur / 2,
+                duration: dur / 2,
                 delay   : 0,
                 opacity : 0,
                 easing  : TWEEN.Easing.Quadratic.In
@@ -41971,20 +42020,20 @@ Morph.prototype._changePicture = function(state, direction) {
         next : {
             inner: {
                 pic     : _.objects.raster[state].pic,
-                initPos : { x: paper.view.center.x + _.morphSize.x,
+                initPos : { x: _.paper.view.center.x + _.morphSize.x,
                             y: _.objects.raster[state].position.y },
                 pos     : _.objects.raster[state].position,
-                duration: _.dur / 2,
-                delay   : _.dur / 2,
+                duration: dur / 2,
+                delay   : dur / 2,
                 easing  : TWEEN.Easing.Quadratic.Out,
             },
             outer: {
                 pic     : _.objects.raster[state].altPic,
-                initPos : { x: paper.view.center.x + _.morphSize.x / 2,
+                initPos : { x: _.paper.view.center.x + _.morphSize.x / 2,
                             y: _.objects.raster[state].position.y },
                 pos     : _.objects.raster[state].position,
-                duration: _.dur / 2,
-                delay   : _.dur / 2,
+                duration: dur / 2,
+                delay   : dur / 2,
                 opacity : 1,
                 easing  : TWEEN.Easing.Quadratic.Out
             }
@@ -41994,10 +42043,10 @@ Morph.prototype._changePicture = function(state, direction) {
     pics = props;
 
     if ( direction == 'REVERSE' ) {
-        pics.current.inner.pos.x  = paper.view.center.x + _.morphSize.x;
-        pics.current.outer.pos.x  = paper.view.center.x + _.morphSize.x / 2;
-        pics.next.inner.initPos.x = paper.view.center.x - _.morphSize.x;
-        pics.next.outer.initPos.x = paper.view.center.x - _.morphSize.x / 2;
+        pics.current.inner.pos.x  = _.paper.view.center.x + _.morphSize.x;
+        pics.current.outer.pos.x  = _.paper.view.center.x + _.morphSize.x / 2;
+        pics.next.inner.initPos.x = _.paper.view.center.x - _.morphSize.x;
+        pics.next.outer.initPos.x = _.paper.view.center.x - _.morphSize.x / 2;
     }
 
     // reset properties after previous transformation in other methods
@@ -42038,14 +42087,13 @@ Morph.prototype._changePicture = function(state, direction) {
     });
 };
 
-Morph.prototype._togglePicture = function(state) {
+Morph.prototype._togglePicture = function(state, duration) {
     // if state was not passed, then this method hiddes picture for active morph state,
     // otherwise he show picture for passed state
-    var _ = this,
+    var _      = this,
         easing = TWEEN.Easing.Cubic.In,
-        dur    = _.dur,
-        pics,
-        log;
+        dur    = $.isNumeric(duration) ? duration : _.dur,
+        pics;
 
     if ( typeof state == 'undefined' ) {
 
@@ -42055,7 +42103,7 @@ Morph.prototype._togglePicture = function(state) {
                 pic: _.objects.raster[state].pic,
                 pos: {
                     x: _.objects.raster[state].position.x,
-                    y: paper.view.center.y + _.morphSize.y / 3 * 2,
+                    y: _.paper.view.center.y + _.morphSize.y / 3 * 2,
                 },
                 initPos: _.objects.raster[state].position
             },
@@ -42080,7 +42128,7 @@ Morph.prototype._togglePicture = function(state) {
                 pic: _.objects.raster[state].pic,
                 initPos: {
                     x: _.objects.raster[state].position.x,
-                    y: paper.view.center.y + _.morphSize.y / 3 * 2,
+                    y: _.paper.view.center.y + _.morphSize.y / 3 * 2,
                 },
                 pos: _.objects.raster[state].position
             },
@@ -42157,7 +42205,7 @@ Morph.prototype._morph = function(state, dur) {
     if ( state == currentState ) return;
 
     var _          = this,
-        duration   = dur || _.dur,
+        duration   = $.isNumeric(dur) ? dur : _.dur,
         easing     = TWEEN.Easing.Quadratic.Out,
         morphPath  = _.objects.paths.morph,
         segments   = morphPath.segments,
@@ -42200,7 +42248,7 @@ Morph.prototype._morph = function(state, dur) {
     // console.log('%c' + 'State change: ' + currentState + ' => ' + state, 'background:yellow');
 };
 
-Morph.prototype._morphRectangle = function(state) {
+Morph.prototype._morphRectangle = function(state, duration, delay) {
     var prevState = this._getState('rectangle');
 
     if ( state == prevState ) return;
@@ -42209,8 +42257,9 @@ Morph.prototype._morphRectangle = function(state) {
         rect    = _.objects.other.rectangle,
         prevPos = _.pathPosition.rectangle[prevState],
         pos     = _.pathPosition.rectangle[state],
-        easing  = TWEEN.Easing.Cubic.Out;
-        dur     = _.dur;
+        easing  = TWEEN.Easing.Cubic.Out,
+        dur     = $.isNumeric(duration) ? duration : _.dur,
+        del     = $.isNumeric(delay) ? delay : 0;
 
     // change rectange size
     new TWEEN.Tween(rect.bounds.size)
@@ -42220,6 +42269,7 @@ Morph.prototype._morphRectangle = function(state) {
             rect.bounds.size.width = this.width;
             rect.bounds.size.height = this.height;
         })
+        .delay(del)
         .start();
 
     // change rectange position
@@ -42230,6 +42280,7 @@ Morph.prototype._morphRectangle = function(state) {
             rect.position.x = this.x;
             rect.position.y = this.y;
         })
+        .delay(del)
         .start();
 
     _._updateState('rectangle', state);
@@ -42248,10 +42299,11 @@ Morph.prototype._getState = function(name) {
 };
 
 Morph.prototype._translateCoordinates = function(pointsArray) {
-    var arr = pointsArray;
+    var _   = this,
+        arr = pointsArray;
     $.each(arr, function(index, value) {
-        value.x += paper.view.center.x;
-        value.y += paper.view.center.y;
+        value.x += _.paper.view.center.x;
+        value.y += _.paper.view.center.y;
     });
     return arr;
 };
@@ -42260,7 +42312,7 @@ Morph.prototype._fade = function(duration) {
     var _     = this,
         visible = _._getState('visible'),
         tl      = new TimelineLite();
-        dur     = duration / 1000 || _.fadeDur / 1000;
+        dur     = $.isNumeric(duration) ? duration / 1000 : _.fadeDur / 1000;
 
     tl
         .addLabel('beginFade')
@@ -42274,32 +42326,48 @@ Morph.prototype._fade = function(duration) {
             });
 };
 
+Morph.prototype._reduce = function(animDur) {
+    var _          = this,
+        morph      = _.objects.paths.morph,
+        image      = _.objects.raster[_.state.morph].altPic,
+        frontGroup = _.frontGroup,
+        dur        = $.isNumeric(animDur) ? animDur / 1000 : _.dur / 1000,
+        ease1      = Back.easeOut.config(1.4),
+        ease2      = Power1.easeIn;
+
+    TweenMax.to(morph.scaling, dur,   {x: 0.6, y: 0.6, ease: ease1, delay: dur/2});
+    TweenMax.to(frontGroup,    dur/2, {opacity: 0.7,   ease: ease2, delay: dur/2});
+    TweenMax.to(image.scaling, dur/2, {x: 0.3, y: 0.3, ease: ease2});
+    TweenMax.to(image,         dur/2, {opacity: 0,     ease: ease2});
+};
+
+Morph.prototype._increase = function(animDur) {
+    var _          = this,
+        morph      = _.objects.paths.morph,
+        image      = _.objects.raster[_.state.morph].altPic,
+        frontGroup = _.frontGroup,
+        dur        = $.isNumeric(animDur) ? animDur / 1000 : _.dur / 1000,
+        ease1      = Back.easeIn.config(1.4),
+        ease2      = Power1.easeOut;
+
+    TweenMax.to(morph.scaling, dur,   {x: 1, y: 1, ease: ease1});
+    TweenMax.to(frontGroup,    dur/2, {opacity: 1, ease: ease2});
+    TweenMax.to(image.scaling, dur/2, {x: 1, y: 1, ease: ease2, delay: dur});
+    TweenMax.to(image,         dur/2, {opacity: 1, ease: ease2, delay: dur});
+};
+
 Morph.prototype.init = function() {
     this._initContent();
     this._initEvents();
     this._toggleContentVisibility(false, true); //make pictures invisible
     this._calcPosition();
     this._render();
+    return this;
 };
 
-Morph.prototype.toSquare = function() {
-    this._changePicture('square');
-    this._morph('square');
-};
-
-Morph.prototype.toTriangle = function() {
-    this._changePicture('triangle');
-    this._morph('triangle');
-};
-
-Morph.prototype.toCircle = function() {
-    this._changePicture('circle');
-    this._morph('circle');
-};
-
-Morph.prototype.changeState = function(state, direction) {
-    this._changePicture(state, direction);
-    this._morph(state);
+Morph.prototype.changeState = function(state, direction, duration) {
+    this._changePicture(state, direction, duration);
+    this._morph(state, duration);
 };
 
 Morph.prototype.activate = function(state, delay) {
@@ -42375,9 +42443,68 @@ Morph.prototype.moveBack = function(duration) {
             });
 };
 
+Morph.prototype.initStandBy = function(state) {
+    var _      = this,
+        obj    = _.objects.raster[state],
+        pic    = obj.pic,
+        altPic = obj.altPic;
+
+    pic.position.x = altPic.position.x = obj.position.x;
+    pic.position.y = altPic.position.y = obj.position.y;
+
+    _._toggleContentVisibility(true, true);
+
+
+    _._fade(0);
+    _._morph(state, 0);
+    setTimeout(function() {
+        _.toStandBy();
+    }, 0);
+};
+
+Morph.prototype.toStandBy = function(animDur) {
+    var _          = this,
+        morph      = _.objects.paths.morph,
+        image      = _.objects.raster[_.state.morph].altPic,
+        frontGroup = _.frontGroup,
+        dur        = $.isNumeric(animDur) ? animDur / 1000 : _.dur / 1000,
+        ease1      = Back.easeOut.config(1.4),
+        ease2      = Power1.easeIn;
+
+    TweenMax.to(morph.scaling, dur,   {x: 0.6, y: 0.6, ease: ease1, delay: dur/2});
+    TweenMax.to(frontGroup,    dur/2, {opacity: 0.7,     ease: ease2, delay: dur/2});
+    TweenMax.to(image.scaling, dur/2, {x: 0.3, y: 0.3, ease: ease2});
+    TweenMax.to(image,         dur/2, {opacity: 0,     ease: ease2});
+
+    // _._reduce(animDur);
+    _._morphRectangle('wide', animDur);
+
+    _._updateState('active', false);
+};
+
+Morph.prototype.fromStandBy = function(animDur) {
+    var _          = this,
+        morph      = _.objects.paths.morph,
+        image      = _.objects.raster[_.state.morph].altPic,
+        frontGroup = _.frontGroup,
+        dur        = $.isNumeric(animDur) ? animDur / 1000 : _.dur / 1000,
+        ease1      = Back.easeIn.config(1.4),
+        ease2      = Power1.easeOut;
+
+    TweenMax.to(morph.scaling, dur,   {x: 1, y: 1, ease: ease1});
+    TweenMax.to(frontGroup,    dur/2, {opacity: 1, ease: ease2});
+    TweenMax.to(image.scaling, dur/2, {x: 1, y: 1, ease: ease2, delay: dur});
+    TweenMax.to(image,         dur/2, {opacity: 1, ease: ease2, delay: dur});
+
+    // _._increase(animDur);
+    _._morphRectangle('big', animDur);
+
+    _._updateState('active', true);
+};
+
 module.exports = Morph;
 },{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"TimelineLite":7,"gsap":9,"tween.js":14}],17:[function(require,module,exports){
-require("./../../../bower_components/jquery/dist/jquery.js");
+var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
 require('TimelineLite');
@@ -42452,14 +42579,15 @@ Category.prototype._initEvents = function() {
 
 
 
-Category.prototype._init = function() {
-    var _ = this;
+Category.prototype._init = function(initSlide) {
+    var _ = this,
+        slideIndex = $.isNumeric(initSlide) ? initSlide : _.initSlide;
 
     _.clonedItems = $(_.items).clone(true).addClass('clone');
     _.element.append(_.clonedItems);
     _.element.slick(_.slickOptions);
     setTimeout(function() {
-        _.element.slick('slickGoTo', _.initSlide);
+        _.element.slick('slickGoTo', slideIndex);
     }, 200);
 };
 
@@ -42472,6 +42600,14 @@ Category.prototype._destroy = function() {
     $(_.clonedItems).remove();
     $(_.items).removeClass(_.classes.active);
     _.direction = null;
+};
+
+
+
+Category.prototype.initSlider = function(initSlideIndex) {
+    var _  = this;
+
+    _._init(initSlideIndex);
 };
 
 

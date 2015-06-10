@@ -24,7 +24,8 @@ app.scrollDisabled = false;
 app.openedPopup = null;
 app.toparea  = {};
 app.objects  = {};
-app.catalog = {};
+app.catalog  = {};
+app.catalog2 = {};
 // app.initMap = require('./modules/_map.js');
 
 app.util = {
@@ -100,22 +101,25 @@ app.util = {
 app.init = function() {
 
     app.mainSlider   = new Slider('#main-slider');
-    app.category = new Category('.catalog-category', '.catalog-category__item');
-    app.morph    = new Morph('#morph');
+    app.category     = new Category('.catalog-category', '.catalog-category__item');
+    app.category2    = new Category('.category', '.category__item');
+    app.morph        = new Morph('#morph');
+    app.morph2       = new Morph('#morph2');
     app.topareaModal = new Modal('#catalog', '.catalog__content');
-    app.tabs     = new Tabs('#forms', '.btn_tab', '.tabs__content');
-    app.rootContainer = $('#outer');
-    app.scrollmagic = initScenes();
-    app.navbar = new Navbar();
+    app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
+    app.rootContainer= $('#outer');
+    app.scrollmagic  = initScenes();
+    app.navbar       = new Navbar();
 
     app.mainSlider.init();
     app.morph.init();
     app.tabs.init();
     app.initBoxes();
-    app.initPopups();
+    app.initPopupEvents();
     app.initPopupSlider();
-
     app.navbar.init();
+    app.category2.initSlider(1);
+    app.morph2.init().initStandBy('square');
 
 };
 
@@ -126,7 +130,7 @@ app.initBoxes = function() {
     });
 };
 
-app.initPopups = function() {
+app.initPopupEvents = function() {
     $('[data-open-popup]').each(function(index, el) {
         var $this = $(this);
 
@@ -137,6 +141,10 @@ app.initPopups = function() {
 
             app.util.openPopup(popupId);
         });
+    });
+
+    $('.popup .object__close').on('click', function() {
+        app.util.closePopup();
     });
 };
 
@@ -186,12 +194,12 @@ app.initPopupSlider = function() {
 
 app.catalog.opened = false;
 
-app.catalog.open = function(state, contentIndex) {
+app.catalog.open = function(morphState, contentIndex) {
     if ( app.catalog.opened ) return;
     app.topareaModal.open(contentIndex);
     app.mainSlider.rollUp();
     app.category.open();
-    app.morph.activate(state);
+    app.morph.activate(morphState);
     app.navbar.hidden();
     // app.util.toggleScroll();
     app.catalog.opened = true;
@@ -207,6 +215,20 @@ app.catalog.close = function() {
     // app.util.toggleScroll();
     app.catalog.opened = false;
 };
+
+
+
+app.catalog2.opened = false;
+
+app.catalog2.open = function(morphState, contentIndex) {
+    // app.morph2.initStandBy('morphState');
+    app.catalog2.opened = true;
+};
+
+app.catalog2.close = function() {
+    app.catalog2.opened = false;
+};
+
 
 
 
@@ -278,6 +300,30 @@ app.initEvents = function() {
     $('#header .logo').on('click', function(e) {
         if ( app.catalog.opened ) app.catalog.close();
         if ( app.openedPopup ) app.util.closePopup();
+    });
+
+
+    $('.head_capabilities').on('click', function(e) {
+        app.morph2.toStandBy();
+    });
+
+
+    $('.btn_category').on('click', function(e) {
+        var state = $(this).data('morph-state'),
+            contentIndex = $(this).data('content-index');
+
+        if ( !app.morph2.state.active ) {
+            setTimeout(function() {
+                app.morph2.changeState(state, null, 0);
+                // app.morph2._reduce(0);
+                app.morph2.fromStandBy();
+            }, 0);
+        }
+        else {
+            setTimeout(function() {
+                app.morph2.changeState(state, app.category2.direction);
+            }, 0);
+        }
     });
 };
 

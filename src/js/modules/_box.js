@@ -12,7 +12,7 @@ function Box() {
     this.mode        = 'slider'; // can be 'slider' (default) or 'modal',
 
     this.options = {
-        animDur: 0.7,
+        animDur: 0.5,
         class: '', // add to box when opened, look in init
         wrapperClass: '', // add to wrapper when start transforming, look in init
         zIndex: 98,

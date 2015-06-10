@@ -717,8 +717,6 @@ textarea.input
   // z-index: 0
   #morph
     z-index: 0
-    opacity: 0
-    visibility: hidden
     &.is-visible
       z-index: 2
       & ~ .deco
@@ -1470,6 +1468,7 @@ textarea.input
     margin-left: -560px
 
 .head_capabilities
+  margin-bottom: 0
   .deco-1
     top: 180px
     right: 458px
@@ -1533,6 +1532,79 @@ textarea.input
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end section advantages  ^^^^^
+//---------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------
+//            ##### begin section capabilities #####
+//---------------------------------------------------------------------------
+.capabilities__inner
+  position: relative
+  max-width: 1368px
+  height: 680px
+  margin: auto
+
+.category
+  position: absolute
+  z-index: 1
+  top: 50%
+  left: 0
+  right: 0
+  width: 100%
+  max-width: 1100px
+  margin: auto
+  transform: translate(0, -50%)
+  +clr
+
+.category__item
+  float: left
+  width: 33.333%
+  line-height: 400px
+  text-align: center
+  pointer-events: none
+
+.btn_category
+  line-height: 40px
+  +f(hb, 18, 0.5)
+  text-transform: uppercase
+  pointer-events: auto
+  .btn__hover
+    background: none
+    color: $text
+  .btn__hover-in
+    &:before
+      content: ""
+      position: absolute
+      bottom: 0
+      left: 0
+      right: em(6,18)
+      height: 4px
+      background: $text
+  .btn__bg
+    display: none
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 300px
+    height: 300px
+    margin: -150px 0 0 -150px
+    background: no-repeat center center
+    opacity: 0.2
+    +trans(opacity)
+  .btn__bg1
+    background-image: img-url('category1.png')
+  .btn__bg2
+    background-image: img-url('category2.png')
+  .btn__bg3
+    background-image: img-url('category3.png')
+  &:hover
+    .btn__bg
+      opacity: 1
+
+//---------------------------------------------------------------------------
+//            ^^^^^  end section capabilities  ^^^^^
 //---------------------------------------------------------------------------
 
 
@@ -1618,7 +1690,7 @@ textarea.input
 
 
 //---------------------------------------------------------------------------
-//            ##### begin sevtion contacts #####
+//            ##### begin section contacts #####
 //---------------------------------------------------------------------------
 
 .contacts
@@ -1668,7 +1740,7 @@ textarea.input
 
 
 //---------------------------------------------------------------------------
-//            ^^^^^  end sevtion contacts  ^^^^^
+//            ^^^^^  end section contacts  ^^^^^
 //---------------------------------------------------------------------------
 
 
