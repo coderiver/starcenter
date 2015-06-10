@@ -307,6 +307,7 @@ app.initEvents = function() {
 
     $('.head_capabilities').on('click', function(e) {
         app.morph2.toStandBy();
+        // app.category2.deactivate();
     });
 
 
@@ -319,6 +320,7 @@ app.initEvents = function() {
                 app.morph2.changeState(state, null, 0);
                 // app.morph2._reduce(0);
                 app.morph2.fromStandBy();
+                // app.category2.activate();
             }, 0);
         }
         else {
@@ -42472,7 +42474,7 @@ Morph.prototype.toStandBy = function(animDur) {
         ease2      = Power1.easeIn;
 
     TweenMax.to(morph.scaling, dur,   {x: 0.6, y: 0.6, ease: ease1, delay: dur/2});
-    TweenMax.to(frontGroup,    dur/2, {opacity: 0.7,     ease: ease2, delay: dur/2});
+    TweenMax.to(frontGroup,    dur/2, {opacity: 0.7,   ease: ease2, delay: dur/2});
     TweenMax.to(image.scaling, dur/2, {x: 0.3, y: 0.3, ease: ease2});
     TweenMax.to(image,         dur/2, {opacity: 0,     ease: ease2});
 
@@ -42544,7 +42546,8 @@ function Category(element, itemSelector) {
         easing: 'easeInCubic',
         infinite: true,
         initialSlide: 1,
-        slidesToShow: 3
+        slidesToShow: 3,
+        respondTo: 'slider'
     };
     this._initEvents();
 }
@@ -42615,9 +42618,9 @@ Category.prototype.initSlider = function(initSlideIndex) {
 Category.prototype.open = function(duration, delay) {
     if ( this.active || this.inProgress ) return;
 
-    var _   = this;
-        dur = duration / 1000 || _.options.duration / 1000;
-        del = delay / 1000 || _.options.delay / 1000;
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || _.options.delay / 1000,
         tl  = new TimelineLite();
 
     tl
@@ -42649,8 +42652,8 @@ Category.prototype.close = function(duration, delay) {
     if ( !this.active || this.inProgress ) return;
 
     var _   = this,
-        dur = duration / 1000 || _.options.duration / 1000;
-        del = delay / 1000 || 0;
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || 0,
         tl  = new TimelineLite();
 
     tl
@@ -42676,6 +42679,7 @@ Category.prototype.close = function(duration, delay) {
 };
 
 
+
 Category.prototype.toggleHidden = function() {
     var _  = this;
 
@@ -42692,6 +42696,66 @@ Category.prototype.toggleHidden = function() {
             );
         _.hidden = true;
     }
+};
+
+
+
+Category.prototype.activate = function(duration, delay) {
+    if ( this.active || this.inProgress ) return;
+
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || _.options.delay / 1000,
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .delay(del)
+        .addLabel('afterDelay')
+        .add(function() {
+            _.element.addClass(_.classes.animate);
+            }, 'afterDelay')
+        .to(_.element, dur, {
+            width: _.options.targetWidth,
+            ease: _.options.easing
+            })
+        .add(function() {
+            _.element.addClass(_.classes.active);
+            _.inProgress = false;
+            _.active = true;
+            });
+};
+
+
+
+Category.prototype.deactivate = function(duration, delay) {
+    if ( !this.active || this.inProgress ) return;
+
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || _.options.delay / 1000,
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .delay(del)
+        .add(function() {
+            _.element.removeClass(_.classes.active);
+            })
+        .to(_.element, dur, {
+            width: _.options.initWidth,
+            ease: _.options.easing,
+            clearProps: 'all'
+            })
+        .add(function() {
+            _.element.removeClass(_.classes.animate);
+            _.inProgress = false;
+            _.active = false;
+            });
 };
 
 

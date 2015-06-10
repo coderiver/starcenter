@@ -520,6 +520,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .category { position: absolute; z-index: 1; top: 50%; left: 0; right: 0; width: 100%; max-width: 1100px; margin: auto; -webkit-transform: translate(0, -50%); -ms-transform: translate(0, -50%); transform: translate(0, -50%); *zoom: 1; }
 .category:after { content: " "; display: table; clear: both; }
+.category.is-animate { max-width: none; }
 
 .category__item { float: left; width: 33.333%; line-height: 400px; text-align: center; pointer-events: none; }
 

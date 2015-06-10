@@ -305,6 +305,7 @@ app.initEvents = function() {
 
     $('.head_capabilities').on('click', function(e) {
         app.morph2.toStandBy();
+        // app.category2.deactivate();
     });
 
 
@@ -317,6 +318,7 @@ app.initEvents = function() {
                 app.morph2.changeState(state, null, 0);
                 // app.morph2._reduce(0);
                 app.morph2.fromStandBy();
+                // app.category2.activate();
             }, 0);
         }
         else {

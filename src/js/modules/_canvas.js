@@ -768,7 +768,7 @@ Morph.prototype.toStandBy = function(animDur) {
         ease2      = Power1.easeIn;
 
     TweenMax.to(morph.scaling, dur,   {x: 0.6, y: 0.6, ease: ease1, delay: dur/2});
-    TweenMax.to(frontGroup,    dur/2, {opacity: 0.7,     ease: ease2, delay: dur/2});
+    TweenMax.to(frontGroup,    dur/2, {opacity: 0.7,   ease: ease2, delay: dur/2});
     TweenMax.to(image.scaling, dur/2, {x: 0.3, y: 0.3, ease: ease2});
     TweenMax.to(image,         dur/2, {opacity: 0,     ease: ease2});
 

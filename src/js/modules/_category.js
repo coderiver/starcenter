@@ -38,7 +38,8 @@ function Category(element, itemSelector) {
         easing: 'easeInCubic',
         infinite: true,
         initialSlide: 1,
-        slidesToShow: 3
+        slidesToShow: 3,
+        respondTo: 'slider'
     };
     this._initEvents();
 }
@@ -109,9 +110,9 @@ Category.prototype.initSlider = function(initSlideIndex) {
 Category.prototype.open = function(duration, delay) {
     if ( this.active || this.inProgress ) return;
 
-    var _   = this;
-        dur = duration / 1000 || _.options.duration / 1000;
-        del = delay / 1000 || _.options.delay / 1000;
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || _.options.delay / 1000,
         tl  = new TimelineLite();
 
     tl
@@ -143,8 +144,8 @@ Category.prototype.close = function(duration, delay) {
     if ( !this.active || this.inProgress ) return;
 
     var _   = this,
-        dur = duration / 1000 || _.options.duration / 1000;
-        del = delay / 1000 || 0;
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || 0,
         tl  = new TimelineLite();
 
     tl
@@ -170,6 +171,7 @@ Category.prototype.close = function(duration, delay) {
 };
 
 
+
 Category.prototype.toggleHidden = function() {
     var _  = this;
 
@@ -186,6 +188,66 @@ Category.prototype.toggleHidden = function() {
             );
         _.hidden = true;
     }
+};
+
+
+
+Category.prototype.activate = function(duration, delay) {
+    if ( this.active || this.inProgress ) return;
+
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || _.options.delay / 1000,
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .delay(del)
+        .addLabel('afterDelay')
+        .add(function() {
+            _.element.addClass(_.classes.animate);
+            }, 'afterDelay')
+        .to(_.element, dur, {
+            width: _.options.targetWidth,
+            ease: _.options.easing
+            })
+        .add(function() {
+            _.element.addClass(_.classes.active);
+            _.inProgress = false;
+            _.active = true;
+            });
+};
+
+
+
+Category.prototype.deactivate = function(duration, delay) {
+    if ( !this.active || this.inProgress ) return;
+
+    var _   = this,
+        dur = duration / 1000 || _.options.duration / 1000,
+        del = delay / 1000 || _.options.delay / 1000,
+        tl  = new TimelineLite();
+
+    tl
+        .add(function() {
+            _.inProgress = true;
+            })
+        .delay(del)
+        .add(function() {
+            _.element.removeClass(_.classes.active);
+            })
+        .to(_.element, dur, {
+            width: _.options.initWidth,
+            ease: _.options.easing,
+            clearProps: 'all'
+            })
+        .add(function() {
+            _.element.removeClass(_.classes.animate);
+            _.inProgress = false;
+            _.active = false;
+            });
 };
 
 
