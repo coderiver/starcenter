@@ -275,7 +275,7 @@
   display: block
   font-size: 12px
   letter-spacing: 0.15em
-  color: #AAA
+  color: $gray
 
 .heading_center
   text-align: center
@@ -793,6 +793,9 @@ textarea.input
     transition: all 0.2s ease
     visibility: visible
     opacity: 1
+  // &.slick-slider
+  //   .catalog-btn
+  //     transition: all 0.3s linear
   &.is-animate
     &:before
       opacity: 0
@@ -803,9 +806,10 @@ textarea.input
         opacity: 0
         visibility: hidden
     .catalog-btn
-      color: #AAA
+      color: $gray
       letter-spacing: 0.5em
       width: auto
+      transition-duration: 0.3s
     .catalog-btn__hover
       background: none
       color: $text
@@ -852,18 +856,20 @@ textarea.input
     &.slick-slide
       display: block
 
-  &.is-active, &.slick-center
-    .catalog-btn
-      transform: scale(1.3)
+  // &.is-active, &.slick-center
+    // .catalog-btn
+      // transform: scale(1.3)
   &.slick-center
+    .catalog-btn
+      font-size: 18px
     .catalog-btn__hover
       width: 100%
 
-  &.slick-slide
-    .catalog-btn__hover-text,
-    .catalog-btn__front,
-    .catalog-btm__hover
-      transition-duration: 0.3s
+  // &.slick-slide
+  //   .catalog-btn__hover-text,
+  //   .catalog-btn__front,
+  //   .catalog-btm__hover
+  //     transition-duration: 0.3s
   // &.slick-center
   //   .catalog-btn__hover-text,
   //   .catalog-btn__front,
@@ -885,12 +891,11 @@ textarea.input
   overflow: hidden
   white-space: nowrap
   pointer-events: auto
+  transform: translate3d(0,0,0)
+  transition: all 0.15s linear
   &:hover
     .catalog-btn__hover
       width: 100%
-
-// .catalog-btn__front
-  // transition: all 0.1s linear
 
 .catalog-btn__hover
   position: absolute
@@ -918,7 +923,7 @@ textarea.input
 .catalog-btn__hover-text
   display: inline-block
   position: relative
-  line-height: 1.5
+  line-height: 1.7
   // transition: all 0.5s linear
 
 
@@ -1550,15 +1555,46 @@ textarea.input
   position: absolute
   z-index: 1
   top: 50%
-  left: 0
+  left: 50%
   right: 0
-  width: 100%
-  max-width: 1100px
+  width: 1500px
   margin: auto
-  transform: translate(0, -50%)
+  transform: translate(-50%, -50%)
   +clr
   &.is-animate
-    max-width: none
+    .slick-center .btn__bg
+      opacity: 0
+      transition: none
+    .btn__bg
+      transition-delay: 0.5s
+  &.is-active
+    .btn_category
+      font-size: 10px
+      color: $gray
+      transform: translate3d(0,0,0) !important
+      transition-delay: 0s
+      &.hover
+        .btn__bg
+          opacity: 0
+    .btn__bg
+      transform: translate3d(-50px,0,0)
+      opacity: 0
+      visibility: hidden
+      transition-delay: 0s
+    .slick-center
+      .btn
+        font-size: 18px
+        color: $text
+      .btn__hover
+        width: 100%
+      .btn__bg
+        transform: translate3d(0,0,0)
+        transition: none
+    .slick-center:not(.slick-cloned) ~ .slick-slide
+      .btn__bg
+        transform: translate3d(50px,0,0)
+    .slick-slide
+      opacity: 1
 
 .category__item
   float: left
@@ -1566,12 +1602,18 @@ textarea.input
   line-height: 400px
   text-align: center
   pointer-events: none
+  transition: opacity 0.3s ease
+  &.slick-slide
+    opacity: 0
+  &.slick-active
+    opacity: 1
 
 .btn_category
-  line-height: 40px
+  line-height: 2
   +f(hb, 18, 0.5)
   text-transform: uppercase
   pointer-events: auto
+  transition: all 0.5s linear 0.5s
   .btn__hover
     background: none
     color: $text
@@ -1582,19 +1624,20 @@ textarea.input
       bottom: 0
       left: 0
       right: em(6,18)
-      height: 4px
+      height: 3px
       background: $text
   .btn__bg
-    display: none
+    // display: none
     position: absolute
+    z-index: -1
     top: 50%
     left: 50%
-    width: 300px
-    height: 300px
-    margin: -150px 0 0 -150px
+    width: 320px
+    height: 320px
+    margin: -159px 0 0 -160px
     background: no-repeat center center
     opacity: 0.2
-    +trans(opacity)
+    transition: all 0.5s ease-out
   .btn__bg1
     background-image: img-url('category1.png')
   .btn__bg2
@@ -1604,6 +1647,12 @@ textarea.input
   &:hover
     .btn__bg
       opacity: 1
+  .slick-slide &
+    transform: translate3d(100px,0,0)
+  .slick-center:not(.slick-cloned) ~ .slick-slide &
+    transform: translate3d(-100px,0,0)
+  .slick-center.slick-slide &
+    transform: translate3d(0,0,0)
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end section capabilities  ^^^^^
@@ -1836,7 +1885,7 @@ textarea.input
         background: none
         +f(hb, 12, 0.2)
         text-transform: uppercase
-        color: #AAA
+        color: $gray
         +trans(color)
       &.slick-active, &:hover
         button
@@ -2083,12 +2132,12 @@ textarea.input
     top: 0
     left: -15px
   &.is-sold
-    color: #AAA
+    color: $gray
 
 .info-item__label
   display: block
   +f(hb, 10, 0.15)
-  color: #AAA
+  color: $gray
   line-height: 2.2
   text-transform: uppercase
 
@@ -2103,7 +2152,7 @@ textarea.input
     +f(hr, 14)
     line-height: 1.57
     text-transform: none
-    color: #AAA
+    color: $gray
     letter-spacing: 0
   .btn__front,
   .btn__hover-in

@@ -20,7 +20,7 @@ function Category(element, itemSelector) {
         delay: 200, // deley before open
         shiftY: -274,
         initWidth: this.element.outerWidth(),
-        targetWidth: 1600,
+        targetWidth: 1500,
         easing: Power2.easeOut
     };
     this.slickOptions = {
@@ -200,24 +200,26 @@ Category.prototype.activate = function(duration, delay) {
         del = delay / 1000 || _.options.delay / 1000,
         tl  = new TimelineLite();
 
-    tl
-        .add(function() {
-            _.inProgress = true;
-            })
-        .delay(del)
-        .addLabel('afterDelay')
-        .add(function() {
-            _.element.addClass(_.classes.animate);
-            }, 'afterDelay')
-        .to(_.element, dur, {
-            width: _.options.targetWidth,
-            ease: _.options.easing
-            })
-        .add(function() {
-            _.element.addClass(_.classes.active);
-            _.inProgress = false;
-            _.active = true;
-            });
+    _.element
+        .addClass(_.classes.animate)
+        .addClass(_.classes.active);
+
+    _.active = true;
+
+    // tl
+    //     .add(function() {
+    //         _.inProgress = true;
+    //         })
+    //     .delay(del)
+    //     .addLabel('afterDelay')
+    //     .add(function() {
+    //         _.element.addClass(_.classes.animate);
+    //         }, 'afterDelay')
+    //     .add(function() {
+    //         _.element.addClass(_.classes.active);
+    //         _.inProgress = false;
+    //         _.active = true;
+    //         });
 };
 
 
@@ -226,28 +228,29 @@ Category.prototype.deactivate = function(duration, delay) {
     if ( !this.active || this.inProgress ) return;
 
     var _   = this,
-        dur = duration / 1000 || _.options.duration / 1000,
-        del = delay / 1000 || _.options.delay / 1000,
+        dur = duration || _.options.duration,
+        del = delay || _.options.delay,
         tl  = new TimelineLite();
 
-    tl
-        .add(function() {
-            _.inProgress = true;
-            })
-        .delay(del)
-        .add(function() {
-            _.element.removeClass(_.classes.active);
-            })
-        .to(_.element, dur, {
-            width: _.options.initWidth,
-            ease: _.options.easing,
-            clearProps: 'all'
-            })
-        .add(function() {
-            _.element.removeClass(_.classes.animate);
-            _.inProgress = false;
-            _.active = false;
-            });
+    _.element.removeClass(_.classes.active);
+    setTimeout(function() {
+        _.element.removeClass(_.classes.animate);
+        _.active = false;
+    }, dur);
+
+    // tl
+    //     .add(function() {
+    //         _.inProgress = true;
+    //         })
+    //     .delay(del)
+    //     .add(function() {
+    //         _.element.removeClass(_.classes.active);
+    //         })
+    //     .add(function() {
+    //         _.element.removeClass(_.classes.animate);
+    //         _.inProgress = false;
+    //         _.active = false;
+    //         });
 };
 
 
