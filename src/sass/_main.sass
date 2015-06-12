@@ -1561,26 +1561,25 @@ textarea.input
   margin: auto
   transform: translate(-50%, -50%)
   +clr
+  &.is-standby
+    .slick-center .btn__bg
+      transition-property: all
   &.is-animate
     .slick-center .btn__bg
       opacity: 0
       transition: none
-    .btn__bg
-      transition-delay: 0.5s
   &.is-active
     .btn_category
       font-size: 10px
       color: $gray
       transform: translate3d(0,0,0) !important
-      transition-delay: 0s
-      &.hover
+      &:hover
         .btn__bg
           opacity: 0
     .btn__bg
       transform: translate3d(-50px,0,0)
       opacity: 0
       visibility: hidden
-      transition-delay: 0s
     .slick-center
       .btn
         font-size: 18px
@@ -1603,17 +1602,17 @@ textarea.input
   text-align: center
   pointer-events: none
   transition: opacity 0.3s ease
-  &.slick-slide
-    opacity: 0
-  &.slick-active
-    opacity: 1
+  // &.slick-slide
+  //   opacity: 0
+  // &.slick-active
+  //   opacity: 1
 
 .btn_category
   line-height: 2
   +f(hb, 18, 0.5)
   text-transform: uppercase
   pointer-events: auto
-  transition: all 0.5s linear 0.5s
+  transition: all 0.5s ease
   .btn__hover
     background: none
     color: $text
@@ -1638,13 +1637,15 @@ textarea.input
     background: no-repeat center center
     opacity: 0.2
     transition: all 0.5s ease-out
+    .slick-center &
+      transition-property: transform
   .btn__bg1
     background-image: img-url('category1.png')
   .btn__bg2
     background-image: img-url('category2.png')
   .btn__bg3
     background-image: img-url('category3.png')
-  &:hover
+  &:hover, &.is-hover
     .btn__bg
       opacity: 1
   .slick-slide &

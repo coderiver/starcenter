@@ -519,11 +519,11 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .category { position: absolute; z-index: 1; top: 50%; left: 50%; right: 0; width: 1500px; margin: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); *zoom: 1; }
 .category:after { content: " "; display: table; clear: both; }
+.category.is-standby .slick-center .btn__bg { -webkit-transition-property: all; transition-property: all; }
 .category.is-animate .slick-center .btn__bg { opacity: 0; -webkit-transition: none; transition: none; }
-.category.is-animate .btn__bg { -webkit-transition-delay: 0.5s; transition-delay: 0.5s; }
-.category.is-active .btn_category { font-size: 10px; color: #AAA; -webkit-transform: translate3d(0, 0, 0) !important; transform: translate3d(0, 0, 0) !important; -webkit-transition-delay: 0s; transition-delay: 0s; }
-.category.is-active .btn_category.hover .btn__bg { opacity: 0; }
-.category.is-active .btn__bg { -webkit-transform: translate3d(-50px, 0, 0); transform: translate3d(-50px, 0, 0); opacity: 0; visibility: hidden; -webkit-transition-delay: 0s; transition-delay: 0s; }
+.category.is-active .btn_category { font-size: 10px; color: #AAA; -webkit-transform: translate3d(0, 0, 0) !important; transform: translate3d(0, 0, 0) !important; }
+.category.is-active .btn_category:hover .btn__bg { opacity: 0; }
+.category.is-active .btn__bg { -webkit-transform: translate3d(-50px, 0, 0); transform: translate3d(-50px, 0, 0); opacity: 0; visibility: hidden; }
 .category.is-active .slick-center .btn { font-size: 18px; color: #333; }
 .category.is-active .slick-center .btn__hover { width: 100%; }
 .category.is-active .slick-center .btn__bg { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); -webkit-transition: none; transition: none; }
@@ -531,17 +531,16 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .category.is-active .slick-slide { opacity: 1; }
 
 .category__item { float: left; width: 33.333%; line-height: 400px; text-align: center; pointer-events: none; -webkit-transition: opacity 0.3s ease; transition: opacity 0.3s ease; }
-.category__item.slick-slide { opacity: 0; }
-.category__item.slick-active { opacity: 1; }
 
-.btn_category { line-height: 2; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 18px; letter-spacing: 0.5em; text-transform: uppercase; pointer-events: auto; -webkit-transition: all 0.5s linear 0.5s; transition: all 0.5s linear 0.5s; }
+.btn_category { line-height: 2; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 18px; letter-spacing: 0.5em; text-transform: uppercase; pointer-events: auto; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; }
 .btn_category .btn__hover { background: none; color: #333; }
 .btn_category .btn__hover-in:before { content: ""; position: absolute; bottom: 0; left: 0; right: 0.33333em; height: 3px; background: #333; }
 .btn_category .btn__bg { position: absolute; z-index: -1; top: 50%; left: 50%; width: 320px; height: 320px; margin: -159px 0 0 -160px; background: no-repeat center center; opacity: 0.2; -webkit-transition: all 0.5s ease-out; transition: all 0.5s ease-out; }
+.slick-center .btn_category .btn__bg { -webkit-transition-property: -webkit-transform; transition-property: transform; }
 .btn_category .btn__bg1 { background-image: url("../img/category1.png"); }
 .btn_category .btn__bg2 { background-image: url("../img/category2.png"); }
 .btn_category .btn__bg3 { background-image: url("../img/category3.png"); }
-.btn_category:hover .btn__bg { opacity: 1; }
+.btn_category:hover .btn__bg, .btn_category.is-hover .btn__bg { opacity: 1; }
 .slick-slide .btn_category { -webkit-transform: translate3d(100px, 0, 0); transform: translate3d(100px, 0, 0); }
 .slick-center:not(.slick-cloned) ~ .slick-slide .btn_category { -webkit-transform: translate3d(-100px, 0, 0); transform: translate3d(-100px, 0, 0); }
 .slick-center.slick-slide .btn_category { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }

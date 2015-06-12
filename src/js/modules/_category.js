@@ -13,7 +13,8 @@ function Category(element, itemSelector) {
     this.direction = null;
     this.classes   = {
         animate: 'is-animate',
-        active: 'is-active'
+        active: 'is-active',
+        standby: 'is-standby'
     };
     this.options = {
         duration: 800, // animation duration
@@ -29,7 +30,7 @@ function Category(element, itemSelector) {
         arrows: false,
         draggable: false,
         slide: itemSelector,
-        speed: 800,
+        speed: 500,
         swipe: false,
         fade: false,
         centerMode: true,
@@ -201,25 +202,11 @@ Category.prototype.activate = function(duration, delay) {
         tl  = new TimelineLite();
 
     _.element
+        .removeClass(_.classes.standby)
         .addClass(_.classes.animate)
         .addClass(_.classes.active);
 
     _.active = true;
-
-    // tl
-    //     .add(function() {
-    //         _.inProgress = true;
-    //         })
-    //     .delay(del)
-    //     .addLabel('afterDelay')
-    //     .add(function() {
-    //         _.element.addClass(_.classes.animate);
-    //         }, 'afterDelay')
-    //     .add(function() {
-    //         _.element.addClass(_.classes.active);
-    //         _.inProgress = false;
-    //         _.active = true;
-    //         });
 };
 
 
@@ -233,24 +220,15 @@ Category.prototype.deactivate = function(duration, delay) {
         tl  = new TimelineLite();
 
     _.element.removeClass(_.classes.active);
+
     setTimeout(function() {
         _.element.removeClass(_.classes.animate);
         _.active = false;
     }, dur);
 
-    // tl
-    //     .add(function() {
-    //         _.inProgress = true;
-    //         })
-    //     .delay(del)
-    //     .add(function() {
-    //         _.element.removeClass(_.classes.active);
-    //         })
-    //     .add(function() {
-    //         _.element.removeClass(_.classes.animate);
-    //         _.inProgress = false;
-    //         _.active = false;
-    //         });
+    setTimeout(function() {
+        _.element.addClass(_.classes.standby);
+    }, dur + 100);
 };
 
 
