@@ -543,6 +543,31 @@ textarea.input
       transform: translateX(-20px) rotate(180deg)
 
 
+
+#morph
+  position: absolute
+  z-index: 0
+  top: 15px
+  left: 50%
+  margin-left: -684px
+  width: 1368px
+  height: 680px
+  pointer-events: none
+  opacity: 0
+  visibility: hidden
+
+#morph2
+  position: absolute
+  z-index: 0
+  top: 50%
+  left: 50%
+  width: 1368px
+  height: 680px
+  margin: -340px 0 0 -684px
+  pointer-events: none
+  opacity: 0
+
+
 //---------------------------------------------------------------------------
 //            ^^^^^  end common blocks  ^^^^^
 //---------------------------------------------------------------------------
@@ -561,26 +586,6 @@ textarea.input
   max-width: 1368px
   margin: auto
   overflow: hidden
-  // &:after
-  //   content: ""
-  //   position: absolute
-  //   z-index: 5
-  //   top: 0
-  //   left: 0
-  //   width: 100%
-  //   height: 100%
-  //   transition: transform 0.5s linear
-  //   transform: translate3d(0, 100%, 0)
-  //   background: #FFF
-  // &.is-hidden
-  //   // background-color: #ccc
-  //   &:after
-  //     transform: translate3d(0, 0, 0)
-  //   .main-slider__slides
-  //     transform: scale(0.8)
-  //   .main-slider__morph
-  //     opacity: 0
-  //     transition-delay: 0s
   .slick-dots
     position: absolute
     z-index: 3
@@ -616,7 +621,6 @@ textarea.input
   transform-origin: top center
   position: relative
   z-index: 2
-  // transition: transform 0.5s linear
 
 .main-slider__morph
   position: absolute
@@ -625,8 +629,6 @@ textarea.input
   width: 510px
   height: 510px
   margin-left: -255px
-  // transition: opacity 0.01s linear
-  // transition-delay: 0.3s
 
 .main-slider__overlay
   display: none
@@ -636,8 +638,6 @@ textarea.input
   left: 0
   width: 100%
   height: 100%
-  // transition: transform 0.5s linear
-  // transform: translate3d(0, 100%, 0)
   background: #FFF
 
 .main-slider__paginator
@@ -742,8 +742,9 @@ textarea.input
   bottom: 0
   height: 680px
   min-width: 1200px
-  background: #FFF
+  transition: background 0.5s ease
   &.is-opened
+    background: #FFF
     .catalog__modal-container
       +scroll
       +wos
@@ -1545,7 +1546,34 @@ textarea.input
 //---------------------------------------------------------------------------
 //            ##### begin section capabilities #####
 //---------------------------------------------------------------------------
-.capabilities__inner
+.capabilities__container
+  position: relative
+  height: 715px
+  margin-top: -190px
+  width: 100%
+
+.capabilities-modal
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  transition: background 0.5s ease
+  &.is-opened
+    background: #FFF
+    .capabilities-modal__inner
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      +scroll
+      +wos
+
+.capabilities-modal__content
+  display: none
+  padding-bottom: 70px
+
+.capabilities-modal__head
   position: relative
   max-width: 1368px
   height: 680px
@@ -1809,6 +1837,11 @@ textarea.input
   flex-direction: row
   justify-content: space-between
   align-items: center
+  position: relative
+  > .deco
+    position: absolute
+    top: -100px
+    left: -140px
 
 
 .object-wrapper

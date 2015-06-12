@@ -309,34 +309,45 @@ block content
           +icon("polygon")
           span W6
 
-    .capabilities__inner
-      canvas#morph2
+    .capabilities__container
 
-      ul.category.is-standby
-        li.category__item
-          a.btn.btn_category(href="#/", data-morph-state="circle", data-content-index="0")
-            .btn__hover
-              .btn__hover-in
-                span.btn__hover-text Арендовать
-            .btn__front
-              span Арендовать
-            .btn__bg.btn__bg1
-        li.category__item
-          a.btn.btn_category(href="#/", data-morph-state="square", data-content-index="1")
-            .btn__hover
-              .btn__hover-in
-                span.btn__hover-text Купить
-            .btn__front
-              span Купить
-            .btn__bg.btn__bg2
-        li.category__item
-          a.btn.btn_category(href="#/", data-morph-state="triangle", data-content-index="2") 
-            .btn__hover
-              .btn__hover-in
-                span.btn__hover-text Инвестировать
-            .btn__front
-              span Инвестировать
-            .btn__bg.btn__bg3
+      #catalog2.capabilities-modal
+        .capabilities-modal__inner
+          .capabilities-modal__head
+            canvas#morph2
+
+            ul.category.is-standby
+              li.category__item
+                a.btn.btn_category(href="#/", data-morph-state="circle", data-content-index="0")
+                  .btn__hover
+                    .btn__hover-in
+                      span.btn__hover-text Арендовать
+                  .btn__front
+                    span Арендовать
+                  .btn__bg.btn__bg1
+              li.category__item
+                a.btn.btn_category(href="#/", data-morph-state="square", data-content-index="1")
+                  .btn__hover
+                    .btn__hover-in
+                      span.btn__hover-text Купить
+                  .btn__front
+                    span Купить
+                  .btn__bg.btn__bg2
+              li.category__item
+                a.btn.btn_category(href="#/", data-morph-state="triangle", data-content-index="2") 
+                  .btn__hover
+                    .btn__hover-in
+                      span.btn__hover-text Инвестировать
+                  .btn__front
+                    span Инвестировать
+                  .btn__bg.btn__bg3
+
+          .capabilities-modal__content
+            include partials/buy
+          .capabilities-modal__content
+            include partials/rent
+          .capabilities-modal__content
+            include partials/invest
   //END capabilities
 
   //BEGIN partners

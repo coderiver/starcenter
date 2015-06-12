@@ -69,10 +69,6 @@ body { min-width: 1200px; min-height: 630px; width: 100%; height: 100%; overflow
 
 #nav { position: absolute; z-index: 100; top: 0; right: 0; bottom: 0; }
 
-#morph { position: absolute; z-index: 0; top: 15px; left: 50%; margin-left: -684px; width: 1368px; height: 680px; pointer-events: none; opacity: 0; visibility: hidden; }
-
-#morph2 { position: absolute; z-index: 0; top: 0; left: 50%; width: 1368px; height: 680px; margin-left: -684px; pointer-events: none; opacity: 0; }
-
 .icon { display: inline-block; height: 1em; width: 1em; fill: #333; stroke: inherit; font-size: 20px; width: 1em; }
 
 .icon-star-centre { font-size: 23px; width: 5.08696em; }
@@ -84,6 +80,8 @@ body { min-width: 1200px; min-height: 630px; width: 100%; height: 100%; overflow
 .icon-polygon { font-size: 46px; width: 0.91304em; fill: none; stroke: #333; }
 
 .icon-target { font-size: 45px; }
+
+.icon-figure { font-size: 40px; width: 1.375em; }
 
 @-webkit-keyframes img-slide-out { to { -webkit-transform: scale(0.6); transform: scale(0.6); opacity: 0; } }
 
@@ -265,6 +263,10 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .btn-back .icon-arrow { vertical-align: middle; margin-right: 20px; -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg); -webkit-transition: -webkit-transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .btn-back:hover .icon-arrow { -webkit-transform: translateX(-20px) rotate(180deg); -ms-transform: translateX(-20px) rotate(180deg); transform: translateX(-20px) rotate(180deg); }
 
+#morph { position: absolute; z-index: 0; top: 15px; left: 50%; margin-left: -684px; width: 1368px; height: 680px; pointer-events: none; opacity: 0; visibility: hidden; }
+
+#morph2 { position: absolute; z-index: 0; top: 50%; left: 50%; width: 1368px; height: 680px; margin: -340px 0 0 -684px; pointer-events: none; opacity: 0; }
+
 .main-slider { position: relative; z-index: 1; height: 656px; max-width: 1368px; margin: auto; overflow: hidden; }
 .main-slider .slick-dots { position: absolute; z-index: 3; top: 175px; left: 50%; width: 40px; margin-left: -20px; text-align: center; -webkit-animation: slide-left 0.5s ease 1; animation: slide-left 0.5s ease 1; }
 .main-slider .slick-dots li { padding: 0; margin: 0; }
@@ -298,7 +300,8 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .catalog #morph.is-visible ~ .deco { opacity: 1; visibility: visible; -webkit-transform: none; -ms-transform: none; transform: none; -webkit-transition-delay: 1s; transition-delay: 1s; }
 .catalog .deco { position: absolute; z-index: 4; top: 145px; right: 125px; opacity: 0; visibility: hidden; -webkit-transform: translateY(30px); -ms-transform: translateY(30px); transform: translateY(30px); -webkit-transition: all 0.2s linear; transition: all 0.2s linear; }
 
-.catalog__modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 680px; min-width: 1200px; background: #FFF; }
+.catalog__modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 680px; min-width: 1200px; -webkit-transition: background 0.5s ease; transition: background 0.5s ease; }
+.catalog__modal.is-opened { background: #FFF; }
 .catalog__modal.is-opened .catalog__modal-container { overflow-x: hidden; overflow-y: scroll; right: -17px; -webkit-overflow-scrolling: touch; }
 .mac-os .catalog__modal.is-opened .catalog__modal-container { right: -15px; }
 
@@ -515,7 +518,16 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .advantages__column { float: left; width: 33.3333%; box-sizing: border-box; padding-left: 50px; }
 .advantages__column .heading { margin-bottom: 25px; }
 
-.capabilities__inner { position: relative; max-width: 1368px; height: 680px; margin: auto; }
+.capabilities__container { position: relative; height: 715px; margin-top: -190px; width: 100%; }
+
+.capabilities-modal { position: absolute; top: 0; left: 0; width: 100%; -webkit-transition: background 0.5s ease; transition: background 0.5s ease; }
+.capabilities-modal.is-opened { background: #FFF; }
+.capabilities-modal.is-opened .capabilities-modal__inner { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow-x: hidden; overflow-y: scroll; right: -17px; -webkit-overflow-scrolling: touch; }
+.mac-os .capabilities-modal.is-opened .capabilities-modal__inner { right: -15px; }
+
+.capabilities-modal__content { display: none; padding-bottom: 70px; }
+
+.capabilities-modal__head { position: relative; max-width: 1368px; height: 680px; margin: auto; }
 
 .category { position: absolute; z-index: 1; top: 50%; left: 50%; right: 0; width: 1500px; margin: auto; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); *zoom: 1; }
 .category:after { content: " "; display: table; clear: both; }
@@ -594,7 +606,8 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .contact-item__phone { font-size: 24px; }
 
-.filter { width: 790px; box-sizing: border-box; margin: 0 auto 70px; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; }
+.filter { width: 790px; box-sizing: border-box; margin: 0 auto 70px; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; position: relative; }
+.filter > .deco { position: absolute; top: -100px; left: -140px; }
 
 .object-wrapper { width: 790px; height: 450px; position: relative; margin: 130px auto; }
 .object-wrapper:first-child { margin-top: 0; }

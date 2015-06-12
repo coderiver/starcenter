@@ -18,6 +18,10 @@
         <title>arrow-sm</title><path d="M5 1.845V40H4V1.846L1.644 3.992l-.38.347L.5 3.642l.38-.347L4.12.346l.19-.172L4.5 0l.38.348 3.24 2.95.38.346-.763.695-.38-.35L5 1.845z" fill-rule="evenodd"/>
 </symbol>
 
+<symbol id="icon-figure" viewBox="0 0 55 40">
+        <title>figure</title><path d="M55 21H41v19h-1v-.374L25.44 30H15v-9H0v-1h15V10h10.314L40 .44V0h1v20h14v1zM25 11h-9v18h9V11zm15-9.352l-6.723 4.377L26 10.762v18.392l14 9.256V1.648z" fill-rule="evenodd"/>
+</symbol>
+
 <symbol id="icon-polygon" viewBox="0 0 40 46">
         <title>polygon</title><path d="M19.98 45.498L.5 34.23l.02-22.495L20.02.503 39.5 11.766l-.02 22.5-19.5 11.23z" stroke="#333" fill-rule="evenodd"/>
 </symbol>
@@ -428,28 +432,579 @@
               </div>
             </div>
           </div>
-          <div class="capabilities__inner">
-            <canvas id="morph2"></canvas>
-            <ul class="category is-standby">
-              <li class="category__item"><a href="#/" data-morph-state="circle" data-content-index="0" class="btn btn_category">
-                  <div class="btn__hover">
-                    <div class="btn__hover-in"><span class="btn__hover-text">Арендовать</span></div>
+          <div class="capabilities__container">
+            <div id="catalog2" class="capabilities-modal">
+              <div class="capabilities-modal__inner">
+                <div class="capabilities-modal__head">
+                  <canvas id="morph2"></canvas>
+                  <ul class="category is-standby">
+                    <li class="category__item"><a href="#/" data-morph-state="circle" data-content-index="0" class="btn btn_category">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in"><span class="btn__hover-text">Арендовать</span></div>
+                        </div>
+                        <div class="btn__front"><span>Арендовать</span></div>
+                        <div class="btn__bg btn__bg1"></div></a></li>
+                    <li class="category__item"><a href="#/" data-morph-state="square" data-content-index="1" class="btn btn_category">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in"><span class="btn__hover-text">Купить</span></div>
+                        </div>
+                        <div class="btn__front"><span>Купить</span></div>
+                        <div class="btn__bg btn__bg2"></div></a></li>
+                    <li class="category__item"><a href="#/" data-morph-state="triangle" data-content-index="2" class="btn btn_category"> 
+                        <div class="btn__hover">
+                          <div class="btn__hover-in"><span class="btn__hover-text">Инвестировать</span></div>
+                        </div>
+                        <div class="btn__front"><span>Инвестировать</span></div>
+                        <div class="btn__bg btn__bg3"></div></a></li>
+                  </ul>
+                </div>
+                <div class="capabilities-modal__content">
+                  <div class="filter"><a href="#" class="btn btn_transparent is-active">
+                      <div class="btn__front">Вся недвижимость</div>
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Вся недвижимость</div>
+                      </div></a><a href="#" class="btn btn_transparent">
+                      <div class="btn__front">Комерческая недвижимость</div>
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Комерческая недвижимость</div>
+                      </div></a><a href="#" class="btn btn_transparent">
+                      <div class="btn__front">Жилая недвижимость</div>
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Жилая недвижимость</div>
+                      </div></a></div>
+                  <div class="catalog-content">
+                    <!--BEGIN flagship-->
+                    <div class="object-wrapper">
+                      <div id="flagship2" class="object js-box">
+                        <div class="object__inner">
+                          <div class="object__gallery">
+                            <div class="object__buttons">
+                              <button type="button" class="object__slider-prev"><span>
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg> предыдущее фото</span></button>
+                              <button type="button" class="object__slider-next"><span>следующее фото
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg></span></button>
+                              <button type="button" class="object__close"><span>свернуть объект
+                                                    <svg class="icon icon-arrow-sm">
+                                                      <use xlink:href="#icon-arrow-sm"></use>
+                                                    </svg></span></button>
+                            </div>
+                            <div class="object__slider">
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object3.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object3.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                            </div>
+                            <div class="info table">
+                              <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                              </div>
+                              <div class="info__inner">
+                                <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                                    <div class="btn__hover">
+                                      <div class="btn__hover-in">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div>
+                                    </div>
+                                    <div class="btn__front">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div></a></div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item"><small class="info-item__label">Площадь</small>32 000 М<sup>2</sup></div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
+                                </div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item"><small class="info-item__label">Свободная Площадь</small>2 000 М<sup>2</sup></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="object__detail">
+                            <h4 class="heading heading_red">Выгодное предложение</h4>
+                            <p>
+                              Сейчас действует скидка на 1-ый год аренды размером 
+                              в 25% при подписании договора до начала лета
+                              
+                            </p><a href="#" class="btn btn_link"><span data-hover="Скачать презентацию" class="btn__hover"></span><span>Скачать презентацию</span></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--END flagship-->
+                    <!--BEGIN flagship-->
+                    <div class="object-wrapper"><span class="object-label">Уже <br> про <br> дано</span>
+                      <div id="oceanPlaza2" class="object js-box">
+                        <div class="object__inner">
+                          <div class="object__gallery">
+                            <div class="object__buttons">
+                              <button type="button" class="object__slider-prev"><span>
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg> предыдущее фото</span></button>
+                              <button type="button" class="object__slider-next"><span>следующее фото
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg></span></button>
+                              <button type="button" class="object__close"><span>свернуть объект
+                                                    <svg class="icon icon-arrow-sm">
+                                                      <use xlink:href="#icon-arrow-sm"></use>
+                                                    </svg></span></button>
+                            </div>
+                            <div class="object__slider">
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object3.jpg')" class="object__slide"></div>
+                            </div>
+                            <div class="info table">
+                              <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                              </div>
+                              <div class="info__inner">
+                                <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                                    <div class="btn__hover">
+                                      <div class="btn__hover-in">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div>
+                                    </div>
+                                    <div class="btn__front">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div></a></div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item"><small class="info-item__label">Площадь</small>32 000 М<sup>2</sup></div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
+                                </div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item is-sold"><span class="sold-badge">продано</span><small class="info-item__label">Свободная Площадь</small>0 М<sup>2</sup></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="object__detail">
+                            <h4 class="heading heading_red">Выгодное предложение</h4>
+                            <p>
+                              Сейчас действует скидка на 1-ый год аренды размером 
+                              в 25% при подписании договора до начала лета
+                              
+                            </p><a href="#" class="btn btn_link"><span data-hover="Скачать презентацию" class="btn__hover"></span><span>Скачать презентацию</span></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--END flagship-->
                   </div>
-                  <div class="btn__front"><span>Арендовать</span></div>
-                  <div class="btn__bg btn__bg1"></div></a></li>
-              <li class="category__item"><a href="#/" data-morph-state="square" data-content-index="1" class="btn btn_category">
-                  <div class="btn__hover">
-                    <div class="btn__hover-in"><span class="btn__hover-text">Купить</span></div>
+                </div>
+                <div class="capabilities-modal__content">
+                  <div class="filter">
+                    <div class="deco">
+                      <div class="deco__inner">
+                                          <svg class="icon icon-figure">
+                                            <use xlink:href="#icon-figure"></use>
+                                          </svg>
+                      </div>
+                    </div><a href="#" class="btn btn_transparent is-active">
+                      <div class="btn__front">Вся недвижимость</div>
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Вся недвижимость</div>
+                      </div></a><a href="#" class="btn btn_transparent">
+                      <div class="btn__front">Комерческая недвижимость</div>
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Комерческая недвижимость</div>
+                      </div></a><a href="#" class="btn btn_transparent">
+                      <div class="btn__front">Жилая недвижимость</div>
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Жилая недвижимость</div>
+                      </div></a>
                   </div>
-                  <div class="btn__front"><span>Купить</span></div>
-                  <div class="btn__bg btn__bg2"></div></a></li>
-              <li class="category__item"><a href="#/" data-morph-state="triangle" data-content-index="2" class="btn btn_category"> 
-                  <div class="btn__hover">
-                    <div class="btn__hover-in"><span class="btn__hover-text">Инвестировать</span></div>
+                  <div class="catalog-content">
+                    <!--BEGIN flagship-->
+                    <div class="object-wrapper">
+                      <div id="flagship" class="object js-box">
+                        <div class="object__inner">
+                          <div class="object__gallery">
+                            <div class="object__buttons">
+                              <button type="button" class="object__slider-prev"><span>
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg> предыдущее фото</span></button>
+                              <button type="button" class="object__slider-next"><span>следующее фото
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg></span></button>
+                              <button type="button" class="object__close"><span>свернуть объект
+                                                    <svg class="icon icon-arrow-sm">
+                                                      <use xlink:href="#icon-arrow-sm"></use>
+                                                    </svg></span></button>
+                            </div>
+                            <div class="object__slider">
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object3.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object3.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                            </div>
+                            <div class="info table">
+                              <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                              </div>
+                              <div class="info__inner">
+                                <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                                    <div class="btn__hover">
+                                      <div class="btn__hover-in">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div>
+                                    </div>
+                                    <div class="btn__front">БЦ Flagship<br><small>Київ, вул. Горького, 176</small></div></a></div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item"><small class="info-item__label">Площадь</small>32 000 М<sup>2</sup></div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
+                                </div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item"><small class="info-item__label">Свободная Площадь</small>2 000 М<sup>2</sup></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="object__detail">
+                            <h4 class="heading heading_red">Выгодное предложение</h4>
+                            <p>
+                              Сейчас действует скидка на 1-ый год аренды размером 
+                              в 25% при подписании договора до начала лета
+                              
+                            </p><a href="#" class="btn btn_link"><span data-hover="Скачать презентацию" class="btn__hover"></span><span>Скачать презентацию</span></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--END flagship-->
+                    <!--BEGIN flagship-->
+                    <div class="object-wrapper"><span class="object-label">Уже <br> про <br> дано</span>
+                      <div id="oceanPlaza" class="object js-box">
+                        <div class="object__inner">
+                          <div class="object__gallery">
+                            <div class="object__buttons">
+                              <button type="button" class="object__slider-prev"><span>
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg> предыдущее фото</span></button>
+                              <button type="button" class="object__slider-next"><span>следующее фото
+                                                    <svg class="icon icon-arrow">
+                                                      <use xlink:href="#icon-arrow"></use>
+                                                    </svg></span></button>
+                              <button type="button" class="object__close"><span>свернуть объект
+                                                    <svg class="icon icon-arrow-sm">
+                                                      <use xlink:href="#icon-arrow-sm"></use>
+                                                    </svg></span></button>
+                            </div>
+                            <div class="object__slider">
+                              <div style="background-image:url('img/objects/object4.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object2.jpg')" class="object__slide"></div>
+                              <div style="background-image:url('img/objects/object3.jpg')" class="object__slide"></div>
+                            </div>
+                            <div class="info table">
+                              <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                              </div>
+                              <div class="info__inner">
+                                <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                                    <div class="btn__hover">
+                                      <div class="btn__hover-in">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div>
+                                    </div>
+                                    <div class="btn__front">Ocean Plaza<br><small>Київ, вул. Горького, 176</small></div></a></div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item"><small class="info-item__label">Площадь</small>32 000 М<sup>2</sup></div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Год сдачи</small>2014</div>
+                                </div>
+                                <div class="info__cell info__cell2">
+                                  <div class="info-item"><small class="info-item__label">Этажность</small>5</div>
+                                </div>
+                                <div class="info__cell info__cell3">
+                                  <div class="info-item is-sold"><span class="sold-badge">продано</span><small class="info-item__label">Свободная Площадь</small>0 М<sup>2</sup></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="object__detail">
+                            <h4 class="heading heading_red">Выгодное предложение</h4>
+                            <p>
+                              Сейчас действует скидка на 1-ый год аренды размером 
+                              в 25% при подписании договора до начала лета
+                              
+                            </p><a href="#" class="btn btn_link"><span data-hover="Скачать презентацию" class="btn__hover"></span><span>Скачать презентацию</span></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--END flagship-->
                   </div>
-                  <div class="btn__front"><span>Инвестировать</span></div>
-                  <div class="btn__bg btn__bg3"></div></a></li>
-            </ul>
+                </div>
+                <div class="capabilities-modal__content">
+                  <div class="invest">
+                    <div class="text-block">
+                      <h3 class="heading">Мы честно <br> заявляем</h3>
+                      <p>Раньше мы не практиковали строительство <br> за деньги инвесторов</p>
+                    </div>
+                    <div class="text-block">
+                      <h3 class="heading">И мы понимаем</h3>
+                      <p>
+                        Для Вас это будет выгодно, <br> мы же в свою очередь быстрее все сдадим
+                        
+                      </p>
+                    </div>
+                    <h3 class="heading">Варианты <br> инвестирования</h3>
+                    <div id="invest-variants" class="tabs tabs_mod">
+                      <header class="tabs__head table js-table">
+                        <div class="table__border js-border"><svg width="870" height="161" viewBox="0 0 870 161" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-head-mod
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.508h579v156" class="inner-border"/>
+        <path d="M1.5 1.508h289v156" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.517v157h867" class="outer-border"/>
+            <path d="M1.5 1.517h867v157" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                        </div><a href="#" class="btn btn_tab btn_tab-mod">
+                          <div class="btn__hover">
+                            <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">01</small>Жилая <br> недвижимость</strong></div>
+                          </div>
+                          <div class="btn__front"><strong class="heading"><small class="heading__small-text">01</small>Жилая <br> недвижимость</strong></div></a><a href="#" class="btn btn_tab btn_tab-mod">
+                          <div class="btn__hover">
+                            <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">02</small>Офисная <br> недвижимость</strong></div>
+                          </div>
+                          <div class="btn__front"><strong class="heading"><small class="heading__small-text">02</small>Офисная <br> недвижимость</strong></div></a><a href="#" class="btn btn_tab btn_tab-mod">
+                          <div class="btn__hover">
+                            <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">03</small>ТРЦ и <br> выставочные <br> комплексы</strong></div>
+                          </div>
+                          <div class="btn__front"><strong class="heading"><small class="heading__small-text">03</small>ТРЦ и <br> выставочные <br> комплексы</strong></div></a>
+                      </header>
+                      <div class="tabs__content">
+                        <form name="INVEST_1" class="form table">
+                          <div class="table__border"><svg width="870" height="360" viewBox="0 0 870 360" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form-mod
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v288h867" class="inner-border"/>
+        <path d="M2 .5v236h867" class="inner-border"/>
+        <path d="M1 .5v184h867" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v357h867" class="outer-border"/>
+            <path d="M1.5 1.5h867v357" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                          </div>
+                          <div class="form__contact">
+                            <spam>Загляните к нам на кофе</spam>
+                            <p>Киев <br> Краснозвездный <br> проспект 42</p><span>или оставте свой номер телефона и мы вам перезвоним:  </span>
+                          </div>
+                          <input type="text" name="NAME" placeholder="Ваше имя" class="input">
+                          <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
+                          <button type="submit" class="btn btn_submit">
+                            <div class="btn__hover">
+                              <div class="btn__hover-in">Отправить
+                                                  <svg class="icon icon-arrow">
+                                                    <use xlink:href="#icon-arrow"></use>
+                                                  </svg>
+                              </div>
+                            </div>
+                            <div class="btn__front">Отправить
+                                                <svg class="icon icon-arrow">
+                                                  <use xlink:href="#icon-arrow"></use>
+                                                </svg>
+                            </div>
+                          </button>
+                        </form>
+                      </div>
+                      <div class="tabs__content">
+                        <form name="INVEST_2" class="form table">
+                          <div class="table__border"><svg width="870" height="360" viewBox="0 0 870 360" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form-mod
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v288h867" class="inner-border"/>
+        <path d="M2 .5v236h867" class="inner-border"/>
+        <path d="M1 .5v184h867" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v357h867" class="outer-border"/>
+            <path d="M1.5 1.5h867v357" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                          </div>
+                          <div class="form__contact">
+                            <spam>Загляните к нам на кофе</spam>
+                            <p>Киев <br> Краснозвездный <br> проспект 42</p><span>или оставте свой номер телефона и мы вам перезвоним:  </span>
+                          </div>
+                          <input type="text" name="NAME" placeholder="Ваше имя" class="input">
+                          <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
+                          <button type="submit" class="btn btn_submit">
+                            <div class="btn__hover">
+                              <div class="btn__hover-in">Отправить
+                                                  <svg class="icon icon-arrow">
+                                                    <use xlink:href="#icon-arrow"></use>
+                                                  </svg>
+                              </div>
+                            </div>
+                            <div class="btn__front">Отправить
+                                                <svg class="icon icon-arrow">
+                                                  <use xlink:href="#icon-arrow"></use>
+                                                </svg>
+                            </div>
+                          </button>
+                        </form>
+                      </div>
+                      <div class="tabs__content">
+                        <form name="INVEST_3" class="form table">
+                          <div class="table__border"><svg width="870" height="360" viewBox="0 0 870 360" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form-mod
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v288h867" class="inner-border"/>
+        <path d="M2 .5v236h867" class="inner-border"/>
+        <path d="M1 .5v184h867" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v357h867" class="outer-border"/>
+            <path d="M1.5 1.5h867v357" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                          </div>
+                          <div class="form__contact">
+                            <spam>Загляните к нам на кофе</spam>
+                            <p>Киев <br> Краснозвездный <br> проспект 42</p><span>или оставте свой номер телефона и мы вам перезвоним:  </span>
+                          </div>
+                          <input type="text" name="NAME" placeholder="Ваше имя" class="input">
+                          <input type="tel" name="PHONE" placeholder="Ваше телефон" class="input">
+                          <button type="submit" class="btn btn_submit">
+                            <div class="btn__hover">
+                              <div class="btn__hover-in">Отправить
+                                                  <svg class="icon icon-arrow">
+                                                    <use xlink:href="#icon-arrow"></use>
+                                                  </svg>
+                              </div>
+                            </div>
+                            <div class="btn__front">Отправить
+                                                <svg class="icon icon-arrow">
+                                                  <use xlink:href="#icon-arrow"></use>
+                                                </svg>
+                            </div>
+                          </button>
+                        </form>
+                      </div>
+                      <footer class="tabs__footer">
+                        <div class="tabs__footer-cell">
+                          <p>Будем строить жилые дома <br> и котежди</p>
+                        </div>
+                        <div class="tabs__footer-cell">
+                          <p>Разработаем концепцию и <br> доведем работу до конца</p>
+                        </div>
+                        <div class="tabs__footer-cell">
+                          <p>
+                            Будем развивать торговлю в Украине, 
+                            создавать торговые площадки, то в чем у наших руководителей есть опыт
+                          </p>
+                        </div>
+                      </footer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
         <!--END capabilities-->
@@ -463,9 +1018,9 @@
             <div class="head__text">Па<br>рт<br>не<br>ры</div>
             <div class="deco deco-1">
               <div class="deco__inner">
-                <svg class="icon icon-target">
-                  <use xlink:href="#icon-target"></use>
-                </svg>
+                                  <svg class="icon icon-target">
+                                    <use xlink:href="#icon-target"></use>
+                                  </svg>
               </div>
             </div>
           </div>
@@ -532,15 +1087,15 @@
                   <button type="submit" class="btn btn_submit">
                     <div class="btn__hover">
                       <div class="btn__hover-in">Отправить
-                        <svg class="icon icon-arrow">
-                          <use xlink:href="#icon-arrow"></use>
-                        </svg>
+                                          <svg class="icon icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                          </svg>
                       </div>
                     </div>
                     <div class="btn__front">Отправить
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
+                                        <svg class="icon icon-arrow">
+                                          <use xlink:href="#icon-arrow"></use>
+                                        </svg>
                     </div>
                   </button>
                 </form>
@@ -569,15 +1124,15 @@
                   <button type="submit" class="btn btn_submit">
                     <div class="btn__hover">
                       <div class="btn__hover-in">Отправить
-                        <svg class="icon icon-arrow">
-                          <use xlink:href="#icon-arrow"></use>
-                        </svg>
+                                          <svg class="icon icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                          </svg>
                       </div>
                     </div>
                     <div class="btn__front">Отправить
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
+                                        <svg class="icon icon-arrow">
+                                          <use xlink:href="#icon-arrow"></use>
+                                        </svg>
                     </div>
                   </button>
                 </form>
@@ -606,15 +1161,15 @@
                   <button type="submit" class="btn btn_submit">
                     <div class="btn__hover">
                       <div class="btn__hover-in">Отправить
-                        <svg class="icon icon-arrow">
-                          <use xlink:href="#icon-arrow"></use>
-                        </svg>
+                                          <svg class="icon icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                          </svg>
                       </div>
                     </div>
                     <div class="btn__front">Отправить
-                      <svg class="icon icon-arrow">
-                        <use xlink:href="#icon-arrow"></use>
-                      </svg>
+                                        <svg class="icon icon-arrow">
+                                          <use xlink:href="#icon-arrow"></use>
+                                        </svg>
                     </div>
                   </button>
                 </form>
@@ -644,9 +1199,9 @@
             <div class="head__text">Ко<br>нт<br>ак<br>ты</div>
             <div class="deco deco-1">
               <div class="deco__inner">
-                <svg class="icon icon-target">
-                  <use xlink:href="#icon-target"></use>
-                </svg>
+                                  <svg class="icon icon-target">
+                                    <use xlink:href="#icon-target"></use>
+                                  </svg>
               </div>
             </div>
             <div class="deco deco-2">
@@ -694,15 +1249,15 @@
                       <button type="submit" class="btn btn_submit">
                         <div class="btn__hover">
                           <div class="btn__hover-in">Отправить
-                            <svg class="icon icon-arrow">
-                              <use xlink:href="#icon-arrow"></use>
-                            </svg>
+                                              <svg class="icon icon-arrow">
+                                                <use xlink:href="#icon-arrow"></use>
+                                              </svg>
                           </div>
                         </div>
                         <div class="btn__front">Отправить
-                          <svg class="icon icon-arrow">
-                            <use xlink:href="#icon-arrow"></use>
-                          </svg>
+                                            <svg class="icon icon-arrow">
+                                              <use xlink:href="#icon-arrow"></use>
+                                            </svg>
                         </div>
                       </button>
                     </form>
@@ -722,17 +1277,17 @@
                 <div class="object__gallery">
                   <div class="object__buttons">
                     <button type="button" class="object__slider-prev"><span>
-                        <svg class="icon icon-arrow">
-                          <use xlink:href="#icon-arrow"></use>
-                        </svg> предыдущее фото</span></button>
+                                          <svg class="icon icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                          </svg> предыдущее фото</span></button>
                     <button type="button" class="object__slider-next"><span>следующее фото
-                        <svg class="icon icon-arrow">
-                          <use xlink:href="#icon-arrow"></use>
-                        </svg></span></button>
+                                          <svg class="icon icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                          </svg></span></button>
                     <button type="button" class="object__close"><span>свернуть объект
-                        <svg class="icon icon-arrow-sm">
-                          <use xlink:href="#icon-arrow-sm"></use>
-                        </svg></span></button>
+                                          <svg class="icon icon-arrow-sm">
+                                            <use xlink:href="#icon-arrow-sm"></use>
+                                          </svg></span></button>
                   </div>
                   <div class="object__slider">
                     <div style="background-image:url('img/objects/object1.jpg')" class="object__slide"></div>

@@ -81,10 +81,10 @@ Category.prototype._init = function(initSlide) {
 
     _.clonedItems = $(_.items).clone(true).addClass('clone');
     _.element.append(_.clonedItems);
-    _.element.slick(_.slickOptions);
     setTimeout(function() {
+        _.element.slick(_.slickOptions);
         _.element.slick('slickGoTo', slideIndex);
-    }, 200);
+    }, 0);
 };
 
 

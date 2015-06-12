@@ -107,7 +107,8 @@ app.init = function() {
     app.category2    = new Category('.category', '.category__item');
     app.morph        = new Morph('#morph');
     app.morph2       = new Morph('#morph2');
-    app.topareaModal = new Modal('#catalog', '.catalog__content');
+    app.modal        = new Modal('#catalog', '.catalog__content');
+    app.modal2       = new Modal('#catalog2', '.capabilities-modal__content');
     app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
     app.rootContainer= $('#outer');
     app.scrollmagic  = initScenes();
@@ -198,7 +199,7 @@ app.catalog.opened = false;
 
 app.catalog.open = function(morphState, contentIndex) {
     if ( app.catalog.opened ) return;
-    app.topareaModal.open(contentIndex);
+    app.modal.open(contentIndex);
     app.mainSlider.rollUp();
     app.category.open();
     app.morph.activate(morphState);
@@ -209,7 +210,7 @@ app.catalog.open = function(morphState, contentIndex) {
 
 app.catalog.close = function() {
     if ( !app.catalog.opened ) return;
-    app.topareaModal.close();
+    app.modal.close();
     app.mainSlider.rollDown();
     app.morph.deactivate();
     app.category.close();
@@ -244,6 +245,8 @@ app.catalog2.open = function(btn) {
         setTimeout(function() {
             app.category2.activate();
             app.morph2.fromStandby();
+            app.modal2.open(contentIndex);
+            app.navbar.hidden();
             app.catalog2.opened = true;
         }, timeout);
     }
@@ -251,6 +254,7 @@ app.catalog2.open = function(btn) {
     else {
         setTimeout(function() {
             app.morph2.changeState(state, app.category2.direction);
+            app.modal2.switchContent(contentIndex);
         }, 0);
     }
 };
@@ -259,10 +263,12 @@ app.catalog2.close = function() {
     if ( !app.catalog2.opened ) return;
 
     app.morph2.toStandby();
+    app.modal2.close();
 
     setTimeout(function () {
         app.category2.deactivate();
         app.catalog2.opened = false;
+        app.navbar.visible(null, 800);
     }, 700);
 };
 
@@ -328,7 +334,7 @@ app.initEvents = function() {
         else {
             setTimeout(function() {
                 app.morph.changeState(state, app.category.direction);
-                app.topareaModal.switchContent(contentIndex);
+                app.modal.switchContent(contentIndex);
             }, 0);
         }
     });
@@ -339,11 +345,6 @@ app.initEvents = function() {
         app.catalog.close();
         app.catalog2.close();
     });
-
-
-    // $('.head_capabilities').on('click', function(e) {
-    //     app.catalog2.close();
-    // });
 
     $('.category .btn_category').on('click', function(e) {
         app.catalog2.open($(this));
@@ -42700,10 +42701,10 @@ Category.prototype._init = function(initSlide) {
 
     _.clonedItems = $(_.items).clone(true).addClass('clone');
     _.element.append(_.clonedItems);
-    _.element.slick(_.slickOptions);
     setTimeout(function() {
+        _.element.slick(_.slickOptions);
         _.element.slick('slickGoTo', slideIndex);
-    }, 200);
+    }, 0);
 };
 
 
@@ -43006,7 +43007,7 @@ function Modal(modalSelector, contentSelector) {
     this.winHeight = $(window).height();
     this.opened    = false;
     this.inProgress = false;
-    this.activeContentIndex = 0;
+    this.activeContentIndex = null;
     this.options = {
         zIndex: 97,
         duration: 800,
@@ -43038,6 +43039,7 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
         .add(function() {
             _.inProgress = true;
             _.opened = true;
+            _.activeContentIndex = contentIndex;
             })
         .to(_.el, 0, {
             top: pos.top,
@@ -43128,7 +43130,7 @@ Modal.prototype.switchContent = function(contentIndex, animDur) {
         .fromTo(nextContent, dur, {y: 100, opacity: 0}, {y: 0, opacity: 1})
         .add(function() {
             _.activeContentIndex = contentIndex;
-            });
+            }, '+=0');
 };
 
 

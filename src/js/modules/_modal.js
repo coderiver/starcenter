@@ -11,7 +11,7 @@ function Modal(modalSelector, contentSelector) {
     this.winHeight = $(window).height();
     this.opened    = false;
     this.inProgress = false;
-    this.activeContentIndex = 0;
+    this.activeContentIndex = null;
     this.options = {
         zIndex: 97,
         duration: 800,
@@ -43,6 +43,7 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
         .add(function() {
             _.inProgress = true;
             _.opened = true;
+            _.activeContentIndex = contentIndex;
             })
         .to(_.el, 0, {
             top: pos.top,
@@ -133,7 +134,7 @@ Modal.prototype.switchContent = function(contentIndex, animDur) {
         .fromTo(nextContent, dur, {y: 100, opacity: 0}, {y: 0, opacity: 1})
         .add(function() {
             _.activeContentIndex = contentIndex;
-            });
+            }, '+=0');
 };
 
 

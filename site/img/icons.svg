@@ -8,6 +8,10 @@
         <title>arrow-sm</title><path d="M5 1.845V40H4V1.846L1.644 3.992l-.38.347L.5 3.642l.38-.347L4.12.346l.19-.172L4.5 0l.38.348 3.24 2.95.38.346-.763.695-.38-.35L5 1.845z" fill-rule="evenodd"/>
 </symbol>
 
+<symbol id="icon-figure" viewBox="0 0 55 40">
+        <title>figure</title><path d="M55 21H41v19h-1v-.374L25.44 30H15v-9H0v-1h15V10h10.314L40 .44V0h1v20h14v1zM25 11h-9v18h9V11zm15-9.352l-6.723 4.377L26 10.762v18.392l14 9.256V1.648z" fill-rule="evenodd"/>
+</symbol>
+
 <symbol id="icon-polygon" viewBox="0 0 40 46">
         <title>polygon</title><path d="M19.98 45.498L.5 34.23l.02-22.495L20.02.503 39.5 11.766l-.02 22.5-19.5 11.23z" stroke="#333" fill-rule="evenodd"/>
 </symbol>
