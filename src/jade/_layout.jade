@@ -2,37 +2,37 @@ include _mixins
 doctype html
 html.no-js
   head
-    meta(charset="utf-8")
-    block title
-      title Template
-    meta(name="viewport" content="width=1368")
-    meta(name="format-detection" content="telephone=no")
-    link(rel="stylesheet" media="all" href="css/screen.css")
-    <!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
+    include _head
   body
-    div(style="position: absolute; top: 0; left: 0;")
-      include ../../site/img/icons.svg
+    block icons
+      div(style="position: absolute; top: 0; left: 0;")
+        include ../../site/img/icons.svg
 
-    //BEGIN nav
-    include _nav
-    //END nav
+    block nav
+      //BEGIN nav
+      include _nav
+      //END nav
 
-    //BEGIN header
-    include _header
-    //END header
+    block header
+      //BEGIN header
+      include _header
+      //END header
 
-    //BEGIN outer and inner
-    #outer
-      #inner
-        block content
-      include _footer
-    //END outer and inner
+    block main
+      //BEGIN outer and inner
+      #outer
+        #inner
+          block content
+        include _footer
+      //END outer and inner
 
-    //BEGIN popups
-    include partials/best-offer1.jade
-    include partials/best-offer2.jade
-    include partials/best-offer3.jade
-    //END popups
+    block popups
+      //BEGIN popups
+      include partials/best-offer1.jade
+      include partials/best-offer2.jade
+      include partials/best-offer3.jade
+      //END popups
 
-    //LOAD SCRIPTS
-    script(src="js/main.js")
+    block scripts
+      //LOAD SCRIPTS
+      script(src="js/main.js")

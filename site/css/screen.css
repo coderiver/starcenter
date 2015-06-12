@@ -725,9 +725,12 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .tabs_mod .btn_submit .btn__hover-in { padding-left: 40px; }
 .tabs_mod .btn_submit .btn__front { padding-left: 40px; }
 
-.not-found { width: 790px; margin: 210px auto 200px; box-sizing: border-box; border: 3px solid #333; height: 260px; position: relative; }
+.not-found { height: 100%; height: 100vh; box-sizing: border-box; text-align: center; font-size: 0; white-space: nowrap; overflow: auto; }
+.not-found:before { content: ""; display: inline-block; vertical-align: middle; width: 0; height: 100%; }
 .not-found .btn-back { position: absolute; z-index: 2; bottom: 100%; left: 0; margin-bottom: 10px; }
 .not-found .deco { position: absolute; z-index: 2; top: 100%; right: 25px; margin-top: 20px; }
+
+.not-found__inner { display: inline-block; vertical-align: middle; font-size: 14px; width: 790px; margin: 210px auto 200px; border: 3px solid #333; height: 260px; position: relative; white-space: normal; }
 
 .not-found__triangle { position: absolute; z-index: 0; top: 50%; left: 50%; margin: -311px 0 0 -317px; }
 

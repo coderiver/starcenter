@@ -2243,12 +2243,12 @@ textarea.input
 //---------------------------------------------------------------------------
 
 .not-found
-  width: 790px
-  margin: 210px auto 200px
+  height: 100%
+  height: 100vh
   box-sizing: border-box
-  border: 3px solid $text
-  height: 260px
-  position: relative
+  +vertical
+  white-space: nowrap
+  overflow: auto
 
   .btn-back
     position: absolute
@@ -2263,6 +2263,18 @@ textarea.input
     top: 100%
     right: 25px
     margin-top: 20px
+
+.not-found__inner
+  display: inline-block
+  vertical-align: middle
+  font-size: 14px
+  width: 790px
+  margin: 210px auto 200px
+  border: 3px solid $text
+  height: 260px
+  position: relative
+  white-space: normal
+
 
 
 .not-found__triangle

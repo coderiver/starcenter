@@ -25,7 +25,7 @@ app.router = require('./modules/_routing.js');
 app.scrollDisabled = false;
 app.openedPopup = null;
 app.toparea  = {};
-app.objects  = {};
+// app.objects  = {};
 app.catalog  = {};
 app.catalog2 = {};
 // app.initMap = require('./modules/_map.js');
@@ -128,8 +128,9 @@ app.init = function() {
 
 app.initBoxes = function() {
     $.each($('.js-box'), function(index, el) {
-        var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-        app.objects[ id ] = new Box().init(el);
+        // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+        // app.objects[ id ] = new Box().init(el);
+        new Box().init(el);
     });
 };
 
@@ -409,7 +410,7 @@ app.router.run('#/');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./../../bower_components/sammy/lib/sammy.js":5,"./modules/_box.js":15,"./modules/_canvas.js":16,"./modules/_category.js":17,"./modules/_main-slider.js":18,"./modules/_modal.js":19,"./modules/_navbar.js":20,"./modules/_routing.js":21,"./modules/_scroll-scenes.js":22,"./modules/_tabs.js":23,"TimelineLite":7,"gsap":9,"gsap-scrollToPlugin":10,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
+},{"./../../bower_components/jquery/dist/jquery.js":2,"./../../bower_components/modernizr/modernizr.js":3,"./../../bower_components/sammy/lib/sammy.js":5,"./modules/_box.js":14,"./modules/_canvas.js":15,"./modules/_category.js":16,"./modules/_main-slider.js":17,"./modules/_modal.js":18,"./modules/_navbar.js":19,"./modules/_routing.js":20,"./modules/_scroll-scenes.js":21,"./modules/_tabs.js":22,"TimelineLite":7,"gsap":9,"gsap-scrollToPlugin":10,"jquery-mousewheel":11,"scrollmagic":12}],2:[function(require,module,exports){
 (function (global){
 ; var __browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 /*!
@@ -40289,317 +40290,6 @@ var _gsScope = (typeof(module) !== "undefined" && module.exports && typeof(globa
 	return ScrollMagic;
 }));
 },{}],13:[function(require,module,exports){
-/*!
- * ScrollMagic v2.0.5 (2015-04-29)
- * The javascript library for magical scroll interactions.
- * (c) 2015 Jan Paepke (@janpaepke)
- * Project Website: http://scrollmagic.io
- * 
- * @version 2.0.5
- * @license Dual licensed under MIT license and GPL.
- * @author Jan Paepke - e-mail@janpaepke.de
- *
- * @file ScrollMagic GSAP Animation Plugin.
- *
- * requires: GSAP ~1.14
- * Powered by the Greensock Animation Platform (GSAP): http://www.greensock.com/js
- * Greensock License info at http://www.greensock.com/licensing/
- */
-/**
- * This plugin is meant to be used in conjunction with the Greensock Animation Plattform.  
- * It offers an easy API to trigger Tweens or synchronize them to the scrollbar movement.
- *
- * Both the `lite` and the `max` versions of the GSAP library are supported.  
- * The most basic requirement is `TweenLite`.
- * 
- * To have access to this extension, please include `plugins/animation.gsap.js`.
- * @requires {@link http://greensock.com/gsap|GSAP ~1.14.x}
- * @mixin animation.GSAP
- */
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define(['ScrollMagic', 'TweenMax', 'TimelineMax'], factory);
-	} else if (typeof exports === 'object') {
-		// CommonJS
-		// Loads whole gsap package onto global scope.
-		require('gsap');
-		factory(require('scrollmagic'), TweenMax, TimelineMax);
-	} else {
-		// Browser globals
-		factory(root.ScrollMagic || (root.jQuery && root.jQuery.ScrollMagic), root.TweenMax || root.TweenLite, root.TimelineMax || root.TimelineLite);
-	}
-}(this, function (ScrollMagic, Tween, Timeline) {
-	"use strict";
-	var NAMESPACE = "animation.gsap";
-
-	var
-	console = window.console || {},
-		err = Function.prototype.bind.call(console.error || console.log ||
-		function () {}, console);
-	if (!ScrollMagic) {
-		err("(" + NAMESPACE + ") -> ERROR: The ScrollMagic main module could not be found. Please make sure it's loaded before this plugin or use an asynchronous loader like requirejs.");
-	}
-	if (!Tween) {
-		err("(" + NAMESPACE + ") -> ERROR: TweenLite or TweenMax could not be found. Please make sure GSAP is loaded before ScrollMagic or use an asynchronous loader like requirejs.");
-	}
-
-/*
-	 * ----------------------------------------------------------------
-	 * Extensions for Scene
-	 * ----------------------------------------------------------------
-	 */
-	/**
-	 * Every instance of ScrollMagic.Scene now accepts an additional option.  
-	 * See {@link ScrollMagic.Scene} for a complete list of the standard options.
-	 * @memberof! animation.GSAP#
-	 * @method new ScrollMagic.Scene(options)
-	 * @example
-	 * var scene = new ScrollMagic.Scene({tweenChanges: true});
-	 *
-	 * @param {object} [options] - Options for the Scene. The options can be updated at any time.
-	 * @param {boolean} [options.tweenChanges=false] - Tweens Animation to the progress target instead of setting it.  
-	 Does not affect animations where duration is `0`.
-	 */
-	/**
-	 * **Get** or **Set** the tweenChanges option value.  
-	 * This only affects scenes with a duration. If `tweenChanges` is `true`, the progress update when scrolling will not be immediate, but instead the animation will smoothly animate to the target state.  
-	 * For a better understanding, try enabling and disabling this option in the [Scene Manipulation Example](../examples/basic/scene_manipulation.html).
-	 * @memberof! animation.GSAP#
-	 * @method Scene.tweenChanges
-	 * 
-	 * @example
-	 * // get the current tweenChanges option
-	 * var tweenChanges = scene.tweenChanges();
-	 *
-	 * // set new tweenChanges option
-	 * scene.tweenChanges(true);
-	 *
-	 * @fires {@link Scene.change}, when used as setter
-	 * @param {boolean} [newTweenChanges] - The new tweenChanges setting of the scene.
-	 * @returns {boolean} `get` -  Current tweenChanges option value.
-	 * @returns {Scene} `set` -  Parent object for chaining.
-	 */
-	// add option (TODO: DOC (private for dev))
-	ScrollMagic.Scene.addOption("tweenChanges", // name
-	false, // default
-
-
-	function (val) { // validation callback
-		return !!val;
-	});
-	// extend scene
-	ScrollMagic.Scene.extend(function () {
-		var Scene = this,
-			_tween;
-
-		var log = function () {
-			if (Scene._log) { // not available, when main source minified
-				Array.prototype.splice.call(arguments, 1, 0, "(" + NAMESPACE + ")", "->");
-				Scene._log.apply(this, arguments);
-			}
-		};
-
-		// set listeners
-		Scene.on("progress.plugin_gsap", function () {
-			updateTweenProgress();
-		});
-		Scene.on("destroy.plugin_gsap", function (e) {
-			Scene.removeTween(e.reset);
-		});
-
-		/**
-		 * Update the tween progress to current position.
-		 * @private
-		 */
-		var updateTweenProgress = function () {
-			if (_tween) {
-				var
-				progress = Scene.progress(),
-					state = Scene.state();
-				if (_tween.repeat && _tween.repeat() === -1) {
-					// infinite loop, so not in relation to progress
-					if (state === 'DURING' && _tween.paused()) {
-						_tween.play();
-					} else if (state !== 'DURING' && !_tween.paused()) {
-						_tween.pause();
-					}
-				} else if (progress != _tween.progress()) { // do we even need to update the progress?
-					// no infinite loop - so should we just play or go to a specific point in time?
-					if (Scene.duration() === 0) {
-						// play the animation
-						if (progress > 0) { // play from 0 to 1
-							_tween.play();
-						} else { // play from 1 to 0
-							_tween.reverse();
-						}
-					} else {
-						// go to a specific point in time
-						if (Scene.tweenChanges() && _tween.tweenTo) {
-							// go smooth
-							_tween.tweenTo(progress * _tween.duration());
-						} else {
-							// just hard set it
-							_tween.progress(progress).pause();
-						}
-					}
-				}
-			}
-		};
-
-		/**
-		 * Add a tween to the scene.  
-		 * If you want to add multiple tweens, add them into a GSAP Timeline object and supply it instead (see example below).  
-		 * 
-		 * If the scene has a duration, the tween's duration will be projected to the scroll distance of the scene, meaning its progress will be synced to scrollbar movement.  
-		 * For a scene with a duration of `0`, the tween will be triggered when scrolling forward past the scene's trigger position and reversed, when scrolling back.  
-		 * To gain better understanding, check out the [Simple Tweening example](../examples/basic/simple_tweening.html).
-		 *
-		 * Instead of supplying a tween this method can also be used as a shorthand for `TweenMax.to()` (see example below).
-		 * @memberof! animation.GSAP#
-		 *
-		 * @example
-		 * // add a single tween directly
-		 * scene.setTween(TweenMax.to("obj"), 1, {x: 100});
-		 *
-		 * // add a single tween via variable
-		 * var tween = TweenMax.to("obj"), 1, {x: 100};
-		 * scene.setTween(tween);
-		 *
-		 * // add multiple tweens, wrapped in a timeline.
-		 * var timeline = new TimelineMax();
-		 * var tween1 = TweenMax.from("obj1", 1, {x: 100});
-		 * var tween2 = TweenMax.to("obj2", 1, {y: 100});
-		 * timeline
-		 *		.add(tween1)
-		 *		.add(tween2);
-		 * scene.addTween(timeline);
-		 *
-		 * // short hand to add a TweenMax.to() tween
-		 * scene.setTween("obj3", 0.5, {y: 100});
-		 *
-		 * // short hand to add a TweenMax.to() tween for 1 second
-		 * // this is useful, when the scene has a duration and the tween duration isn't important anyway
-		 * scene.setTween("obj3", {y: 100});
-		 *
-		 * @param {(object|string)} TweenObject - A TweenMax, TweenLite, TimelineMax or TimelineLite object that should be animated in the scene. Can also be a Dom Element or Selector, when using direct tween definition (see examples).
-		 * @param {(number|object)} duration - A duration for the tween, or tween parameters. If an object containing parameters are supplied, a default duration of 1 will be used.
-		 * @param {object} params - The parameters for the tween
-		 * @returns {Scene} Parent object for chaining.
-		 */
-		Scene.setTween = function (TweenObject, duration, params) {
-			var newTween;
-			if (arguments.length > 1) {
-				if (arguments.length < 3) {
-					params = duration;
-					duration = 1;
-				}
-				TweenObject = Tween.to(TweenObject, duration, params);
-			}
-			try {
-				// wrap Tween into a Timeline Object if available to include delay and repeats in the duration and standardize methods.
-				if (Timeline) {
-					newTween = new Timeline({
-						smoothChildTiming: true
-					}).add(TweenObject);
-				} else {
-					newTween = TweenObject;
-				}
-				newTween.pause();
-			} catch (e) {
-				log(1, "ERROR calling method 'setTween()': Supplied argument is not a valid TweenObject");
-				return Scene;
-			}
-			if (_tween) { // kill old tween?
-				Scene.removeTween();
-			}
-			_tween = newTween;
-
-			// some properties need to be transferred it to the wrapper, otherwise they would get lost.
-			if (TweenObject.repeat && TweenObject.repeat() === -1) { // TweenMax or TimelineMax Object?
-				_tween.repeat(-1);
-				_tween.yoyo(TweenObject.yoyo());
-			}
-			// Some tween validations and debugging helpers
-			if (Scene.tweenChanges() && !_tween.tweenTo) {
-				log(2, "WARNING: tweenChanges will only work if the TimelineMax object is available for ScrollMagic.");
-			}
-
-			// check if there are position tweens defined for the trigger and warn about it :)
-			if (_tween && Scene.controller() && Scene.triggerElement() && Scene.loglevel() >= 2) { // controller is needed to know scroll direction.
-				var
-				triggerTweens = Tween.getTweensOf(Scene.triggerElement()),
-					vertical = Scene.controller().info("vertical");
-				triggerTweens.forEach(function (value, index) {
-					var
-					tweenvars = value.vars.css || value.vars,
-						condition = vertical ? (tweenvars.top !== undefined || tweenvars.bottom !== undefined) : (tweenvars.left !== undefined || tweenvars.right !== undefined);
-					if (condition) {
-						log(2, "WARNING: Tweening the position of the trigger element affects the scene timing and should be avoided!");
-						return false;
-					}
-				});
-			}
-
-			// warn about tween overwrites, when an element is tweened multiple times
-			if (parseFloat(TweenLite.version) >= 1.14) { // onOverwrite only present since GSAP v1.14.0
-				var
-				list = _tween.getChildren ? _tween.getChildren(true, true, false) : [_tween],
-					// get all nested tween objects
-					newCallback = function () {
-						log(2, "WARNING: tween was overwritten by another. To learn how to avoid this issue see here: https://github.com/janpaepke/ScrollMagic/wiki/WARNING:-tween-was-overwritten-by-another");
-					};
-				for (var i = 0, thisTween, oldCallback; i < list.length; i++) { /*jshint loopfunc: true */
-					thisTween = list[i];
-					if (oldCallback !== newCallback) { // if tweens is added more than once
-						oldCallback = thisTween.vars.onOverwrite;
-						thisTween.vars.onOverwrite = function () {
-							if (oldCallback) {
-								oldCallback.apply(this, arguments);
-							}
-							newCallback.apply(this, arguments);
-						};
-					}
-				}
-			}
-			log(3, "added tween");
-
-			updateTweenProgress();
-			return Scene;
-		};
-
-		/**
-		 * Remove the tween from the scene.  
-		 * This will terminate the control of the Scene over the tween.
-		 *
-		 * Using the reset option you can decide if the tween should remain in the current state or be rewound to set the target elements back to the state they were in before the tween was added to the scene.
-		 * @memberof! animation.GSAP#
-		 *
-		 * @example
-		 * // remove the tween from the scene without resetting it
-		 * scene.removeTween();
-		 *
-		 * // remove the tween from the scene and reset it to initial position
-		 * scene.removeTween(true);
-		 *
-		 * @param {boolean} [reset=false] - If `true` the tween will be reset to its initial values.
-		 * @returns {Scene} Parent object for chaining.
-		 */
-		Scene.removeTween = function (reset) {
-			if (_tween) {
-				if (reset) {
-					_tween.progress(0).pause();
-				}
-				_tween.kill();
-				_tween = undefined;
-				log(3, "removed tween (reset: " + (reset ? "true" : "false") + ")");
-			}
-			return Scene;
-		};
-
-	});
-}));
-},{"gsap":9,"scrollmagic":12}],14:[function(require,module,exports){
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/sole/tween.js
@@ -41357,7 +41047,7 @@ TWEEN.Interpolation = {
 };
 
 module.exports=TWEEN;
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
@@ -41723,7 +41413,7 @@ Box.prototype.close = function() {
 
 
 module.exports = Box;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],16:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],15:[function(require,module,exports){
 var paper = require("./../../../bower_components/paper/dist/paper-full.js");
 var $     = require("./../../../bower_components/jquery/dist/jquery.js");
 var TWEEN = require('tween.js');
@@ -42617,7 +42307,7 @@ Morph.prototype.fadeFrontGroup = function(opacity, fadeDur) {
 };
 
 module.exports = Morph;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"TimelineLite":7,"gsap":9,"tween.js":14}],17:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/paper/dist/paper-full.js":4,"TimelineLite":7,"gsap":9,"tween.js":13}],16:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
@@ -42854,7 +42544,7 @@ Category.prototype.deactivate = function(duration, delay) {
 
 
 module.exports = Category;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],18:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],17:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/slick-carousel/slick/slick.min.js");
 require('gsap');
@@ -42993,7 +42683,7 @@ MainSlider.prototype.rollDown = function(duration) {
 module.exports = MainSlider;
 
 
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],19:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/slick-carousel/slick/slick.min.js":6,"TimelineLite":7,"gsap":9}],18:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 require('gsap');
 require('TimelineLite');
@@ -43135,7 +42825,7 @@ Modal.prototype.switchContent = function(contentIndex, animDur) {
 
 
 module.exports = Modal;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9}],20:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9}],19:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 // require('jquery-mousewheel')($);
 require('gsap');
@@ -43332,7 +43022,7 @@ Navbar.prototype.visible = function(animDur, animDelay) {
 
 
 module.exports = Navbar;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"gsap-scrollToPlugin":10,"scrollmagic":12}],21:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"gsap":9,"gsap-scrollToPlugin":10,"scrollmagic":12}],20:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require("./../../../bower_components/sammy/lib/sammy.js");
 var Box = require('./_box.js');
@@ -43416,8 +43106,9 @@ function catalogCategoryController(context, loaded) {
                 var tabs2 = container.find('#invest-variants');
 
                 box.each(function(index, el) {
-                    var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-                    app.objects[ id ] = new Box().init(el);
+                    // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+                    // app.objects[ id ] = new Box().init(el);
+                    new Box().init(el);
                 });
 
                 if ( tabs2.length ) {
@@ -43458,13 +43149,13 @@ function catalogCategoryController(context, loaded) {
 
 
 module.exports = router;
-},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5,"./_box.js":15,"./_tabs.js":23,"scrollmagic":12}],22:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"./../../../bower_components/sammy/lib/sammy.js":5,"./_box.js":14,"./_tabs.js":22,"scrollmagic":12}],21:[function(require,module,exports){
 require("./../../../bower_components/jquery/dist/jquery.js");
 require('gsap');
 require('TimelineLite');
 
 var ScrollMagic = require('scrollmagic');
-require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
+// require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
 
 module.exports = function() {
 
@@ -43484,7 +43175,6 @@ module.exports = function() {
     };
     scrollmagic.toparea.scene = new ScrollMagic.Scene({
         duration: 300,
-        // offset: 300,
         triggerElement: scrollmagic.toparea.el[0],
         triggerHook: 'onLeave',
         loglevel: 1
@@ -43636,11 +43326,6 @@ module.exports = function() {
         var img  = $(el).find('.head__img'),
             text = $(el).find('.head__text');
 
-        // var tween = new TimelineLite().add([
-        //     TweenMax.fromTo(img,  1, {y: 200}, {y: 0,  ease: Linear.easeNone}),
-        //     TweenMax.fromTo(text, 1, {y: 250}, {y: -250,  ease: Linear.easeNone})
-        //     ]);
-
         TweenMax.set(img,  {bottom: -100});
         TweenMax.set(text, {bottom: -150});
 
@@ -43651,7 +43336,6 @@ module.exports = function() {
             triggerHook: 'onEnter',
             loglevel: 1
         })
-            // .setTween(tween)
             .on('progress', function(e) {
                 var progressImg  = (100 * e.progress).toFixed(1);
                 var progressText = (300 * e.progress).toFixed(1);
@@ -43682,7 +43366,7 @@ module.exports = function() {
 
     return scrollmagic;
 };
-},{"../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js":13,"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"scrollmagic":12}],23:[function(require,module,exports){
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"scrollmagic":12}],22:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
 
 function Tabs(wrapper, tabButton, tabContent) {

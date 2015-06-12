@@ -3,7 +3,7 @@ require('gsap');
 require('TimelineLite');
 
 var ScrollMagic = require('scrollmagic');
-require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
+// require('../../../node_modules/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
 
 module.exports = function() {
 
@@ -23,7 +23,6 @@ module.exports = function() {
     };
     scrollmagic.toparea.scene = new ScrollMagic.Scene({
         duration: 300,
-        // offset: 300,
         triggerElement: scrollmagic.toparea.el[0],
         triggerHook: 'onLeave',
         loglevel: 1
@@ -175,11 +174,6 @@ module.exports = function() {
         var img  = $(el).find('.head__img'),
             text = $(el).find('.head__text');
 
-        // var tween = new TimelineLite().add([
-        //     TweenMax.fromTo(img,  1, {y: 200}, {y: 0,  ease: Linear.easeNone}),
-        //     TweenMax.fromTo(text, 1, {y: 250}, {y: -250,  ease: Linear.easeNone})
-        //     ]);
-
         TweenMax.set(img,  {bottom: -100});
         TweenMax.set(text, {bottom: -150});
 
@@ -190,7 +184,6 @@ module.exports = function() {
             triggerHook: 'onEnter',
             loglevel: 1
         })
-            // .setTween(tween)
             .on('progress', function(e) {
                 var progressImg  = (100 * e.progress).toFixed(1);
                 var progressText = (300 * e.progress).toFixed(1);

@@ -81,8 +81,9 @@ function catalogCategoryController(context, loaded) {
                 var tabs2 = container.find('#invest-variants');
 
                 box.each(function(index, el) {
-                    var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-                    app.objects[ id ] = new Box().init(el);
+                    // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+                    // app.objects[ id ] = new Box().init(el);
+                    new Box().init(el);
                 });
 
                 if ( tabs2.length ) {

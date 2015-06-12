@@ -23,7 +23,7 @@ app.router = require('./modules/_routing.js');
 app.scrollDisabled = false;
 app.openedPopup = null;
 app.toparea  = {};
-app.objects  = {};
+// app.objects  = {};
 app.catalog  = {};
 app.catalog2 = {};
 // app.initMap = require('./modules/_map.js');
@@ -126,8 +126,9 @@ app.init = function() {
 
 app.initBoxes = function() {
     $.each($('.js-box'), function(index, el) {
-        var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-        app.objects[ id ] = new Box().init(el);
+        // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+        // app.objects[ id ] = new Box().init(el);
+        new Box().init(el);
     });
 };
 
