@@ -78,16 +78,16 @@ module.exports = function() {
         offset: -200,
         scene: null
     };
-    scrollmagic.tabs = {
-        el: $('.tabs')[0],
-        duration: 800,
-        offset: -100,
-        scene: null
-    };
+    // scrollmagic.tabs = {
+    //     el: $('.tabs')[0],
+    //     duration: 800,
+    //     offset: -100,
+    //     scene: null
+    // };
     $([ scrollmagic.factsText,
         scrollmagic.factsGroup1,
         scrollmagic.factsGroup2,
-        scrollmagic.tabs
+        // scrollmagic.tabs
         ]).each(function(index, item) {
             item.scene = new ScrollMagic.Scene({
                 duration: item.duration || 0,
@@ -99,6 +99,18 @@ module.exports = function() {
                 .setClassToggle(item.el, 'is-animate')
                 .addTo(scrollmagic.controller);
     });
+
+    // $.each($('.tabs'), function(index, el) {
+    //     new ScrollMagic.Scene({
+    //         duration: 800,
+    //         offset: -100,
+    //         triggerElement: el,
+    //         triggerHook: 'onCenter',
+    //         loglevel: 1
+    //     })
+    //         .setClassToggle(el, 'is-animate')
+    //         .addTo(scrollmagic.controller);
+    // })
 
 
 

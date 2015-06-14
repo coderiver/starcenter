@@ -1,3 +1,4 @@
+// require('pace').start();
 var $ = require('jquery');
 require('sammy');
 require('jquery-mousewheel')($);
@@ -19,7 +20,6 @@ var initScenes = require('./modules/_scroll-scenes.js');
 
 global.app = {};
 app.router = require('./modules/_routing.js');
-
 app.scrollDisabled = false;
 app.openedPopup = null;
 app.toparea  = {};
@@ -107,20 +107,30 @@ app.init = function() {
     app.morph2       = new Morph('#morph2');
     app.modal        = new Modal('#catalog', '.catalog__content');
     app.modal2       = new Modal('#catalog2', '.capabilities-modal__content');
-    app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
+    // app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
     app.rootContainer= $('#outer');
     app.scrollmagic  = initScenes();
     app.navbar       = new Navbar();
 
     app.mainSlider.init();
+    app.mainSlider.pause();
     app.morph.init();
-    app.tabs.init();
+    // app.tabs.init();
     app.initBoxes();
+    app.initTabs();
     app.initPopupEvents();
     app.initPopupSlider();
     app.navbar.init();
+    app.navbar.hidden();
+    app.category.toggleHidden();
     app.category2.initSlider(1);
     app.morph2.init().initStandby('square');
+
+    Pace.on('done', function() {
+        app.mainSlider.play();
+        app.navbar.visible(null, 1200);
+        app.category.toggleHidden();
+    });
 
 };
 
@@ -129,6 +139,12 @@ app.initBoxes = function() {
         // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
         // app.objects[ id ] = new Box().init(el);
         new Box().init(el);
+    });
+};
+
+app.initTabs = function() {
+    $.each($('.tabs'), function(index, el) {
+        new Tabs(el).init();
     });
 };
 
@@ -317,11 +333,6 @@ app.toparea.toggle = function() {
 //------------------------------------------------------------------------------
 
 app.initEvents = function() {
-
-    app.scrollmagic.tabs.scene.on('start end', function(e) {
-        if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
-    });
-
 
     $('.catalog-btn').on('click', function(e) {
         var state = $(this).data('morph-state'),

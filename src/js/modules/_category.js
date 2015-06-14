@@ -42,7 +42,10 @@ function Category(element, itemSelector) {
         slidesToShow: 3,
         respondTo: 'slider'
     };
+
     this._initEvents();
+
+    return this;
 }
 
 

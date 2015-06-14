@@ -78,7 +78,7 @@ function catalogCategoryController(context, loaded) {
                 container.html(content);
 
                 var box = container.find('.js-box');
-                var tabs2 = container.find('#invest-variants');
+                var tabs = container.find('.tabs');
 
                 box.each(function(index, el) {
                     // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
@@ -86,31 +86,10 @@ function catalogCategoryController(context, loaded) {
                     new Box().init(el);
                 });
 
-                if ( tabs2.length ) {
-                    app.tabs2 = new Tabs('#invest-variants', '.btn_tab', '.tabs__content').init();
-
-                    app.scrollmagic.tabs2 = {
-                        el: tabs2,
-                        borders: tabs2.find('.js-table'),
-                        duration: 800,
-                        offset: -100,
-                        scene: null
-                    };
-                    app.scrollmagic.tabs2.scene = new ScrollMagic.Scene({
-                        // duration: 800,
-                        offset: -100,
-                        triggerElement: app.scrollmagic.tabs2.el[0],
-                        triggerHook: 'onCenter',
-                        loglevel: 1
-                    })
-                        .on('start', function(e) {
-                            if ( app.catalog.opened ) {
-                                $.each([app.scrollmagic.tabs2.el, app.scrollmagic.tabs2.borders], function() {
-                                    $(this).addClass('is-animate');
-                                });
-                            }
-                        })
-                        .addTo(app.scrollmagic.controller);
+                if ( tabs.length ) {
+                    $.each(tabs, function(index, el) {
+                        new Tabs(el).init();
+                    });
                 }
 
                 loaded[ category ] = true;

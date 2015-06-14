@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
+// require('pace').start();
 var $ = require("./../../bower_components/jquery/dist/jquery.js");
 require("./../../bower_components/sammy/lib/sammy.js");
 require('jquery-mousewheel')($);
@@ -21,7 +22,6 @@ var initScenes = require('./modules/_scroll-scenes.js');
 
 global.app = {};
 app.router = require('./modules/_routing.js');
-
 app.scrollDisabled = false;
 app.openedPopup = null;
 app.toparea  = {};
@@ -109,20 +109,30 @@ app.init = function() {
     app.morph2       = new Morph('#morph2');
     app.modal        = new Modal('#catalog', '.catalog__content');
     app.modal2       = new Modal('#catalog2', '.capabilities-modal__content');
-    app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
+    // app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
     app.rootContainer= $('#outer');
     app.scrollmagic  = initScenes();
     app.navbar       = new Navbar();
 
     app.mainSlider.init();
+    app.mainSlider.pause();
     app.morph.init();
-    app.tabs.init();
+    // app.tabs.init();
     app.initBoxes();
+    app.initTabs();
     app.initPopupEvents();
     app.initPopupSlider();
     app.navbar.init();
+    app.navbar.hidden();
+    app.category.toggleHidden();
     app.category2.initSlider(1);
     app.morph2.init().initStandby('square');
+
+    Pace.on('done', function() {
+        app.mainSlider.play();
+        app.navbar.visible(null, 1200);
+        app.category.toggleHidden();
+    });
 
 };
 
@@ -131,6 +141,12 @@ app.initBoxes = function() {
         // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
         // app.objects[ id ] = new Box().init(el);
         new Box().init(el);
+    });
+};
+
+app.initTabs = function() {
+    $.each($('.tabs'), function(index, el) {
+        new Tabs(el).init();
     });
 };
 
@@ -319,11 +335,6 @@ app.toparea.toggle = function() {
 //------------------------------------------------------------------------------
 
 app.initEvents = function() {
-
-    app.scrollmagic.tabs.scene.on('start end', function(e) {
-        if ( app.tabs.activeTab !== null ) app.tabs.hideContent();
-    });
-
 
     $('.catalog-btn').on('click', function(e) {
         var state = $(this).data('morph-state'),
@@ -42352,7 +42363,10 @@ function Category(element, itemSelector) {
         slidesToShow: 3,
         respondTo: 'slider'
     };
+
     this._initEvents();
+
+    return this;
 }
 
 
@@ -43103,7 +43117,7 @@ function catalogCategoryController(context, loaded) {
                 container.html(content);
 
                 var box = container.find('.js-box');
-                var tabs2 = container.find('#invest-variants');
+                var tabs = container.find('.tabs');
 
                 box.each(function(index, el) {
                     // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
@@ -43111,31 +43125,10 @@ function catalogCategoryController(context, loaded) {
                     new Box().init(el);
                 });
 
-                if ( tabs2.length ) {
-                    app.tabs2 = new Tabs('#invest-variants', '.btn_tab', '.tabs__content').init();
-
-                    app.scrollmagic.tabs2 = {
-                        el: tabs2,
-                        borders: tabs2.find('.js-table'),
-                        duration: 800,
-                        offset: -100,
-                        scene: null
-                    };
-                    app.scrollmagic.tabs2.scene = new ScrollMagic.Scene({
-                        // duration: 800,
-                        offset: -100,
-                        triggerElement: app.scrollmagic.tabs2.el[0],
-                        triggerHook: 'onCenter',
-                        loglevel: 1
-                    })
-                        .on('start', function(e) {
-                            if ( app.catalog.opened ) {
-                                $.each([app.scrollmagic.tabs2.el, app.scrollmagic.tabs2.borders], function() {
-                                    $(this).addClass('is-animate');
-                                });
-                            }
-                        })
-                        .addTo(app.scrollmagic.controller);
+                if ( tabs.length ) {
+                    $.each(tabs, function(index, el) {
+                        new Tabs(el).init();
+                    });
                 }
 
                 loaded[ category ] = true;
@@ -43230,16 +43223,16 @@ module.exports = function() {
         offset: -200,
         scene: null
     };
-    scrollmagic.tabs = {
-        el: $('.tabs')[0],
-        duration: 800,
-        offset: -100,
-        scene: null
-    };
+    // scrollmagic.tabs = {
+    //     el: $('.tabs')[0],
+    //     duration: 800,
+    //     offset: -100,
+    //     scene: null
+    // };
     $([ scrollmagic.factsText,
         scrollmagic.factsGroup1,
         scrollmagic.factsGroup2,
-        scrollmagic.tabs
+        // scrollmagic.tabs
         ]).each(function(index, item) {
             item.scene = new ScrollMagic.Scene({
                 duration: item.duration || 0,
@@ -43251,6 +43244,18 @@ module.exports = function() {
                 .setClassToggle(item.el, 'is-animate')
                 .addTo(scrollmagic.controller);
     });
+
+    // $.each($('.tabs'), function(index, el) {
+    //     new ScrollMagic.Scene({
+    //         duration: 800,
+    //         offset: -100,
+    //         triggerElement: el,
+    //         triggerHook: 'onCenter',
+    //         loglevel: 1
+    //     })
+    //         .setClassToggle(el, 'is-animate')
+    //         .addTo(scrollmagic.controller);
+    // })
 
 
 
@@ -43368,11 +43373,13 @@ module.exports = function() {
 };
 },{"./../../../bower_components/jquery/dist/jquery.js":2,"TimelineLite":7,"gsap":9,"scrollmagic":12}],22:[function(require,module,exports){
 var $ = require("./../../../bower_components/jquery/dist/jquery.js");
+var ScrollMagic = require('scrollmagic');
 
 function Tabs(wrapper, tabButton, tabContent) {
     this.wrapper = $(wrapper);
-    this.button  = this.wrapper.find(tabButton);
-    this.content = this.wrapper.find(tabContent);
+    this.button  = this.wrapper.find(tabButton || '.btn_tab');
+    this.content = this.wrapper.find(tabContent || '.tabs__content');
+    // this.borders = this.wrapper.find('.js-table');
     this.activeTab = null;
     this.canSwitch = true;
     this.options = {
@@ -43423,6 +43430,29 @@ Tabs.prototype._initEvents = function() {
     });
 };
 
+Tabs.prototype._toggleBorder = function() {
+    var _ = this;
+    var border = $(_.content[_.activeTab]).find('.table__border');
+    border.toggleClass(_.options.animClass);
+};
+
+Tabs.prototype._buildScene = function() {
+    var _ = this;
+
+    new ScrollMagic.Scene({
+        duration: '100%',
+        offset: -100,
+        triggerElement: _.wrapper[0],
+        triggerHook: 'onCenter',
+        loglevel: 1
+    })
+        .on('start end', function(e) {
+            if ( _.activeTab !== null ) _.hideContent();
+        })
+        .setClassToggle(_.wrapper[0], _.options.animClass)
+        .addTo(app.scrollmagic.controller);
+};
+
 Tabs.prototype.showContent = function(tabNumber) {
     var _       = this,
         button  = $(_.button[tabNumber]),
@@ -43463,22 +43493,17 @@ Tabs.prototype.hideContent = function() {
     _.activeTab = null;
 };
 
-Tabs.prototype._toggleBorder = function() {
-    var _ = this;
-    var border = $(_.content[_.activeTab]).find('.table__border');
-    border.toggleClass(_.options.animClass);
-};
-
 Tabs.prototype.init = function() {
     var _ = this;
     _._initEvents();
+    _._buildScene();
 
     return this;
 };
 
 
 module.exports = Tabs;
-},{"./../../../bower_components/jquery/dist/jquery.js":2}]},{},[1])
+},{"./../../../bower_components/jquery/dist/jquery.js":2,"scrollmagic":12}]},{},[1])
 
 
 //# sourceMappingURL=main.js.map

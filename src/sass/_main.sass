@@ -1293,13 +1293,7 @@ textarea.input
     visibility: visible
     pointer-events: auto
     .table__border
-      stroke-dashoffset: 0
-      .outer-border
-        transition-duration: 1s
-        transition-delay: 0.3s
-      .inner-border
-        transition-duration: 1s
-        transition-delay: 0.6s
+      +svg-border-animate
 
 .table__border
   position: absolute
@@ -1335,13 +1329,7 @@ textarea.input
     stroke-dasharray: 825px
     stroke-dashoffset: 825px
   &.is-animate
-    stroke-dashoffset: 0
-    .outer-border
-      transition-duration: 1s
-      transition-delay: 0s
-    .inner-border
-      transition-duration: 1s
-      transition-delay: 0.3s
+    +svg-border-animate
 
 
 .men-table
@@ -1725,9 +1713,17 @@ textarea.input
   position: relative
   z-index: 1
   pointer-events: none
+  opacity: 0
+  visibility: hidden
+  transition: opacity 0.3s linear 1s, visibility 0.3s linear 1s
   +clr
-  &.is-animate
+  .tabs.is-animate &
     pointer-events: auto
+    visibility: visible
+    opacity: 1
+    transition-delay: 0s
+    .table__border
+      +svg-border-animate
 
 .tabs__content
   display: none
@@ -2336,3 +2332,44 @@ textarea.input
 //---------------------------------------------------------------------------
 //            ^^^^^  end popup  ^^^^^
 //---------------------------------------------------------------------------
+
+
+
+
+//styles for preloader
+#header,
+.slide__img,
+.slide__content,
+// .catalog-category
+//   transition: all 0.8s ease
+
+#header
+  transition-delay: 0.5s
+.slide__img
+  transition-delay: 0.5s
+.slide__content
+  transition-delay: 0.3s
+// .catalog-category
+//   transition-delay: 1s
+
+.pace-running
+  #header
+    transform: translate3d(0,-100%,0)
+    opacity: 0
+  .slide__img
+    transform: translate3d(0,100%,0)
+    opacity: 0
+  .slide__content
+    transform: translate3d(0,50%,0)
+    opacity: 0
+  // .catalog-category
+  //   transform: translate3d(0,200%,0)
+  //   opacity: 0
+
+.pace-done
+  #header,
+  .slide__img,
+  .slide__content,
+  // .catalog-category
+  //   transform: none
+  //   opacity: 1
