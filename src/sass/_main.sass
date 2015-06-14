@@ -2337,22 +2337,22 @@ textarea.input
 
 
 //styles for preloader
-#header,
-.slide__img,
-.slide__content,
-// .catalog-category
-//   transition: all 0.8s ease
+.preload
+  #header,
+  .slide__img,
+  .slide__content,
+  .main-slider .slick-dots
+    transition: all 0.8s ease-out
 
-#header
-  transition-delay: 0.5s
-.slide__img
-  transition-delay: 0.5s
-.slide__content
-  transition-delay: 0.3s
-// .catalog-category
-//   transition-delay: 1s
+  #header
+    transition-delay: 0.5s
+  .slide__img
+    transition-delay: 0s
+  .slide__content
+    transition-delay: 0.5s
+  .main-slider .slick-dots
+    transition-delay: 1s
 
-.pace-running
   #header
     transform: translate3d(0,-100%,0)
     opacity: 0
@@ -2362,14 +2362,14 @@ textarea.input
   .slide__content
     transform: translate3d(0,50%,0)
     opacity: 0
-  // .catalog-category
-  //   transform: translate3d(0,200%,0)
-  //   opacity: 0
+  .main-slider .slick-dots
+    transform: translate3d(-100%,0,0)
+    opacity: 0
 
 .pace-done
   #header,
   .slide__img,
   .slide__content,
-  // .catalog-category
-  //   transform: none
-  //   opacity: 1
+  .main-slider .slick-dots
+    transform: none
+    opacity: 1

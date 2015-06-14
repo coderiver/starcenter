@@ -176,17 +176,19 @@ Category.prototype.close = function(duration, delay) {
 
 
 
-Category.prototype.toggleHidden = function() {
-    var _  = this;
+Category.prototype.toggleHidden = function(animDur, animDelay) {
+    var _   = this,
+        dur = $.isNumeric(animDur) ? animDur / 1000 : 0.5,
+        del = $.isNumeric(animDelay) ? animDelay / 1000 : _.options.duration / 1000;
 
     if ( _.hidden ) {
-        TweenMax.fromTo(_.element, 0.5,
+        TweenMax.fromTo(_.element, dur,
             {autoAlpha: 0, y: 50},
-            {autoAlpha: 1, y:  0, clearProps: 'all', ease: _.options.easing, delay: _.options.duration / 1000}
+            {autoAlpha: 1, y:  0, clearProps: 'all', ease: _.options.easing, delay: del}
             );
         _.hidden = false;
     } else {
-        TweenMax.fromTo(_.element, 0.5,
+        TweenMax.fromTo(_.element, dur,
             {autoAlpha: 1, y:  0},
             {autoAlpha: 0, y: 50, ease: _.options.easing}
             );
