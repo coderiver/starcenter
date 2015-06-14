@@ -27,7 +27,7 @@ table { border-spacing: 0; border-collapse: collapse; width: 100%; }
 
 .pace-progress { -webkit-transform: none !important; -ms-transform: none !important; transform: none !important; width: 100%; height: 100%; }
 
-.pace-progress-inner { position: absolute; top: 355px; left: 50%; width: 0; position: relative; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
+.pace-progress-inner { position: absolute; top: 355px; left: 50%; width: 4px; position: relative; -webkit-transition: all 0.2s linear; transition: all 0.2s linear; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
 .pace-progress-inner:before { content: ""; display: block; top: 0; left: 0; width: 100%; padding-bottom: 100%; border-radius: 50%; background-color: #75BDC4; background-image: -webkit-linear-gradient(bottom, #CDF0E9 27%, #2B92A5 100%); background-image: linear-gradient(to top, #CDF0E9 27%, #2B92A5 100%); }
 .pace-progress[data-progress="0"] .pace-progress-inner { width: 5.1px; }
 .pace-progress[data-progress="1"] .pace-progress-inner { width: 10.2px; }
@@ -720,6 +720,11 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .filter { width: 790px; box-sizing: border-box; margin: 0 auto 70px; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; -webkit-box-align: center; -webkit-align-items: center; -ms-flex-align: center; align-items: center; position: relative; }
 .filter > .deco { position: absolute; top: -100px; left: -140px; }
+.filter + .object-wrapper { margin-top: 70px; }
+
+.filter__item { display: inline-block; vertical-align: top; position: relative; }
+.filter__item > input { position: absolute; opacity: 0; top: 0; left: 0; }
+.filter__item input:checked ~ .btn .btn__hover { width: 100%; }
 
 .object-wrapper { width: 790px; height: 450px; position: relative; margin: 130px auto; }
 .object-wrapper:first-child { margin-top: 0; }

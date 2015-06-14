@@ -1,27 +1,32 @@
 include ../_mixins
 .filter
-  a.btn.btn_transparent.is-active(href="#")
-    .btn__front
-      | Вся недвижимость
-    .btn__hover
-      .btn__hover-in
+  label.filter__item
+    input(type="radio", name="buy", value="all", checked)
+    .btn.btn_transparent
+      .btn__front
         | Вся недвижимость
-  a.btn.btn_transparent(href="#")
-    .btn__front
-      | Комерческая недвижимость
-    .btn__hover
-      .btn__hover-in
+      .btn__hover
+        .btn__hover-in
+          | Вся недвижимость
+  label.filter__item
+    input(type="radio", name="buy", value="commercial")
+    .btn.btn_transparent
+      .btn__front
         | Комерческая недвижимость
-  a.btn.btn_transparent(href="#")
-    .btn__front
-      | Жилая недвижимость
-    .btn__hover
-      .btn__hover-in
+      .btn__hover
+        .btn__hover-in
+          | Комерческая недвижимость
+  label.filter__item
+    input(type="radio", name="buy", value="residential")
+    .btn.btn_transparent
+      .btn__front
         | Жилая недвижимость
+      .btn__hover
+        .btn__hover-in
+          | Жилая недвижимость
 
-.catalog-content
-  //BEGIN flagship
-  .object-wrapper
+ul.filter-container
+  li.object-wrapper(data-filter="residential")
     .object.js-box
       .object__inner
   
@@ -107,10 +112,8 @@ include ../_mixins
           a.btn.btn_link(href="#")
             span.btn__hover(data-hover="Скачать презентацию")
             span Скачать презентацию
-  //END flagship
 
-  //BEGIN flagship
-  .object-wrapper
+  li.object-wrapper(data-filter="commercial")
     span.object-label
       | Уже <br> про <br> дано
     
@@ -193,4 +196,174 @@ include ../_mixins
           a.btn.btn_link(href="#")
             span.btn__hover(data-hover="Скачать презентацию")
             span Скачать презентацию
-  //END flagship
+
+  li.object-wrapper(data-filter="residential")
+    .object.js-box
+      .object__inner
+  
+        .object__gallery
+          
+          .object__buttons
+            button.object__slider-prev(type="button")
+              span
+                +icon("arrow")
+                |  предыдущее фото
+            button.object__slider-next(type="button")
+              span
+                | следующее фото
+                +icon("arrow")
+            button.object__close(type="button")
+              span
+                | свернуть объект
+                +icon("arrow-sm")
+            
+          .object__slider
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            .object__slide(style="background-image:url('img/objects/object2.jpg')")
+            .object__slide(style="background-image:url('img/objects/object1.jpg')")
+            .object__slide(style="background-image:url('img/objects/object4.jpg')")
+            .object__slide(style="background-image:url('img/objects/object3.jpg')")
+            .object__slide(style="background-image:url('img/objects/object4.jpg')")
+            .object__slide(style="background-image:url('img/objects/object2.jpg')")
+            .object__slide(style="background-image:url('img/objects/object3.jpg')")
+            .object__slide(style="background-image:url('img/objects/object1.jpg')")
+            .object__slide(style="background-image:url('img/objects/object2.jpg')")
+            .object__slide(style="background-image:url('img/objects/object4.jpg')")
+            .object__slide(style="background-image:url('img/objects/object1.jpg')")
+            
+        
+          .info.table
+            .table__border
+              include ../../img/svg/svg-borders/optimized/info-table.svg
+            .info__inner
+              .info__cell.info__cell1
+                a.btn.btn_object(href="#")
+                  .btn__hover
+                    .btn__hover-in
+                      | БЦ Flagship
+                      br
+                      small Київ, вул. Горького, 176
+                  .btn__front
+                    | БЦ Flagship
+                    br
+                    small Київ, вул. Горького, 176
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Площадь
+                  | 32 000 М<sup>2</sup>
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Год сдачи
+                  | 2014
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Этажность
+                  | 5
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Свободная Площадь
+                  | 2 000 М<sup>2</sup>
+
+        .object__detail
+          h4.heading.heading_red
+            | Выгодное предложение
+          p.
+            Сейчас действует скидка на 1-ый год аренды размером 
+            в 25% при подписании договора до начала лета
+
+          a.btn.btn_link(href="#")
+            span.btn__hover(data-hover="Скачать презентацию")
+            span Скачать презентацию
+
+  li.object-wrapper(data-filter="commercial")
+    span.object-label
+      | Уже <br> про <br> дано
+    
+    .object.js-box
+      .object__inner
+        
+        .object__gallery
+          
+          .object__buttons
+            button.object__slider-prev(type="button")
+              span
+                +icon("arrow")
+                |  предыдущее фото
+            button.object__slider-next(type="button")
+              span
+                | следующее фото
+                +icon("arrow")
+            button.object__close(type="button")
+              span
+                | свернуть объект
+                +icon("arrow-sm")
+            
+          .object__slider
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/850/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/700/animals')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/900/arch')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/1000/nature')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/people')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/600/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/tech')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/900/any')")
+            .object__slide(style="background-image:url('img/objects/object1.jpg')")
+            .object__slide(style="background-image:url('img/objects/object4.jpg')")
+            .object__slide(style="background-image:url('img/objects/object2.jpg')")
+            .object__slide(style="background-image:url('img/objects/object3.jpg')")
+            
+        
+          .info.table
+            .table__border
+              include ../../img/svg/svg-borders/optimized/info-table.svg
+            .info__inner
+              .info__cell.info__cell1
+                a.btn.btn_object(href="#")
+                  .btn__hover
+                    .btn__hover-in
+                      | Ocean Plaza
+                      br
+                      small Київ, вул. Горького, 176
+                  .btn__front
+                    | Ocean Plaza
+                    br
+                    small Київ, вул. Горького, 176
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Площадь
+                  | 32 000 М<sup>2</sup>
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Год сдачи
+                  | 2014
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Этажность
+                  | 5
+              .info__cell.info__cell3
+                .info-item.is-sold
+                  span.sold-badge продано
+                  small.info-item__label Свободная Площадь
+                  | 0 М<sup>2</sup>
+
+        .object__detail
+          h4.heading.heading_red
+            | Выгодное предложение
+          p.
+            Сейчас действует скидка на 1-ый год аренды размером 
+            в 25% при подписании договора до начала лета
+
+          a.btn.btn_link(href="#")
+            span.btn__hover(data-hover="Скачать презентацию")
+            span Скачать презентацию

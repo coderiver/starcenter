@@ -3,28 +3,33 @@ include ../_mixins
   .deco
     .deco__inner
       +icon("figure")
-  a.btn.btn_transparent.is-active(href="#")
-    .btn__front
-      | Вся недвижимость
-    .btn__hover
-      .btn__hover-in
+  label.filter__item
+    input(type="radio", name="rent", value="all", checked)
+    .btn.btn_transparent
+      .btn__front
         | Вся недвижимость
-  a.btn.btn_transparent(href="#")
-    .btn__front
-      | Комерческая недвижимость
-    .btn__hover
-      .btn__hover-in
+      .btn__hover
+        .btn__hover-in
+          | Вся недвижимость
+  label.filter__item
+    input(type="radio", name="rent", value="commercial")
+    .btn.btn_transparent
+      .btn__front
         | Комерческая недвижимость
-  a.btn.btn_transparent(href="#")
-    .btn__front
-      | Жилая недвижимость
-    .btn__hover
-      .btn__hover-in
+      .btn__hover
+        .btn__hover-in
+          | Комерческая недвижимость
+  label.filter__item
+    input(type="radio", name="rent", value="residential")
+    .btn.btn_transparent
+      .btn__front
         | Жилая недвижимость
+      .btn__hover
+        .btn__hover-in
+          | Жилая недвижимость
 
-.catalog-content
-  //BEGIN flagship
-  .object-wrapper
+ul.filter-container
+  li.object-wrapper(data-filter="residential")
     .object.js-box
       .object__inner
   
@@ -100,12 +105,10 @@ include ../_mixins
           a.btn.btn_link(href="#")
             span.btn__hover(data-hover="Скачать презентацию")
             span Скачать презентацию
-  //END flagship
 
-  //BEGIN flagship
-  .object-wrapper
+  li.object-wrapper(data-filter="commercial")
     span.object-label
-      | Уже <br> про <br> дано
+      | Уже <br> сда <br> но
     
     .object.js-box
       .object__inner
@@ -176,4 +179,3 @@ include ../_mixins
           a.btn.btn_link(href="#")
             span.btn__hover(data-hover="Скачать презентацию")
             span Скачать презентацию
-  //END flagship

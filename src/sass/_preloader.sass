@@ -19,9 +19,9 @@
   position: absolute
   top: 355px
   left: 50%
-  width: 0
+  width: 4px
   position: relative
-  // transition: all 0.2s linear
+  transition: all 0.2s linear
   transform: translate(-50%, -50%)
   &:before
     content: ""
@@ -36,6 +36,5 @@
   @for $i from 1 through 100
     .pace-progress[data-progress="#{$i - 1}"] &
       width: 510 * ($i / 100) + px
-
 
 // .pace-activity

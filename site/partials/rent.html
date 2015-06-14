@@ -6,23 +6,37 @@
         <use xlink:href="#icon-figure"></use>
       </svg>
     </div>
-  </div><a href="#" class="btn btn_transparent is-active">
-    <div class="btn__front">Вся недвижимость</div>
-    <div class="btn__hover">
-      <div class="btn__hover-in">Вся недвижимость</div>
-    </div></a><a href="#" class="btn btn_transparent">
-    <div class="btn__front">Комерческая недвижимость</div>
-    <div class="btn__hover">
-      <div class="btn__hover-in">Комерческая недвижимость</div>
-    </div></a><a href="#" class="btn btn_transparent">
-    <div class="btn__front">Жилая недвижимость</div>
-    <div class="btn__hover">
-      <div class="btn__hover-in">Жилая недвижимость</div>
-    </div></a>
+  </div>
+  <label class="filter__item">
+    <input type="radio" name="rent" value="all" checked="checked"/>
+    <div class="btn btn_transparent">
+      <div class="btn__front">Вся недвижимость</div>
+      <div class="btn__hover">
+        <div class="btn__hover-in">Вся недвижимость</div>
+      </div>
+    </div>
+  </label>
+  <label class="filter__item">
+    <input type="radio" name="rent" value="commercial"/>
+    <div class="btn btn_transparent">
+      <div class="btn__front">Комерческая недвижимость</div>
+      <div class="btn__hover">
+        <div class="btn__hover-in">Комерческая недвижимость</div>
+      </div>
+    </div>
+  </label>
+  <label class="filter__item">
+    <input type="radio" name="rent" value="residential"/>
+    <div class="btn btn_transparent">
+      <div class="btn__front">Жилая недвижимость</div>
+      <div class="btn__hover">
+        <div class="btn__hover-in">Жилая недвижимость</div>
+      </div>
+    </div>
+  </label>
 </div>
-<div class="catalog-content">
-  <!--BEGIN flagship-->
-  <div class="object-wrapper">
+<ul class="filter-container">
+  <li data-filter="residential" class="object-wrapper">
     <div class="object js-box">
       <div class="object__inner">
         <div class="object__gallery">
@@ -103,10 +117,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <!--END flagship-->
-  <!--BEGIN flagship-->
-  <div class="object-wrapper"><span class="object-label">Уже <br> про <br> дано</span>
+  </li>
+  <li data-filter="commercial" class="object-wrapper"><span class="object-label">Уже <br> сда <br> но</span>
     <div class="object js-box">
       <div class="object__inner">
         <div class="object__gallery">
@@ -180,6 +192,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <!--END flagship-->
-</div>
+  </li>
+</ul>

@@ -3,6 +3,7 @@ require('sammy');
 var Box = require('./_box.js');
 var Tabs = require('./_tabs.js');
 var ScrollMagic = require('scrollmagic');
+var Filter = require('./_filter.js');
 
 var sections = [
     'home',
@@ -79,16 +80,25 @@ function catalogCategoryController(context, loaded) {
 
                 var box = container.find('.js-box');
                 var tabs = container.find('.tabs');
+                var filter = container.find('.filter');
 
-                box.each(function(index, el) {
-                    // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-                    // app.objects[ id ] = new Box().init(el);
-                    new Box().init(el);
-                });
+                if ( box.length ) {
+                    box.each(function(index, el) {
+                        // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
+                        // app.objects[ id ] = new Box().init(el);
+                        new Box().init(el);
+                    });
+                }
 
                 if ( tabs.length ) {
                     $.each(tabs, function(index, el) {
                         new Tabs(el).init();
+                    });
+                }
+
+                if ( filter.length ) {
+                    $.each(filter, function(index, el) {
+                        new Filter(el);
                     });
                 }
 

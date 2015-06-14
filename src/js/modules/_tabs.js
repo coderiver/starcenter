@@ -5,7 +5,6 @@ function Tabs(wrapper, tabButton, tabContent) {
     this.wrapper = $(wrapper);
     this.button  = this.wrapper.find(tabButton || '.btn_tab');
     this.content = this.wrapper.find(tabContent || '.tabs__content');
-    // this.borders = this.wrapper.find('.js-table');
     this.activeTab = null;
     this.canSwitch = true;
     this.options = {

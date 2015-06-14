@@ -15,6 +15,7 @@ var Modal = require('./modules/_modal.js');
 var Tabs = require('./modules/_tabs.js');
 var Box = require('./modules/_box.js');
 var Navbar = require('./modules/_navbar.js');
+var Filter = require('./modules/_filter.js');
 var initScenes = require('./modules/_scroll-scenes.js');
 
 
@@ -26,7 +27,7 @@ app.toparea  = {};
 // app.objects  = {};
 app.catalog  = {};
 app.catalog2 = {};
-// app.initMap = require('./modules/_map.js');
+app.initMap = require('./modules/_map.js');
 
 app.util = {
     toCamelCase: function(str) {
@@ -118,6 +119,7 @@ app.init = function() {
     // app.tabs.init();
     app.initBoxes();
     app.initTabs();
+    app.initFilters();
     app.initPopupEvents();
     app.initPopupSlider();
     app.navbar.init();
@@ -148,6 +150,12 @@ app.initBoxes = function() {
 app.initTabs = function() {
     $.each($('.tabs'), function(index, el) {
         new Tabs(el).init();
+    });
+};
+
+app.initFilters = function() {
+    $.each($('.filter'), function(index, el) {
+        new Filter(el);
     });
 };
 

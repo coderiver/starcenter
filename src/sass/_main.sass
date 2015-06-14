@@ -568,6 +568,10 @@ textarea.input
   opacity: 0
 
 
+// [data-filter]
+//   animation: detail 0.5s ease 1
+
+
 //---------------------------------------------------------------------------
 //            ^^^^^  end common blocks  ^^^^^
 //---------------------------------------------------------------------------
@@ -1838,6 +1842,20 @@ textarea.input
     position: absolute
     top: -100px
     left: -140px
+  + .object-wrapper
+    margin-top: 70px
+
+.filter__item
+  display: inline-block
+  vertical-align: top
+  position: relative
+  > input
+    position: absolute
+    opacity: 0
+    top: 0
+    left: 0
+  input:checked ~ .btn .btn__hover
+    width: 100%
 
 
 .object-wrapper
