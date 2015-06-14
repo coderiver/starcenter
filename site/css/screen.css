@@ -855,15 +855,10 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .popup.is-opened { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); overflow-x: hidden; overflow-y: scroll; right: -17px; }
 .mac-os .popup.is-opened { right: -15px; }
 
-.preload #header, .preload .slide__img, .preload .slide__content, .preload .main-slider .slick-dots { -webkit-transition: all 0.8s ease-out; transition: all 0.8s ease-out; }
-.preload #header { -webkit-transition-delay: 0.5s; transition-delay: 0.5s; }
-.preload .slide__img { -webkit-transition-delay: 0s; transition-delay: 0s; }
-.preload .slide__content { -webkit-transition-delay: 0.5s; transition-delay: 0.5s; }
-.preload .main-slider .slick-dots { -webkit-transition-delay: 1s; transition-delay: 1s; }
-.preload #header { -webkit-transform: translate3d(0, -100%, 0); transform: translate3d(0, -100%, 0); opacity: 0; }
-.preload .slide__img { -webkit-transform: translate3d(0, 100%, 0); transform: translate3d(0, 100%, 0); opacity: 0; }
-.preload .slide__content { -webkit-transform: translate3d(0, 50%, 0); transform: translate3d(0, 50%, 0); opacity: 0; }
-.preload .main-slider .slick-dots { -webkit-transform: translate3d(-100%, 0, 0); transform: translate3d(-100%, 0, 0); opacity: 0; }
+.preload #header { -webkit-transform: translate3d(0, -100%, 0); transform: translate3d(0, -100%, 0); opacity: 0; -webkit-transition: all 0.4s ease-out 1s; transition: all 0.4s ease-out 1s; }
+.preload .slide__img { -webkit-transform: translate3d(0, 100%, 0); transform: translate3d(0, 100%, 0); opacity: 0; -webkit-transition: all 0.8s ease-out; transition: all 0.8s ease-out; }
+.preload .slide__content { -webkit-transform: translate3d(0, 25%, 0); transform: translate3d(0, 25%, 0); opacity: 0; -webkit-transition: all 0.8s ease-out; transition: all 0.8s ease-out; }
+.preload .main-slider .slick-dots { -webkit-transform: translate3d(-100%, 0, 0); transform: translate3d(-100%, 0, 0); opacity: 0; -webkit-transition: all 0.3s ease-out 1.5s; transition: all 0.3s ease-out 1.5s; }
 
 .pace-done #header, .pace-done .slide__img, .pace-done .slide__content, .pace-done .main-slider .slick-dots { -webkit-transform: none; -ms-transform: none; transform: none; opacity: 1; }
 

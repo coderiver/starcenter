@@ -129,8 +129,8 @@ app.init = function() {
     app.morph2.init().initStandby('square');
 
     Pace.on('done', function() {
-        app.category.toggleHidden(null, 1000);
-        app.navbar.visible(null, 1000);
+        app.category.toggleHidden(500, 1000);
+        app.navbar.visible(500, 1000);
         setTimeout(function() {
             $('body').removeClass('preload');
             app.mainSlider.play();

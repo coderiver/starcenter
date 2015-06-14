@@ -2338,33 +2338,23 @@ textarea.input
 
 //styles for preloader
 .preload
-  #header,
-  .slide__img,
-  .slide__content,
-  .main-slider .slick-dots
-    transition: all 0.8s ease-out
-
-  #header
-    transition-delay: 0.5s
-  .slide__img
-    transition-delay: 0s
-  .slide__content
-    transition-delay: 0.5s
-  .main-slider .slick-dots
-    transition-delay: 1s
 
   #header
     transform: translate3d(0,-100%,0)
     opacity: 0
+    transition: all 0.4s ease-out 1s
   .slide__img
     transform: translate3d(0,100%,0)
     opacity: 0
+    transition: all 0.8s ease-out
   .slide__content
-    transform: translate3d(0,50%,0)
+    transform: translate3d(0,25%,0)
     opacity: 0
+    transition: all 0.8s ease-out
   .main-slider .slick-dots
     transform: translate3d(-100%,0,0)
     opacity: 0
+    transition: all 0.3s ease-out 1.5s
 
 .pace-done
   #header,
