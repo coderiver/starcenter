@@ -66,9 +66,9 @@ Tabs.prototype._buildScene = function() {
 
     new ScrollMagic.Scene({
         duration: '100%',
-        offset: -100,
+        offset: 0,
         triggerElement: _.wrapper[0],
-        triggerHook: 'onCenter',
+        triggerHook: 'onEnter',
         loglevel: 1
     })
         .on('start end', function(e) {

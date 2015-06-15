@@ -654,6 +654,8 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .category.is-active .slick-slide { opacity: 1; }
 
 .category__item { float: left; width: 33.333%; line-height: 400px; text-align: center; pointer-events: none; -webkit-transition: opacity 0.3s ease; transition: opacity 0.3s ease; }
+@media only screen and (min-width: 1400px) { .category__item.slick-slide { opacity: 0; }
+  .category__item.slick-active { opacity: 1; } }
 
 .btn_category { line-height: 2; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 18px; letter-spacing: 0.5em; text-transform: uppercase; pointer-events: auto; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; }
 .btn_category .btn__hover { background: none; color: #333; }
@@ -724,7 +726,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .filter > .deco { position: absolute; top: -100px; left: -140px; }
 .filter + .object-wrapper { margin-top: 70px; }
 
-.filter__item { display: inline-block; vertical-align: top; position: relative; }
+.filter__item { display: inline-block; vertical-align: top; position: relative; cursor: pointer; }
 .filter__item > input { position: absolute; opacity: 0; top: 0; left: 0; }
 .filter__item input:checked ~ .btn .btn__hover { width: 100%; }
 

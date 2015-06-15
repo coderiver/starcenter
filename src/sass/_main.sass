@@ -1622,10 +1622,11 @@ textarea.input
   text-align: center
   pointer-events: none
   transition: opacity 0.3s ease
-  // &.slick-slide
-  //   opacity: 0
-  // &.slick-active
-  //   opacity: 1
+  +rmin(1400)
+    &.slick-slide
+      opacity: 0
+    &.slick-active
+      opacity: 1
 
 .btn_category
   line-height: 2
@@ -1849,6 +1850,7 @@ textarea.input
   display: inline-block
   vertical-align: top
   position: relative
+  cursor: pointer
   > input
     position: absolute
     opacity: 0
