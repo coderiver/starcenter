@@ -40,7 +40,7 @@ var router = $.sammy(function(router) {
     };
 
     this.get('#/', function() {
-        console.log('#HOME');
+        // console.log('#HOME');
         // this.partial('partials/main.html', function() {
             // app.init();
             // app.initEvents();
@@ -72,7 +72,6 @@ function catalogCategoryController(context, loaded) {
 
     if ( !loaded[ category ] ) {
 
-
         context.load('partials/' + category + '.html')
             .then(function(content) {
 
@@ -103,12 +102,12 @@ function catalogCategoryController(context, loaded) {
                 }
 
                 loaded[ category ] = true;
-                console.log(loaded);
+                // console.log(loaded);
             });
     }
-    else {
-        context.log('content is loaded');
-    }
+    // else {
+    //     context.log('content is loaded');
+    // }
 }
 
 

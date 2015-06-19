@@ -1,6 +1,6 @@
 var paper = require('paper');
 var $     = require('jquery');
-var TWEEN = require('tween.js');
+// var TWEEN = require('tween.js');
 require('gsap');
 require('TimelineLite');
 
@@ -275,7 +275,6 @@ Morph.prototype._changePicture = function(state, direction, duration) {
 
     var _ = this,
         prevState = _._getState('prevMorph'),
-        // dur       = $.isNumeric(duration) ? duration : _.dur,
         dur       = $.isNumeric(duration) ? duration / 1000 : _.dur / 1000,
         props,
         pics;
@@ -300,7 +299,6 @@ Morph.prototype._changePicture = function(state, direction, duration) {
                 },
                 duration: dur / 2,
                 delay   : dur * 0.2, // ~ 150ms
-                // easing  : TWEEN.Easing.Cubic.In,
                 easing  : Power2.easeIn,
             },
             outer: {
@@ -313,7 +311,6 @@ Morph.prototype._changePicture = function(state, direction, duration) {
                 duration: dur / 2,
                 delay   : 0,
                 opacity : 0,
-                // easing  : TWEEN.Easing.Quadratic.In
                 easing  : Power1.easeIn
             }
         },
@@ -326,7 +323,6 @@ Morph.prototype._changePicture = function(state, direction, duration) {
                 pos     : _.objects.raster[state].position,
                 duration: dur / 2,
                 delay   : dur / 2,
-                // easing  : TWEEN.Easing.Quadratic.Out,
                 easing  : Power1.easeOut
             },
             outer: {
@@ -337,7 +333,6 @@ Morph.prototype._changePicture = function(state, direction, duration) {
                 duration: dur / 2,
                 delay   : dur / 2,
                 opacity : 1,
-                // easing  : TWEEN.Easing.Quadratic.Out
                 easing  : Power1.easeOut
             }
         }
@@ -361,42 +356,18 @@ Morph.prototype._changePicture = function(state, direction, duration) {
     pics.next.outer.pic.scaling.y = 1;
 
     $.each(pics, function(index, item) {
-        // new TWEEN.Tween(item.inner.pic.position)
-        //     .to({x: item.inner.pos.x}, item.inner.duration)
-        //     .easing(item.inner.easing)
-        //     .onUpdate(function() {
-        //         item.inner.pic.position.x = this.x;
-        //     })
-        //     .delay(item.inner.delay)
-        //     .start();
         TweenMax.to(item.inner.pic.position, item.inner.duration, {
             x: item.inner.pos.x,
             ease: item.inner.easing,
             delay: item.inner.delay
         });
 
-        // new TWEEN.Tween(item.outer.pic.position)
-        //     .to({x: item.outer.pos.x}, item.outer.duration)
-        //     .easing(item.outer.easing)
-        //     .onUpdate(function() {
-        //         item.outer.pic.position.x = this.x;
-        //     })
-        //     .delay(item.outer.delay)
-        //     .start();
         TweenMax.to(item.outer.pic.position, item.outer.duration, {
             x: item.outer.pos.x,
             ease: item.outer.easing,
             delay: item.outer.delay
         });
 
-        // new TWEEN.Tween(item.outer.pic)
-        //     .to({opacity: item.outer.opacity}, item.outer.duration)
-        //     .easing(item.outer.easing)
-        //     .onUpdate(function() {
-        //         item.outer.pic.opacity = this.opacity;
-        //     })
-        //     .delay(item.outer.delay)
-        //     .start();
         TweenMax.to(item.outer.pic, item.outer.duration, {
             opacity: item.outer.opacity,
             ease: item.outer.easing,
@@ -412,8 +383,6 @@ Morph.prototype._togglePicture = function(state, duration) {
         currentState = _._getState('morph'),
         dur          = $.isNumeric(duration) ? duration / 1000 : _.dur / 1000,
         easing       = Linear.easeNone,
-        // easing       = TWEEN.Easing.Cubic.In,
-        // dur          = $.isNumeric(duration) ? duration : _.dur,
         pics;
 
     if ( typeof state == 'undefined' || state === null ) {
@@ -471,10 +440,6 @@ Morph.prototype._togglePicture = function(state, duration) {
 
     }
 
-    // remove previous pictures from vieport
-    // _.objects.raster[currentState].pic.position.x = 3000;
-    // _.objects.raster[currentState].altPic.position.x = 3000;
-
     // setup pictures initial state
     pics.inner.pic.position.x = pics.inner.initPos.x;
     pics.inner.pic.position.y = pics.inner.initPos.y;
@@ -484,15 +449,6 @@ Morph.prototype._togglePicture = function(state, duration) {
     pics.outer.pic.scale(pics.outer.initScaling.x, _.objects.paths.morph.bounds.topCenter);
 
     // translate picture inside morph object
-    // new TWEEN.Tween(pics.inner.pic.position)
-    //     .to(pics.inner.pos, dur)
-    //     // .easing(easing)
-    //     .onUpdate(function() {
-    //         pics.inner.pic.position.x = this.x;
-    //         pics.inner.pic.position.y = this.y;
-    //     })
-    //     .start();
-
     TweenMax.to(pics.inner.pic.position, dur, {
         x: pics.inner.pos.x,
         y: pics.inner.pos.y,
@@ -500,15 +456,6 @@ Morph.prototype._togglePicture = function(state, duration) {
     });
 
     // scale picture outside morph object
-    // new TWEEN.Tween(pics.outer.pic.scaling)
-    //     .to(pics.outer.scaling, dur)
-    //     // .easing(easing)
-    //     .onUpdate(function() {
-    //         pics.outer.pic.scale(this.x, this.y);
-    //     })
-    //     // .delay(pics.outer.delay)
-    //     .start();
-
     TweenMax.to(pics.outer.pic.scaling, dur, {
         x: pics.outer.scaling.x,
         y: pics.outer.scaling.y,
@@ -516,15 +463,6 @@ Morph.prototype._togglePicture = function(state, duration) {
     });
 
     // // fade in picture outside morph object
-    // new TWEEN.Tween(pics.outer.pic)
-    //     .to({opacity: pics.outer.opacity}, dur)
-    //     // .easing(easing)
-    //     .onUpdate(function() {
-    //         pics.outer.pic.opacity = this.opacity;
-    //     })
-    //     .delay(pics.outer.delay)
-    //     .start();
-
     TweenMax.to(pics.outer.pic, dur, {
         opacity: pics.outer.opacity,
         ease: easing,
@@ -532,16 +470,6 @@ Morph.prototype._togglePicture = function(state, duration) {
     });
 
     // translate picture outside morph object
-    // new TWEEN.Tween(pics.outer.pic.position)
-    //     .to(pics.outer.pos, dur)
-    //     // .easing(easing)
-    //     .onUpdate(function() {
-    //         pics.outer.pic.position.x = this.x;
-    //         pics.outer.pic.position.y = this.y;
-    //     })
-    //     // .delay(pics.outer.delay)
-    //     .start();
-
     TweenMax.to(pics.outer.pic.position, dur, {
         x: pics.outer.pos.x,
         y: pics.outer.pos.y,
@@ -558,8 +486,6 @@ Morph.prototype._morph = function(state, dur) {
     var _          = this,
         duration   = $.isNumeric(dur) ? dur / 1000 : _.dur / 1000,
         easing     = Sine.easeOut,
-        // duration   = $.isNumeric(dur) ? dur : _.dur,
-        // easing     = TWEEN.Easing.Quadratic.Out,
         morphPath  = _.objects.paths.morph,
         segments   = morphPath.segments,
         prevPoints = _.pathPosition.morph[currentState],
@@ -568,14 +494,6 @@ Morph.prototype._morph = function(state, dur) {
     _._updateState('inProgress', true);
 
     $.each(segments, function(index, segment) {
-        // new TWEEN.Tween(segment.point)
-        //     .to(points[index], duration)
-        //     .easing(easing)
-        //     .onUpdate(function() {
-        //         segment.point.x = this.x;
-        //         segment.point.y = this.y;
-        //     })
-        //     .start();
         TweenMax.to(segment.point, duration, {
             x: points[index].x,
             y: points[index].y,
@@ -595,17 +513,6 @@ Morph.prototype._morph = function(state, dur) {
                 y: - points[index].handle.y,
                 ease: easing,
             });
-
-            // new TWEEN.Tween(segment.handleIn)
-            //     .to(points[index].handle, duration)
-            //     .easing(easing)
-            //     .onUpdate(function() {
-            //         segment.handleIn.x  = this.x !== 0 ?  this.x : 0;
-            //         segment.handleOut.x = this.x !== 0 ? -this.x : 0;
-            //         segment.handleIn.y  = this.y !== 0 ?  this.y : 0;
-            //         segment.handleOut.y = this.y !== 0 ? -this.y : 0;
-            //     })
-            //     .start();
         }
     });
 
@@ -628,24 +535,11 @@ Morph.prototype._morphRectangle = function(state, duration, delay) {
         rect    = _.objects.other.rectangle,
         prevPos = _.pathPosition.rectangle[prevState],
         pos     = _.pathPosition.rectangle[state],
-        // easing  = TWEEN.Easing.Cubic.Out,
-        // dur     = $.isNumeric(duration) ? duration : _.dur,
-        // del     = $.isNumeric(delay) ? delay : 0;
         easing  = Power2.easeOut,
         dur     = $.isNumeric(duration) ? duration / 1000 : _.dur / 1000,
         del     = $.isNumeric(delay) ? delay / 1000 : 0;
 
     // change rectange size
-    // new TWEEN.Tween(rect.bounds.size)
-    //     .to(pos.size, dur)
-    //     .easing(easing)
-    //     .onUpdate(function() {
-    //         rect.bounds.size.width = this.width;
-    //         rect.bounds.size.height = this.height;
-    //     })
-    //     .delay(del)
-    //     .start();
-
     TweenMax.to(rect.bounds.size, dur, {
         width: pos.size.width,
         height: pos.size.height,
@@ -654,16 +548,6 @@ Morph.prototype._morphRectangle = function(state, duration, delay) {
     });
 
     // change rectange position
-    // new TWEEN.Tween(rect.position)
-    //     .to(pos.center, dur)
-    //     .easing(easing)
-    //     .onUpdate(function() {
-    //         rect.position.x = this.x;
-    //         rect.position.y = this.y;
-    //     })
-    //     .delay(del)
-    //     .start();
-
     TweenMax.to(rect.position, dur, {
         x: pos.center.x,
         y: pos.center.y,
@@ -697,7 +581,7 @@ Morph.prototype._translateCoordinates = function(pointsArray) {
 };
 
 Morph.prototype._fade = function(duration) {
-    var _     = this,
+    var _       = this,
         visible = _._getState('visible'),
         tl      = new TimelineLite();
         dur     = $.isNumeric(duration) ? duration / 1000 : _.fadeDur / 1000;
@@ -733,15 +617,15 @@ Morph.prototype.activate = function(state, delay) {
 
     if ( active ) return;
 
-    var _    = this,
+    var _       = this,
         timeout = delay || _.fadeDur; // delay in milliseconds between visible state and activating
 
     _._fade();
 
     setTimeout(function() {
+        _._toggleContentVisibility(true, true); // make pictures visible
         _._togglePicture(state);
         _._morph(state);
-        _._toggleContentVisibility(true, true); // make pictures visible
         _._morphRectangle('big');
         _._updateState('active', true);
     }, timeout);
@@ -797,8 +681,10 @@ Morph.prototype.moveBack = function(duration) {
         .to(_.canvas, dur / 1000, {y: 0})
         .add(function() {
             _._fade();
+            })
+        .add(function() {
             _._toggleContentVisibility(true);
-            });
+            }, '+=0.2');
 };
 
 Morph.prototype.initStandby = function(state) {
@@ -812,7 +698,6 @@ Morph.prototype.initStandby = function(state) {
 
 
     _._toggleContentVisibility(true, true);
-    // _.frontGroup.visible = false;
     if ( !_.state.visible ) _._fade(0);
 
     prevPic.position.x = prevAltPic.position.x = 3000;

@@ -1,33 +1,32 @@
-// require('pace').start();
 var $ = require('jquery');
 require('sammy');
-require('jquery-mousewheel')($);
+// require('jquery-mousewheel')($);
 // require('nanoscroller');
-require('modernizr');
+// require('modernizr');
 require('gsap');
 require('gsap-scrollToPlugin');
 require('TimelineLite');
 var ScrollMagic = require('scrollmagic');
-var Slider  = require('./modules/_main-slider.js');
-var Category = require('./modules/_category.js');
-var Morph = require('./modules/_canvas.js');
-var Modal = require('./modules/_modal.js');
-var Tabs = require('./modules/_tabs.js');
-var Box = require('./modules/_box.js');
-var Navbar = require('./modules/_navbar.js');
-var Filter = require('./modules/_filter.js');
-var initScenes = require('./modules/_scroll-scenes.js');
+var Slider      = require('./modules/_main-slider.js');
+var Category    = require('./modules/_category.js');
+var Morph       = require('./modules/_canvas.js');
+var Modal       = require('./modules/_modal.js');
+var Tabs        = require('./modules/_tabs.js');
+var Box         = require('./modules/_box.js');
+var Navbar      = require('./modules/_navbar.js');
+var Filter      = require('./modules/_filter.js');
+var BackButton  = require('./modules/_back-button.js');
+var initScenes  = require('./modules/_scroll-scenes.js');
 
 
 global.app = {};
-app.router = require('./modules/_routing.js');
+app.router         = require('./modules/_routing.js');
 app.scrollDisabled = false;
-app.openedPopup = null;
-app.toparea  = {};
-// app.objects  = {};
-app.catalog  = {};
-app.catalog2 = {};
-app.initMap = require('./modules/_map.js');
+app.openedPopup    = null;
+app.toparea        = {};
+app.catalog        = {};
+app.catalog2       = {};
+// app.initMap  = require('./modules/_map.js');
 
 app.util = {
     toCamelCase: function(str) {
@@ -59,10 +58,15 @@ app.util = {
     },
 
     getScrollBarWidth: function() {
-        var $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
-            widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
+        var $outer, widthWithScroll, scrollbarWidth;
+
+        $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
+        widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
         $outer.remove();
-        return 100 - widthWithScroll;
+        scrollbarWidth =  100 - widthWithScroll;
+        $('html').addClass('scrollbar-width-' + scrollbarWidth);
+
+        return scrollbarWidth;
     },
 
     getPlatform: function() {
@@ -101,22 +105,21 @@ app.util = {
 
 app.init = function() {
 
-    app.mainSlider   = new Slider('#main-slider');
-    app.category     = new Category('.catalog-category', '.catalog-category__item');
-    app.category2    = new Category('.category', '.category__item');
-    app.morph        = new Morph('#morph');
-    app.morph2       = new Morph('#morph2');
-    app.modal        = new Modal('#catalog', '.catalog__content');
-    app.modal2       = new Modal('#catalog2', '.capabilities-modal__content');
-    // app.tabs         = new Tabs('#forms', '.btn_tab', '.tabs__content');
-    app.rootContainer= $('#outer');
-    app.scrollmagic  = initScenes();
-    app.navbar       = new Navbar();
+    app.rootContainer = $('#outer');
+    app.mainSlider    = new Slider('#main-slider');
+    app.category      = new Category('.catalog-category', '.catalog-category__item');
+    app.category2     = new Category('.category', '.category__item');
+    app.morph         = new Morph('#morph');
+    app.morph2        = new Morph('#morph2');
+    app.modal         = new Modal('#catalog', '.catalog__content');
+    app.modal2        = new Modal('#catalog2', '.capabilities-modal__content');
+    app.navbar        = new Navbar();
+    app.backButton    = new BackButton('.header__center .btn');
+    app.scrollmagic   = initScenes();
 
     app.mainSlider.init();
     app.mainSlider.pause();
     app.morph.init();
-    // app.tabs.init();
     app.initBoxes();
     app.initTabs();
     app.initFilters();
@@ -141,8 +144,6 @@ app.init = function() {
 
 app.initBoxes = function() {
     $.each($('.js-box'), function(index, el) {
-        // var id = el.id ? app.util.toCamelCase(el.id) : 'object' + index;
-        // app.objects[ id ] = new Box().init(el);
         new Box().init(el);
     });
 };
@@ -230,6 +231,7 @@ app.catalog.open = function(morphState, contentIndex) {
     app.category.open();
     app.morph.activate(morphState);
     app.navbar.hidden();
+    app.backButton.visible(1200);
     // app.util.toggleScroll();
     app.catalog.opened = true;
 };
@@ -241,6 +243,7 @@ app.catalog.close = function() {
     app.morph.deactivate();
     app.category.close();
     app.navbar.visible(null, 800);
+    app.backButton.hidden();
     // app.util.toggleScroll();
     app.catalog.opened = false;
 };
@@ -273,6 +276,7 @@ app.catalog2.open = function(btn) {
             app.morph2.fromStandby();
             app.modal2.open(contentIndex);
             app.navbar.hidden();
+            app.backButton.visible(1200);
             app.catalog2.opened = true;
         }, timeout);
     }
@@ -295,6 +299,7 @@ app.catalog2.close = function() {
         app.category2.deactivate();
         app.catalog2.opened = false;
         app.navbar.visible(null, 800);
+        app.backButton.hidden();
     }, 700);
 };
 
@@ -344,6 +349,7 @@ app.toparea.toggle = function() {
 //------------------------------------------------------------------------------
 
 app.initEvents = function() {
+    var logo = $('#header .logo');
 
     $('.catalog-btn').on('click', function(e) {
         var state = $(this).data('morph-state'),
@@ -361,10 +367,15 @@ app.initEvents = function() {
     });
 
 
-    $('#header .logo').on('click', function(e) {
+    logo.on('click', function(e) {
         if ( app.openedPopup ) app.util.closePopup();
         app.catalog.close();
         app.catalog2.close();
+    });
+
+    app.backButton.element.on('click', function(e) {
+        e.preventDefault();
+        logo.trigger('click');
     });
 
     $('.category .btn_category').on('click', function(e) {
@@ -383,12 +394,13 @@ app.initEvents = function() {
 //------------------------------------------------------------------------------
 $(document).ready(function() {
 
-app.util.getPlatform();
+// app.util.getPlatform();
 app.init();
 app.initEvents();
+app.util.getScrollBarWidth();
 
-var scrollbarWidth = app.util.getScrollBarWidth();
-console.log('Scroll bar width: ' + scrollbarWidth + 'px');
+// var scrollbarWidth = app.util.getScrollBarWidth();
+// console.log('Scroll bar width: ' + scrollbarWidth + 'px');
 
 app.router.run('#/');
 
@@ -414,17 +426,5 @@ app.router.run('#/');
 //     });
 // });
 
-// $('#outer').on('mousewheel DOMMouseScroll', function(event) {
-//     console.log('deltaY: ' + event.originalEvent.deltaY);
-// });
-
-
 // $('.nano').nanoScroller();
-
-
-// app.rootContainer.on('mousewheel', function(e) {
-    // console.log(e);
-    // console.log(e.deltaY, e.deltaFactor);
-// });
-
 });

@@ -16,6 +16,29 @@
 .header__right
   float: right
 
+.header__center
+  width: 300px
+  margin: auto
+  text-align: center
+  .btn
+    position: relative
+    visibility: hidden
+    pointer-events: none
+    transform: translate3d(0,-50px,0)
+    opacity: 0
+    top: -6px
+    vertical-align: top
+    height: 23px
+    color: $gray
+    transition: all 0.8s ease
+    &.is-visible
+      visibility: visible
+      opacity: 1
+      transform: translate3d(0,0,0)
+      pointer-events: auto
+  .btn__hover
+    height: 35px
+
 .header__phone
   display: inline-block
   line-height: 1.2
@@ -28,6 +51,7 @@
 
 .header__lang
   display: inline-block
+  margin-left: 12px
   text-transform: uppercase
   +f(hb, 10, 0.25)
   background: none
@@ -2358,7 +2382,7 @@ textarea.input
 
 //styles for preloader
 .preload
-
+  opacity: 0
   #header
     transform: translate3d(0,-100%,0)
     opacity: 0
@@ -2375,10 +2399,12 @@ textarea.input
     transform: translate3d(-100%,0,0)
     opacity: 0
     transition: all 0.3s ease-out 1.5s
-  #morph
-    opacity: 0
+
+.pace-running
+  opacity: 1
 
 .pace-done
+  opacity: 1
   #header,
   .slide__img,
   .slide__content,

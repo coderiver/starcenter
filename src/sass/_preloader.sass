@@ -1,6 +1,8 @@
 .pace
   position: fixed
   z-index: 9999
+  min-width: $content-width
+  min-height: $content-height
   top: 0
   left: 0
   right: 0
@@ -21,7 +23,7 @@
   left: 50%
   width: 4px
   position: relative
-  transition: all 0.2s linear
+  transition: all 1s linear
   transform: translate(-50%, -50%)
   &:before
     content: ""
