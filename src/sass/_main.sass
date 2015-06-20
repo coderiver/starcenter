@@ -487,7 +487,7 @@
 .form__contact
   height: 184px
   padding: 35px 0 0 40px
-  +f(bsp, 16, 0.05)
+  +f(bsr, 14)
   color: $text-light
   box-sizing: border-box
   > p
@@ -769,7 +769,7 @@ textarea.input
   right: 0
   bottom: 0
   height: 680px
-  min-width: 1200px
+  min-width: $content-width
   transition: background 0.5s ease
   &.is-opened
     background: #FFF
@@ -2103,7 +2103,7 @@ textarea.input
   opacity: 0
   white-space: nowrap
   > span
-    display: inline-block
+    display: none
     position: relative
     top: 110px
     transition: transform 0.4s ease

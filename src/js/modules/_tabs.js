@@ -38,11 +38,12 @@ Tabs.prototype._initEvents = function() {
             if ( _.activeTab !== null ) {
                 if ( index != _.activeTab ) {
 
-                    setTimeout(function() {
-                        _.showContent(index);
-                    }, _.options.showDelay);
+                    // setTimeout(function() {
+                    //     _.showContent(index);
+                    // }, _.options.showDelay);
 
-                    _.hideContent();
+                    // _.hideContent();
+                    _.switchContent(index);
                     el.addClass(_.options.activeClass);
                 } else {
                     _.hideContent();
@@ -59,6 +60,18 @@ Tabs.prototype._toggleBorder = function() {
     var _ = this;
     var border = $(_.content[_.activeTab]).find('.table__border');
     border.toggleClass(_.options.animClass);
+};
+
+Tabs.prototype._showBorders = function() {
+    var _ = this;
+    var borders = _.wrapper.find('.table__border');
+    borders.addClass(_.options.animClass);
+};
+
+Tabs.prototype._hideBorders = function() {
+    var _ = this;
+    var borders = _.wrapper.find('.table__border');
+    borders.removeClass(_.options.animClass);
 };
 
 Tabs.prototype._buildScene = function() {
@@ -92,7 +105,8 @@ Tabs.prototype.showContent = function(tabNumber) {
         duration: _.options.dur,
         start: function() {
             setTimeout(function() {
-                _._toggleBorder();
+                // _._toggleBorder();
+                _._showBorders();
             }, 100);
         },
         complete: function() {
@@ -105,7 +119,8 @@ Tabs.prototype.hideContent = function() {
     var _ = this;
     if ( _.activeTab === null ) return;
     _.canSwitch = false;
-    _._toggleBorder();
+    // _._toggleBorder();
+    _._hideBorders();
     _.button.removeClass(_.options.activeClass);
     $(_.content[_.activeTab])
         .delay(_.options.hideDelay)
@@ -116,6 +131,25 @@ Tabs.prototype.hideContent = function() {
             }
         });
     _.activeTab = null;
+};
+
+Tabs.prototype.switchContent = function(tabNumber) {
+    var _       = this,
+        content = $(_.content[tabNumber]);
+
+    if ( _.activeTab === null ) return;
+    _.canSwitch = false;
+    _.button.removeClass(_.options.activeClass);
+    $(_.content[_.activeTab]).slideUp(_.options.dur);
+    content
+        .delay(_.options.dur)
+        .slideDown({
+            duration: _.options.dur,
+            complete: function() {
+                _.activeTab = tabNumber;
+                _.canSwitch = true;
+            }
+        });
 };
 
 Tabs.prototype.init = function() {
