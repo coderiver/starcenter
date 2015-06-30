@@ -1,6 +1,6 @@
 var $ = require('jquery');
 require('sammy');
-// require('jquery-mousewheel')($);
+require('jquery-mousewheel')($);
 // require('nanoscroller');
 // require('modernizr');
 require('gsap');
@@ -26,7 +26,7 @@ app.openedPopup    = null;
 app.toparea        = {};
 app.catalog        = {};
 app.catalog2       = {};
-// app.initMap  = require('./modules/_map.js');
+app.initMap        = require('./modules/_map.js');
 
 app.util = {
     toCamelCase: function(str) {
@@ -60,7 +60,7 @@ app.util = {
     getScrollBarWidth: function() {
         var $outer, widthWithScroll, scrollbarWidth;
 
-        $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body'),
+        $outer = $('<div>').css({visibility: 'hidden', width: 100, overflow: 'scroll'}).appendTo('body');
         widthWithScroll = $('<div>').css({width: '100%'}).appendTo($outer).outerWidth();
         $outer.remove();
         scrollbarWidth =  100 - widthWithScroll;
@@ -100,6 +100,23 @@ app.util = {
         app.navbar.visible();
         app.mainSlider.play();
         app.openedPopup = null;
+    },
+
+    scrollTo: function(mousewheelEvent, container) {
+        var scrollContainer = container || app.rootContainer;
+        var scroll          = scrollContainer.scrollTop();
+        var delta           = mousewheelEvent.deltaY * mousewheelEvent.deltaFactor;
+        var finalScroll     = scroll - delta;
+        // var scrollTime      = mousewheelEvent.deltaFactor * 0.2;
+        var scrollTime      = 0.5;
+
+        mousewheelEvent.preventDefault();
+
+        TweenMax.to(scrollContainer, scrollTime, {
+            scrollTo : { y: finalScroll, autoKill:true },
+                ease: Power1.easeOut,
+                overwrite: 'all'
+            });
     }
 };
 
@@ -173,6 +190,11 @@ app.initPopupEvents = function() {
         });
     });
 
+    $('.popup').on('mousewheel', function(e) {
+        e.stopPropagation();
+        app.util.scrollTo(e, $(this));
+    });
+
     $('.popup .object__close').on('click', function() {
         app.util.closePopup();
     });
@@ -208,10 +230,6 @@ app.initPopupSlider = function() {
 
     });
 };
-
-
-
-
 
 
 
@@ -305,10 +323,6 @@ app.catalog2.close = function() {
 
 
 
-
-
-
-
 //------------------------------------------------------------------------------
 //
 //    #toparea
@@ -340,8 +354,6 @@ app.toparea.toggle = function() {
 
 
 
-
-
 //------------------------------------------------------------------------------
 //
 //    #events
@@ -350,6 +362,8 @@ app.toparea.toggle = function() {
 
 app.initEvents = function() {
     var logo = $('#header .logo');
+    var footer = $('.footer');
+    var footerTimeout;
 
     $('.catalog-btn').on('click', function(e) {
         var state = $(this).data('morph-state'),
@@ -366,7 +380,6 @@ app.initEvents = function() {
         }
     });
 
-
     logo.on('click', function(e) {
         if ( app.openedPopup ) app.util.closePopup();
         app.catalog.close();
@@ -380,6 +393,17 @@ app.initEvents = function() {
 
     $('.category .btn_category').on('click', function(e) {
         app.catalog2.open($(this));
+    });
+
+    // smooth scrolling
+    app.rootContainer.on('mousewheel', function(e) {
+        app.util.scrollTo(e);
+    });
+
+    // fix scroll when cursor is over footer
+    footer.on('mousewheel', function(e) {
+        e.preventDefault();
+        app.rootContainer.trigger('mousewheel');
     });
 };
 
@@ -398,33 +422,9 @@ $(document).ready(function() {
 app.init();
 app.initEvents();
 app.util.getScrollBarWidth();
+app.router.run('#/');
 
 // var scrollbarWidth = app.util.getScrollBarWidth();
 // console.log('Scroll bar width: ' + scrollbarWidth + 'px');
 
-app.router.run('#/');
-
-
-// $(function(){
-
-//     var $window = $('#outer');
-//     var scrollTime = 1;
-//     var scrollDistance = 170;
-
-//     $window.on("mousewheel DOMMouseScroll", function(event){
-//         event.preventDefault();
-//         var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
-//         var scrollTop = $window.scrollTop();
-//         var finalScroll = scrollTop - parseInt(delta*scrollDistance);
-
-//         TweenMax.to($window, scrollTime, {
-//             scrollTo : { y: finalScroll, autoKill:true },
-//                 ease: Power1.easeOut,
-//                 overwrite: 5
-//             });
-
-//     });
-// });
-
-// $('.nano').nanoScroller();
 });

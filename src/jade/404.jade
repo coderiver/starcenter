@@ -1,16 +1,14 @@
-extends _layout
+include _mixins
+doctype
+html
+  head
+    meta(charset="utf-8")
+    title Star Centre || 404 
+    meta(name="viewport" content="width=1368")
+    meta(name="format-detection" content="telephone=no")
+    link(rel="stylesheet", media="all", href="css/screen.css")
+    <!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
 
-block title
-  title 404
-
-block nav
-  //- empty
-
-block main
-  include partials/404
-
-block popups
-  //- empty
-
-block scripts
-  //- empty
+  body
+    include _header
+    include partials/404

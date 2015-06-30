@@ -26,12 +26,12 @@ include ../_mixins
           | Жилая недвижимость
 
 ul.filter-container
-  li.object-wrapper(data-filter="residential")
+  li.object-wrapper(data-filter="commercial")
     .object.js-box
       .object__inner
-  
+
         .object__gallery
-          
+
           .object__buttons
             button.object__slider-prev(type="button")
               span
@@ -45,7 +45,7 @@ ul.filter-container
               span
                 | свернуть объект
                 +icon("arrow-sm")
-            
+
           .object__slider
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
@@ -68,8 +68,8 @@ ul.filter-container
             .object__slide(style="background-image:url('img/objects/object2.jpg')")
             .object__slide(style="background-image:url('img/objects/object4.jpg')")
             .object__slide(style="background-image:url('img/objects/object1.jpg')")
-            
-        
+
+
           .info.table
             .table__border
               include ../../img/svg/svg-borders/optimized/info-table.svg
@@ -78,35 +78,35 @@ ul.filter-container
                 a.btn.btn_object(href="#")
                   .btn__hover
                     .btn__hover-in
-                      | БЦ Flagship
+                      | Краснозвездный 56
                       br
-                      small Київ, вул. Горького, 176
+                      small Киев, прсп. Краснозвездный, 56
                   .btn__front
-                    | БЦ Flagship
+                    | Краснозвездный 56
                     br
-                    small Київ, вул. Горького, 176
+                    small Киев, прсп. Краснозвездный, 56
               .info__cell.info__cell3
                 .info-item
                   small.info-item__label Площадь
-                  | 32 000 М<sup>2</sup>
+                  | 13 713 М<sup>2</sup>
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Год сдачи
-                  | 2014
+                  | 2015
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Этажность
-                  | 5
+                  | 13
               .info__cell.info__cell3
                 .info-item
                   small.info-item__label Свободная Площадь
-                  | 2 000 М<sup>2</sup>
+                  | 7 800 М<sup>2</sup>
 
         .object__detail
           h4.heading.heading_red
             | Выгодное предложение
           p.
-            Сейчас действует скидка на 1-ый год аренды размером 
+            Сейчас действует скидка на 1-ый год аренды размером
             в 25% при подписании договора до начала лета
 
           a.btn.btn_link(href="#")
@@ -114,14 +114,11 @@ ul.filter-container
             span Скачать презентацию
 
   li.object-wrapper(data-filter="commercial")
-    span.object-label
-      | Уже <br> про <br> дано
-    
     .object.js-box
       .object__inner
-        
+
         .object__gallery
-          
+
           .object__buttons
             button.object__slider-prev(type="button")
               span
@@ -135,7 +132,7 @@ ul.filter-container
               span
                 | свернуть объект
                 +icon("arrow-sm")
-            
+
           .object__slider
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/850/any')")
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/700/animals')")
@@ -151,8 +148,8 @@ ul.filter-container
             .object__slide(style="background-image:url('img/objects/object4.jpg')")
             .object__slide(style="background-image:url('img/objects/object2.jpg')")
             .object__slide(style="background-image:url('img/objects/object3.jpg')")
-            
-        
+
+
           .info.table
             .table__border
               include ../../img/svg/svg-borders/optimized/info-table.svg
@@ -161,48 +158,49 @@ ul.filter-container
                 a.btn.btn_object(href="#")
                   .btn__hover
                     .btn__hover-in
-                      | Ocean Plaza
+                      | Нововокзальная 3
                       br
-                      small Київ, вул. Горького, 176
+                      small Киев, ул. Нововокзальная, 3
                   .btn__front
-                    | Ocean Plaza
+                    | Нововокзальная 3
                     br
-                    small Київ, вул. Горького, 176
+                    small Киев, ул. Нововокзальная, 3
               .info__cell.info__cell3
                 .info-item
                   small.info-item__label Площадь
-                  | 32 000 М<sup>2</sup>
+                  | 7 826 М<sup>2</sup>
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Год сдачи
-                  | 2014
+                  | 2015
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Этажность
-                  | 5
+                  | 10
               .info__cell.info__cell3
-                .info-item.is-sold
-                  span.sold-badge продано
+                .info-item
                   small.info-item__label Свободная Площадь
-                  | 0 М<sup>2</sup>
+                  | 5 500 М<sup>2</sup>
 
         .object__detail
           h4.heading.heading_red
             | Выгодное предложение
           p.
-            Сейчас действует скидка на 1-ый год аренды размером 
+            Сейчас действует скидка на 1-ый год аренды размером
             в 25% при подписании договора до начала лета
 
           a.btn.btn_link(href="#")
             span.btn__hover(data-hover="Скачать презентацию")
             span Скачать презентацию
 
-  li.object-wrapper(data-filter="residential")
+  li.object-wrapper(data-filter="commercial")
+    span.object-label
+      | Уже <br> про <br> дано
     .object.js-box
       .object__inner
-  
+
         .object__gallery
-          
+
           .object__buttons
             button.object__slider-prev(type="button")
               span
@@ -216,7 +214,7 @@ ul.filter-container
               span
                 | свернуть объект
                 +icon("arrow-sm")
-            
+
           .object__slider
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
@@ -239,8 +237,8 @@ ul.filter-container
             .object__slide(style="background-image:url('img/objects/object2.jpg')")
             .object__slide(style="background-image:url('img/objects/object4.jpg')")
             .object__slide(style="background-image:url('img/objects/object1.jpg')")
-            
-        
+
+
           .info.table
             .table__border
               include ../../img/svg/svg-borders/optimized/info-table.svg
@@ -249,35 +247,36 @@ ul.filter-container
                 a.btn.btn_object(href="#")
                   .btn__hover
                     .btn__hover-in
-                      | БЦ Flagship
+                      | Донская 4
                       br
-                      small Київ, вул. Горького, 176
+                      small Киев, ул. Донская, 4
                   .btn__front
-                    | БЦ Flagship
+                    | Донская 4
                     br
-                    small Київ, вул. Горького, 176
+                    small Киев, ул. Донская, 4
               .info__cell.info__cell3
                 .info-item
                   small.info-item__label Площадь
-                  | 32 000 М<sup>2</sup>
+                  | 2 100 М<sup>2</sup>
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Год сдачи
-                  | 2014
+                  | 2011
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Этажность
                   | 5
               .info__cell.info__cell3
-                .info-item
+                .info-item.is-sold
+                  span.sold-badge продано
                   small.info-item__label Свободная Площадь
-                  | 2 000 М<sup>2</sup>
+                  | 0 М<sup>2</sup>
 
         .object__detail
           h4.heading.heading_red
             | Выгодное предложение
           p.
-            Сейчас действует скидка на 1-ый год аренды размером 
+            Сейчас действует скидка на 1-ый год аренды размером
             в 25% при подписании договора до начала лета
 
           a.btn.btn_link(href="#")
@@ -287,12 +286,12 @@ ul.filter-container
   li.object-wrapper(data-filter="commercial")
     span.object-label
       | Уже <br> про <br> дано
-    
+
     .object.js-box
       .object__inner
-        
+
         .object__gallery
-          
+
           .object__buttons
             button.object__slider-prev(type="button")
               span
@@ -306,7 +305,7 @@ ul.filter-container
               span
                 | свернуть объект
                 +icon("arrow-sm")
-            
+
           .object__slider
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/850/any')")
             //- .object__slide(style="background-image:url('https://placeimg.com/1400/700/animals')")
@@ -322,8 +321,8 @@ ul.filter-container
             .object__slide(style="background-image:url('img/objects/object4.jpg')")
             .object__slide(style="background-image:url('img/objects/object2.jpg')")
             .object__slide(style="background-image:url('img/objects/object3.jpg')")
-            
-        
+
+
           .info.table
             .table__border
               include ../../img/svg/svg-borders/optimized/info-table.svg
@@ -332,25 +331,25 @@ ul.filter-container
                 a.btn.btn_object(href="#")
                   .btn__hover
                     .btn__hover-in
-                      | Ocean Plaza
+                      | Краснозвездный 52
                       br
-                      small Київ, вул. Горького, 176
+                      small Киeв, ул. Краснозвездный, 52
                   .btn__front
-                    | Ocean Plaza
+                    | Краснозвездный 52
                     br
-                    small Київ, вул. Горького, 176
+                    small Киeв, ул. Краснозвездный, 52
               .info__cell.info__cell3
                 .info-item
                   small.info-item__label Площадь
-                  | 32 000 М<sup>2</sup>
+                  | 2 900 М<sup>2</sup>
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Год сдачи
-                  | 2014
+                  | 2005
               .info__cell.info__cell2
                 .info-item
                   small.info-item__label Этажность
-                  | 5
+                  | 3
               .info__cell.info__cell3
                 .info-item.is-sold
                   span.sold-badge продано
@@ -361,7 +360,171 @@ ul.filter-container
           h4.heading.heading_red
             | Выгодное предложение
           p.
-            Сейчас действует скидка на 1-ый год аренды размером 
+            Сейчас действует скидка на 1-ый год аренды размером
+            в 25% при подписании договора до начала лета
+
+          a.btn.btn_link(href="#")
+            span.btn__hover(data-hover="Скачать презентацию")
+            span Скачать презентацию
+
+  li.object-wrapper(data-filter="commercial")
+    span.object-label
+      | Уже <br> про <br> дано
+
+    .object.js-box
+      .object__inner
+
+        .object__gallery
+
+          .object__buttons
+            button.object__slider-prev(type="button")
+              span
+                +icon("arrow")
+                |  предыдущее фото
+            button.object__slider-next(type="button")
+              span
+                | следующее фото
+                +icon("arrow")
+            button.object__close(type="button")
+              span
+                | свернуть объект
+                +icon("arrow-sm")
+
+          .object__slider
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/850/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/700/animals')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/900/arch')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/1000/nature')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/people')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/600/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/tech')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/900/any')")
+            .object__slide(style="background-image:url('img/objects/object1.jpg')")
+            .object__slide(style="background-image:url('img/objects/object4.jpg')")
+            .object__slide(style="background-image:url('img/objects/object2.jpg')")
+            .object__slide(style="background-image:url('img/objects/object3.jpg')")
+
+
+          .info.table
+            .table__border
+              include ../../img/svg/svg-borders/optimized/info-table.svg
+            .info__inner
+              .info__cell.info__cell1
+                a.btn.btn_object(href="#")
+                  .btn__hover
+                    .btn__hover-in
+                      | Кудряшова переулок 10г
+                      br
+                      small Киeв, переулок Кудряшова, 10г
+                  .btn__front
+                    | Кудряшова переулок 10г
+                    br
+                    small Киeв, переулок Кудряшова, 10г
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Площадь
+                  | 2 300 М<sup>2</sup>
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Год сдачи
+                  | 2009
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Этажность
+                  | 4
+              .info__cell.info__cell3
+                .info-item.is-sold
+                  span.sold-badge продано
+                  small.info-item__label Свободная Площадь
+                  | 0 М<sup>2</sup>
+
+        .object__detail
+          h4.heading.heading_red
+            | Выгодное предложение
+          p.
+            Сейчас действует скидка на 1-ый год аренды размером
+            в 25% при подписании договора до начала лета
+
+          a.btn.btn_link(href="#")
+            span.btn__hover(data-hover="Скачать презентацию")
+            span Скачать презентацию
+
+  li.object-wrapper(data-filter="residential")
+    .object.js-box
+      .object__inner
+
+        .object__gallery
+
+          .object__buttons
+            button.object__slider-prev(type="button")
+              span
+                +icon("arrow")
+                |  предыдущее фото
+            button.object__slider-next(type="button")
+              span
+                | следующее фото
+                +icon("arrow")
+            button.object__close(type="button")
+              span
+                | свернуть объект
+                +icon("arrow-sm")
+
+          .object__slider
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/850/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/700/animals')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/900/arch')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/1000/nature')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/people')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/600/any')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/800/tech')")
+            //- .object__slide(style="background-image:url('https://placeimg.com/1400/900/any')")
+            .object__slide(style="background-image:url('img/objects/object1.jpg')")
+            .object__slide(style="background-image:url('img/objects/object4.jpg')")
+            .object__slide(style="background-image:url('img/objects/object2.jpg')")
+            .object__slide(style="background-image:url('img/objects/object3.jpg')")
+
+
+          .info.table
+            .table__border
+              include ../../img/svg/svg-borders/optimized/info-table.svg
+            .info__inner
+              .info__cell.info__cell1
+                a.btn.btn_object(href="#")
+                  .btn__hover
+                    .btn__hover-in
+                      | Щербакова 16
+                      br
+                      small Киев, ул. Щербакова, 16
+                  .btn__front
+                    | Щербакова 16
+                    br
+                    small Киев, ул. Щербакова, 16
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Площадь
+                  | 5 500 М<sup>2</sup>
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Год сдачи
+                  | 2014
+              .info__cell.info__cell2
+                .info-item
+                  small.info-item__label Квартир
+                  | 55
+              .info__cell.info__cell3
+                .info-item
+                  small.info-item__label Свободных квартир
+                  | 5
+
+        .object__detail
+          h4.heading.heading_red
+            | Выгодное предложение
+          p.
+            Сейчас действует скидка на 1-ый год аренды размером
             в 25% при подписании договора до начала лета
 
           a.btn.btn_link(href="#")

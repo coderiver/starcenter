@@ -170,6 +170,8 @@
     height: 6px
     width: 100%
     background: $gray
+  .scrollbar-width-0 &:before
+    height: 9px
 
 .nav__back
   width: 100%
@@ -819,16 +821,14 @@ textarea.input
     margin: auto
     background: #FFF
     box-shadow: 0 0 0 3px $text, 0 0 0 13px #FFF
-    transition: all 0.2s ease
+    transition: opacity 0.2s ease, visibility 0.2s ease
     visibility: visible
     opacity: 1
-  // &.slick-slider
-  //   .catalog-btn
-  //     transition: all 0.3s linear
   &.is-animate
     &:before
       opacity: 0
       visibility: hidden
+      box-shadow: 0 0 0 13px #FFF
     .catalog-category__item
       width: 33.3333%
       &:before

@@ -16,7 +16,7 @@ var Morph = function(selector) {
         standby: false,
         morph: 'circle', // circle, square, triangle or smTriangle
         prevMorph: null, // circle, square, triangle or smTriangle
-        rectangle: 'small' // small, big, wide or hidden
+        rectangle: 'initial' // initial, big, wide or hidden
     };
     this.sizes  = {
         circle    : 510,
@@ -540,7 +540,10 @@ Morph.prototype._morphRectangle = function(state, duration, delay) {
         del     = $.isNumeric(delay) ? delay / 1000 : 0;
 
     // change rectange size
-    TweenMax.to(rect.bounds.size, dur, {
+    TweenMax.fromTo(rect.bounds.size, dur, {
+        width: prevPos.size.width,
+        height: prevPos.size.height,
+    },{
         width: pos.size.width,
         height: pos.size.height,
         ease: easing,
@@ -548,7 +551,10 @@ Morph.prototype._morphRectangle = function(state, duration, delay) {
     });
 
     // change rectange position
-    TweenMax.to(rect.position, dur, {
+    TweenMax.fromTo(rect.position, dur, {
+        x: prevPos.center.x,
+        y: prevPos.center.y
+    },{
         x: pos.center.x,
         y: pos.center.y,
         ease: easing,

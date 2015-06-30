@@ -267,6 +267,7 @@ body { min-width: 1200px; min-height: 630px; width: 100%; height: 100%; overflow
 .nav__list { position: relative; display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; -webkit-box-pack: justify; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; -webkit-flex-wrap: nowrap; -ms-flex-wrap: nowrap; flex-wrap: nowrap; -webkit-box-align: end; -webkit-align-items: flex-end; -ms-flex-align: end; align-items: flex-end; -webkit-align-content: center; -ms-flex-line-pack: center; align-content: center; height: 33px; width: 100%; width: 100vh; min-width: 630px; padding: 6px 30px 0 50px; box-sizing: border-box; }
 .nav__list > li { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; width: auto; }
 .nav__list:before { content: ""; position: absolute; top: 0; left: 0; height: 6px; width: 100%; background: #AAA; }
+.scrollbar-width-0 .nav__list:before { height: 9px; }
 
 .nav__back { width: 100%; }
 .nav__back .nav__list { color: #AAA; }
@@ -442,8 +443,8 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .catalog__content { display: none; padding-bottom: 70px; }
 
 .catalog-category { position: absolute; z-index: 3; top: 609px; left: 50%; height: 44px; width: 510px; margin-left: -255px; box-sizing: border-box; font-size: 0; }
-.catalog-category:before { content: ""; position: absolute; z-index: 0; top: 0; left: 0; right: 0; width: 510px; height: 100%; margin: auto; background: #FFF; box-shadow: 0 0 0 3px #333, 0 0 0 13px #FFF; -webkit-transition: all 0.2s ease; transition: all 0.2s ease; visibility: visible; opacity: 1; }
-.catalog-category.is-animate:before { opacity: 0; visibility: hidden; }
+.catalog-category:before { content: ""; position: absolute; z-index: 0; top: 0; left: 0; right: 0; width: 510px; height: 100%; margin: auto; background: #FFF; box-shadow: 0 0 0 3px #333, 0 0 0 13px #FFF; -webkit-transition: opacity 0.2s ease, visibility 0.2s ease; transition: opacity 0.2s ease, visibility 0.2s ease; visibility: visible; opacity: 1; }
+.catalog-category.is-animate:before { opacity: 0; visibility: hidden; box-shadow: 0 0 0 13px #FFF; }
 .catalog-category.is-animate .catalog-category__item { width: 33.3333%; }
 .catalog-category.is-animate .catalog-category__item:before { opacity: 0; visibility: hidden; }
 .catalog-category.is-animate .catalog-btn { color: #AAA; letter-spacing: 0.5em; width: auto; -webkit-transition-duration: 0.3s; transition-duration: 0.3s; }

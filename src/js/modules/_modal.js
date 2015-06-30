@@ -1,6 +1,8 @@
 var $ = require('jquery');
+require('jquery-mousewheel')($);
 require('gsap');
 require('TimelineLite');
+require('gsap-scrollToPlugin');
 
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);
@@ -19,6 +21,22 @@ function Modal(modalSelector, contentSelector) {
         class: 'is-opened'
     };
 }
+
+
+Modal.prototype._enableCustomScroll = function() {
+    var _ = this;
+
+    _.scrollable.on('mousewheel', function(e) {
+        e.stopPropagation();
+        app.util.scrollTo(e, _.scrollable);
+    });
+};
+
+Modal.prototype._disableCustomScroll = function() {
+    var _ = this;
+
+    _.scrollable.off('mousewheel');
+};
 
 Modal.prototype._getPositions = function() {
     var _ = this;
@@ -60,6 +78,7 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
         .add(function() {
             _.inProgress = false;
             _.el.addClass(_.options.class);
+            _._enableCustomScroll();
             });
 
 };
@@ -86,6 +105,7 @@ Modal.prototype._toInitState = function(animDur, animDelay) {
         .add(function() {
             _.inProgress = false;
             _.opened = false;
+            _._disableCustomScroll();
             });
 
     if ( _.scrollable.scrollTop() > 0 ) {

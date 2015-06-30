@@ -24,7 +24,7 @@ function MainSlider(wrapper) {
         swipe: false,
         fade: true,
         useCSS: true,
-        pauseOnHover: true
+        pauseOnHover: false
     };
     this.animDur = 800;
     this.circleFade = 200; // seconds, duration for circle fade animation in
