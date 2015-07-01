@@ -1,8 +1,8 @@
-var $ = require('jquery');
-require('jquery-mousewheel')($);
-require('gsap');
-require('TimelineLite');
-require('gsap-scrollToPlugin');
+// var $ = require('jquery');
+// require('jquery-mousewheel')($);
+// require('gsap');
+// require('TimelineLite');
+// require('gsap-scrollToPlugin');
 
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);

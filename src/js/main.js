@@ -1,6 +1,6 @@
 var $ = require('jquery');
 require('sammy');
-require('jquery-mousewheel')($);
+// require('jquery-mousewheel')($);
 // require('nanoscroller');
 // require('modernizr');
 require('gsap');
@@ -102,20 +102,27 @@ app.util = {
         app.openedPopup = null;
     },
 
-    scrollTo: function(mousewheelEvent, container) {
-        var scrollContainer = container || app.rootContainer;
-        var scroll          = scrollContainer.scrollTop();
-        var delta           = mousewheelEvent.deltaY * mousewheelEvent.deltaFactor;
-        var finalScroll     = scroll - delta;
-        // var scrollTime      = mousewheelEvent.deltaFactor * 0.2;
-        var scrollTime      = 0.5;
+    scrollTo: function(e, container) {
+        var delta, scrollContainer, scroll, finalScroll, scrollTime;
+        if (e.originalEvent.deltaY) {
+            delta = Math.round(e.originalEvent.deltaY);
+        } else if (e.originalEvent.detail) {
+            delta = e.originalEvent.detail * 40;
+        } else {
+            return;
+        }
 
-        mousewheelEvent.preventDefault();
+        scrollContainer = container || app.rootContainer;
+        scroll          = scrollContainer.scrollTop();
+        finalScroll     = scroll + delta;
+        scrollTime      = 0.3;
+
+        e.preventDefault();
 
         TweenMax.to(scrollContainer, scrollTime, {
             scrollTo : { y: finalScroll, autoKill:true },
                 ease: Power1.easeOut,
-                overwrite: 'all'
+                // overwrite: 'all'
             });
     }
 };
@@ -401,9 +408,9 @@ app.initEvents = function() {
     });
 
     // fix scroll when cursor is over footer
-    footer.on('mousewheel', function(e) {
+    footer.on('mousewheel DOMMouseScroll', function(e) {
         e.preventDefault();
-        app.rootContainer.trigger('mousewheel');
+        app.util.scrollTo(e);
     });
 };
 

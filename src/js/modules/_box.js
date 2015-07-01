@@ -70,7 +70,7 @@ Box.prototype.init = function(box, mode) {
     // update options
     modeAttr = _.elements.box.data('mode');
     if ( mode ) _.mode = mode;
-    else if ( modeAttr) _.mode = modeAttr;
+    else if ( modeAttr ) _.mode = modeAttr;
     _.options.class        = _.mode == 'slider' ? 'is-slider': 'is-opened';
     _.options.wrapperClass = _.mode == 'slider' ? 'is-slider' : 'is-animate';
 
@@ -99,9 +99,11 @@ Box.prototype._initEvents = function() {
         _.close();
     });
 
-    _.elements.box.on('scroll mousewheel DOMMouseScroll', function(e) {
-        e.stopPropagation();
-    });
+    if ( _.mode == 'modal' ) {
+        _.elements.box.on('scroll mousewheel DOMMouseScroll', function(e) {
+            e.stopPropagation();
+        });
+    }
 
     $(window).on('resize', function() {
         $(_).trigger('winResized');

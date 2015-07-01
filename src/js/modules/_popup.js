@@ -1,5 +1,5 @@
-var $ = require('jquery');
-require('jquery-mousewheel')($);
+// var $ = require('jquery');
+// require('jquery-mousewheel')($);
 // require('gsap');
 // require('TimelineLite');
 // require('gsap-scrollToPlugin');
