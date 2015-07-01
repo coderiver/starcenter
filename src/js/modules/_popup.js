@@ -1,8 +1,8 @@
-// var $ = require('jquery');
+var $ = require('jquery');
 // require('jquery-mousewheel')($);
-// require('gsap');
-// require('TimelineLite');
-// require('gsap-scrollToPlugin');
+require('gsap');
+require('TimelineLite');
+require('gsap-scrollToPlugin');
 
 function Popup(popupSelector) {
     this.el         = $(popupSelector);

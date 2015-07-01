@@ -3,12 +3,16 @@ doctype
 html
   head
     meta(charset="utf-8")
-    title Star Centre || 404 
+    title Star Centre || 404
     meta(name="viewport" content="width=1368")
     meta(name="format-detection" content="telephone=no")
     link(rel="stylesheet", media="all", href="css/screen.css")
     <!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
 
   body
+    block icons
+      div(style="position: absolute; top: 0; left: 0;")
+        include ../../site/img/icons.svg
+
     include _header
     include partials/404
