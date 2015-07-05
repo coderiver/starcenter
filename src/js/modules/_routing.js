@@ -78,7 +78,7 @@ function catalogCategoryController(context, loaded) {
                 container.html(content);
 
                 var box = container.find('.js-box');
-                var tabs = container.find('.tabs');
+                var tabs = container.find('.js-tabs-2');
                 var filter = container.find('.filter');
 
                 if ( box.length ) {

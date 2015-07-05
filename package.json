@@ -41,10 +41,12 @@
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^0.6.6",
     "gulp-postcss": "^4.0.3",
+    "gulp-rename": "^1.2.2",
     "gulp-ruby-sass": "^1.0.5",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-svg-sprites": "^2.0.1",
     "gulp-svgmin": "^1.1.2",
+    "gulp-svgstore": "^5.0.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
     "gulp.spritesmith": "^3.6.0",
@@ -56,9 +58,6 @@
   },
   "dependencies": {
     "gsap": "^1.16.1",
-    "jquery-mousewheel": "^3.1.12",
-    "nanoscroller": "^0.8.7",
-    "ramjet": "^0.4.5",
     "scrollmagic": "^2.0.5",
     "tween.js": "^0.14.0"
   }

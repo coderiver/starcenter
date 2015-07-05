@@ -1,21 +1,27 @@
 var $ = require('jquery');
 var ScrollMagic = require('scrollmagic');
 
-function Tabs(wrapper, tabButton, tabContent) {
-    this.wrapper = $(wrapper);
-    this.button  = this.wrapper.find(tabButton || '.btn_tab');
-    this.content = this.wrapper.find(tabContent || '.tabs__content');
-    this.activeTab = null;
-    this.canSwitch = true;
+function Tabs(wrapper, opt) {
     this.options = {
         dur: 400,
         hideDelay: 500,
         showDelay: 1000,
         animClass: 'is-animate',
-        activeClass: 'is-active'
+        activeClass: 'is-active',
+        tabButton: '.btn_tab',
+        tabContent: '.tabs__content',
+        collapseOnScroll: false
     };
 
-    return this;
+    $.extend(this.options, opt || {});
+
+    this.wrapper   = wrapper instanceof jQuery? wrapper : $(wrapper);
+    this.button    = this.wrapper.find(this.options.tabButton);
+    this.content   = this.wrapper.find(this.options.tabContent);
+    this.activeTab = null;
+    this.canSwitch = true;
+
+    this.init();
 }
 
 Tabs.prototype._initEvents = function() {
@@ -77,18 +83,21 @@ Tabs.prototype._hideBorders = function() {
 Tabs.prototype._buildScene = function() {
     var _ = this;
 
-    new ScrollMagic.Scene({
-        duration: '100%',
+    _.scene = new ScrollMagic.Scene({
         offset: 0,
         triggerElement: _.wrapper[0],
         triggerHook: 'onEnter',
         loglevel: 1
     })
-        .on('start end', function(e) {
-            if ( _.activeTab !== null ) _.hideContent();
-        })
         .setClassToggle(_.wrapper[0], _.options.animClass)
         .addTo(app.scrollmagic.controller);
+
+    if ( _.options.collapseOnScroll ) {
+        _.scene.duration('100%');
+        _.scene.on('start end', function(e) {
+            if ( _.activeTab !== null ) _.hideContent();
+        });
+    }
 };
 
 Tabs.prototype.showContent = function(tabNumber) {

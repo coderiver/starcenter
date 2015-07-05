@@ -1882,6 +1882,8 @@ textarea.input
     left: 0
   input:checked ~ .btn .btn__hover
     width: 100%
+  .btn
+    user-select: none
 
 
 .object-wrapper
@@ -2038,6 +2040,7 @@ textarea.input
   color: #FFF
   opacity: 0
   transition: opacity 0.4s linear
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35)
   > span
     display: inline-block
     transform: translate3d(0,20px,0)
@@ -2085,7 +2088,7 @@ textarea.input
     max-width: 100%
   &:hover
     transform: scale(1.1)
-    transition-duration: 3s
+    transition-duration: 5s
     transition-timing-function: ease-out
 
 .object__slider-prev,
@@ -2219,8 +2222,8 @@ textarea.input
 .btn_object
   width: 400px
   height: 90px
-  +f(hb, 30, 0.25)
-  line-height: 0.8
+  +f(hb, 22, 0.25)
+  line-height: 1.1
   text-transform: uppercase
   small
     +f(hr, 14)

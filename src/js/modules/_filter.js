@@ -7,7 +7,7 @@ function Filter(element, filterContainer) {
     this.button     = this.element.find('input[type="radio"]');
     this.container  = filterContainer || this.element.next();
     this.allFilter  = 'all';
-    this.animDur    = 0.5;
+    this.animDur    = 1;
 
     this.init();
 
@@ -34,7 +34,7 @@ Filter.prototype.init = function() {
         idprefix = "M" + (+new Date()).toString(36),
         id = idprefix + (idgen++).toString(36);
 
-    if ( ! _.container instanceof jQuery ) {
+    if ( !_.container instanceof jQuery ) {
         _.container = _.element.siblings(_.container);
     }
 
@@ -74,7 +74,12 @@ Filter.prototype.filterContent = function(filter) {
 
     tl
         .fromTo(_.container, _.animDur / 2, {opacity: 1, y: 0}, {opacity: 0, y: 50})
-        .add(function() { filtering(); })
+        .add(function() {
+            if ( app.closeAllOpenedObjects instanceof Function ) {
+                app.closeAllOpenedObjects();
+            }
+            filtering();
+        })
         .to(_.container, _.animDur / 2, {opacity: 1, y: 0, clearProps: 'all'});
 };
 

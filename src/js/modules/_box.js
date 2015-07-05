@@ -96,7 +96,7 @@ Box.prototype._initEvents = function() {
 
     _.elements.closeButton.on('click', function(e) {
         e.preventDefault();
-        _.close();
+        _.close(true);
     });
 
     if ( _.mode == 'modal' ) {
@@ -297,32 +297,34 @@ Box.prototype._toFullSize = function() {
             });
 };
 
-Box.prototype._toInitSize = function() {
-    var _  = this,
-        tl = new TimelineLite();
+Box.prototype._toInitSize = function(animDur) {
+    var _   = this,
+        dur = $.isNumeric(animDur) ? animDur : _.options.animDur,
+        tl  = new TimelineLite();
+
 
     tl
         .add(function() {
             _._destroySlider();
             _.elements.box.removeClass(_.options.class);
-            _.elements.detail.slideUp();
+            _.elements.detail.slideUp(dur);
             })
         .addLabel('beginAnimations')
-        .to(_.elements.slider, _.options.animDur, {
+        .to(_.elements.slider, dur, {
             height: _.options.initSliderHeight,
             ease: _.options.easing,
             }, 'beginAnimations')
-        .to(_.elements.info, _.options.animDur, {
+        .to(_.elements.info, dur, {
             y: 0,
             ease: _.options.easing,
             }, 'beginAnimations')
-        .to(_.elements.wrapper, _.options.animDur, {
+        .to(_.elements.wrapper, dur, {
             width: _.position.width,
             ease: _.options.easing,
             }, 'beginAnimations')
-        .to([_.elements.box, _.elements.wrapper, _.elements.info, _.elements.slider], 0, {
-            clearProps: 'all'
-            })
+        // .to([_.elements.box, _.elements.wrapper, _.elements.info, _.elements.slider], 0, {
+        //     clearProps: 'all'
+        //     })
         .add(function() {
             _.opened = false;
             _.elements.wrapper.removeClass(_.options.wrapperClass);
@@ -338,25 +340,54 @@ Box.prototype.open = function() {
 
     if ( _.mode == 'slider' ) _._toFullSize();
     if ( _.mode == 'modal' ) _._toFullscreen();
+
+    if ( app.openedObjects instanceof Array ) {
+        app.openedObjects.push(_);
+    }
 };
 
 
 
-Box.prototype.close = function() {
+Box.prototype.close = function(removeFromOpened) {
     if ( !this.opened ) return;
 
-    var _    = this,
-        func = null;
+    var _        = this,
+        func     = null,
+        duration = null,
+        dontAnimate,
+        timeout,
+        index;
 
-    if ( _.mode == 'slider' ) func = _._toInitSize.bind(_);
-    if ( _.mode == 'modal' ) func = _._toInitState.bind(_);
+    if ( removeFromOpened === false ) {
+        timeout     = 0;
+        dontAnimate = true;
+        duration    = 0;
+    } else {
+        timeout     = _.slider.slick('slickGetOption', 'speed');
+        dontAnimate = false;
+        index       = app.openedObjects.indexOf(_);
+        if ( index > -1 ) {
+            app.openedObjects.splice(index, 1);
+        }
+    }
+
+    if ( _.mode == 'slider' ) {
+        func = function() {
+            _._toInitSize(duration);
+        };
+    }
+    else if ( _.mode == 'modal' ) {
+        func = function() {
+            _._toInitState();
+        };
+    }
 
     // if current slide of slider is not first
     if ( _.slider.slick('slickCurrentSlide') !== 0 ) {
-        _.slider.slick('slickGoTo', 0);
+        _.slider.slick('slickGoTo', 0, dontAnimate);
         setTimeout(function() {
             func();
-        }, _.slider.slick('slickGetOption', 'speed') || _.slickOptions.speed );
+        }, timeout );
 
     } else {
         func();

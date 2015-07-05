@@ -25,7 +25,6 @@ module.exports = function() {
             ghostMode: false,
             online: false,
             // tunnel: 'starcentre',
-            open: false
         });
 
     // });

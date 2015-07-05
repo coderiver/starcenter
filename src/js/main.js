@@ -27,6 +27,7 @@ app.toparea        = {};
 app.catalog        = {};
 app.catalog2       = {};
 app.initMap        = require('./modules/_map.js');
+app.openedObjects  = [];
 
 app.util = {
     toCamelCase: function(str) {
@@ -173,8 +174,14 @@ app.initBoxes = function() {
 };
 
 app.initTabs = function() {
-    $.each($('.tabs'), function(index, el) {
-        new Tabs(el).init();
+    $.each($('.js-tabs-1'), function(index, el) {
+        new Tabs(el, {
+            collapseOnScroll: false
+        });
+    });
+
+    $.each($('.js-tabs-2'), function(index, el) {
+        new Tabs(el);
     });
 };
 
@@ -238,6 +245,15 @@ app.initPopupSlider = function() {
     });
 };
 
+app.closeAllOpenedObjects = function() {
+    if ( app.openedObjects.length > 0 ) {
+        $.each(app.openedObjects, function(index, el) {
+            el.close(false);
+        });
+        app.openedObjects = [];
+    }
+};
+
 
 
 
@@ -271,6 +287,9 @@ app.catalog.close = function() {
     app.backButton.hidden();
     // app.util.toggleScroll();
     app.catalog.opened = false;
+    setTimeout(function() {
+        app.closeAllOpenedObjects();
+    }, 700);
 };
 
 
@@ -310,6 +329,9 @@ app.catalog2.open = function(btn) {
         setTimeout(function() {
             app.morph2.changeState(state, app.category2.direction);
             app.modal2.switchContent(contentIndex);
+            setTimeout(function() {
+                app.closeAllOpenedObjects();
+            }, 500);
         }, 0);
     }
 };
@@ -325,6 +347,7 @@ app.catalog2.close = function() {
         app.catalog2.opened = false;
         app.navbar.visible(null, 800);
         app.backButton.hidden();
+        app.closeAllOpenedObjects();
     }, 700);
 };
 
@@ -372,6 +395,7 @@ app.initEvents = function() {
     var footer = $('.footer');
     var footerTimeout;
 
+    // open catalog or change catalog category
     $('.catalog-btn').on('click', function(e) {
         var state = $(this).data('morph-state'),
             contentIndex = $(this).data('content-index');
@@ -384,6 +408,10 @@ app.initEvents = function() {
                 app.morph.changeState(state, app.category.direction);
                 app.modal.switchContent(contentIndex);
             }, 0);
+            // close all opened sliders
+            setTimeout(function() {
+                app.closeAllOpenedObjects();
+            }, 1000);
         }
     });
 

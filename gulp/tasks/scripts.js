@@ -9,12 +9,12 @@ module.exports = function() {
         gutil       = require('gulp-util'),
         sourcemaps  = require('gulp-sourcemaps'),
         browserSync = require('browser-sync'),
-        config      = require('./../config.js');
+        config      = require('../config.js');
 
     // gulp.task('scripts', function() {
 
         var props = {
-            entries: [config.src.js + '/main.js'],
+            entries: ['./' + config.src.js + '/main.js'],
             dest: [config.dest.js],
             outputName: 'main.js',
             debug: true
