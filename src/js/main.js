@@ -459,7 +459,4 @@ app.initEvents();
 app.util.getScrollBarWidth();
 app.router.run('#/');
 
-// var scrollbarWidth = app.util.getScrollBarWidth();
-// console.log('Scroll bar width: ' + scrollbarWidth + 'px');
-
 });

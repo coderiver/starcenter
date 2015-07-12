@@ -1,0 +1,168 @@
+@import helpers/all
+
+$gray      : #AAA
+$violet    : #896BA4
+$red       : #C34B4B
+$green     : #4A9547
+$yellow    : #D8B733
+$orange    : #D88133
+$text      : #333
+$text-light: #777
+
++font("HelveticaNeueCyr-Bold", helveticaneuecyr-bold)
++font("HelveticaNeueCyr-Roman", helveticaneuecyr-roman)
+// +font("HelveticaNeueCyr-Ultralight", helveticaneuecyr-ultralight)
+// +font("HelveticaNeueCyr-Light", helveticaneuecyr-light)
+// +font("PFBeauSansPro-Regular", pfbeausanspro-reg)
+// +font("PFBeauSansPro-Light", pfbeausanspro-light)
+
+=f($name, $font-size: null, $letter-spacing: null)
+  $font-family: null
+  @if $name == "bebas"
+    $font-family: "Bebas"
+  @if $name == "hr"
+    $font-family: "HelveticaNeueCyr-Roman"
+  @if $name == "hb"
+    $font-family: "HelveticaNeueCyr-Bold"
+  @if $name == "hu"
+    $font-family: "HelveticaNeueCyr-Ultralight"
+  @if $name == "hl"
+    $font-family: "HelveticaNeueCyr-Light"
+  @if $name == "bsr"
+    $font-family: "PFBeauSansPro-Regular"
+  @if $name == "bsl"
+    $font-family: "PFBeauSansPro-Light"
+  font-family: $font-family, Helvetica, Arial, sans-serif
+  font-weight: normal
+  @if $font-size != null
+    font-size: $font-size + px
+  @if $letter-spacing != null
+    letter-spacing: $letter-spacing + em
+
+body
+  min-width: 320px
+  padding: 100px 0 90px
+  box-sizing: border-box
+  position: relative
+  height: auto
+  min-height: 100%
+  color: $text
+  +f(hr, 14, 0.25)
+
+.header
+  position: absolute
+  z-index: 2
+  top: 0
+  left: 0
+  right: 0
+  padding: 25px 25px 0
+  +clr
+
+.header__small
+  +f(bsl, 12)
+  color: $gray
+
+.logo
+  display: block
+  +hide-text
+  background-image: img-url('../img/logo-mobile.svg')
+  background-repeat: no-repeat
+  background-position: center
+  background-size: contain
+  width: 115px
+  height: 45px
+  box-sizing: border-box
+
+.lang
+  display: inline-block
+  float: right
+  margin-top: 7px
+  color: inherit
+  text-decoration: none
+  text-transform: uppercase
+  +f(hb, 10, 0.25)
+  white-space: nowrap
+  &:after
+    content: ""
+    display: inline-block
+    vertical-align: middle
+    position: relative
+    top: -1px
+    width: 1em
+    height: 1em
+    background: $text
+    margin-left: 10px
+
+.main
+  max-width: 600px
+  margin: auto
+  height: 100%
+  padding: 0 15px
+  position: relative
+
+.main__title
+  position: relative
+  z-index: 2
+  text-align: center
+  text-transform: uppercase
+  +f(hb, 24, 0.25)
+  line-height: 1.25
+  margin-bottom: -77px
+  > small
+    display: block
+    +f(hr, 10)
+
+.main__circle
+  position: relative
+  z-index: 0
+  margin: auto
+  width: percentage(220/360)
+  border-radius: 50%
+  background-color: #75BDC4
+  // background-image: linear-gradient(to top, #CDF0E9 27%, #2B92A5 100%)
+  background-image: linear-gradient(to top, #CDF0E9 0%, #54B7C6 100%)
+  &:before
+    content: ""
+    display: block
+    padding-bottom: 100%
+
+.main__pic
+  position: relative
+  img
+    position: absolute
+    bottom: -25px
+    box-sizing: border-box
+    left: 0
+    right: 0
+    display: block
+    max-width: 100%
+    margin: auto
+    z-index: 1
+
+.contacts
+  margin-top: percentage(70/360)
+  text-align: center
+  +f(hr, 14, 0.25)
+  text-transform: uppercase
+  line-height: 1.715
+  a
+    text-decoration: none
+    color: inherit
+  b, strong
+    +f(hb)
+
+.footer
+  position: absolute
+  box-sizing: border-box
+  min-width: 320px
+  z-index: 5
+  bottom: 0
+  left: 0
+  right: 0
+  +f(hr, 10, 0.25)
+  line-height: 1.8
+  text-transform: uppercase
+  padding: 12px
+  background: $text
+  color: #FFF
+  text-align: center
