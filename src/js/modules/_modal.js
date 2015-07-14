@@ -22,13 +22,28 @@ function Modal(modalSelector, contentSelector) {
     };
 }
 
+Modal.prototype._preventBubbling = function() {
+    var e = arguments[0];
+    e.stopPropagation();
+}
+
+Modal.prototype._cancelBubbling = function(val) {
+    var _ = this;
+
+    if (val === true) {
+        this.el.on('mousewheel DOMMouseScroll scroll', _._preventBubbling);
+    } else if (val === false) {
+        this.el.off('mousewheel DOMMouseScroll scroll', _._preventBubbling);
+    }
+};
+
 
 Modal.prototype._enableCustomScroll = function() {
     var _ = this;
 
     _.scrollable.on('mousewheel', function(e) {
         e.stopPropagation();
-        app.util.scrollTo(e, _.scrollable);
+        app.util.scrollTo(e, _.scrollable, true);
     });
 };
 
@@ -124,6 +139,7 @@ Modal.prototype.open = function(contentIndex, animDur, animDelay) {
 
     var _ = this;
 
+    _._cancelBubbling(true);
     _._toFullscreen(contentIndex, animDur, animDelay);
 };
 
@@ -133,6 +149,7 @@ Modal.prototype.close = function(animDur, animDelay) {
 
     var _ = this;
 
+    _._cancelBubbling(false);
     _._toInitState(animDur, animDelay);
 };
 

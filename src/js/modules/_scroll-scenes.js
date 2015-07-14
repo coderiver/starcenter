@@ -100,19 +100,6 @@ module.exports = function() {
                 .addTo(scrollmagic.controller);
     });
 
-    // $.each($('.tabs'), function(index, el) {
-    //     new ScrollMagic.Scene({
-    //         duration: 800,
-    //         offset: -100,
-    //         triggerElement: el,
-    //         triggerHook: 'onCenter',
-    //         loglevel: 1
-    //     })
-    //         .setClassToggle(el, 'is-animate')
-    //         .addTo(scrollmagic.controller);
-    // })
-
-
 
     // ##### scene for box with men on background
     scrollmagic.box = {
@@ -179,15 +166,16 @@ module.exports = function() {
 
     //##### scenes for all heads
     scrollmagic.head = {
-        elements: $('.head:not(.head_capabilities)'),
+        // elements: $('.head:not(.head_capabilities)'),
+        elements: $('.head'),
         scenes: {}
     };
     scrollmagic.head.elements.each(function(index, el) {
         var img  = $(el).find('.head__img'),
             text = $(el).find('.head__text');
 
-        TweenMax.set(img,  {bottom: -100});
-        TweenMax.set(text, {bottom: -150});
+        TweenMax.set(img,  {bottom: -100}); // -100
+        TweenMax.set(text, {bottom: -100}); // -150
 
         scrollmagic.head.scenes['head' + index] = new ScrollMagic.Scene({
             duration: $(window).height() + $(el).height(),
@@ -198,7 +186,7 @@ module.exports = function() {
         })
             .on('progress', function(e) {
                 var progressImg  = (100 * e.progress).toFixed(1);
-                var progressText = (300 * e.progress).toFixed(1);
+                var progressText = (370 * e.progress).toFixed(1); // 300
                 TweenMax.to(img,  0.05, {y: -progressImg,  ease: Linear.easeNone});
                 TweenMax.to(text, 0.05, {y: -progressText, ease: Linear.easeNone});
             })

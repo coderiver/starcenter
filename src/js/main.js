@@ -37,14 +37,15 @@ app.util = {
             });
     },
 
-    prevent: function(event) {
-        // console.log(event);
-        event.preventDefault();
+    prevent: function() {
+        var e = arguments[0];
+        e.preventDefault();
+        return false;
     },
 
     toggleScroll: function() {
         if ( !app.scrollDisabled ) {
-            app.rootContainer.on('mousewheel DOMMouseScroll', event, app.util.prevent);
+            app.rootContainer.on('mousewheel DOMMouseScroll', app.util.prevent);
             app.scrollDisabled = true;
         } else {
             app.rootContainer.off('mousewheel DOMMouseScroll', app.util.prevent);
@@ -103,7 +104,8 @@ app.util = {
         app.openedPopup = null;
     },
 
-    scrollTo: function(e, container) {
+    scrollTo: function(e, container, localScroll) {
+        if ( !localScroll && app.scrollDisabled === true ) return;
         var delta, scrollContainer, scroll, finalScroll, scrollTime;
         if (e.originalEvent.deltaY) {
             delta = Math.round(e.originalEvent.deltaY);
@@ -206,7 +208,7 @@ app.initPopupEvents = function() {
 
     $('.popup').on('mousewheel', function(e) {
         e.stopPropagation();
-        app.util.scrollTo(e, $(this));
+        app.util.scrollTo(e, $(this), true);
     });
 
     $('.popup .object__close').on('click', function() {
@@ -267,25 +269,25 @@ app.catalog.opened = false;
 
 app.catalog.open = function(morphState, contentIndex) {
     if ( app.catalog.opened ) return;
+    app.util.toggleScroll();
     app.modal.open(contentIndex);
     app.mainSlider.rollUp();
     app.category.open();
     app.morph.activate(morphState);
     app.navbar.hidden();
     app.backButton.visible(1200);
-    // app.util.toggleScroll();
     app.catalog.opened = true;
 };
 
 app.catalog.close = function() {
     if ( !app.catalog.opened ) return;
+    app.util.toggleScroll();
     app.modal.close();
     app.mainSlider.rollDown();
     app.morph.deactivate();
     app.category.close();
     app.navbar.visible(null, 800);
     app.backButton.hidden();
-    // app.util.toggleScroll();
     app.catalog.opened = false;
     setTimeout(function() {
         app.closeAllOpenedObjects();
@@ -304,6 +306,8 @@ app.catalog2.open = function(btn) {
         timeout = centerSlide.length ? 0 : app.category2.slickOptions.speed; // speed of changes slides
 
     if ( !app.catalog2.opened ) {
+        app.util.toggleScroll();
+
         // if clicked not center button
         if ( !centerSlide.length ) {
             app.morph2.initStandby(state);
@@ -338,7 +342,7 @@ app.catalog2.open = function(btn) {
 
 app.catalog2.close = function() {
     if ( !app.catalog2.opened ) return;
-
+    app.util.toggleScroll();
     app.morph2.toStandby();
     app.modal2.close();
 

@@ -624,7 +624,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .head__img { position: absolute; z-index: 1; bottom: 0; left: 120px; }
 .head__img img { display: block; }
 
-.head__text { position: absolute; z-index: 2; bottom: 73px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 40px; letter-spacing: 0.8em; line-height: 1.75; text-transform: uppercase; pointer-events: none; }
+.head__text { position: absolute; z-index: 2; bottom: 146px; left: 70px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 72px; letter-spacing: 0.4em; line-height: 1.75; text-transform: uppercase; pointer-events: none; }
 
 .head_advantages .head__inner { height: 541px; }
 .head_advantages .head__img { left: 50%; margin-left: -560px; }
@@ -774,7 +774,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .object .slick-dots li { display: inline-block; vertical-align: middle; }
 .object .slick-dots li button { width: 40px; height: 40px; background: none; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #AAA; -webkit-transition: color 0.3s linear; transition: color 0.3s linear; }
 .object .slick-dots li.slick-active button, .object .slick-dots li:hover button { color: #333; }
-.object.is-opened .object__buttons, .object.is-slider .object__buttons { display: block; }
+.object.is-opened .object__buttons, .object.is-slider .object__buttons { visibility: visible; opacity: 1; }
 .object.is-opened .btn_object, .object.is-slider .btn_object { cursor: default; pointer-events: none; }
 .object.is-opened .btn_object .btn__hover, .object.is-slider .btn_object .btn__hover { -webkit-transition: all 0.2s linear; transition: all 0.2s linear; opacity: 0; visibility: hidden; }
 .object.is-opened .object__slide, .object.is-slider .object__slide { -webkit-transition: none; transition: none; -webkit-transform: none; -ms-transform: none; transform: none; }
@@ -790,16 +790,15 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .object__pic { position: relative; z-index: 0; width: 100%; height: 100%; background: no-repeat center center; background-size: cover; }
 
-.object__buttons { display: none; position: absolute; z-index: 1; top: 0; left: 0; right: 0; bottom: 0; }
+.object__buttons { visibility: hidden; opacity: 0; position: absolute; z-index: 1; top: 0; left: 0; right: 0; bottom: 0; -webkit-transition: 0.3s ease; transition: 0.3s ease; -webkit-transition-property: visibility, opacity; transition-property: visibility, opacity; }
+.popup.is-opened .object__buttons { opacity: 1; visibility: visible; }
 
 .object__detail { display: none; width: 790px; margin: 160px auto 0; box-sizing: border-box; padding: 0 0 70px 210px; font-family: "PFBeauSansPro-Regular", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 18px; line-height: 1.555; -webkit-animation: detail 0.5s ease; animation: detail 0.5s ease; }
 .object__detail .btn_link { margin-top: 40px; }
 
-.object__close { position: absolute; z-index: 3; top: 0; left: 50%; width: 500px; height: 170px; box-sizing: border-box; background: none; margin-left: -250px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #FFF; opacity: 0; -webkit-transition: opacity 0.4s linear; transition: opacity 0.4s linear; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); }
-.object__close > span { display: inline-block; -webkit-transform: translate3d(0, 20px, 0); transform: translate3d(0, 20px, 0); -webkit-transition: -webkit-transform 0.4s ease; transition: transform 0.4s ease; }
+.object__close { position: absolute; z-index: 3; top: 0; left: 50%; width: 500px; height: 170px; box-sizing: border-box; background: none; margin-left: -250px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #FFF; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); }
+.object__close > span { display: inline-block; }
 .object__close .icon-arrow-sm { position: absolute; fill: #FFF; top: 50%; left: 50%; margin: -50px 0 0 -4px; -webkit-transition: -webkit-transform 0.6s ease; transition: transform 0.6s ease; }
-.object__close:hover { opacity: 1; }
-.object__close:hover > span { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
 .object__close:hover .icon-arrow-sm { -webkit-transform: translate3d(0, -15px, 0); transform: translate3d(0, -15px, 0); }
 
 .object__gallery { position: relative; z-index: 0; margin: auto; }
