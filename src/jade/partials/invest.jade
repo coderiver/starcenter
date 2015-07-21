@@ -51,15 +51,16 @@ include ../_mixins
             | ТРЦ и <br> выставочные <br> комплексы
 
     .tabs__content
-      form.form.table(name="INVEST_1")
+      form.form.table(name="INVEST_1", data-subject="Инвестирование. Жилая недвижимость")
         .table__border
           include ../../img/svg/svg-borders/optimized/tabs-form-mod.svg
         .form__contact
-          spam Загляните к нам на кофе
+          span Загляните к нам на кофе
           p Киев <br> Краснозвездный <br> проспект 42
           span или оставте свой номер телефона и мы вам перезвоним:
-        input.input(type="text", name="NAME", placeholder="Ваше имя")
-        input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+        include ../_form-message
+        input.input(type="text", name="name", placeholder="Ваше имя")
+        input.input(type="tel", name="phone", placeholder="Ваше телефон")
         button.btn.btn_submit(type="submit")
           .btn__hover
             .btn__hover-in
@@ -70,15 +71,16 @@ include ../_mixins
             +icon("arrow")
 
     .tabs__content
-      form.form.table(name="INVEST_2")
+      form.form.table(name="INVEST_2", data-subject="Инвестирование. Офисная недвижимость")
         .table__border
           include ../../img/svg/svg-borders/optimized/tabs-form-mod.svg
         .form__contact
-          spam Загляните к нам на кофе
+          span Загляните к нам на кофе
           p Киев <br> Краснозвездный <br> проспект 42
           span или оставте свой номер телефона и мы вам перезвоним:
-        input.input(type="text", name="NAME", placeholder="Ваше имя")
-        input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+        include ../_form-message
+        input.input(type="text", name="name", placeholder="Ваше имя")
+        input.input(type="tel", name="phone", placeholder="Ваше телефон")
         button.btn.btn_submit(type="submit")
           .btn__hover
             .btn__hover-in
@@ -89,15 +91,16 @@ include ../_mixins
             +icon("arrow")
 
     .tabs__content
-      form.form.table(name="INVEST_3")
+      form.form.table(name="INVEST_3", data-subject="Инвестирование. ТРЦ и выставочные комплексы")
         .table__border
           include ../../img/svg/svg-borders/optimized/tabs-form-mod.svg
         .form__contact
-          spam Загляните к нам на кофе
+          span Загляните к нам на кофе
           p Киев <br> Краснозвездный <br> проспект 42
           span или оставте свой номер телефона и мы вам перезвоним:
-        input.input(type="text", name="NAME", placeholder="Ваше имя")
-        input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
+        include ../_form-message
+        input.input(type="text", name="name", placeholder="Ваше имя")
+        input.input(type="tel", name="phone", placeholder="Ваше телефон")
         button.btn.btn_submit(type="submit")
           .btn__hover
             .btn__hover-in

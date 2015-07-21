@@ -14,9 +14,10 @@ var Morph = function(selector) {
         active: false,
         inProgress: false,
         standby: false,
-        morph: 'circle', // circle, square, triangle or smTriangle
-        prevMorph: null, // circle, square, triangle or smTriangle
-        rectangle: 'initial' // initial, big, wide or hidden
+        morph: 'circle', // 'circle', 'square', 'triangle' or 'smTriangle'
+        prevMorph: null, // 'circle', 'square', 'triangle' or 'smTriangle'
+        rectangle: 'initial', // 'initial', 'big', 'wide' or 'hidden'
+        star: 'initial' // 'initial' or 'final'
     };
     this.sizes  = {
         circle    : 510,
@@ -37,26 +38,31 @@ var Morph = function(selector) {
     this.standbyScale = 0.55;
 
     return this;
-
 };
 
 Morph.prototype._initContent = function() {
-    var _     = this,
-        front = [],
-        back  = [];
-        state = _.state;
+    var _         = this,
+        state     = _.state;
         morphSize = _.morphSize;
 
     _.paper.setup(_.canvas[0]);
 
     _.backGroup  = new _.paper.Group();
     _.frontGroup = new _.paper.Group();
+    _.starGroup  = new _.paper.Group();
 
     _.objects = {
         paths: {
             morph: new _.paper.Path.Circle({
                 center: [_.paper.view.center.x, _.paper.view.center.y],
                 radius: _.sizes.circle / 2
+            }),
+            star: new _.paper.Path.Star({
+                center: _.paper.view.center,
+                points: 5,
+                radius1: 255,
+                radius2: 255,
+                fillColor: 'red'
             }),
             fill: new _.paper.Path.Rectangle({
                 center: _.paper.view.center,
@@ -68,7 +74,8 @@ Morph.prototype._initContent = function() {
                     origin: [_.paper.view.center.x, _.paper.view.center.y - _.sizes.circle / 2],
                     destination: [_.paper.view.center.x, _.paper.view.center.y + _.sizes.circle / 2]
                 }
-            })
+            }),
+            fillStar: null // this will be a reference to a clone of _.objects.paths.fill
         },
         raster: {
             circle: {
@@ -131,35 +138,40 @@ Morph.prototype._initContent = function() {
     //setup rectange
     _.objects.other.rectangle.bounds.center = new _.paper.Point(_.paper.view.center.x, _.paper.view.size.height - 64);
 
-    $.each(_.objects.paths, function(index, path) {
-        front.push(path);
-    });
-
-    $.each(_.objects.other, function(index, path) {
-        back.push(path);
-    });
-
-    // set positioning for raster objects
-    $.each(_.objects.raster, function(index, raster) {
-        // raster.pic.onLoad = function() {
-            raster.pic.position.x = raster.position.x + morphSize.x;
-            raster.pic.position.y = raster.position.y;
-        // };
-        // raster.altPic.onLoad = function() {
-            raster.altPic.position.x = raster.position.x + morphSize.x / 2;
-            raster.altPic.position.y = raster.position.y;
-        // };
-        front.push(raster.pic);
-        back.push(raster.altPic);
-    });
-
+    // group objects
     _.backGroup.set({
-        children: back
+        children: [
+            _.objects.other.rectangle
+        ]
     });
 
     _.frontGroup.set({
-        children: front,
+        children: [
+            _.objects.paths.morph,
+            _.objects.paths.fill,
+        ],
         clipped: true
+    });
+
+    _.objects.paths.fillStar = _.objects.paths.fill.clone();
+    _.starGroup.set({
+        children: [
+            _.objects.paths.star,
+            _.objects.paths.fillStar
+        ],
+        clipped: true,
+        visible: false
+    });
+
+    // set positioning of each raster and group them
+    $.each(_.objects.raster, function(index, raster) {
+        raster.pic.position.x = raster.position.x + morphSize.x;
+        raster.pic.position.y = raster.position.y;
+        raster.altPic.position.x = raster.position.x + morphSize.x / 2;
+        raster.altPic.position.y = raster.position.y;
+
+        _.frontGroup.addChild(raster.pic);
+        _.backGroup.addChild(raster.altPic);
     });
 };
 
@@ -185,51 +197,51 @@ Morph.prototype._calcPosition = function() {
         point;
 
     // coordinates of vertexes for each morph state relative to view.center
-    point = {
+    points = {
         circle: [
-            {point: 1, x: -c/2, y:    0, handle: {x:    0, y:  140}},
-            {point: 2, x:    0, y: -c/2, handle: {x: -140, y:    0}},
-            {point: 3, x:  c/2, y:    0, handle: {x:    0, y: -140}},
-            {point: 4, x:    0, y:  c/2, handle: {x:  140, y:    0}}
+            {point: 0, x: -c/2, y:    0, handle: {x:    0, y:  140}},
+            {point: 1, x:    0, y: -c/2, handle: {x: -140, y:    0}},
+            {point: 2, x:  c/2, y:    0, handle: {x:    0, y: -140}},
+            {point: 3, x:    0, y:  c/2, handle: {x:  140, y:    0}}
             // {x: -255, y:    0},
             // {x:    0, y: -255},
             // {x:  255, y:    0},
             // {x:    0, y:  255},
         ],
         square: [
-            {point: 1, x: -s/2, y: -s/2, handle: {x: 0, y: 0}},
-            {point: 2, x:  s/2, y: -s/2, handle: {x: 0, y: 0}},
-            {point: 3, x:  s/2, y:  s/2, handle: {x: 0, y: 0}},
-            {point: 4, x: -s/2, y:  s/2, handle: {x: 0, y: 0}}
+            {point: 0, x: -s/2, y: -s/2, handle: {x: 0, y: 0}},
+            {point: 1, x:  s/2, y: -s/2, handle: {x: 0, y: 0}},
+            {point: 2, x:  s/2, y:  s/2, handle: {x: 0, y: 0}},
+            {point: 3, x: -s/2, y:  s/2, handle: {x: 0, y: 0}}
             // {x: -225, y: -225},
             // {x:  225, y: -225},
             // {x:  225, y:  225},
             // {x: -225, y:  225},
         ],
         triangle: [
-            {point: 1, x: -0.36207 * t/2, y: 0.58621 * t/2, handle: {x: 0, y: 0}},
-            {point: 2, x:           -t/2, y: 0.39310 * t/2, handle: {x: 0, y: 0}},
-            {point: 3, x:  0.53448 * t/2, y:          -t/2, handle: {x: 0, y: 0}},
-            {point: 4, x:            t/2, y:           t/2, handle: {x: 0, y: 0}}
+            {point: 0, x: -0.36207 * t/2, y: 0.58621 * t/2, handle: {x: 0, y: 0}},
+            {point: 1, x:           -t/2, y: 0.39310 * t/2, handle: {x: 0, y: 0}},
+            {point: 2, x:  0.53448 * t/2, y:          -t/2, handle: {x: 0, y: 0}},
+            {point: 3, x:            t/2, y:           t/2, handle: {x: 0, y: 0}}
             // {x: -105, y:  170},
             // {x: -290, y:  114},
             // {x:  155, y: -290},
             // {x:  290, y:  290},
         ],
         smTriangle: [
-            {point: 1, x: -0.36207 * smt/2, y: 0.58621 * smt/2, handle: {x: 0, y: 0}},
-            {point: 2, x:           -smt/2, y: 0.39310 * smt/2, handle: {x: 0, y: 0}},
-            {point: 3, x:  0.53448 * smt/2, y:          -smt/2, handle: {x: 0, y: 0}},
-            {point: 4, x:            smt/2, y:           smt/2, handle: {x: 0, y: 0}},
+            {point: 0, x: -0.36207 * smt/2, y: 0.58621 * smt/2, handle: {x: 0, y: 0}},
+            {point: 1, x:           -smt/2, y: 0.39310 * smt/2, handle: {x: 0, y: 0}},
+            {point: 2, x:  0.53448 * smt/2, y:          -smt/2, handle: {x: 0, y: 0}},
+            {point: 3, x:            smt/2, y:           smt/2, handle: {x: 0, y: 0}},
         ]
     };
 
     _.pathPosition = {
         morph: {
-            circle:     _._translateCoordinates(point.circle),
-            square:     _._translateCoordinates(point.square),
-            triangle:   _._translateCoordinates(point.triangle),
-            smTriangle: _._translateCoordinates(point.smTriangle)
+            circle:     _._translateCoordinates(points.circle),
+            square:     _._translateCoordinates(points.square),
+            triangle:   _._translateCoordinates(points.triangle),
+            smTriangle: _._translateCoordinates(points.smTriangle)
         },
         rectangle: {
             initial: {
@@ -462,7 +474,7 @@ Morph.prototype._togglePicture = function(state, duration) {
         ease: easing
     });
 
-    // // fade in picture outside morph object
+    // fade in picture outside morph object
     TweenMax.to(pics.outer.pic, dur, {
         opacity: pics.outer.opacity,
         ease: easing,
@@ -609,6 +621,7 @@ Morph.prototype.init = function() {
     this._initEvents();
     this._toggleContentVisibility(false, true); //make pictures invisible
     this._calcPosition();
+    this._initStar();
     this._render();
     return this;
 };
@@ -667,9 +680,11 @@ Morph.prototype.moveDown = function(duration) {
         .add(function() {
             _._fade();
             _._toggleContentVisibility(false);
+            _._toggleMorphToStar();
         })
         .add(function() {
-            _._morph('smTriangle', dur);
+            // _._morph('smTriangle', dur);
+            _._morphStar('final', dur);
             }, 'fadeIn')
         .to(_.canvas, dur / 1000, {y: _.shiftY}, 'fadeIn');
 };
@@ -682,7 +697,8 @@ Morph.prototype.moveBack = function(duration) {
 
     tl
         .add(function() {
-            _._morph('circle', dur);
+            // _._morph('circle', dur);
+            _._morphStar('initial', dur);
             })
         .to(_.canvas, dur / 1000, {y: 0})
         .add(function() {
@@ -690,6 +706,7 @@ Morph.prototype.moveBack = function(duration) {
             })
         .add(function() {
             _._toggleContentVisibility(true);
+            _._toggleMorphToStar();
             }, '+=0.2');
 };
 
@@ -779,6 +796,87 @@ Morph.prototype.fadeFrontGroup = function(opacity, fadeDur) {
         value = $.isNumeric(opacity) ? opacity : 1;
 
     TweenMax.to(_.frontGroup, dur, {opacity: value, ease: Linear.easeNone});
+};
+
+Morph.prototype._initStar = function() {
+    var _             = this;
+    var initialValues = [];
+    var finalValues   = [];
+    var initStar      = _.objects.paths.star;
+    var targetStar    = new _.paper.Path.Star({
+        center: _.paper.view.center,
+        points: 5,
+        radius1: 72,
+        radius2: 190,
+    });
+
+    targetStar.rotate(25);
+    initStar.smooth();
+
+    function buildArray(starObj, arr) {
+        $.each(starObj.segments, function(index, segment) {
+            arr.push({
+                point: index,
+                x: segment.point.x,
+                y: segment.point.y,
+                handleIn: {
+                    x: segment.handleIn.x,
+                    y: segment.handleIn.y
+                },
+                handleOut: {
+                    x: segment.handleOut.x,
+                    y: segment.handleOut.y
+                }
+            });
+        });
+    }
+
+    buildArray(initStar, initialValues);
+    buildArray(targetStar, finalValues);
+
+    _.pathPosition.star = {
+        initial: initialValues,
+        final: finalValues
+    };
+
+    targetStar.remove();
+};
+
+Morph.prototype._morphStar = function(state, dur) {
+    var _            = this;
+    var currentState = _._getState('star');
+    var duration     = $.isNumeric(dur) ? dur / 1000 : _.dur / 1000;
+    var easing       = Sine.easeOut;
+    var prevPoints   = _.pathPosition.star[currentState];
+    var points       = _.pathPosition.star[state];
+
+    if (currentState == state) return;
+
+    $.each(_.objects.paths.star.segments, function(index, segment) {
+        TweenMax.to(segment.point, duration, {
+            x: points[index].x,
+            y: points[index].y,
+            ease: easing
+        });
+        TweenMax.to(segment.handleIn, duration, {
+            x: points[index].handleIn.x,
+            y: points[index].handleIn.y,
+            ease: easing
+        });
+        TweenMax.to(segment.handleOut, duration, {
+            x: points[index].handleOut.x,
+            y: points[index].handleOut.y,
+            ease: easing
+        });
+    });
+
+    _._updateState('star', state);
+};
+
+Morph.prototype._toggleMorphToStar = function() {
+    var _ = this;
+    _.frontGroup.visible = !_.frontGroup.visible;
+    _.starGroup.visible  = !_.starGroup.visible;
 };
 
 module.exports = Morph;

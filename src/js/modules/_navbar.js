@@ -43,8 +43,9 @@ Navbar.prototype._initEvents = function() {
             _.update(null, 0.3);
         });
         $(button).on('click', function(e) {
+            e.preventDefault();
             // _.height = _.buttonsTop[ index ] - _.height;
-            var sectionId = '#' + ($(this).attr('href')).slice(2);
+            var sectionId = '#' + ($(this).attr('href')).slice(1);
             // console.log(sectionId);
             _.scrollToSection(sectionId);
         });

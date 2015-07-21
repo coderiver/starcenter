@@ -47,7 +47,7 @@ module.exports = function() {
                 inlineSvg: true
             }))
             .pipe(rename({
-                basename: process.path
+                basename: 'icons'
             }))
             .pipe(gulp.dest(config.dest.img));
     // });

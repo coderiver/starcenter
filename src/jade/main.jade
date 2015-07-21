@@ -60,7 +60,7 @@ block content
                       +icon("arrow")
             //END slider
 
-            canvas#morph(width="1368", height="680")
+            canvas#morph(width="1368", height="680", data-paper-keepalive="true")
 
             .deco
               .deco__inner
@@ -68,21 +68,21 @@ block content
 
             ul.catalog-category
               li.catalog-category__item
-                a.catalog-btn(href="#/objects/rent", data-morph-state="circle", data-content-index="0")
+                a.catalog-btn(href="partials/rent.html", data-morph-state="circle", data-content-index="0")
                   .catalog-btn__hover
                     .catalog-btn__hover-in
                       span.catalog-btn__hover-text Арендовать
                   .catalog-btn__front
                     span Арендовать
               li.catalog-category__item
-                a.catalog-btn(href="#/objects/buy", data-morph-state="square", data-content-index="1")
+                a.catalog-btn(href="partials/buy.html", data-morph-state="square", data-content-index="1")
                   .catalog-btn__hover
                     .catalog-btn__hover-in
                       span.catalog-btn__hover-text Купить
                   .catalog-btn__front
                     span Купить
               li.catalog-category__item
-                a.catalog-btn(href="#/objects/invest", data-morph-state="triangle", data-content-index="2")
+                a.catalog-btn(href="partials/invest.html", data-morph-state="triangle", data-content-index="2")
                   .catalog-btn__hover
                     .catalog-btn__hover-in
                       span.catalog-btn__hover-text Инвестировать
@@ -306,7 +306,7 @@ block content
 
             ul.category.is-standby
               li.category__item
-                a.btn.btn_category(href="#/", data-morph-state="circle", data-content-index="0")
+                a.btn.btn_category(href="partials/rent.html", data-morph-state="circle", data-content-index="0")
                   .btn__hover
                     .btn__hover-in
                       span.btn__hover-text Арендовать
@@ -314,7 +314,7 @@ block content
                     span Арендовать
                   .btn__bg.btn__bg1
               li.category__item
-                a.btn.btn_category(href="#/", data-morph-state="square", data-content-index="1")
+                a.btn.btn_category(href="partials/buy.html", data-morph-state="square", data-content-index="1")
                   .btn__hover
                     .btn__hover-in
                       span.btn__hover-text Купить
@@ -322,7 +322,7 @@ block content
                     span Купить
                   .btn__bg.btn__bg2
               li.category__item
-                a.btn.btn_category(href="#/", data-morph-state="triangle", data-content-index="2")
+                a.btn.btn_category(href="partials/invest.html", data-morph-state="triangle", data-content-index="2")
                   .btn__hover
                     .btn__hover-in
                       span.btn__hover-text Инвестировать
@@ -331,11 +331,11 @@ block content
                   .btn__bg.btn__bg3
 
           .capabilities-modal__content
-            include partials/buy
+            //- include partials/buy
           .capabilities-modal__content
-            include partials/rent
+            //- include partials/rent
           .capabilities-modal__content
-            include partials/invest
+            //- include partials/invest
   //END capabilities
 
   //BEGIN partners
@@ -398,12 +398,13 @@ block content
                 small.heading__small-text 03
                 | Инвестор
         .tabs__content
-          form.form.table(name="COMPANY")
+          form.form.table(name="company", data-subject="Сотрудничество. Строительная компания")
             .table__border
               include ../img/svg/svg-borders/optimized/tabs-form.svg
-            input.input(type="text", name="NAME", placeholder="Ваше имя")
-            input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
-            textarea.input(name="MESSAGE", placeholder="Сообщение")
+            include _form-message
+            input.input(type="text", name="name", placeholder="Ваше имя")
+            input.input(type="tel", name="phone", placeholder="Ваше телефон")
+            textarea.input(name="message", placeholder="Сообщение")
             button.btn.btn_submit(type="submit")
               .btn__hover
                 .btn__hover-in
@@ -413,12 +414,13 @@ block content
                 | Отправить
                 +icon("arrow")
         .tabs__content
-          form.form.table(name="PROVIDER")
+          form.form.table(name="provider", data-subject="Сотрудничество. Оптовый поставщик")
             .table__border
               include ../img/svg/svg-borders/optimized/tabs-form.svg
-            input.input(type="text", name="NAME", placeholder="Ваше имя")
-            input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
-            textarea.input(name="MESSAGE", placeholder="Сообщение")
+            include _form-message
+            input.input(type="text", name="name", placeholder="Ваше имя")
+            input.input(type="tel", name="phone", placeholder="Ваше телефон")
+            textarea.input(name="message", placeholder="Сообщение")
             button.btn.btn_submit(type="submit")
               .btn__hover
                 .btn__hover-in
@@ -428,12 +430,13 @@ block content
                 | Отправить
                 +icon("arrow")
         .tabs__content
-          form.form.table(name="INVESTOR")
+          form.form.table(name="investor", data-subject="Сотрудничество. Инвестор")
             .table__border
               include ../img/svg/svg-borders/optimized/tabs-form.svg
-            input.input(type="text", name="NAME", placeholder="Ваше имя")
-            input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
-            textarea.input(name="MESSAGE", placeholder="Сообщение")
+            include _form-message
+            input.input(type="text", name="name", placeholder="Ваше имя")
+            input.input(type="tel", name="phone", placeholder="Ваше телефон")
+            textarea.input(name="message", placeholder="Сообщение")
             button.btn.btn_submit(type="submit")
               .btn__hover
                 .btn__hover-in
@@ -486,10 +489,11 @@ block content
                 small.contact-item__label e-mail
                 a(href="mailto:info@starcentre.com") info@starcentre.com
             td.contacts-table__cell(rowspan="2")
-              form.form(name="QUESTION")
-                input.input(type="text", name="NAME", placeholder="Ваше имя")
-                input.input(type="tel", name="PHONE", placeholder="Ваше телефон")
-                textarea.input(name="MESSAGE", placeholder="Сообщение")
+              form.form(name="question", data-subject="Вопрос")
+                include _form-message
+                input.input(type="text", name="name", placeholder="Ваше имя")
+                input.input(type="tel", name="phone", placeholder="Ваше телефон")
+                textarea.input(name="message", placeholder="Сообщение")
                 button.btn.btn_submit(type="submit")
                   .btn__hover
                     .btn__hover-in

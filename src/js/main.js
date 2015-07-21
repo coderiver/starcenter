@@ -1,5 +1,5 @@
 var $ = require('jquery');
-require('sammy');
+// require('sammy');
 // require('jquery-mousewheel')($);
 // require('nanoscroller');
 // require('modernizr');
@@ -17,10 +17,11 @@ var Navbar      = require('./modules/_navbar.js');
 var Filter      = require('./modules/_filter.js');
 var BackButton  = require('./modules/_back-button.js');
 var initScenes  = require('./modules/_scroll-scenes.js');
+var formSubmit  = require('./modules/_form-submit.js');
 
 
 global.app = {};
-app.router         = require('./modules/_routing.js');
+// app.router         = require('./modules/_routing.js');
 app.scrollDisabled = false;
 app.openedPopup    = null;
 app.toparea        = {};
@@ -267,10 +268,10 @@ app.closeAllOpenedObjects = function() {
 
 app.catalog.opened = false;
 
-app.catalog.open = function(morphState, contentIndex) {
+app.catalog.open = function(morphState, contentIndex, partialsUrl) {
     if ( app.catalog.opened ) return;
     app.util.toggleScroll();
-    app.modal.open(contentIndex);
+    app.modal.open(contentIndex, partialsUrl);
     app.mainSlider.rollUp();
     app.category.open();
     app.morph.activate(morphState);
@@ -301,8 +302,9 @@ app.catalog2.opened = false;
 app.catalog2.open = function(btn) {
 
     var state = btn.data('morph-state'),
-        contentIndex = btn.data('content-index');
-        centerSlide = btn.parents('.slick-center');
+        contentIndex = btn.data('content-index'),
+        centerSlide = btn.parents('.slick-center'),
+        partialsUrl = btn.attr('href'),
         timeout = centerSlide.length ? 0 : app.category2.slickOptions.speed; // speed of changes slides
 
     if ( !app.catalog2.opened ) {
@@ -322,7 +324,7 @@ app.catalog2.open = function(btn) {
         setTimeout(function() {
             app.category2.activate();
             app.morph2.fromStandby();
-            app.modal2.open(contentIndex);
+            app.modal2.open(contentIndex, partialsUrl);
             app.navbar.hidden();
             app.backButton.visible(1200);
             app.catalog2.opened = true;
@@ -332,7 +334,7 @@ app.catalog2.open = function(btn) {
     else {
         setTimeout(function() {
             app.morph2.changeState(state, app.category2.direction);
-            app.modal2.switchContent(contentIndex);
+            app.modal2.switchContent(contentIndex, partialsUrl);
             setTimeout(function() {
                 app.closeAllOpenedObjects();
             }, 500);
@@ -401,16 +403,19 @@ app.initEvents = function() {
 
     // open catalog or change catalog category
     $('.catalog-btn').on('click', function(e) {
-        var state = $(this).data('morph-state'),
-            contentIndex = $(this).data('content-index');
+        e.preventDefault();
+        var $this = $(this),
+            state = $this.data('morph-state'),
+            contentIndex = $this.data('content-index'),
+            partialsUrl = $this.attr('href');
 
         if ( !app.catalog.opened ) {
-            app.catalog.open(state, contentIndex);
+            app.catalog.open(state, contentIndex, partialsUrl);
         }
         else {
             setTimeout(function() {
                 app.morph.changeState(state, app.category.direction);
-                app.modal.switchContent(contentIndex);
+                app.modal.switchContent(contentIndex, partialsUrl);
             }, 0);
             // close all opened sliders
             setTimeout(function() {
@@ -420,6 +425,7 @@ app.initEvents = function() {
     });
 
     logo.on('click', function(e) {
+        e.preventDefault();
         if ( app.openedPopup ) app.util.closePopup();
         app.catalog.close();
         app.catalog2.close();
@@ -431,6 +437,7 @@ app.initEvents = function() {
     });
 
     $('.category .btn_category').on('click', function(e) {
+        e.preventDefault();
         app.catalog2.open($(this));
     });
 
@@ -443,6 +450,10 @@ app.initEvents = function() {
     footer.on('mousewheel DOMMouseScroll', function(e) {
         e.preventDefault();
         app.util.scrollTo(e);
+    });
+
+    $('form').each(function(index, el) {
+        formSubmit(el);
     });
 };
 
@@ -461,6 +472,6 @@ $(document).ready(function() {
 app.init();
 app.initEvents();
 app.util.getScrollBarWidth();
-app.router.run('#/');
+// app.router.run('#/');
 
 });

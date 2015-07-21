@@ -1,8 +1,8 @@
 var $ = require('jquery');
-// require('jquery-mousewheel')($);
 require('gsap');
 require('TimelineLite');
 require('gsap-scrollToPlugin');
+var loadPartials = require('./_load-partials.js');
 
 function Modal(modalSelector, contentSelector) {
     this.el        = $(modalSelector);
@@ -25,7 +25,7 @@ function Modal(modalSelector, contentSelector) {
 Modal.prototype._preventBubbling = function() {
     var e = arguments[0];
     e.stopPropagation();
-}
+};
 
 Modal.prototype._cancelBubbling = function(val) {
     var _ = this;
@@ -36,7 +36,6 @@ Modal.prototype._cancelBubbling = function(val) {
         this.el.off('mousewheel DOMMouseScroll scroll', _._preventBubbling);
     }
 };
-
 
 Modal.prototype._enableCustomScroll = function() {
     var _ = this;
@@ -62,7 +61,6 @@ Modal.prototype._getPositions = function() {
 
     return _.positions;
 };
-
 
 Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
     var _       = this,
@@ -95,7 +93,6 @@ Modal.prototype._toFullscreen = function(contentIndex, animDur, animDelay) {
             _.el.addClass(_.options.class);
             _._enableCustomScroll();
             });
-
 };
 
 Modal.prototype._toInitState = function(animDur, animDelay) {
@@ -130,15 +127,23 @@ Modal.prototype._toInitState = function(animDur, animDelay) {
     } else {
         tl.play();
     }
-
 };
 
+Modal.prototype._loadContent = function(url, div) {
+    var _ = this;
+    var container = $(div);
+    // check if content was loaded in container, by default container is empty
+    if ( container.children().length > 0 ) return;
+    loadPartials(url, container);
+};
 
-Modal.prototype.open = function(contentIndex, animDur, animDelay) {
+Modal.prototype.open = function(contentIndex, partialsUrl, animDur, animDelay) {
     if ( this.opened ) return;
 
     var _ = this;
+    var contentContainer = _.content[contentIndex];
 
+    _._loadContent(partialsUrl, contentContainer);
     _._cancelBubbling(true);
     _._toFullscreen(contentIndex, animDur, animDelay);
 };
@@ -153,8 +158,7 @@ Modal.prototype.close = function(animDur, animDelay) {
     _._toInitState(animDur, animDelay);
 };
 
-
-Modal.prototype.switchContent = function(contentIndex, animDur) {
+Modal.prototype.switchContent = function(contentIndex, partialsUrl, animDur) {
     if ( !this.opened || this.activeContentIndex == contentIndex ) return;
 
     var _           = this,
@@ -162,6 +166,8 @@ Modal.prototype.switchContent = function(contentIndex, animDur) {
         prevContent = _.content[ _.activeContentIndex ];
         nextContent = _.content[ contentIndex ];
         tl          = new TimelineLite();
+
+    _._loadContent(partialsUrl, nextContent);
 
     tl
         .delay(dur)
