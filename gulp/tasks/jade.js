@@ -11,8 +11,6 @@ module.exports = function() {
 
     var indexFilter = filter('index.html');
 
-    // gulp.task('jade', function() {
-
         return gulp.src(config.src.jade + '/[^_]*.jade')
             .pipe(plumber({errorHandler: notify.onError(function(error){return error.message;})}))
             .pipe(changed(config.dest.html, {extension: '.html'}))

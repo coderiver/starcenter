@@ -1,0 +1,521 @@
+extends _layout
+
+block vars
+  - var lang = 'en'
+
+block title
+  title VN Star || Development Group
+
+block content
+
+  //BEGIN catalog
+  section#home.js-section.catalog
+    #catalog.catalog__modal
+      .catalog__modal-container
+        .catalog__inner
+          .catalog__toparea
+            //BEGIN slider
+            #main-slider.main-slider
+              .main-slider__morph
+                .blue-circle
+              .main-slider__overlay
+              .main-slider__slides
+                .slide
+                  img.slide__img(src="img/slider/slider1.png", alt="")
+                  .slide__content
+                    .slide__text
+                      | The best offer on the market
+                      span.price
+                        | 6 USD
+                        small.price__small
+                          | /м<sup>2</sup>
+
+                    button.details-btn(type="button", data-open-popup="#best-offer1")
+                      span More details
+                      +icon("arrow")
+
+                .slide
+                  img.slide__img(src="img/slider/slider2.png", alt="")
+                  .slide__content
+                    .slide__text
+                      | The best offer on the market
+                      span.price
+                        | 10 USD
+                        small.price__small
+                          | /м<sup>2</sup>
+
+                    button.details-btn(type="button", data-open-popup="#best-offer2")
+                      span More details
+                      +icon("arrow")
+
+                .slide
+                  img.slide__img(src="img/slider/slider3.png", alt="")
+                  .slide__content
+                    .slide__text
+                      | The best offer on the market
+                      span.price
+                        | 20 USD
+                        small.price__small
+                          | /м<sup>2</sup>
+
+                    button.details-btn(type="button", data-open-popup="#best-offer3")
+                      span More details
+                      +icon("arrow")
+            //END slider
+
+            canvas#morph(width="1368", height="680", data-paper-keepalive="true")
+
+            .deco
+              .deco__inner
+                | 37" &mdash; 2'
+
+            ul.catalog-category
+              li.catalog-category__item
+                a.catalog-btn(href="partials/rent.html", data-morph-state="circle", data-content-index="0")
+                  .catalog-btn__hover
+                    .catalog-btn__hover-in
+                      span.catalog-btn__hover-text Rent
+                  .catalog-btn__front
+                    span Rent
+              li.catalog-category__item
+                a.catalog-btn(href="partials/buy.html", data-morph-state="square", data-content-index="1")
+                  .catalog-btn__hover
+                    .catalog-btn__hover-in
+                      span.catalog-btn__hover-text Buy
+                  .catalog-btn__front
+                    span Buy
+              li.catalog-category__item
+                a.catalog-btn(href="partials/invest.html", data-morph-state="triangle", data-content-index="2")
+                  .catalog-btn__hover
+                    .catalog-btn__hover-in
+                      span.catalog-btn__hover-text Invest
+                  .catalog-btn__front
+                    span Invest
+          #objects-rent.catalog__content
+            //- include _objects
+          #objects-buy.catalog__content
+            //- include _objects2
+          #objects-invest.catalog__content
+            //- include _objects3
+  //END catalog
+
+  //BEGIN timeline
+  section#facts.js-section.facts
+    .facts__heading#trigger1
+      h2.heading.heading_large
+        | We are on the market for over 10 years
+
+    .deco.deco_polygon.deco-1
+      .deco__inner
+        +icon("polygon")
+        span W6
+    .deco.deco-2
+      .deco__inner
+        | 11’ — 7”
+    .deco.deco_polygon.deco-3
+      .deco__inner
+        +icon("target")
+    .deco.deco_circle.deco-4
+      .deco__inner
+        | D2
+
+    - var years = 2004
+    #timeline.timeline
+      ul.timeline__inner
+        while years <= 2016
+          li(class="timeline__year")= years++
+
+    .facts__text
+      .facts__column
+        .text
+          p.
+            StarCentre is a company that realise in Ukraine experience of developed countries,
+            in which the formation of a modern city with comfortable living conditions is the task
+            themselves developers.
+          p.
+            Today StarCentre is the developer that has sufficient funds for the implementation
+            of large projects in the capital and beyond.
+      .facts__column
+        .text
+          p.
+            StarCentre is a city-forming company, which for 12 years has realized in the
+            Ukrainian market for more than 11 unique objects.
+          p.
+            The company is among the top three market leaders, a finance capabilities,
+            but most importantly - understanding of the planning and development
+            of the city in the future.
+
+    #group1.facts-group
+      .curve
+        include ../img/svg/optimized/curve.svg
+      .facts-group__inner
+        .fact.fact-1
+          h3.heading
+            | Already <br> built
+          .fact__number
+            | 38 000 <sub>м<sup>2</sup></sub>
+          p.fact__text.
+            office and residential space,<br>
+            60% of them are already<br>
+            commissioned
+
+
+        .fact.fact-2
+          h3.heading
+            | going to<br>build
+          .fact__number
+            | 58 000 <sub>м<sup>2</sup></sub>
+          p.fact__text
+            | residential and commercial<br>areas by 2017
+
+    .skyline
+      include ../img/svg/optimized/skyline.svg
+
+    #group2.facts-group
+      .curve
+        include ../img/svg/optimized/curve.svg
+      .facts-group__inner
+        .fact.fact-1
+          h3.heading
+            | Already<br>invested
+          .fact__number
+            | $ 15 000 000
+          p.fact__text
+            | and we will invest even more
+
+        .fact.fact-2
+          h3.heading
+            | going to<br>
+            | invest
+          .fact__number
+            | $ 24 000 000
+          p.fact__text
+            | in our new projects by 2017
+
+    .box
+      .box__bg
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+        .box__bg-row
+      .box__inner
+        .table.men-table.js-table
+          .table__border
+            include ../img/svg/svg-borders/optimized/men-table.svg
+          table.men-table__table
+            tr.men-table__row1
+              td.men-table__cell
+                strong.heading.heading_small
+                  | Work<br>with us
+              td.men-table__cell
+                .amount
+                  span.amount__sign &gt;
+                  strong.amount__value 500
+                  span.amount__text people
+              td.men-table__cell
+                strong.heading.heading_small
+                  | going to<br>involve
+            tr.men-table__row2
+              td.men-table__cell(colspan="2")
+                p.
+                  we will engage them more, because<br>
+                  we want to provide only a good services
+              td.men-table__cell
+                .amount.amount_md
+                  span.amount__sign &gt;
+                  strong.amount__value 700
+                  span.amount__text people
+
+    .table.partners-table.js-table
+      .table__border
+        include ../img/svg/svg-borders/optimized/partners-table.svg
+      table.partners-table__table
+        tr.partners-table__row1
+          td.partners-table__cell(rowspan="2")
+            strong.heading
+              | we<br>work<br>with
+          td.partners-table__cell
+            .amount.amount_lrg
+              span.amount__sign &gt;
+              strong.amount__value 100
+              span.amount__text partners
+        tr.partners-table__row2
+          td.partners-table__cell
+            p with some we have been working for more than 8 years
+
+    .facts__heading
+      h3.heading
+        small.heading__small-text But still
+        | we are open to new suggestions
+  //END timeline
+
+  //BEGIN advantages
+  section#advantages.js-section.advantages
+    .head.head_advantages
+      .head__inner
+        .head__bg
+        .head__img
+          img(src="img/head1.png", alt="")
+      .head__text
+        | Advantages
+      .deco.deco-1
+        .deco__inner
+          +icon("target")
+      .deco.deco-2
+        .deco__inner
+          | 11’ — 7”
+
+    ul.advantages__inner
+      li.advantages__column
+        h3.heading.heading_border.heading_large
+          span.heading__small-text 01
+          | Foreign<br>capital
+        p 50% Ukraine
+        p 50% Vietnam
+      li.advantages__column
+        h3.heading.heading_border.heading_large
+          span.heading__small-text 02
+          | Working<br>speed
+        p.
+          We make decisions quickly, because our structure is light and there
+          is no need to go through the stages of negotiation
+      li.advantages__column
+        h3.heading.heading_border.heading_large
+          span.heading__small-text 03
+          | Quality of<br>materials
+        p.
+          We use only high quality products. All of our materials are
+          certified and environmentally friendly
+  //END advantages
+
+  //BEGIN capabilities
+  section#capabilities.js-section.capabilities
+    .head.head_capabilities
+      .head__text
+        | Opportunities
+      .deco.deco_polygon.deco-1
+        .deco__inner
+          +icon("polygon")
+          span W6
+
+    .capabilities__container
+
+      #catalog2.capabilities-modal
+        .capabilities-modal__inner
+          .capabilities-modal__head
+            canvas#morph2(width="1368", height="680", style="opacity: 0")
+
+            ul.category.is-standby
+              li.category__item
+                a.btn.btn_category(href="partials/rent.html", data-morph-state="circle", data-content-index="0")
+                  .btn__hover
+                    .btn__hover-in
+                      span.btn__hover-text Rent
+                  .btn__front
+                    span Rent
+                  .btn__bg.btn__bg1
+              li.category__item
+                a.btn.btn_category(href="partials/buy.html", data-morph-state="square", data-content-index="1")
+                  .btn__hover
+                    .btn__hover-in
+                      span.btn__hover-text Buy
+                  .btn__front
+                    span Buy
+                  .btn__bg.btn__bg2
+              li.category__item
+                a.btn.btn_category(href="partials/invest.html", data-morph-state="triangle", data-content-index="2")
+                  .btn__hover
+                    .btn__hover-in
+                      span.btn__hover-text Invest
+                  .btn__front
+                    span Invest
+                  .btn__bg.btn__bg3
+
+          .capabilities-modal__content
+            //- include partials/buy
+          .capabilities-modal__content
+            //- include partials/rent
+          .capabilities-modal__content
+            //- include partials/invest
+  //END capabilities
+
+  //BEGIN partners
+  section#partners.js-section.partners
+    .head.head_partners
+      .head__inner
+        .head__bg
+        .head__img
+          img(src="img/head2.png", alt="")
+      .head__text
+        | Partners
+      .deco.deco-1
+        .deco__inner
+          +icon("target")
+
+    .partners__inner
+      .deco.deco_circle
+        .deco__inner D2
+      .text-block
+        h3.heading
+          | We<br>believe
+        p
+          | that working in a team, you can do the job<br>quicker and more efficiently.
+
+      h3.heading.heading__center
+        | we are looking forward to cooperate if you are:
+
+      #forms.tabs.js-tabs-1
+        header.tabs__head.table
+          .table__border
+            include ../img/svg/svg-borders/optimized/tabs-head.svg
+          a.btn.btn_tab(href="#")
+            .btn__hover
+              .btn__hover-in
+                strong.heading
+                  small.heading__small-text 01
+                  | Construction<br>company
+            .btn__front
+              strong.heading
+                small.heading__small-text 01
+                | Construction<br>company
+          a.btn.btn_tab(href="#")
+            .btn__hover
+              .btn__hover-in
+                strong.heading
+                  small.heading__small-text 02
+                  | Wholesale<br>supplier
+            .btn__front
+              strong.heading
+                small.heading__small-text 02
+                | Wholesale<br>supplier
+          a.btn.btn_tab(href="#")
+            .btn__hover
+              .btn__hover-in
+                strong.heading
+                  small.heading__small-text 03
+                  | Investor
+            .btn__front
+              strong.heading
+                small.heading__small-text 03
+                | Investor
+        .tabs__content
+          form.form.table(name="company", data-subject="Сотрудничество. Строительная компания")
+            .table__border
+              include ../img/svg/svg-borders/optimized/tabs-form.svg
+            include _form-message
+            input.input(type="text", name="name", placeholder="Your name")
+            input.input(type="tel", name="phone", placeholder="Your phone")
+            textarea.input(name="message", placeholder="Message")
+            button.btn.btn_submit(type="submit")
+              .btn__hover
+                .btn__hover-in
+                  | Send
+                  +icon("arrow")
+              .btn__front
+                | Send
+                +icon("arrow")
+        .tabs__content
+          form.form.table(name="provider", data-subject="Сотрудничество. Оптовый поставщик")
+            .table__border
+              include ../img/svg/svg-borders/optimized/tabs-form.svg
+            include _form-message
+            input.input(type="text", name="name", placeholder="Your name")
+            input.input(type="tel", name="phone", placeholder="Your phone")
+            textarea.input(name="message", placeholder="Message")
+            button.btn.btn_submit(type="submit")
+              .btn__hover
+                .btn__hover-in
+                  | Send
+                  +icon("arrow")
+              .btn__front
+                | Send
+                +icon("arrow")
+        .tabs__content
+          form.form.table(name="investor", data-subject="Сотрудничество. Инвестор")
+            .table__border
+              include ../img/svg/svg-borders/optimized/tabs-form.svg
+            include _form-message
+            input.input(type="text", name="name", placeholder="Your name")
+            input.input(type="tel", name="phone", placeholder="Your phone")
+            textarea.input(name="message", placeholder="Message")
+            button.btn.btn_submit(type="submit")
+              .btn__hover
+                .btn__hover-in
+                  | Send
+                  +icon("arrow")
+              .btn__front
+                | Send
+                +icon("arrow")
+
+        footer.tabs__footer
+          .tabs__footer-cell
+            p Do you build quickly and responsibly?
+          .tabs__footer-cell
+            p Do you provide excellent service<br>and quality materials?
+          .tabs__footer-cell
+            p Do you want a stable income?
+  //END partners
+
+  //BEGIN contacts
+  section#contacts.js-section.contacts
+    .head.head_contacts
+      .head__inner
+        .head__bg
+        .head__img
+          img(src="img/head3.png", alt="")
+      .head__text
+        | Contacts
+      .deco.deco-1
+        .deco__inner
+          +icon("target")
+      .deco.deco-2
+        .deco__inner
+          | 31’ — 5”
+
+    .contacts__inner
+      .contacts-table.table.js-table
+        .table__border.js-border
+          include ../img/svg/svg-borders/optimized/contacts-table.svg
+        table
+          tr.contacts-table__row1
+            td.contacts-table__cell
+              .contact-item
+                small.contact-item__label Phone
+                a.contact-item__phone(href="tel:+380442204555") +380 (44) 220 45 55
+            td.contacts-table__cell
+              strong.heading Still have<br>questions?
+          tr.contacts-table__row1
+            td.contacts-table__cell
+              .contact-item
+                small.contact-item__label E-mail
+                a(href="mailto:info@starcentre.com") info@starcentre.com
+            td.contacts-table__cell(rowspan="2")
+              form.form(name="question", data-subject="Вопрос")
+                include _form-message
+                input.input(type="text", name="name", placeholder="Your name")
+                input.input(type="tel", name="phone", placeholder="Your phone")
+                textarea.input(name="message", placeholder="Message")
+                button.btn.btn_submit(type="submit")
+                  .btn__hover
+                    .btn__hover-in
+                      | Send
+                      +icon("arrow")
+                  .btn__front
+                    | Send
+                    +icon("arrow")
+          tr.contacts-table__row2
+            td.contacts-table__cell
+              .contact-item
+                small.contact-item__label Address
+                | Kiev<br>
+                | Chervonozorianyi ave.<br>
+                | building 42
+  //END contacts

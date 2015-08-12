@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>VN Star || Development Group</title>
+    <meta name="viewport" content="width=1368">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" media="all" href="css/screen.css">
+    <script type="text/javascript" data-pace-options="{ &quot;restartOnPushState&quot;: false, &quot;restartOnRequestAfter&quot;: false }" src="js/pace.min.js"></script><!--[if IE]><script src="js/html5shiv.js"></script><![endif]-->
+  </head>
+  <body class="preload">
+    <div style="position: absolute; top: 0; left: 0;"><svg xmlns="http://www.w3.org/2000/svg"><symbol id="icon-arrow-sm" viewBox="0 0 9 40">
+    <title>
+        arrow-sm
+    </title>
+    <path d="M5 1.845V40H4V1.846L1.644 3.992l-.38.347L.5 3.643l.38-.347L4.12.347l.19-.173L4.5 0l.38.348 3.24 2.95.38.346-.763.695-.38-.348-2.358-2.147z" fill-rule="evenodd"/>
+</symbol><symbol id="icon-arrow" viewBox="0 0 70 9">
+    <title>
+        arrow
+    </title>
+    <path d="M68.154 5H0V4H68.154l-2.146-2.356-.347-.38.696-.764.347.38 2.95 3.24.173.19.174.19-.348.38-2.95 3.24-.346.38-.695-.763.348-.38L68.154 5z" fill-rule="evenodd"/>
+</symbol><symbol id="icon-figure" viewBox="0 0 55 40">
+    <title>
+        figure
+    </title>
+    <path d="M55 21H41v19h-1v-.374L25.44 30H15v-9H0v-1h15V10h10.314L40 .44V0h1v20h14v1zM25 11h-9v18h9V11zm15-9.352l-6.723 4.377L26 10.762v18.392l14 9.256V1.648z" fill-rule="evenodd"/>
+</symbol><symbol id="icon-polygon" viewBox="0 0 40 46">
+    <title>
+        polygon
+    </title>
+    <path d="M19.98 45.498L.5 34.23l.02-22.495L20.02.503 39.5 11.766l-.02 22.5-19.5 11.23z" stroke="#333" fill-rule="evenodd"/>
+</symbol><symbol id="icon-target" viewBox="0 0 45 45">
+    <title>
+        target
+    </title>
+    <path d="M34.975 23C34.717 29.502 29.503 34.716 23 34.974V45h-1V34.974C15.497 34.716 10.283 29.502 10.025 23H0v-1h10.025c.258-6.502 5.472-11.717 11.975-11.975V0h1v10.025c6.503.258 11.717 5.473 11.975 11.974H45v1H34.975zm-1-1C33.72 16.05 28.95 11.28 23 11.024V16h-1v-4.975C16.05 11.28 11.28 16.05 11.025 22H16v1h-4.975C11.28 28.95 16.05 33.718 22 33.974V29h1v4.974C28.95 33.718 33.72 28.95 33.975 23H29v-1h4.975zM22.5 23.5c-.828 0-1.5-.448-1.5-1 0-.553.672-1 1.5-1s1.5.447 1.5 1c0 .552-.672 1-1.5 1z" fill-rule="evenodd"/>
+</symbol><symbol id="icon-vn-star" viewBox="0 0 77 23">
+    <title>
+        vn-star
+    </title>
+    <path d="M3.782.3H.342L3.688 22h5.083L12.12.3H8.99L6.386 18 3.782.3zM20.987 22h3.503V.3h-3.038v12.99L17.95.3h-4.28V22h3.07V6.283L20.987 22zM36.24.145c-3.132.03-4.403 2.232-4.403 5.363 0 5.952 8.525 5.642 8.525 11.253 0 2.79-1.054 5.085-4.154 5.085-3.1 0-4.154-2.294-4.154-5.084V15.74h-.31v1.023c0 2.946 1.178 5.395 4.464 5.395 3.286 0 4.464-2.45 4.464-5.394 0-5.858-8.525-5.548-8.525-11.252 0-2.728 1.023-5.053 4.092-5.053 3.068 0 4.09 2.356 4.09 5.084v.37h.31v-.37c0-2.915-1.146-5.395-4.4-5.395zM47.863 22V.61h4.898V.3H42.656v.31h4.898V22h.31zm15.655-5.27L64.882 22h.31L59.583.27h-.435L53.66 22h.31l1.334-5.27h8.215zM59.364.672l4.06 15.748h-8.028L59.365.672zM67.673.3V22h.31V11.832h2.852c3.007 0 5.115.837 5.115 4.185v3.41c0 .837.093 1.86.558 2.573h.372c-.527-.65-.62-1.767-.62-2.573v-3.41c0-2.418-1.116-3.968-3.627-4.31 2.51-.37 3.627-1.86 3.627-4.587V5.167C76.26 2.222 75.05.3 71.858.3h-4.185zm.31 11.222V.61h3.875c3.007 0 4.092 1.767 4.092 4.557V7.12c0 3.596-1.89 4.402-5.115 4.402h-2.852z" fill-rule="evenodd"/>
+</symbol></svg>
+    </div>
+    <!--BEGIN nav-->
+    <nav id="nav" class="nav">
+      <div class="nav__inner">
+        <div class="nav__back">
+          <ul class="nav__list">
+            <li><a href="#home" class="nav__link">Home</a></li>
+            <li><a href="#facts" class="nav__link">Facts</a></li>
+            <li><a href="#advantages" class="nav__link">Advantages</a></li>
+            <li><a href="#capabilities" class="nav__link">Opportunities</a></li>
+            <li><a href="#partners" class="nav__link">Partnership</a></li>
+            <li><a href="#contacts" class="nav__link">Contacts</a></li>
+          </ul>
+        </div>
+        <div style="width: 0%" class="nav__front">
+          <ul class="nav__list">
+            <li><a href="#home" class="nav__link">Home</a></li>
+            <li><a href="#facts" class="nav__link">Facts</a></li>
+            <li><a href="#advantages" class="nav__link">Advantages</a></li>
+            <li><a href="#capabilities" class="nav__link">Opportunities</a></li>
+            <li><a href="#partners" class="nav__link">Partnership</a></li>
+            <li><a href="#contacts" class="nav__link">Contacts</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--END nav-->
+    <!--BEGIN header-->
+    <header id="header" class="header">
+      <div class="header__left"><a href="/" class="logo">
+          <svg class="icon icon-vn-star">
+            <use xlink:href="#icon-vn-star"></use>
+          </svg>Star Centre</a><span>development group</span></div>
+      <div class="header__right"><a href="tel:+380442204555" class="header__phone"><em>+380 (44)</em> 220-45-55</a><a href="/" class="header__lang">рус</a></div>
+      <div class="header__center">
+        <button type="button" class="btn btn_transparent">
+          <div class="btn__front">Back to home</div>
+          <div class="btn__hover">
+            <div class="btn__hover-in">Back to home</div>
+          </div>
+        </button>
+      </div>
+    </header>
+    <!--END header-->
+    <!--BEGIN outer and inner-->
+    <div id="outer">
+      <div id="inner">
+        <!--BEGIN catalog-->
+        <section id="home" class="js-section catalog">
+          <div id="catalog" class="catalog__modal">
+            <div class="catalog__modal-container">
+              <div class="catalog__inner">
+                <div class="catalog__toparea">
+                  <!--BEGIN slider-->
+                  <div id="main-slider" class="main-slider">
+                    <div class="main-slider__morph">
+                      <div class="blue-circle"></div>
+                    </div>
+                    <div class="main-slider__overlay"></div>
+                    <div class="main-slider__slides">
+                      <div class="slide"><img src="img/slider/slider1.png" alt="" class="slide__img">
+                        <div class="slide__content">
+                          <div class="slide__text">The best offer on the market<span class="price">6 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                          <button type="button" data-open-popup="#best-offer1" class="details-btn"><span>More details</span>
+                            <svg class="icon icon-arrow">
+                              <use xlink:href="#icon-arrow"></use>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="slide"><img src="img/slider/slider2.png" alt="" class="slide__img">
+                        <div class="slide__content">
+                          <div class="slide__text">The best offer on the market<span class="price">10 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                          <button type="button" data-open-popup="#best-offer2" class="details-btn"><span>More details</span>
+                            <svg class="icon icon-arrow">
+                              <use xlink:href="#icon-arrow"></use>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="slide"><img src="img/slider/slider3.png" alt="" class="slide__img">
+                        <div class="slide__content">
+                          <div class="slide__text">The best offer on the market<span class="price">20 USD<small class="price__small">/м<sup>2</sup></small></span></div>
+                          <button type="button" data-open-popup="#best-offer3" class="details-btn"><span>More details</span>
+                            <svg class="icon icon-arrow">
+                              <use xlink:href="#icon-arrow"></use>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--END slider-->
+                  <canvas id="morph" width="1368" height="680" data-paper-keepalive="true"></canvas>
+                  <div class="deco">
+                    <div class="deco__inner">37" &mdash; 2'</div>
+                  </div>
+                  <ul class="catalog-category">
+                    <li class="catalog-category__item"><a href="partials/rent.html" data-morph-state="circle" data-content-index="0" class="catalog-btn">
+                        <div class="catalog-btn__hover">
+                          <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Rent</span></div>
+                        </div>
+                        <div class="catalog-btn__front"><span>Rent</span></div></a></li>
+                    <li class="catalog-category__item"><a href="partials/buy.html" data-morph-state="square" data-content-index="1" class="catalog-btn">
+                        <div class="catalog-btn__hover">
+                          <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Buy</span></div>
+                        </div>
+                        <div class="catalog-btn__front"><span>Buy</span></div></a></li>
+                    <li class="catalog-category__item"><a href="partials/invest.html" data-morph-state="triangle" data-content-index="2" class="catalog-btn">
+                        <div class="catalog-btn__hover">
+                          <div class="catalog-btn__hover-in"><span class="catalog-btn__hover-text">Invest</span></div>
+                        </div>
+                        <div class="catalog-btn__front"><span>Invest</span></div></a></li>
+                  </ul>
+                </div>
+                <div id="objects-rent" class="catalog__content">
+                </div>
+                <div id="objects-buy" class="catalog__content">
+                </div>
+                <div id="objects-invest" class="catalog__content">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--END catalog-->
+        <!--BEGIN timeline-->
+        <section id="facts" class="js-section facts">
+          <div id="trigger1" class="facts__heading">
+            <h2 class="heading heading_large">We are on the market for over 10 years</h2>
+          </div>
+          <div class="deco deco_polygon deco-1">
+            <div class="deco__inner">
+              <svg class="icon icon-polygon">
+                <use xlink:href="#icon-polygon"></use>
+              </svg><span>W6</span>
+            </div>
+          </div>
+          <div class="deco deco-2">
+            <div class="deco__inner">11’ — 7”</div>
+          </div>
+          <div class="deco deco_polygon deco-3">
+            <div class="deco__inner">
+              <svg class="icon icon-target">
+                <use xlink:href="#icon-target"></use>
+              </svg>
+            </div>
+          </div>
+          <div class="deco deco_circle deco-4">
+            <div class="deco__inner">D2</div>
+          </div>
+          <div id="timeline" class="timeline">
+            <ul class="timeline__inner">
+              <li class="timeline__year">2004</li>
+              <li class="timeline__year">2005</li>
+              <li class="timeline__year">2006</li>
+              <li class="timeline__year">2007</li>
+              <li class="timeline__year">2008</li>
+              <li class="timeline__year">2009</li>
+              <li class="timeline__year">2010</li>
+              <li class="timeline__year">2011</li>
+              <li class="timeline__year">2012</li>
+              <li class="timeline__year">2013</li>
+              <li class="timeline__year">2014</li>
+              <li class="timeline__year">2015</li>
+              <li class="timeline__year">2016</li>
+            </ul>
+          </div>
+          <div class="facts__text">
+            <div class="facts__column">
+              <div class="text">
+                <p>
+                  StarCentre is a company that realise in Ukraine experience of developed countries,
+                  in which the formation of a modern city with comfortable living conditions is the task
+                  themselves developers.
+                </p>
+                <p>
+                  Today StarCentre is the developer that has sufficient funds for the implementation
+                  of large projects in the capital and beyond.
+                </p>
+              </div>
+            </div>
+            <div class="facts__column">
+              <div class="text">
+                <p>
+                  StarCentre is a city-forming company, which for 12 years has realized in the
+                  Ukrainian market for more than 11 unique objects.
+                </p>
+                <p>
+                  The company is among the top three market leaders, a finance capabilities,
+                  but most importantly - understanding of the planning and development
+                  of the city in the future.
+                  
+                </p>
+              </div>
+            </div>
+          </div>
+          <div id="group1" class="facts-group">
+            <div class="curve"><svg width="2601" height="288" viewBox="0 0 2601 288" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        curve
+    </title>
+    <path d="M0 286.6s405.78 0 577.115-28.6c171.335-28.598 169.19-49.998 326.645-49.998 156.307 0 407.018-100 594.21-100 292.445 0 306.345-18.348 496.916-40C2185.456 46.347 2600 1.413 2600 1.413" stroke="#333" stroke-width="2" fill="none" fill-rule="evenodd"/>
+</svg>
+
+            </div>
+            <div class="facts-group__inner">
+              <div class="fact fact-1">
+                <h3 class="heading">Already <br> built</h3>
+                <div class="fact__number">38 000 <sub>м<sup>2</sup></sub></div>
+                <p class="fact__text">
+                  office and residential space,<br>
+                  60% of them are already<br>
+                  commissioned
+                  
+                  
+                </p>
+              </div>
+              <div class="fact fact-2">
+                <h3 class="heading">going to<br>build</h3>
+                <div class="fact__number">58 000 <sub>м<sup>2</sup></sub></div>
+                <p class="fact__text">residential and commercial<br>areas by 2017</p>
+              </div>
+            </div>
+          </div>
+          <div class="skyline"><svg width="2600" height="272" viewBox="0 0 2600 272" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        skyline
+    </title>
+    <path d="M2600 186.925h-625.432V.507h-63.207v188.19h-5.632V169.88h-38.856V20.794l-7.478-7.473h-68.887v154.812h-27.147v7.8h-6.667v-50.245h-4.5v-41.94h-5.524v-46.09h-3.16v-8.51h-48.276v9.218h-5.158v44.148l-3.19 3.187v38.1h-4.81V81.62h-5.804V31.984h-2.718v-11.19h-53.122V31.99h-2.838V80.2l-3.13 3.128v40.13h-3.258v83.674h-28.94v-52.477h-4.045v-3.593h-8.412l-.094-15.02h-14.382v4.796h-12.452v12.4h-12.91V90.13l-10.835-14.37h-25.028l-10.153 14.4v26.916c0 2.128-16.238 16.226-16.238 16.226v29.158h-35.044l.123 41.005h-27.712l-5.62 5.613h-13.23v-71.52h-9.686v-7.717h-11.604v6.382h-14.903v72.856h-27.53v-7.2h-22.554V129.88h-7.44v6.342h-40.622v64.53h-38.825v43.964H1192v-86.243h-9.615v-6.65h-9.768v4.817h-27.578v7.194h-45.52v67.008h-4.366V210.68h-10.108v-6.938h-21.01v5.572h-7.792v3.315h-2.855l-13.49-13.48-12.055 12.045h-1.597v9.057l-5.857 5.852h-4.26v32.263h-2.306v-4.735h-9.758v-28.24h-7.753v-4.605h-8.944V189.05h-44.027v-5.317l-10.214-10.206v-12.13h-14.582v3.9h-21.746v8.515h-5.097v4.242h-3.674v80.313h-21.253V241.17h-12.414v-28.267H837.82v-15.347h-47.017v35.283h-84.807v-6.245H682.35v4.294h-6.932v39.66h-13.66v-29.143H627.34v10.755H0" stroke="#333" fill="none" fill-rule="evenodd"/>
+</svg>
+
+          </div>
+          <div id="group2" class="facts-group">
+            <div class="curve"><svg width="2601" height="288" viewBox="0 0 2601 288" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        curve
+    </title>
+    <path d="M0 286.6s405.78 0 577.115-28.6c171.335-28.598 169.19-49.998 326.645-49.998 156.307 0 407.018-100 594.21-100 292.445 0 306.345-18.348 496.916-40C2185.456 46.347 2600 1.413 2600 1.413" stroke="#333" stroke-width="2" fill="none" fill-rule="evenodd"/>
+</svg>
+
+            </div>
+            <div class="facts-group__inner">
+              <div class="fact fact-1">
+                <h3 class="heading">Already<br>invested</h3>
+                <div class="fact__number">$ 15 000 000</div>
+                <p class="fact__text">and we will invest even more</p>
+              </div>
+              <div class="fact fact-2">
+                <h3 class="heading">
+                  going to<br>
+                  invest
+                </h3>
+                <div class="fact__number">$ 24 000 000</div>
+                <p class="fact__text">in our new projects by 2017</p>
+              </div>
+            </div>
+          </div>
+          <div class="box">
+            <div class="box__bg">
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+              <div class="box__bg-row"></div>
+            </div>
+            <div class="box__inner">
+              <div class="table men-table js-table">
+                <div class="table__border"><svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        men-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.5h195v88" class="inner-border"/>
+        <path d="M1.5 1.5v88h717" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h430v187" class="outer-border"/>
+            <path d="M1.5 1.5v187h717" class="outer-border"/>
+            <path d="M1.5 1.5h717v187" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                </div>
+                <table class="men-table__table">
+                  <tr class="men-table__row1">
+                    <td class="men-table__cell"><strong class="heading heading_small">Work<br>with us</strong></td>
+                    <td class="men-table__cell">
+                      <div class="amount"><span class="amount__sign">&gt;</span><strong class="amount__value">500</strong><span class="amount__text">people</span></div>
+                    </td>
+                    <td class="men-table__cell"><strong class="heading heading_small">going to<br>involve</strong></td>
+                  </tr>
+                  <tr class="men-table__row2">
+                    <td colspan="2" class="men-table__cell">
+                      <p>
+                        we will engage them more, because<br>
+                        we want to provide only a good services
+                      </p>
+                    </td>
+                    <td class="men-table__cell">
+                      <div class="amount amount_md"><span class="amount__sign">&gt;</span><strong class="amount__value">700</strong><span class="amount__text">people</span></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="table partners-table js-table">
+            <div class="table__border"><svg width="720" height="190" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        partners-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M203.5 1.5v124h515" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h202v187" class="outer-border"/>
+            <path d="M1.5 1.5v187h717" class="outer-border"/>
+            <path d="M1.5 1.5h717v187" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+            </div>
+            <table class="partners-table__table">
+              <tr class="partners-table__row1">
+                <td rowspan="2" class="partners-table__cell"><strong class="heading">we<br>work<br>with</strong></td>
+                <td class="partners-table__cell">
+                  <div class="amount amount_lrg"><span class="amount__sign">&gt;</span><strong class="amount__value">100</strong><span class="amount__text">partners</span></div>
+                </td>
+              </tr>
+              <tr class="partners-table__row2">
+                <td class="partners-table__cell">
+                  <p>with some we have been working for more than 8 years</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="facts__heading">
+            <h3 class="heading"><small class="heading__small-text">But still</small>we are open to new suggestions</h3>
+          </div>
+        </section>
+        <!--END timeline-->
+        <!--BEGIN advantages-->
+        <section id="advantages" class="js-section advantages">
+          <div class="head head_advantages">
+            <div class="head__inner">
+              <div class="head__bg"></div>
+              <div class="head__img"><img src="img/head1.png" alt=""></div>
+            </div>
+            <div class="head__text">Advantages</div>
+            <div class="deco deco-1">
+              <div class="deco__inner">
+                <svg class="icon icon-target">
+                  <use xlink:href="#icon-target"></use>
+                </svg>
+              </div>
+            </div>
+            <div class="deco deco-2">
+              <div class="deco__inner">11’ — 7”</div>
+            </div>
+          </div>
+          <ul class="advantages__inner">
+            <li class="advantages__column">
+              <h3 class="heading heading_border heading_large"><span class="heading__small-text">01</span>Foreign<br>capital</h3>
+              <p>50% Ukraine</p>
+              <p>50% Vietnam</p>
+            </li>
+            <li class="advantages__column">
+              <h3 class="heading heading_border heading_large"><span class="heading__small-text">02</span>Working<br>speed</h3>
+              <p>
+                We make decisions quickly, because our structure is light and there
+                is no need to go through the stages of negotiation
+              </p>
+            </li>
+            <li class="advantages__column">
+              <h3 class="heading heading_border heading_large"><span class="heading__small-text">03</span>Quality of<br>materials</h3>
+              <p>
+                We use only high quality products. All of our materials are
+                certified and environmentally friendly
+              </p>
+            </li>
+          </ul>
+        </section>
+        <!--END advantages-->
+        <!--BEGIN capabilities-->
+        <section id="capabilities" class="js-section capabilities">
+          <div class="head head_capabilities">
+            <div class="head__text">Opportunities</div>
+            <div class="deco deco_polygon deco-1">
+              <div class="deco__inner">
+                <svg class="icon icon-polygon">
+                  <use xlink:href="#icon-polygon"></use>
+                </svg><span>W6</span>
+              </div>
+            </div>
+          </div>
+          <div class="capabilities__container">
+            <div id="catalog2" class="capabilities-modal">
+              <div class="capabilities-modal__inner">
+                <div class="capabilities-modal__head">
+                  <canvas id="morph2" width="1368" height="680" style="opacity: 0"></canvas>
+                  <ul class="category is-standby">
+                    <li class="category__item"><a href="partials/rent.html" data-morph-state="circle" data-content-index="0" class="btn btn_category">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in"><span class="btn__hover-text">Rent</span></div>
+                        </div>
+                        <div class="btn__front"><span>Rent</span></div>
+                        <div class="btn__bg btn__bg1"></div></a></li>
+                    <li class="category__item"><a href="partials/buy.html" data-morph-state="square" data-content-index="1" class="btn btn_category">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in"><span class="btn__hover-text">Buy</span></div>
+                        </div>
+                        <div class="btn__front"><span>Buy</span></div>
+                        <div class="btn__bg btn__bg2"></div></a></li>
+                    <li class="category__item"><a href="partials/invest.html" data-morph-state="triangle" data-content-index="2" class="btn btn_category">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in"><span class="btn__hover-text">Invest</span></div>
+                        </div>
+                        <div class="btn__front"><span>Invest</span></div>
+                        <div class="btn__bg btn__bg3"></div></a></li>
+                  </ul>
+                </div>
+                <div class="capabilities-modal__content">
+                </div>
+                <div class="capabilities-modal__content">
+                </div>
+                <div class="capabilities-modal__content">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--END capabilities-->
+        <!--BEGIN partners-->
+        <section id="partners" class="js-section partners">
+          <div class="head head_partners">
+            <div class="head__inner">
+              <div class="head__bg"></div>
+              <div class="head__img"><img src="img/head2.png" alt=""></div>
+            </div>
+            <div class="head__text">Partners</div>
+            <div class="deco deco-1">
+              <div class="deco__inner">
+                <svg class="icon icon-target">
+                  <use xlink:href="#icon-target"></use>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="partners__inner">
+            <div class="deco deco_circle">
+              <div class="deco__inner">D2</div>
+            </div>
+            <div class="text-block">
+              <h3 class="heading">We<br>believe</h3>
+              <p>that working in a team, you can do the job<br>quicker and more efficiently.</p>
+            </div>
+            <h3 class="heading heading__center">we are looking forward to cooperate if you are:</h3>
+            <div id="forms" class="tabs js-tabs-1">
+              <header class="tabs__head table">
+                <div class="table__border"><svg width="1080" height="121" viewBox="0 0 1080 121" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-head
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1.5 1.508h719v116" class="inner-border"/>
+        <path d="M1.5 1.508h359v116" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.517v117h1077" class="outer-border"/>
+            <path d="M1.5 1.517h1077v117" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                </div><a href="#" class="btn btn_tab">
+                  <div class="btn__hover">
+                    <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">01</small>Construction<br>company</strong></div>
+                  </div>
+                  <div class="btn__front"><strong class="heading"><small class="heading__small-text">01</small>Construction<br>company</strong></div></a><a href="#" class="btn btn_tab">
+                  <div class="btn__hover">
+                    <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">02</small>Wholesale<br>supplier</strong></div>
+                  </div>
+                  <div class="btn__front"><strong class="heading"><small class="heading__small-text">02</small>Wholesale<br>supplier</strong></div></a><a href="#" class="btn btn_tab">
+                  <div class="btn__hover">
+                    <div class="btn__hover-in"><strong class="heading"><small class="heading__small-text">03</small>Investor</strong></div>
+                  </div>
+                  <div class="btn__front"><strong class="heading"><small class="heading__small-text">03</small>Investor</strong></div></a>
+              </header>
+              <div class="tabs__content">
+                <form name="company" data-subject="Сотрудничество. Строительная компания" class="form table">
+                  <div class="table__border"><svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                  </div>
+                  <div class="form__message">
+                    <div class="form__message-inner"><strong>Спасибо</strong><span>Мы Вам скоро перезвоним</span></div>
+                  </div>
+                  <input type="text" name="name" placeholder="Your name" class="input">
+                  <input type="tel" name="phone" placeholder="Your phone" class="input">
+                  <textarea name="message" placeholder="Message" class="input"></textarea>
+                  <button type="submit" class="btn btn_submit">
+                    <div class="btn__hover">
+                      <div class="btn__hover-in">Send
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="btn__front">Send
+                      <svg class="icon icon-arrow">
+                        <use xlink:href="#icon-arrow"></use>
+                      </svg>
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <div class="tabs__content">
+                <form name="provider" data-subject="Сотрудничество. Оптовый поставщик" class="form table">
+                  <div class="table__border"><svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                  </div>
+                  <div class="form__message">
+                    <div class="form__message-inner"><strong>Спасибо</strong><span>Мы Вам скоро перезвоним</span></div>
+                  </div>
+                  <input type="text" name="name" placeholder="Your name" class="input">
+                  <input type="tel" name="phone" placeholder="Your phone" class="input">
+                  <textarea name="message" placeholder="Message" class="input"></textarea>
+                  <button type="submit" class="btn btn_submit">
+                    <div class="btn__hover">
+                      <div class="btn__hover-in">Send
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="btn__front">Send
+                      <svg class="icon icon-arrow">
+                        <use xlink:href="#icon-arrow"></use>
+                      </svg>
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <div class="tabs__content">
+                <form name="investor" data-subject="Сотрудничество. Инвестор" class="form table">
+                  <div class="table__border"><svg width="1080" height="390" viewBox="0 0 1080 390" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        tabs-form
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M1 .5v318h1077" class="inner-border"/>
+        <path d="M2 .5v104h1077" class="inner-border"/>
+        <path d="M1 .5v52h1077" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v387h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v387" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                  </div>
+                  <div class="form__message">
+                    <div class="form__message-inner"><strong>Спасибо</strong><span>Мы Вам скоро перезвоним</span></div>
+                  </div>
+                  <input type="text" name="name" placeholder="Your name" class="input">
+                  <input type="tel" name="phone" placeholder="Your phone" class="input">
+                  <textarea name="message" placeholder="Message" class="input"></textarea>
+                  <button type="submit" class="btn btn_submit">
+                    <div class="btn__hover">
+                      <div class="btn__hover-in">Send
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="btn__front">Send
+                      <svg class="icon icon-arrow">
+                        <use xlink:href="#icon-arrow"></use>
+                      </svg>
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <footer class="tabs__footer">
+                <div class="tabs__footer-cell">
+                  <p>Do you build quickly and responsibly?</p>
+                </div>
+                <div class="tabs__footer-cell">
+                  <p>Do you provide excellent service<br>and quality materials?</p>
+                </div>
+                <div class="tabs__footer-cell">
+                  <p>Do you want a stable income?</p>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </section>
+        <!--END partners-->
+        <!--BEGIN contacts-->
+        <section id="contacts" class="js-section contacts">
+          <div class="head head_contacts">
+            <div class="head__inner">
+              <div class="head__bg"></div>
+              <div class="head__img"><img src="img/head3.png" alt=""></div>
+            </div>
+            <div class="head__text">Contacts</div>
+            <div class="deco deco-1">
+              <div class="deco__inner">
+                <svg class="icon icon-target">
+                  <use xlink:href="#icon-target"></use>
+                </svg>
+              </div>
+            </div>
+            <div class="deco deco-2">
+              <div class="deco__inner">31’ — 5”</div>
+            </div>
+          </div>
+          <div class="contacts__inner">
+            <div class="contacts-table table js-table">
+              <div class="table__border js-border"><svg width="1080" height="494" viewBox="0 0 1080 494" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        contacts-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <path d="M452.5 1.5v421h626" class="inner-border"/>
+        <path d="M452.5 1.5v207h626" class="inner-border"/>
+        <path d="M452.5 1.5v155h626" class="inner-border"/>
+        <path d="M452.5 1.5v103h626" class="inner-border"/>
+        <g stroke-width="3">
+            <path d="M1.5 1.5v207h451" class="outer-border"/>
+            <path d="M1.5 1.5v103h451" class="outer-border"/>
+            <path d="M1.5 1.5h451v491" class="outer-border"/>
+            <path d="M1.5 1.5v491h1077" class="outer-border"/>
+            <path d="M1.5 1.5h1077v491" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+              </div>
+              <table>
+                <tr class="contacts-table__row1">
+                  <td class="contacts-table__cell">
+                    <div class="contact-item"><small class="contact-item__label">Phone</small><a href="tel:+380442204555" class="contact-item__phone">+380 (44) 220 45 55</a></div>
+                  </td>
+                  <td class="contacts-table__cell"><strong class="heading">Still have<br>questions?</strong></td>
+                </tr>
+                <tr class="contacts-table__row1">
+                  <td class="contacts-table__cell">
+                    <div class="contact-item"><small class="contact-item__label">E-mail</small><a href="mailto:info@starcentre.com">info@starcentre.com</a></div>
+                  </td>
+                  <td rowspan="2" class="contacts-table__cell">
+                    <form name="question" data-subject="Вопрос" class="form">
+                      <div class="form__message">
+                        <div class="form__message-inner"><strong>Спасибо</strong><span>Мы Вам скоро перезвоним</span></div>
+                      </div>
+                      <input type="text" name="name" placeholder="Your name" class="input">
+                      <input type="tel" name="phone" placeholder="Your phone" class="input">
+                      <textarea name="message" placeholder="Message" class="input"></textarea>
+                      <button type="submit" class="btn btn_submit">
+                        <div class="btn__hover">
+                          <div class="btn__hover-in">Send
+                            <svg class="icon icon-arrow">
+                              <use xlink:href="#icon-arrow"></use>
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="btn__front">Send
+                          <svg class="icon icon-arrow">
+                            <use xlink:href="#icon-arrow"></use>
+                          </svg>
+                        </div>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <tr class="contacts-table__row2">
+                  <td class="contacts-table__cell">
+                    <div class="contact-item"><small class="contact-item__label">Address</small>Kiev<br>
+                      Chervonozorianyi ave.<br>
+                      building 42
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </section>
+        <!--END contacts-->
+      </div>
+      <!--BEGIN footer-->
+      <footer class="footer">
+        <!--BEGIN map-->
+        <div class="footer__map">
+          <div id="map"><img src="img/map.jpg" alt="" style="min-width:100%"></div>
+        </div>
+        <!--END map-->
+        <div class="footer__bottom">
+          <p class="footer__copy">© StarCentre, 2015</p>
+          <p class="footer__link">Design by <a href="#">TRILO</a></p>
+        </div>
+      </footer>
+      <!--END footer-->
+    </div>
+    <!--END outer and inner-->
+    <!--BEGIN popups-->
+    <div id="best-offer1" class="popup">
+      <div class="popup__inner">
+        <div class="object object_wide">
+          <div class="object__inner">
+            <div class="object__gallery">
+              <div class="object__buttons">
+                <button type="button" class="object__slider-prev"><span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg> Prev photo</span></button>
+                <button type="button" class="object__slider-next"><span>Next photo
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg></span></button>
+                <button type="button" class="object__close"><span>Minimize object
+                        <svg class="icon icon-arrow-sm">
+                          <use xlink:href="#icon-arrow-sm"></use>
+                        </svg></span></button>
+              </div>
+              <div class="object__slider">
+                <div style="background-image:url('img/objects/2.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/2.1.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/2.2.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/2.3.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/2.4.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/2.5.jpg')" class="object__slide"></div>
+              </div>
+              <div class="info table">
+                <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                </div>
+                <div class="info__inner">
+                  <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Нововокзальная 3<br><small>Киев, ул. Нововокзальная, 3</small></div>
+                      </div>
+                      <div class="btn__front">Нововокзальная 3<br><small>Киев, ул. Нововокзальная, 3</small></div></a></div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Area</small>7 826 М<sup>2</sup></div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Completion year</small>2015</div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Total floors</small>10</div>
+                  </div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Free area</small>5 500 М<sup>2</sup></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="object__detail">
+              <h4 class="heading heading_red">Special offer</h4>
+              <p>
+                Now there is a 25% discount on the first year of the
+                lease size upon signing the contract before the summer
+                
+              </p><a href="#" class="btn btn_link"><span data-hover="Download presentation" class="btn__hover"></span><span>Download presentation</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="best-offer2" class="popup">
+      <div class="popup__inner">
+        <div class="object object_wide">
+          <div class="object__inner">
+            <div class="object__gallery">
+              <div class="object__buttons">
+                <button type="button" class="object__slider-prev"><span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg> Prev photo</span></button>
+                <button type="button" class="object__slider-next"><span>Next photo
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg></span></button>
+                <button type="button" class="object__close"><span>Minimize object
+                        <svg class="icon icon-arrow-sm">
+                          <use xlink:href="#icon-arrow-sm"></use>
+                        </svg></span></button>
+              </div>
+              <div class="object__slider">
+                <div style="background-image:url('img/objects/1.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/1.1.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/1.2.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/1.3.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/1.4.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/1.5.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/1.6.jpg')" class="object__slide"></div>
+              </div>
+              <div class="info table">
+                <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                </div>
+                <div class="info__inner">
+                  <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Краснозвездный 56<br><small>Киев, прсп. Краснозвездный, 56</small></div>
+                      </div>
+                      <div class="btn__front">Краснозвездный 56<br><small>Киев, прсп. Краснозвездный, 56</small></div></a></div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Area</small>13 713 М<sup>2</sup></div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Completion year</small>2015</div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Total floors</small>13</div>
+                  </div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Free area</small>7 800 М<sup>2</sup></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="object__detail">
+              <h4 class="heading heading_red">Special offer</h4>
+              <p>
+                Now there is a 25% discount on the first year of the
+                lease size upon signing the contract before the summer
+                
+              </p><a href="#" class="btn btn_link"><span data-hover="Download presentation" class="btn__hover"></span><span>Download presentation</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="best-offer3" class="popup">
+      <div class="popup__inner">
+        <div class="object object_wide">
+          <div class="object__inner">
+            <div class="object__gallery">
+              <div class="object__buttons">
+                <button type="button" class="object__slider-prev"><span>
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg>Prev photo</span></button>
+                <button type="button" class="object__slider-next"><span>Next photo
+                        <svg class="icon icon-arrow">
+                          <use xlink:href="#icon-arrow"></use>
+                        </svg></span></button>
+                <button type="button" class="object__close"><span>Minimize object
+                        <svg class="icon icon-arrow-sm">
+                          <use xlink:href="#icon-arrow-sm"></use>
+                        </svg></span></button>
+              </div>
+              <div class="object__slider">
+                <div style="background-image:url('img/objects/7.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/7.1.jpg')" class="object__slide"></div>
+                <div style="background-image:url('img/objects/7.2.jpg')" class="object__slide"></div>
+              </div>
+              <div class="info table">
+                <div class="table__border"><svg width="650" height="180" viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg">
+    <title>
+        info-table
+    </title>
+    <g stroke-linecap="square" stroke="#333" fill="none" fill-rule="evenodd">
+        <g stroke-width="2">
+            <path d="M1 1h399v176" class="inner-border"/>
+            <path d="M1 90h399v87" class="inner-border"/>
+            <path d="M1 90h199v87" class="inner-border"/>
+        </g>
+        <g stroke-width="3">
+            <path d="M1.5 1.5h647v177" class="outer-border"/>
+            <path d="M1.5 1.5v177h647" class="outer-border"/>
+        </g>
+    </g>
+</svg>
+
+                </div>
+                <div class="info__inner">
+                  <div class="info__cell info__cell1"><a href="#" class="btn btn_object">
+                      <div class="btn__hover">
+                        <div class="btn__hover-in">Щербакова 16<br><small>Киев, ул. Щербакова, 16</small></div>
+                      </div>
+                      <div class="btn__front">Щербакова 16<br><small>Киев, ул. Щербакова, 16</small></div></a></div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Area</small>5 500 М<sup>2</sup></div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Completion year</small>2014</div>
+                  </div>
+                  <div class="info__cell info__cell2">
+                    <div class="info-item"><small class="info-item__label">Total floors</small>55</div>
+                  </div>
+                  <div class="info__cell info__cell3">
+                    <div class="info-item"><small class="info-item__label">Free area</small>5</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="object__detail">
+              <h4 class="heading heading_red">Special offer</h4>
+              <p>
+                Now there is a 25% discount on the first year of the
+                lease size upon signing the contract before the summer
+                
+              </p><a href="#" class="btn btn_link"><span data-hover="Download presentation" class="btn__hover"></span><span>Download presentation</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--END popups-->
+    <!--LOAD SCRIPTS-->
+    <script src="js/main.js"></script>
+  </body>
+</html>

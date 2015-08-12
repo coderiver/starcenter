@@ -1,0 +1,124 @@
+include ../../_mixins
+
+.invest
+  .text-block
+    h3.heading
+      | We are trusted<br>
+      | even international<br>
+      | investors
+    p.
+      Раньше мы не практиковали строительство <br> за деньги инвесторов
+  .text-block
+    h3.heading
+      | И мы понимаем
+    p.
+      Для Вас это будет выгодно, <br> мы же в свою очередь быстрее все сдадим
+
+  h3.heading
+    | Investment<br>options:
+
+  .tabs.tabs_mod.js-tabs-2
+    header.tabs__head.table
+      .table__border
+        include ../../../img/svg/svg-borders/optimized/tabs-head-mod.svg
+      a.btn.btn_tab.btn_tab-mod(href="#")
+        .btn__hover
+          .btn__hover-in
+            strong.heading
+              small.heading__small-text 01
+              | Residential<br>Property
+        .btn__front
+          strong.heading
+            small.heading__small-text 01
+            | Residential<br>Property
+      a.btn.btn_tab.btn_tab-mod(href="#")
+        .btn__hover
+          .btn__hover-in
+            strong.heading
+              small.heading__small-text 02
+              | Office<br>property
+        .btn__front
+          strong.heading
+            small.heading__small-text 02
+            | Office<br>property
+      a.btn.btn_tab.btn_tab-mod(href="#")
+        .btn__hover
+          .btn__hover-in
+            strong.heading
+              small.heading__small-text 03
+              | Shopping<br>and Exhibition<br>Centers
+        .btn__front
+          strong.heading
+            small.heading__small-text 03
+            | ТРЦ и <br> выставочные <br> комплексы
+
+    .tabs__content
+      form.form.table(name="INVEST_1", data-subject="Инвестирование. Жилая недвижимость")
+        .table__border
+          include ../../../img/svg/svg-borders/optimized/tabs-form-mod.svg
+        .form__contact
+          span Загляните к нам на кофе
+          p Киев <br> Краснозвездный <br> проспект 42
+          span или оставте свой номер телефона и мы вам перезвоним:
+        include ../../_form-message
+        input.input(type="text", name="name", placeholder="Ваше имя")
+        input.input(type="tel", name="phone", placeholder="Ваше телефон")
+        button.btn.btn_submit(type="submit")
+          .btn__hover
+            .btn__hover-in
+              | Отправить
+              +icon("arrow")
+          .btn__front
+            | Отправить
+            +icon("arrow")
+
+    .tabs__content
+      form.form.table(name="INVEST_2", data-subject="Инвестирование. Офисная недвижимость")
+        .table__border
+          include ../../../img/svg/svg-borders/optimized/tabs-form-mod.svg
+        .form__contact
+          span Загляните к нам на кофе
+          p Киев <br> Краснозвездный <br> проспект 42
+          span или оставте свой номер телефона и мы вам перезвоним:
+        include ../../_form-message
+        input.input(type="text", name="name", placeholder="Ваше имя")
+        input.input(type="tel", name="phone", placeholder="Ваше телефон")
+        button.btn.btn_submit(type="submit")
+          .btn__hover
+            .btn__hover-in
+              | Отправить
+              +icon("arrow")
+          .btn__front
+            | Отправить
+            +icon("arrow")
+
+    .tabs__content
+      form.form.table(name="INVEST_3", data-subject="Инвестирование. ТРЦ и выставочные комплексы")
+        .table__border
+          include ../../../img/svg/svg-borders/optimized/tabs-form-mod.svg
+        .form__contact
+          span Загляните к нам на кофе
+          p Киев <br> Краснозвездный <br> проспект 42
+          span или оставте свой номер телефона и мы вам перезвоним:
+        include ../../_form-message
+        input.input(type="text", name="name", placeholder="Ваше имя")
+        input.input(type="tel", name="phone", placeholder="Ваше телефон")
+        button.btn.btn_submit(type="submit")
+          .btn__hover
+            .btn__hover-in
+              | Отправить
+              +icon("arrow")
+          .btn__front
+            | Отправить
+            +icon("arrow")
+
+    footer.tabs__footer
+      .tabs__footer-cell
+        p We will build houses and cottages
+      .tabs__footer-cell
+        p We develop the concept and<br>bring the work to the end
+      .tabs__footer-cell
+        p.
+          We will develop trade in Ukraine,
+          create marketplaces, that is what
+          our leaders are experienced in

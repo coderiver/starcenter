@@ -242,7 +242,7 @@ body { min-width: 1200px; min-height: 630px; width: 100%; height: 100%; overflow
 .header__phone { display: inline-block; line-height: 1.2; color: inherit; text-decoration: none; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.25em; }
 .header__phone em { color: #AAA; font-style: normal; }
 
-.header__lang { display: inline-block; margin-left: 12px; text-transform: uppercase; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.25em; background: none; color: inherit; }
+.header__lang { display: inline-block; margin-left: 12px; text-transform: uppercase; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.25em; background: none; color: inherit; text-decoration: none; }
 
 .footer { position: fixed; z-index: 0; bottom: 0; left: 0; right: 0; height: 510px; box-sizing: border-box; font-family: "HelveticaNeueCyr-Roman", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.05em; background: #FFF; color: #CCC; overflow: hidden; }
 
@@ -284,7 +284,7 @@ body { min-width: 1200px; min-height: 630px; width: 100%; height: 100%; overflow
 
 .blue-circle { width: 510px; height: 510px; border-radius: 50%; background-color: #75BDC4; background-image: -webkit-linear-gradient(bottom, #CDF0E9 27%, #2B92A5 100%); background-image: linear-gradient(to top, #CDF0E9 27%, #2B92A5 100%); }
 
-.price { display: inline-block; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 72px; letter-spacing: 0.05em; }
+.price { display: block; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 72px; letter-spacing: 0.05em; }
 
 .price__small { display: inline-block; font-size: 24px; letter-spacing: 0; }
 .price__small sup { vertical-align: super; font-size: 12px; }
@@ -777,6 +777,7 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 .object-wrapper.is-slider .object__detail { padding-bottom: 0; -webkit-animation: none; animation: none; }
 
 .object-label { display: block; position: absolute; z-index: 1; top: -55px; left: -65px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 24px; letter-spacing: 1em; line-height: 1.333; text-transform: uppercase; -webkit-transition: all 0.2s linear; transition: all 0.2s linear; opacity: 1; visibility: visible; }
+html[lang="en"] .object-label { top: -35px; }
 
 .object { position: relative; width: 790px; height: 450px; background: #FFF; }
 .object .info { position: absolute; z-index: 5; left: 50%; bottom: -22px; margin-left: -225px; }

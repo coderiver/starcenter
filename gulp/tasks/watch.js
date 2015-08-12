@@ -6,9 +6,9 @@ module.exports = function() {
     // gulp.task('watch', function() {
 
         gulp.watch(config.src.sass + '/**/*', ['sass']);
-        gulp.watch(config.src.jade + '/[^_]*.jade', ['jade']);
-        gulp.watch(config.src.jade + '/partials/*.jade', ['jade-partials', 'jade-all']);
-        gulp.watch(config.src.jade + '/**/_*.jade', ['jade-partials', 'jade-all']);
+        gulp.watch(config.src.jade + '/**/**/*.jade', ['jade']);
+        gulp.watch(config.src.jade + '/partials/**/*.jade', ['jade-partials', 'jade-all']);
+        gulp.watch(config.src.jade + '/**/**/_*.jade', ['jade-partials', 'jade-all']);
         gulp.watch(config.src.svg + '/icons/*.svg', ['svg-sprite']);
         gulp.watch(config.src.svg + '/not-optimized/*.svg', ['svgo']);
         gulp.watch(config.src.svg + '/svg-borders/*.svg', ['svgo-borders']);

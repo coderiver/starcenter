@@ -6,8 +6,17 @@ var formSubmit = require('./_form-submit.js');
 module.exports = function(url, div) {
 
     var container = div instanceof jQuery ? div : $(div);
+    var partialUrl;
 
-    container.load(url, function(content) {
+    if ($('html').attr('lang') === 'en') {
+        partialUrl = url.replace('partials', 'partials/en');
+    } else {
+        partialUrl = url;
+    }
+
+    console.log(partialUrl);
+
+    container.load(partialUrl, function(content) {
 
         var box    = container.find('.js-box');
         var tabs   = container.find('.js-tabs-2');

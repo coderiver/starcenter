@@ -56,6 +56,7 @@
   +f(hb, 10, 0.25)
   background: none
   color: inherit
+  text-decoration: none
 
 
 .footer
@@ -223,7 +224,7 @@
 
 
 .price
-  display: inline-block
+  display: block
   +f(hb, 72, 0.05)
 
 .price__small
@@ -1963,6 +1964,8 @@ textarea.input
   transition: all 0.2s linear
   opacity: 1
   visibility: visible
+  html[lang="en"] &
+    top: -35px
 
 
 .object

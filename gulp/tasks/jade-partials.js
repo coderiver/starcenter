@@ -9,7 +9,7 @@ module.exports = function() {
 
     // gulp.task('jade', function() {
 
-        return gulp.src(config.src.jade + '/partials/[^_]*.jade')
+        return gulp.src(config.src.jade + '/partials/**/[^_]*.jade')
             .pipe(plumber({errorHandler: notify.onError(function(error){return error.message;})}))
             .pipe(changed(config.dest.root + '/partials', {extension: '.html'}))
             .pipe(jade({pretty: true}))

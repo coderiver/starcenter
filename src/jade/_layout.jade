@@ -1,7 +1,8 @@
 include _mixins
 block php
+block vars
 doctype html
-html
+html(lang= lang === 'en' ? 'en' : false)
   head
     include _head
   body.preload
@@ -11,12 +12,18 @@ html
 
     block nav
       //BEGIN nav
-      include _nav
+      if lang === 'en'
+        include en/_nav
+      else
+        include _nav
       //END nav
 
     block header
       //BEGIN header
-      include _header
+      if lang === 'en'
+        include en/_header
+      else
+        include _header
       //END header
 
     block main
@@ -32,9 +39,14 @@ html
 
     block popups
       //BEGIN popups
-      include partials/best-offer1.jade
-      include partials/best-offer2.jade
-      include partials/best-offer3.jade
+      if lang === 'en'
+        include partials/en/best-offer1.jade
+        include partials/en/best-offer2.jade
+        include partials/en/best-offer3.jade
+      else
+        include partials/best-offer1.jade
+        include partials/best-offer2.jade
+        include partials/best-offer3.jade
       //END popups
 
     block scripts
