@@ -398,8 +398,8 @@ textarea.input { height: 214px; resize: none; margin: 0; }
 
 .btn-back { display: inline-block; background: none; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; text-decoration: none; color: inherit; line-height: 40px; }
 .btn-back > span { display: inline-block; vertical-align: middle; }
-.btn-back .icon-arrow { vertical-align: middle; margin-right: 20px; -webkit-transform: rotate(180deg); -ms-transform: rotate(180deg); transform: rotate(180deg); -webkit-transition: -webkit-transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.btn-back:hover .icon-arrow { -webkit-transform: translateX(-20px) rotate(180deg); -ms-transform: translateX(-20px) rotate(180deg); transform: translateX(-20px) rotate(180deg); }
+.btn-back .icon-arrow { vertical-align: middle; margin-right: 20px; -webkit-transform: translate3d(0, 0, 0) rotate(180deg); transform: translate3d(0, 0, 0) rotate(180deg); -webkit-transition: -webkit-transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.btn-back:hover .icon-arrow { -webkit-transform: translate3d(-20px, 0, 0) rotate(180deg); transform: translate3d(-20px, 0, 0) rotate(180deg); }
 
 #morph { position: absolute; z-index: 0; top: 15px; left: 50%; margin-left: -684px; width: 1368px; height: 680px; pointer-events: none; opacity: 0; visibility: hidden; }
 
@@ -903,6 +903,7 @@ html[lang="en"] .invest .deco-2 { top: 280px; }
 
 .not-found__title { position: absolute; z-index: 3; top: 100px; left: 255px; width: 195px; font-family: "HelveticaNeueCyr-Bold", Helvetica, Arial, sans-serif; font-weight: normal; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1.5; }
 .not-found__title > span { font-size: 18px; display: block; padding-bottom: 11px; margin-bottom: 14px; border-bottom: 4px solid; letter-spacing: 0.5em; }
+html[lang="en"] .not-found__title { text-align: left; }
 
 .popup { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #FFF; z-index: 97; -webkit-transform: translate3d(0, 100%, 0); transform: translate3d(0, 100%, 0); -webkit-transition: -webkit-transform 0.8s ease; transition: transform 0.8s ease; }
 .popup.is-opened { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); overflow-x: hidden; overflow-y: scroll; right: -17px; }

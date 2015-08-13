@@ -11,9 +11,9 @@ module.exports = function() {
 
     var indexFilter = filter('index.html');
 
-        return gulp.src(config.src.jade + '/[^_]*.jade')
+        return gulp.src(config.src.jade + '/**/[^_]*.jade')
             .pipe(plumber({errorHandler: notify.onError(function(error){return error.message;})}))
-            .pipe(changed(config.dest.html, {extension: '.html'}))
+            .pipe(changed(config.dest.html + '/**/', {extension: '.html'}))
             .pipe(jade({pretty: true}))
             // .pipe(indexFilter)
             // .pipe(rename({

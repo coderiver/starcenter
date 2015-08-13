@@ -1,4 +1,4 @@
-extends _layout
+extends ../_layout
 
 block vars
   - var lang = 'en'
@@ -21,7 +21,7 @@ block content
               .main-slider__overlay
               .main-slider__slides
                 .slide
-                  img.slide__img(src="img/slider/slider1.png", alt="")
+                  img.slide__img(src="/img/slider/slider1.png", alt="")
                   .slide__content
                     .slide__text
                       | The best offer on the market
@@ -35,7 +35,7 @@ block content
                       +icon("arrow")
 
                 .slide
-                  img.slide__img(src="img/slider/slider2.png", alt="")
+                  img.slide__img(src="/img/slider/slider2.png", alt="")
                   .slide__content
                     .slide__text
                       | The best offer on the market
@@ -49,7 +49,7 @@ block content
                       +icon("arrow")
 
                 .slide
-                  img.slide__img(src="img/slider/slider3.png", alt="")
+                  img.slide__img(src="/img/slider/slider3.png", alt="")
                   .slide__content
                     .slide__text
                       | The best offer on the market
@@ -147,7 +147,7 @@ block content
 
     #group1.facts-group
       .curve
-        include ../img/svg/optimized/curve.svg
+        include ../../img/svg/optimized/curve.svg
       .facts-group__inner
         .fact.fact-1
           h3.heading
@@ -169,11 +169,11 @@ block content
             | residential and commercial<br>areas by 2017
 
     .skyline
-      include ../img/svg/optimized/skyline.svg
+      include ../../img/svg/optimized/skyline.svg
 
     #group2.facts-group
       .curve
-        include ../img/svg/optimized/curve.svg
+        include ../../img/svg/optimized/curve.svg
       .facts-group__inner
         .fact.fact-1
           h3.heading
@@ -209,7 +209,7 @@ block content
       .box__inner
         .table.men-table.js-table
           .table__border
-            include ../img/svg/svg-borders/optimized/men-table.svg
+            include ../../img/svg/svg-borders/optimized/men-table.svg
           table.men-table__table
             tr.men-table__row1
               td.men-table__cell
@@ -236,7 +236,7 @@ block content
 
     .table.partners-table.js-table
       .table__border
-        include ../img/svg/svg-borders/optimized/partners-table.svg
+        include ../../img/svg/svg-borders/optimized/partners-table.svg
       table.partners-table__table
         tr.partners-table__row1
           td.partners-table__cell(rowspan="2")
@@ -263,7 +263,7 @@ block content
       .head__inner
         .head__bg
         .head__img
-          img(src="img/head1.png", alt="")
+          img(src="/img/head1.png", alt="")
       .head__text
         | Advantages
       .deco.deco-1
@@ -353,7 +353,7 @@ block content
       .head__inner
         .head__bg
         .head__img
-          img(src="img/head2.png", alt="")
+          img(src="/img/head2.png", alt="")
       .head__text
         | Partners
       .deco.deco-1
@@ -375,7 +375,7 @@ block content
       #forms.tabs.js-tabs-1
         header.tabs__head.table
           .table__border
-            include ../img/svg/svg-borders/optimized/tabs-head.svg
+            include ../../img/svg/svg-borders/optimized/tabs-head.svg
           a.btn.btn_tab(href="#")
             .btn__hover
               .btn__hover-in
@@ -409,8 +409,8 @@ block content
         .tabs__content
           form.form.table(name="company", data-subject="Сотрудничество. Строительная компания")
             .table__border
-              include ../img/svg/svg-borders/optimized/tabs-form.svg
-            include en/_form-message
+              include ../../img/svg/svg-borders/optimized/tabs-form.svg
+            include _form-message
             input.input(type="text", name="name", placeholder="Your name")
             input.input(type="tel", name="phone", placeholder="Your phone")
             textarea.input(name="message", placeholder="Message")
@@ -425,8 +425,8 @@ block content
         .tabs__content
           form.form.table(name="provider", data-subject="Сотрудничество. Оптовый поставщик")
             .table__border
-              include ../img/svg/svg-borders/optimized/tabs-form.svg
-            include en/_form-message
+              include ../../img/svg/svg-borders/optimized/tabs-form.svg
+            include _form-message
             input.input(type="text", name="name", placeholder="Your name")
             input.input(type="tel", name="phone", placeholder="Your phone")
             textarea.input(name="message", placeholder="Message")
@@ -441,8 +441,8 @@ block content
         .tabs__content
           form.form.table(name="investor", data-subject="Сотрудничество. Инвестор")
             .table__border
-              include ../img/svg/svg-borders/optimized/tabs-form.svg
-            include en/_form-message
+              include ../../img/svg/svg-borders/optimized/tabs-form.svg
+            include _form-message
             input.input(type="text", name="name", placeholder="Your name")
             input.input(type="tel", name="phone", placeholder="Your phone")
             textarea.input(name="message", placeholder="Message")
@@ -470,7 +470,7 @@ block content
       .head__inner
         .head__bg
         .head__img
-          img(src="img/head3.png", alt="")
+          img(src="/img/head3.png", alt="")
       .head__text
         | Contacts
       .deco.deco-1
@@ -483,7 +483,7 @@ block content
     .contacts__inner
       .contacts-table.table.js-table
         .table__border.js-border
-          include ../img/svg/svg-borders/optimized/contacts-table.svg
+          include ../../img/svg/svg-borders/optimized/contacts-table.svg
         table
           tr.contacts-table__row1
             td.contacts-table__cell
@@ -499,7 +499,7 @@ block content
                 a(href="mailto:info@starcentre.com") info@starcentre.com
             td.contacts-table__cell(rowspan="2")
               form.form(name="question", data-subject="Вопрос")
-                include en/_form-message
+                include _form-message
                 input.input(type="text", name="name", placeholder="Your name")
                 input.input(type="tel", name="phone", placeholder="Your phone")
                 textarea.input(name="message", placeholder="Message")

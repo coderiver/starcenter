@@ -40,9 +40,9 @@ html(lang= lang === 'en' ? 'en' : false)
     block popups
       //BEGIN popups
       if lang === 'en'
-        include partials/en/best-offer1.jade
-        include partials/en/best-offer2.jade
-        include partials/en/best-offer3.jade
+        include en/partials/best-offer1.jade
+        include en/partials/best-offer2.jade
+        include en/partials/best-offer3.jade
       else
         include partials/best-offer1.jade
         include partials/best-offer2.jade
@@ -51,4 +51,4 @@ html(lang= lang === 'en' ? 'en' : false)
 
     block scripts
       //LOAD SCRIPTS
-      script(src="js/main.js")
+      script(src="/js/main.js")

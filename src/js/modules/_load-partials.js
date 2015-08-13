@@ -6,15 +6,15 @@ var formSubmit = require('./_form-submit.js');
 module.exports = function(url, div) {
 
     var container = div instanceof jQuery ? div : $(div);
-    var partialUrl;
+    // var partialUrl;
 
-    if ($('html').attr('lang') === 'en') {
-        partialUrl = url.replace('partials', 'partials/en');
-    } else {
-        partialUrl = url;
-    }
+    // if ($('html').attr('lang') === 'en') {
+    //     partialUrl = url.replace('partials', 'partials/en');
+    // } else {
+    //     partialUrl = url;
+    // }
 
-    container.load(partialUrl, function(content) {
+    container.load(url, function(content) {
 
         var box    = container.find('.js-box');
         var tabs   = container.find('.js-tabs-2');

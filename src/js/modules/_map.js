@@ -178,7 +178,7 @@ pointsOnMap = [
 // Function return array of markers that was create from "locations" and added to "map"
 function setMarkers(map, locations) {
         var markers = [];
-        var image = new google.maps.MarkerImage('img/map-marker.png', null, null, null, new google.maps.Size(28,42));
+        var image = new google.maps.MarkerImage('/img/map-marker.png', null, null, null, new google.maps.Size(28,42));
         for (var i = 0; i < locations.length; i++) {
             var point    = locations[i];
             var myLatlng = new google.maps.LatLng(point[0], point[1]);

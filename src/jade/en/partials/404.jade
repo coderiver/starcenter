@@ -1,16 +1,14 @@
-include ../_mixins
+include ../../_mixins
 //BEGIN 404
 .not-found
   .not-found__inner
-    a.btn-back(href="/")
+    a.btn-back(href="/en")
       +icon("arrow")
-      span Перейти на главную
+      span Go home
 
     h1.not-found__title
       span 404
-      | Такой страницы
-      br
-      | не существует
+      | There is no such<br>page
 
     img.not-found__triangle(src="/img/svg/triangle404.svg")
     img.not-found__img(src="/img/canvas3-1.png")

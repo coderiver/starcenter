@@ -597,11 +597,11 @@ textarea.input
   .icon-arrow
     vertical-align: middle
     margin-right: 20px
-    transform: rotate(180deg)
+    transform: translate3d(0,0,0) rotate(180deg)
     transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   &:hover
     .icon-arrow
-      transform: translateX(-20px) rotate(180deg)
+      transform: translate3d(-20px,0,0) rotate(180deg)
 
 
 
@@ -2425,6 +2425,8 @@ textarea.input
     margin-bottom: 14px
     border-bottom: 4px solid
     letter-spacing: 0.5em
+  html[lang="en"] &
+    text-align: left
 
 //---------------------------------------------------------------------------
 //            ^^^^^  end not-found  ^^^^^

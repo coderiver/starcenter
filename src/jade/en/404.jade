@@ -1,6 +1,6 @@
-include _mixins
+include ../_mixins
 doctype
-html
+html(lang="en")
   head
     meta(charset="utf-8")
     title Star Centre || 404
@@ -10,7 +10,7 @@ html
   body
     block icons
       div(style="position: absolute; top: 0; left: 0;")
-        include ../../site/img/icons.svg
+        include ../../../site/img/icons.svg
 
     include _header
     include partials/404
