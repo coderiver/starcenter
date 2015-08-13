@@ -1,18 +1,19 @@
 include ../../_mixins
 
 .invest
+  .deco.deco-1
+    .deco__inner
+      +icon("figure")
+  .deco.deco-2
+    .deco__inner
+      +icon("target")
   .text-block
     h3.heading
       | We are trusted<br>
       | even international<br>
       | investors
-    p.
-      Раньше мы не практиковали строительство <br> за деньги инвесторов
-  .text-block
-    h3.heading
-      | И мы понимаем
-    p.
-      Для Вас это будет выгодно, <br> мы же в свою очередь быстрее все сдадим
+    p
+      | All that we started - we're finished!
 
   h3.heading
     | Investment<br>options:
@@ -58,18 +59,18 @@ include ../../_mixins
           include ../../../img/svg/svg-borders/optimized/tabs-form-mod.svg
         .form__contact
           span Загляните к нам на кофе
-          p Киев <br> Краснозвездный <br> проспект 42
+          p Kiev<br>Chervonozorianyi ave.<br>building 42
           span или оставте свой номер телефона и мы вам перезвоним:
-        include ../../_form-message
-        input.input(type="text", name="name", placeholder="Ваше имя")
-        input.input(type="tel", name="phone", placeholder="Ваше телефон")
+        include ../../en/_form-message
+        input.input(type="text", name="name", placeholder="Your name")
+        input.input(type="tel", name="phone", placeholder="Your phone")
         button.btn.btn_submit(type="submit")
           .btn__hover
             .btn__hover-in
-              | Отправить
+              | Send
               +icon("arrow")
           .btn__front
-            | Отправить
+            | Send
             +icon("arrow")
 
     .tabs__content
@@ -78,18 +79,18 @@ include ../../_mixins
           include ../../../img/svg/svg-borders/optimized/tabs-form-mod.svg
         .form__contact
           span Загляните к нам на кофе
-          p Киев <br> Краснозвездный <br> проспект 42
+          p Kiev<br>Chervonozorianyi ave.<br>building 42
           span или оставте свой номер телефона и мы вам перезвоним:
-        include ../../_form-message
-        input.input(type="text", name="name", placeholder="Ваше имя")
-        input.input(type="tel", name="phone", placeholder="Ваше телефон")
+        include ../../en/_form-message
+        input.input(type="text", name="name", placeholder="Your name")
+        input.input(type="tel", name="phone", placeholder="Your phone")
         button.btn.btn_submit(type="submit")
           .btn__hover
             .btn__hover-in
-              | Отправить
+              | Send
               +icon("arrow")
           .btn__front
-            | Отправить
+            | Send
             +icon("arrow")
 
     .tabs__content
@@ -98,18 +99,18 @@ include ../../_mixins
           include ../../../img/svg/svg-borders/optimized/tabs-form-mod.svg
         .form__contact
           span Загляните к нам на кофе
-          p Киев <br> Краснозвездный <br> проспект 42
+          p Kiev<br>Chervonozorianyi ave.<br>building 42
           span или оставте свой номер телефона и мы вам перезвоним:
-        include ../../_form-message
-        input.input(type="text", name="name", placeholder="Ваше имя")
-        input.input(type="tel", name="phone", placeholder="Ваше телефон")
+        include ../../en/_form-message
+        input.input(type="text", name="name", placeholder="Your name")
+        input.input(type="tel", name="phone", placeholder="Your phone")
         button.btn.btn_submit(type="submit")
           .btn__hover
             .btn__hover-in
-              | Отправить
+              | Send
               +icon("arrow")
           .btn__front
-            | Отправить
+            | Send
             +icon("arrow")
 
     footer.tabs__footer

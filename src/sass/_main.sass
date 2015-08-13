@@ -789,15 +789,6 @@ textarea.input
         visibility: visible
         transform: none
         transition-delay: 1s
-  .deco
-    position: absolute
-    z-index: 4
-    top: 145px
-    right: 125px
-    opacity: 0
-    visibility: hidden
-    transform: translateY(30px)
-    transition: all 0.2s linear
 
 .catalog__modal
   position: absolute
@@ -829,10 +820,22 @@ textarea.input
 .catalog__toparea
   position: relative
   height: 680px
+  z-index: auto
+  .deco
+    position: absolute
+    z-index: 4
+    top: 145px
+    right: 125px
+    opacity: 0
+    visibility: hidden
+    transform: translateY(30px)
+    transition: all 0.2s linear
 
 .catalog__content
   display: none
   padding-bottom: 70px
+  position: relative
+  z-index: 1
 
 .catalog-category
   position: absolute
@@ -1904,6 +1907,8 @@ textarea.input
     position: absolute
     top: -100px
     left: -140px
+    right: auto
+    bottom: auto
   + .object-wrapper
     margin-top: 70px
 
@@ -2307,6 +2312,19 @@ textarea.input
   width: 100%
   max-width: 790px
   margin: auto
+  position: relative
+  .deco
+    position: absolute
+  .deco-1
+    top: -110px
+    left: -120px
+  .deco-2
+    top: 430px
+    right: -130px
+  html[lang="en"] &
+    .deco-2
+      top: 280px
+
 
 .btn_tab.btn_tab-mod
   width: 290px

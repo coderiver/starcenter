@@ -14,8 +14,6 @@ module.exports = function(url, div) {
         partialUrl = url;
     }
 
-    console.log(partialUrl);
-
     container.load(partialUrl, function(content) {
 
         var box    = container.find('.js-box');
