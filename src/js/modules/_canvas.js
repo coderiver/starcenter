@@ -36,6 +36,7 @@ var Morph = function(selector) {
     this.visibleClass = 'is-visible';
     this.activeClass = 'is-active';
     this.standbyScale = 0.55;
+    this.engVersion = $('html').attr('lang') === 'en' ? true : false;
 
     return this;
 };
@@ -680,12 +681,15 @@ Morph.prototype.moveDown = function(duration) {
         .add(function() {
             _._fade();
             _._toggleContentVisibility(false);
-            _._toggleMorphToStar();
         })
         .add(function() {
-            // _._morph('smTriangle', dur);
-            _._morphStar('final', dur);
-            }, 'fadeIn')
+            if ( _.engVersion ) {
+                _._morph('smTriangle', dur);
+            } else {
+                _._toggleMorphToStar();
+                _._morphStar('final', dur);
+            }
+        }, 'fadeIn')
         .to(_.canvas, dur / 1000, {y: _.shiftY}, 'fadeIn');
 };
 
@@ -697,17 +701,22 @@ Morph.prototype.moveBack = function(duration) {
 
     tl
         .add(function() {
-            // _._morph('circle', dur);
-            _._morphStar('initial', dur);
-            })
+            if ( _.engVersion ) {
+                _._morph('circle', dur);
+            } else {
+                _._morphStar('initial', dur);
+            }
+        })
         .to(_.canvas, dur / 1000, {y: 0})
         .add(function() {
             _._fade();
-            })
+        })
         .add(function() {
             _._toggleContentVisibility(true);
-            _._toggleMorphToStar();
-            }, '+=0.2');
+            if ( !_.engVersion ) {
+                _._toggleMorphToStar();
+            };
+        }, '+=0.2');
 };
 
 Morph.prototype.initStandby = function(state) {
